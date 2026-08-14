@@ -3,20 +3,66 @@
 import { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { Info } from "lucide-react";
-import type { InvestStats, MarketResponse, Selection } from "@/lib/dashboard/types";
+import type { InvestStats, MarketResponse, Selection, SlotView } from "@/lib/dashboard/types";
 import { fmtEuro, fmtInt, fmtPct } from "@/lib/dashboard/format";
 import { UI } from "./tokens";
+import { SlotDot } from "./compare";
 import { Slider, Toggle } from "./controls";
 import Explain, { StatLabel } from "./Explain";
 
 const NEG = "#D98B6A";
 
 /**
+ * Revenue calculator — inherently one scenario at a time, so comparison
+ * mode adds a picker that chooses which area seeds the sliders.
+ */
+export default function CalculatorTab({ slots }: { slots: SlotView[] }) {
+  const [activeId, setActiveId] = useState(slots[0].id);
+  const active = slots.find((s) => s.id === activeId) ?? slots[0];
+
+  return (
+    <div>
+      {slots.length > 1 && (
+        <div className="flex items-center gap-2 mb-2.5 flex-wrap">
+          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
+            Run the numbers for
+          </span>
+          {slots.map((v) => {
+            const isActive = v.id === active.id;
+            return (
+              <button
+                key={v.id}
+                onClick={() => setActiveId(v.id)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors"
+                style={
+                  isActive
+                    ? { color: UI.text, border: `1px solid ${v.color}88`, background: `${v.color}1A` }
+                    : { color: UI.muted, border: `1px solid ${UI.border}` }
+                }
+              >
+                <SlotDot color={v.color} dash={v.dash} />
+                {v.label}
+              </button>
+            );
+          })}
+        </div>
+      )}
+      <SingleCalculator
+        key={active.id}
+        invest={active.invest}
+        market={active.market}
+        selection={active.selection}
+      />
+    </div>
+  );
+}
+
+/**
  * Revenue calculator — every input is a slider, seeded with the selected
  * area's real numbers (median rate, occupancy, asking prices by bedrooms).
  * Optional mortgage section; results are pre-tax, first-year estimates.
  */
-export default function CalculatorTab({
+function SingleCalculator({
   invest,
   market,
   selection,

@@ -11,6 +11,7 @@ import {
   Hexagon,
   LineChart,
   PenLine,
+  Plus,
   SlidersHorizontal,
   Timer,
   X,
@@ -19,6 +20,7 @@ import { BRAND } from "@/lib/brand";
 import type {
   AreaHealth,
   AreaInfo,
+  CompareSlot,
   DashboardSummary,
   InvestStats,
   ListingDetail,
@@ -30,11 +32,20 @@ import type {
   PricingData,
   RentalStats,
   Selection,
+  SlotView,
 } from "@/lib/dashboard/types";
 import { DEFAULT_FILTERS, encodeFilters, type Filters } from "@/lib/dashboard/filters";
 import { fmtDate, fmtInt } from "@/lib/dashboard/format";
 import { FIRST_WEEK, clampRange, mondayOf, sundayOf } from "@/lib/dashboard/weeks";
 import { UI } from "./tokens";
+import {
+  MAX_SLOTS,
+  SLOT_COLORS,
+  SLOT_DASH,
+  SlotChip,
+  nextSlotStyle,
+  sameSelection,
+} from "./compare";
 import FilterPanel from "./FilterPanel";
 import SearchBar from "./SearchBar";
 import MarketTab from "./MarketTab";
@@ -107,23 +118,62 @@ function zoomForRadius(km: number | null): number {
   return Math.max(9, Math.min(14, Math.round(13.5 - Math.log2(Math.max(1, km)))));
 }
 
+/** Stable cache key for a selection's data scope. */
+function selKeyOf(sel: Selection): string {
+  if (sel.kind === "all") return "all";
+  if (sel.kind === "area") return `a:${sel.area.areaId}`;
+  return `p:${JSON.stringify(sel.coords)}`;
+}
+
+/** Session-scoped response cache so toggling comparisons never refetches. */
+function cachePut<T>(map: Map<string, T>, key: string, value: T) {
+  if (map.size > 60) map.clear();
+  map.set(key, value);
+}
+
+type SlotRecord<T> = Record<string, T | null>;
+
 export default function DashboardClient() {
   const [filters, setFilters] = useState<Filters>({ ...DEFAULT_FILTERS });
-  const [selection, setSelection] = useState<Selection>({ kind: "all" });
   const [window_, setWindow] = useState<OccWindow>("todate");
   const [drawing, setDrawing] = useState(false);
   const [mobileFilters, setMobileFilters] = useState(false);
   const [tab, setTab] = useState<TabId>("market");
 
+  // --- Comparison slots -----------------------------------------------------
+  // One slot = today's single-selection behaviour. "+ Compare" arms add-mode:
+  // the next searched or drawn area appends a slot (up to MAX_SLOTS), and all
+  // tabs flip to side-by-side comparison.
+  const slotSeq = useRef(1);
+  const [slots, setSlots] = useState<CompareSlot[]>([
+    { id: "s1", color: SLOT_COLORS[0], dash: SLOT_DASH[0], selection: { kind: "all" } },
+  ]);
+  const [armed, setArmed] = useState(false);
+  const compare = slots.length > 1;
+
+  // Camera target — set explicitly on selection changes so removals never
+  // yank the map around.
+  const [mapCam, setMapCam] = useState<{
+    focus: { lat: number; lng: number; zoom: number } | null;
+    fit: PolygonCoords | null;
+  }>({ focus: null, fit: null });
+
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [areas, setAreas] = useState<AreaInfo[] | null>(null);
   const [points, setPoints] = useState<PointRow[] | null>(null);
-  const [market, setMarket] = useState<MarketResponse | null>(null);
-  const [pricing, setPricing] = useState<PricingData | null>(null);
-  const [invest, setInvest] = useState<InvestStats | null>(null);
-  const [rentals, setRentals] = useState<RentalStats | null>(null);
-  const [pace, setPace] = useState<PaceData | null>(null);
   const [health, setHealth] = useState<AreaHealth | null>(null);
+
+  const [markets, setMarkets] = useState<SlotRecord<MarketResponse>>({});
+  const [pricings, setPricings] = useState<SlotRecord<PricingData>>({});
+  const [invests, setInvests] = useState<SlotRecord<InvestStats>>({});
+  const [rentalss, setRentalss] = useState<SlotRecord<RentalStats>>({});
+  const [paces, setPaces] = useState<SlotRecord<PaceData>>({});
+
+  const marketCache = useRef(new Map<string, MarketResponse>());
+  const pricingCache = useRef(new Map<string, PricingData>());
+  const investCache = useRef(new Map<string, InvestStats>());
+  const rentalsCache = useRef(new Map<string, RentalStats>());
+  const paceCache = useRef(new Map<string, PaceData>());
 
   const [hoverId, setHoverId] = useState<string | null>(null);
   const [pinnedId, setPinnedId] = useState<string | null>(null);
@@ -149,19 +199,60 @@ export default function DashboardClient() {
     [effectiveDays, maxWeek]
   );
 
-  const polygon = selection.kind === "polygon" ? selection.coords : null;
   const filtersKey = useMemo(() => encodeFilters(filters), [filters]);
   const debouncedFilters = useDebounced(filtersKey, 300);
 
-  const selectionPayload = useMemo(
-    () =>
-      selection.kind === "area"
-        ? { kind: "area" as const, areaId: selection.area.areaId }
-        : selection.kind === "polygon"
-          ? { kind: "polygon" as const, coords: selection.coords }
-          : { kind: "all" as const },
-    [selection]
+  // --- Selection handling ---------------------------------------------------
+
+  const pickSelection = useCallback(
+    (sel: Selection) => {
+      setSlots((prev) => {
+        if (prev.some((s) => sameSelection(s.selection, sel))) return prev;
+        // Single mode without add-mode: replace, exactly like before.
+        if (prev.length === 1 && !armed) return [{ ...prev[0], selection: sel }];
+        // Add-mode or already comparing: append; at capacity, swap the last.
+        if (prev.length >= MAX_SLOTS) {
+          const last = prev[prev.length - 1];
+          return [
+            ...prev.slice(0, -1),
+            { id: `s${++slotSeq.current}`, color: last.color, dash: last.dash, selection: sel },
+          ];
+        }
+        const style = nextSlotStyle(prev);
+        return [...prev, { id: `s${++slotSeq.current}`, ...style, selection: sel }];
+      });
+      setArmed(false);
+      if (sel.kind === "area" && sel.area.lat != null && sel.area.lng != null) {
+        setMapCam({
+          focus: { lat: sel.area.lat, lng: sel.area.lng, zoom: zoomForRadius(sel.area.radiusKm) },
+          fit: null,
+        });
+      } else if (sel.kind === "polygon") {
+        setMapCam({ focus: null, fit: sel.coords });
+      }
+    },
+    [armed]
   );
+
+  const removeSlot = useCallback((id: string) => {
+    setSlots((prev) => {
+      const next = prev.filter((s) => s.id !== id);
+      if (next.length) return next;
+      return [
+        { id: `s${++slotSeq.current}`, color: SLOT_COLORS[0], dash: SLOT_DASH[0], selection: { kind: "all" } },
+      ];
+    });
+  }, []);
+
+  const clearAll = useCallback(() => {
+    setSlots([
+      { id: `s${++slotSeq.current}`, color: SLOT_COLORS[0], dash: SLOT_DASH[0], selection: { kind: "all" } },
+    ]);
+    setArmed(false);
+    setMapCam({ focus: null, fit: null });
+  }, []);
+
+  // --- Shared fetches (selection-independent) -------------------------------
 
   useEffect(() => {
     fetch("/api/dashboard/summary")
@@ -179,7 +270,7 @@ export default function DashboardClient() {
       .catch(console.error);
   }, []);
 
-  // Map dots: attribute filters only — the selection is drawn on top.
+  // Map dots: attribute filters only — the selections are drawn on top.
   useEffect(() => {
     const ctrl = new AbortController();
     fetch(`/api/dashboard/points?${debouncedFilters}`, { signal: ctrl.signal })
@@ -189,119 +280,107 @@ export default function DashboardClient() {
     return () => ctrl.abort();
   }, [debouncedFilters]);
 
-  // The market payload drives the Market overview + Pricing tabs.
+  // --- Per-slot fetches -----------------------------------------------------
+
+  const filterParams = useMemo(
+    () => Object.fromEntries(new URLSearchParams(debouncedFilters)),
+    [debouncedFilters]
+  );
+
+  // Market payload drives Market overview + Pricing tabs — fetched per slot.
+  // Stale data stays visible while a slot refetches (matches v4 behaviour).
   useEffect(() => {
     const ctrl = new AbortController();
-    const params = Object.fromEntries(new URLSearchParams(debouncedFilters));
-    fetch("/api/dashboard/market", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        selection: selectionPayload,
-        filters: params,
-        weekStart: effectiveRange[0],
-        weekEnd: effectiveRange[1],
-      }),
-      signal: ctrl.signal,
-    })
-      .then((r) => r.json())
-      .then(setMarket)
-      .catch((e: Error) => e.name !== "AbortError" && console.error(e));
+    for (const slot of slots) {
+      const key = `${selKeyOf(slot.selection)}|${debouncedFilters}|${effectiveRange[0]}|${effectiveRange[1]}`;
+      const cached = marketCache.current.get(key);
+      if (cached) {
+        setMarkets((m) => (m[slot.id] === cached ? m : { ...m, [slot.id]: cached }));
+        continue;
+      }
+      const selectionPayload =
+        slot.selection.kind === "area"
+          ? { kind: "area" as const, areaId: slot.selection.area.areaId }
+          : slot.selection.kind === "polygon"
+            ? { kind: "polygon" as const, coords: slot.selection.coords }
+            : { kind: "all" as const };
+      fetch("/api/dashboard/market", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          selection: selectionPayload,
+          filters: filterParams,
+          weekStart: effectiveRange[0],
+          weekEnd: effectiveRange[1],
+        }),
+        signal: ctrl.signal,
+      })
+        .then((r) => r.json())
+        .then((d: MarketResponse) => {
+          cachePut(marketCache.current, key, d);
+          setMarkets((m) => ({ ...m, [slot.id]: d }));
+        })
+        .catch((e: Error) => e.name !== "AbortError" && console.error(e));
+    }
     return () => ctrl.abort();
-  }, [debouncedFilters, selectionPayload, effectiveRange]);
+  }, [slots, debouncedFilters, filterParams, effectiveRange]);
 
-  // Pricing data only when the pricing tab is (or has been) open.
+  // Lazy tabs: fetch once their tab first opens, then follow scope changes.
   const [pricingWanted, setPricingWanted] = useState(false);
-  useEffect(() => {
-    if (tab === "pricing") setPricingWanted(true);
-  }, [tab]);
-  useEffect(() => {
-    if (!pricingWanted) return;
-    const ctrl = new AbortController();
-    const params = Object.fromEntries(new URLSearchParams(debouncedFilters));
-    setPricing(null);
-    fetch("/api/dashboard/pricing", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        polygon,
-        filters: params,
-        areaId: selection.kind === "area" ? selection.area.areaId : null,
-      }),
-      signal: ctrl.signal,
-    })
-      .then((r) => r.json())
-      .then(setPricing)
-      .catch((e: Error) => e.name !== "AbortError" && console.error(e));
-    return () => ctrl.abort();
-  }, [debouncedFilters, polygon, pricingWanted, selection]);
-
-  // Buy & Rent / calculator / pace: all follow the selection AND the
-  // attribute filters, fetched once their tab first opens.
   const [investWanted, setInvestWanted] = useState(false);
   const [rentalsWanted, setRentalsWanted] = useState(false);
   const [paceWanted, setPaceWanted] = useState(false);
   useEffect(() => {
+    if (tab === "pricing") setPricingWanted(true);
     if (tab === "buyrent" || tab === "calc") setInvestWanted(true);
     if (tab === "buyrent") setRentalsWanted(true);
     if (tab === "pace") setPaceWanted(true);
   }, [tab]);
 
-  // Shared body: selection (polygon or named area) + attribute filters.
-  const scopeBody = useMemo(() => {
-    const params = Object.fromEntries(new URLSearchParams(debouncedFilters));
-    return JSON.stringify({
-      polygon,
-      areaId: selection.kind === "area" ? selection.area.areaId : null,
-      filters: params,
-    });
-  }, [polygon, selection, debouncedFilters]);
+  /** Per-slot POST for the scope-shaped endpoints (pricing/pace/invest/rentals). */
+  function useScopedFetch<T>(
+    wanted: boolean,
+    url: string,
+    cache: React.MutableRefObject<Map<string, T>>,
+    setRecord: React.Dispatch<React.SetStateAction<SlotRecord<T>>>
+  ) {
+    useEffect(() => {
+      if (!wanted) return;
+      const ctrl = new AbortController();
+      for (const slot of slots) {
+        const key = `${selKeyOf(slot.selection)}|${debouncedFilters}`;
+        const cached = cache.current.get(key);
+        if (cached) {
+          setRecord((m) => (m[slot.id] === cached ? m : { ...m, [slot.id]: cached }));
+          continue;
+        }
+        setRecord((m) => ({ ...m, [slot.id]: null }));
+        fetch(url, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            polygon: slot.selection.kind === "polygon" ? slot.selection.coords : null,
+            areaId: slot.selection.kind === "area" ? slot.selection.area.areaId : null,
+            filters: filterParams,
+          }),
+          signal: ctrl.signal,
+        })
+          .then((r) => r.json())
+          .then((d: T) => {
+            cachePut(cache.current, key, d);
+            setRecord((m) => ({ ...m, [slot.id]: d }));
+          })
+          .catch((e: Error) => e.name !== "AbortError" && console.error(e));
+      }
+      return () => ctrl.abort();
+      // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [wanted, slots, debouncedFilters, filterParams]);
+  }
 
-  useEffect(() => {
-    if (!paceWanted) return;
-    const ctrl = new AbortController();
-    setPace(null);
-    fetch("/api/dashboard/pace", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: scopeBody,
-      signal: ctrl.signal,
-    })
-      .then((r) => r.json())
-      .then(setPace)
-      .catch((e: Error) => e.name !== "AbortError" && console.error(e));
-    return () => ctrl.abort();
-  }, [scopeBody, paceWanted]);
-  useEffect(() => {
-    if (!investWanted) return;
-    const ctrl = new AbortController();
-    setInvest(null);
-    fetch("/api/dashboard/invest", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: scopeBody,
-      signal: ctrl.signal,
-    })
-      .then((r) => r.json())
-      .then(setInvest)
-      .catch((e: Error) => e.name !== "AbortError" && console.error(e));
-    return () => ctrl.abort();
-  }, [scopeBody, investWanted]);
-  useEffect(() => {
-    if (!rentalsWanted) return;
-    const ctrl = new AbortController();
-    setRentals(null);
-    fetch("/api/dashboard/rentals", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: scopeBody,
-      signal: ctrl.signal,
-    })
-      .then((r) => r.json())
-      .then(setRentals)
-      .catch((e: Error) => e.name !== "AbortError" && console.error(e));
-    return () => ctrl.abort();
-  }, [scopeBody, rentalsWanted]);
+  useScopedFetch(pricingWanted, "/api/dashboard/pricing", pricingCache, setPricings);
+  useScopedFetch(paceWanted, "/api/dashboard/pace", paceCache, setPaces);
+  useScopedFetch(investWanted, "/api/dashboard/invest", investCache, setInvests);
+  useScopedFetch(rentalsWanted, "/api/dashboard/rentals", rentalsCache, setRentalss);
 
   // Hovered/pinned listing detail (with a small cache).
   const activeId = pinnedId ?? hoverId;
@@ -336,33 +415,101 @@ export default function DashboardClient() {
   // Stable callbacks — PointsLayer rebuilds its canvas when these change.
   const handleHover = useCallback((id: string | null) => setHoverId(id), []);
   const handlePick = useCallback((id: string) => setPinnedId((p) => (p === id ? null : id)), []);
-  const handleAreaPick = useCallback((a: AreaInfo) => setSelection({ kind: "area", area: a }), []);
-  const handlePolygonComplete = useCallback((poly: PolygonCoords) => {
-    setSelection({ kind: "polygon", coords: poly });
-    setDrawing(false);
-  }, []);
+  const handleAreaPick = useCallback(
+    (a: AreaInfo) => pickSelection({ kind: "area", area: a }),
+    [pickSelection]
+  );
+  const handlePolygonComplete = useCallback(
+    (poly: PolygonCoords) => {
+      pickSelection({ kind: "polygon", coords: poly });
+      setDrawing(false);
+    },
+    [pickSelection]
+  );
   const handleDrawCancel = useCallback(() => setDrawing(false), []);
 
-  const focus =
-    selection.kind === "area" && selection.area.lat != null && selection.area.lng != null
-      ? {
-          lat: selection.area.lat,
-          lng: selection.area.lng,
-          zoom: zoomForRadius(selection.area.radiusKm),
-        }
-      : null;
+  // --- Slot views for the tabs ---------------------------------------------
 
-  const selectionLabel =
-    selection.kind === "all"
+  const slotViews: SlotView[] = useMemo(() => {
+    let polyN = 0;
+    return slots.map((s) => {
+      const label =
+        s.selection.kind === "all"
+          ? "All of Cyprus"
+          : s.selection.kind === "area"
+            ? s.selection.area.nameEn
+            : `Drawn area ${++polyN}`;
+      return {
+        id: s.id,
+        color: s.color,
+        dash: s.dash,
+        label,
+        selection: s.selection,
+        market: markets[s.id] ?? null,
+        pricing: pricings[s.id] ?? null,
+        invest: invests[s.id] ?? null,
+        rentals: rentalss[s.id] ?? null,
+        pace: paces[s.id] ?? null,
+      };
+    });
+  }, [slots, markets, pricings, invests, rentalss, paces]);
+
+  const shapes = useMemo(
+    () =>
+      slots
+        .filter((s): s is CompareSlot & { selection: { kind: "polygon"; coords: PolygonCoords } } =>
+          s.selection.kind === "polygon"
+        )
+        .map((s) => ({ coords: s.selection.coords, color: s.color })),
+    [slots]
+  );
+
+  const areaMarks = useMemo(
+    () =>
+      compare
+        ? slots
+            .filter((s) => s.selection.kind === "area")
+            .map((s) => {
+              const a = (s.selection as Extract<Selection, { kind: "area" }>).area;
+              return a.lat != null && a.lng != null
+                ? { lat: a.lat, lng: a.lng, color: s.color }
+                : null;
+            })
+            .filter((m): m is { lat: number; lng: number; color: string } => m != null)
+        : [],
+    [slots, compare]
+  );
+
+  const single = slots[0];
+  const singleLabel =
+    single.selection.kind === "all"
       ? "All of Cyprus"
-      : selection.kind === "area"
-        ? selection.area.nameEn
+      : single.selection.kind === "area"
+        ? single.selection.area.nameEn
         : "Drawn area";
 
-  const selectionCount =
-    market?.snapshot?.listings ??
-    market?.weekly.at(-1)?.listings ??
-    (selection.kind === "area" ? selection.area.listingCount : null);
+  const slotCount = (v: SlotView): number | null =>
+    v.market?.snapshot?.listings ??
+    v.market?.weekly.at(-1)?.listings ??
+    (v.selection.kind === "area" ? v.selection.area.listingCount : null);
+
+  const searchLabel = compare
+    ? `Comparing ${slots.length} areas`
+    : single.selection.kind === "all"
+      ? null
+      : singleLabel;
+
+  const excludeAreaIds = useMemo(
+    () =>
+      new Set(
+        slots
+          .filter((s) => s.selection.kind === "area")
+          .map((s) => (s.selection as Extract<Selection, { kind: "area" }>).area.areaId)
+      ),
+    [slots]
+  );
+
+  const canAdd = slots.length < MAX_SLOTS;
 
   const tabs: Array<{ id: TabId; label: string; icon: React.ReactNode }> = [
     { id: "market", label: "Market overview", icon: <BarChart3 size={14} /> },
@@ -440,8 +587,10 @@ export default function DashboardClient() {
           areas={areas ?? []}
           window_={window_}
           drawing={drawing}
-          polygon={polygon}
-          focus={focus}
+          shapes={shapes}
+          areaMarks={areaMarks}
+          fitTo={mapCam.fit}
+          focus={mapCam.focus}
           onHover={handleHover}
           onPick={handlePick}
           onAreaPick={handleAreaPick}
@@ -451,7 +600,14 @@ export default function DashboardClient() {
 
         {/* Search + draw toolbar (top-centre) */}
         <div className="absolute left-1/2 -translate-x-1/2 top-3 z-[950] flex items-center gap-2">
-          <SearchBar areas={areas} selection={selection} onSelect={setSelection} />
+          <SearchBar
+            areas={areas}
+            label={searchLabel}
+            armed={armed}
+            excludeAreaIds={excludeAreaIds}
+            onPick={(a) => pickSelection({ kind: "area", area: a })}
+            onClear={clearAll}
+          />
           {!drawing ? (
             <button
               onClick={() => {
@@ -462,7 +618,11 @@ export default function DashboardClient() {
               style={{ color: UI.text }}
             >
               <PenLine size={14} style={{ color: UI.green }} />
-              {polygon ? "Redraw" : "Draw area"}
+              {compare || armed
+                ? "Draw to compare"
+                : single.selection.kind === "polygon"
+                  ? "Redraw"
+                  : "Draw area"}
             </button>
           ) : (
             <button
@@ -473,11 +633,29 @@ export default function DashboardClient() {
               <X size={14} /> Cancel
             </button>
           )}
+          {canAdd && !drawing && (
+            <button
+              onClick={() => setArmed((a) => !a)}
+              className="hidden sm:flex glass-dark rounded-xl px-4 h-11 items-center gap-2 text-sm font-semibold transition-transform hover:scale-[1.03] active:scale-95 whitespace-nowrap"
+              style={armed ? { color: UI.green, boxShadow: `0 0 0 1.5px ${UI.green}66` } : { color: UI.text }}
+              aria-pressed={armed}
+            >
+              <Plus size={14} style={{ color: UI.green }} />
+              Compare
+            </button>
+          )}
         </div>
         {drawing && (
           <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
             <span className="glass-dark rounded-xl px-3.5 py-2 text-xs font-medium whitespace-nowrap" style={{ color: UI.text }}>
               Click to add points · double-click or ⏎ to finish · Esc to cancel
+            </span>
+          </div>
+        )}
+        {armed && !drawing && (
+          <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
+            <span className="glass-dark rounded-xl px-3.5 py-2 text-xs font-medium whitespace-nowrap" style={{ color: UI.text }}>
+              Search an area or draw one — it&apos;ll be added to the comparison
             </span>
           </div>
         )}
@@ -553,27 +731,82 @@ export default function DashboardClient() {
         className="sticky top-0 z-[950] pt-3 pb-0"
         style={{ background: "rgba(12,16,10,0.9)", backdropFilter: "blur(12px)", WebkitBackdropFilter: "blur(12px)" }}
       >
-      {/* Context bar: selection + week range + map window */}
+      {/* Context bar: selection(s) + week range + map window */}
       <div className="px-3 md:px-4 flex flex-wrap items-center gap-2.5">
-        <span className="flex items-center gap-2">
-          <Hexagon size={15} style={{ color: UI.green }} />
-          <h2 className="font-display font-bold text-xl uppercase tracking-wide" style={{ color: UI.text }}>
-            {selectionLabel}
-          </h2>
-        </span>
-        {selectionCount != null && (
-          <span className="text-sm" style={{ color: UI.muted }}>
-            {fmtInt(selectionCount)} listings
-          </span>
-        )}
-        {selection.kind !== "all" && (
-          <button
-            onClick={() => setSelection({ kind: "all" })}
-            className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
-            style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
-          >
-            <X size={11} /> Clear selection
-          </button>
+        {compare ? (
+          <>
+            <span className="flex items-center gap-2">
+              <Hexagon size={15} style={{ color: UI.green }} />
+              <h2 className="font-display font-bold text-xl uppercase tracking-wide" style={{ color: UI.text }}>
+                Comparing
+              </h2>
+              <Explain id="compare" align="left" />
+            </span>
+            {slotViews.map((v) => (
+              <SlotChip
+                key={v.id}
+                label={v.label}
+                color={v.color}
+                dash={v.dash}
+                count={slotCount(v)}
+                onRemove={() => removeSlot(v.id)}
+              />
+            ))}
+            {canAdd && (
+              <button
+                onClick={() => setArmed((a) => !a)}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+                style={
+                  armed
+                    ? { color: UI.green, border: `1px solid ${UI.green}66` }
+                    : { color: UI.muted, border: `1px dashed ${UI.border}` }
+                }
+              >
+                <Plus size={11} /> Add area
+              </button>
+            )}
+            <button
+              onClick={clearAll}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+              style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
+            >
+              <X size={11} /> Clear all
+            </button>
+          </>
+        ) : (
+          <>
+            <span className="flex items-center gap-2">
+              <Hexagon size={15} style={{ color: UI.green }} />
+              <h2 className="font-display font-bold text-xl uppercase tracking-wide" style={{ color: UI.text }}>
+                {singleLabel}
+              </h2>
+            </span>
+            {slotCount(slotViews[0]) != null && (
+              <span className="text-sm" style={{ color: UI.muted }}>
+                {fmtInt(slotCount(slotViews[0]))} listings
+              </span>
+            )}
+            {single.selection.kind !== "all" && (
+              <button
+                onClick={clearAll}
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+                style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
+              >
+                <X size={11} /> Clear selection
+              </button>
+            )}
+            <button
+              onClick={() => setArmed((a) => !a)}
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10 sm:hidden"
+              style={
+                armed
+                  ? { color: UI.green, border: `1px solid ${UI.green}66` }
+                  : { color: UI.muted, border: `1px dashed ${UI.border}` }
+              }
+            >
+              <Plus size={11} /> Compare
+            </button>
+          </>
         )}
         <div className="flex-1" />
         <DateRangeCalendar min={FIRST_WEEK} max={maxDay} value={effectiveDays} onChange={setDayRange} />
@@ -619,15 +852,11 @@ export default function DashboardClient() {
 
       {/* Tab content */}
       <div className="px-3 md:px-4 py-4 pb-12">
-        {tab === "market" && <MarketTab market={market} health={health} />}
-        {tab === "pricing" && <PricingTab pricing={pricing} market={market} />}
-        {tab === "pace" && <PaceTab pace={pace} />}
-        {tab === "buyrent" && (
-          <BuyRentTab invest={invest} rentals={rentals} market={market} selection={selection} />
-        )}
-        {tab === "calc" && (
-          <CalculatorTab invest={invest} market={market} selection={selection} />
-        )}
+        {tab === "market" && <MarketTab slots={slotViews} health={health} />}
+        {tab === "pricing" && <PricingTab slots={slotViews} />}
+        {tab === "pace" && <PaceTab slots={slotViews} />}
+        {tab === "buyrent" && <BuyRentTab slots={slotViews} />}
+        {tab === "calc" && <CalculatorTab slots={slotViews} />}
       </div>
     </div>
   );

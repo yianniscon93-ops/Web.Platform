@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import type { MarketResponse, PricingData } from "@/lib/dashboard/types";
+import type { MarketResponse, PricingData, SlotView } from "@/lib/dashboard/types";
 import { CY_EVENTS } from "@/lib/dashboard/events";
 import { fmtEuro, fmtPct } from "@/lib/dashboard/format";
 import { currentWeekMonday } from "@/lib/dashboard/weeks";
 import { UI } from "./tokens";
-import { BarsChart, TrendChart } from "./charts";
+import { BarsChart, GroupedBars, TrendChart } from "./charts";
+import { CompareTable, SlotDot } from "./compare";
 import Explain, { StatLabel } from "./Explain";
 
 const fmtDay = (iso: string) =>
@@ -21,7 +22,23 @@ const PREMIUM_LABEL: Record<string, string> = {
 };
 const MIN_SPLIT = 20; // suppress premiums when either side is thinner (contract 6.2)
 
-export default function PricingTab({
+/** Median of the (sampled) forward curve's next-30-day points. */
+function next30Median(pricing: PricingData | null): number | null {
+  const now = Date.now();
+  const vals =
+    pricing?.forwardCurve
+      .filter((p) => new Date(p.date).getTime() < now + 30 * 86400000)
+      .map((p) => p.medianPrice)
+      .filter((v): v is number => v != null) ?? [];
+  return vals.length ? [...vals].sort((a, b) => a - b)[Math.floor(vals.length / 2)] : null;
+}
+
+export default function PricingTab({ slots }: { slots: SlotView[] }) {
+  if (slots.length > 1) return <ComparePricing slots={slots} />;
+  return <SinglePricing pricing={slots[0]?.pricing ?? null} market={slots[0]?.market ?? null} />;
+}
+
+function SinglePricing({
   pricing,
   market,
 }: {
@@ -478,3 +495,412 @@ export default function PricingTab({
 const fmtShare = (v: number | null) => (v != null ? `${v.toFixed(1)}%` : "—");
 const fmtMonthLong = (ym: string) =>
   new Date(`${ym}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "long" });
+
+// ---------------------------------------------------------------------------
+// Comparison mode — pricing split by slot.
+// ---------------------------------------------------------------------------
+
+function ComparePricing({ slots }: { slots: SlotView[] }) {
+  const snaps = slots.map((v) => v.market?.snapshot ?? null);
+  const next30s = slots.map((v) => next30Median(v.pricing));
+  const peaks = slots.map((v) =>
+    (v.pricing?.byMonth ?? [])
+      .filter((m): m is { month: string; medianPrice: number } => m.medianPrice != null)
+      .reduce<{ month: string; medianPrice: number } | null>(
+        (a, b) => (a == null || b.medianPrice > a.medianPrice ? b : a),
+        null
+      )
+  );
+
+  // Forward-by-month / early-bird / bedrooms unions keep every slot's
+  // categories on one axis.
+  const monthUnion = [...new Set(slots.flatMap((v) => (v.pricing?.byMonth ?? []).map((m) => m.month)))].sort();
+  const bedroomUnion = [
+    ...new Set(slots.flatMap((v) => (v.pricing?.byBedrooms ?? []).filter((b) => b.count >= 5).map((b) => b.label))),
+  ];
+  const birdUnion = [
+    ...new Set(slots.flatMap((v) => (v.pricing?.earlyBird ?? []).map((b) => b.bucket))),
+  ];
+
+  const series = slots.map((v) => ({ label: v.label, color: v.color }));
+
+  // Discounting behaviour is district-grain; flag when slots share a district.
+  const behaviors = slots.map((v) => {
+    const b = v.pricing?.behavior ?? null;
+    const thisMonth = new Date().toISOString().slice(0, 7);
+    return {
+      scope: b?.scope ?? null,
+      latest: b?.months.find((m) => m.month === thisMonth) ?? b?.months.at(-1) ?? null,
+    };
+  });
+  const behaviorScopes = behaviors.map((b) => b.scope).filter((s): s is string => s != null);
+  const sameDistrict = new Set(behaviorScopes).size < behaviorScopes.length;
+
+  return (
+    <div>
+      {/* Headline matrix */}
+      <div className="glass-card rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-2">
+          <StatLabel id="compare" align="left">
+            Pricing head to head
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            current asking rates · today
+          </span>
+        </div>
+        <CompareTable
+          slots={slots}
+          rows={[
+            {
+              label: "Median rate · today",
+              explain: "median_adr",
+              values: snaps.map((s) => (s?.adrQuartiles ? fmtEuro(s.adrQuartiles[1]) : null)),
+              best: null,
+            },
+            {
+              label: "Median rate · next 30 days",
+              explain: "forward_rates",
+              values: next30s.map((v) => fmtEuro(v)),
+              best: null,
+            },
+            {
+              label: "Peak forward month",
+              explain: "forward_rates",
+              values: peaks.map((p) =>
+                p
+                  ? new Date(`${p.month}-01T00:00:00Z`).toLocaleDateString("en-GB", { month: "long" })
+                  : null
+              ),
+              hints: peaks.map((p) => (p ? `median ${fmtEuro(p.medianPrice)}` : null)),
+              best: null,
+            },
+            {
+              label: "Middle-half range · today",
+              explain: "quartiles",
+              values: snaps.map((s) =>
+                s?.adrQuartiles ? `${fmtEuro(s.adrQuartiles[0])}–${fmtEuro(s.adrQuartiles[2])}` : null
+              ),
+              best: null,
+            },
+          ]}
+        />
+      </div>
+
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
+        {/* Forward curve — one line per area */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="forward_rates" align="left">
+              Forward rates · next 6 months
+            </StatLabel>
+            <p className="text-[11px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+              medians · Tue/Fri check-in samples
+              <Explain id="tue_fri_sample" align="right" />
+            </p>
+          </div>
+          <TrendChart
+            main={{
+              label: slots[0].label,
+              color: slots[0].color,
+              data: (slots[0].pricing?.forwardCurve ?? []).map((p) => ({ x: p.date, y: p.medianPrice })),
+            }}
+            benchmarks={slots.slice(1).map((v) => ({
+              label: v.label,
+              color: v.color,
+              dashed: v.dash,
+              data: (v.pricing?.forwardCurve ?? []).map((p) => ({ x: p.date, y: p.medianPrice })),
+            }))}
+            equalWeight
+            splitX="9999-12-31"
+            yFmt={(v) => fmtEuro(v)}
+            xFmt={fmtDay}
+            height={120}
+            events={CY_EVENTS}
+            emptyLabel="No forward pricing for these selections yet"
+          />
+        </div>
+
+        {/* Weekly ADR trend from the market series */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="median_adr" align="left">
+              Weekly median rate
+            </StatLabel>
+            <p className="text-[11px]" style={{ color: UI.faint }}>
+              over your selected weeks
+            </p>
+          </div>
+          <TrendChart
+            main={{
+              label: slots[0].label,
+              color: slots[0].color,
+              data: (slots[0].market?.weekly ?? []).map((w) => ({ x: w.weekStart, y: w.medianAdr })),
+            }}
+            benchmarks={slots.slice(1).map((v) => ({
+              label: v.label,
+              color: v.color,
+              dashed: v.dash,
+              data: (v.market?.weekly ?? []).map((w) => ({ x: w.weekStart, y: w.medianAdr })),
+            }))}
+            equalWeight
+            splitX={currentWeekMonday()}
+            yFmt={(v) => fmtEuro(v)}
+            xFmt={fmtDay}
+            height={120}
+            emptyLabel="Not enough weekly history yet"
+          />
+        </div>
+
+        {/* Forward price by month — grouped */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="forward_rates" align="left">
+              Forward rate by month
+            </StatLabel>
+            <p className="text-[11px]" style={{ color: UI.faint }}>
+              median asking rate
+            </p>
+          </div>
+          <GroupedBars
+            data={monthUnion.map((month) => ({
+              label: fmtMonth(month),
+              values: slots.map(
+                (v) => v.pricing?.byMonth.find((m) => m.month === month)?.medianPrice ?? null
+              ),
+            }))}
+            series={series}
+            yFmt={(v) => fmtEuro(v)}
+            height={110}
+            emptyLabel="No forward pricing for these selections yet"
+          />
+        </div>
+
+        {/* Rate by bedrooms — grouped */}
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="price_by_bedrooms" align="left">
+              Median rate by bedrooms
+            </StatLabel>
+            <p className="text-[11px]" style={{ color: UI.faint }}>
+              sizes with ≥5 listings · today
+            </p>
+          </div>
+          <GroupedBars
+            data={bedroomUnion.map((label) => ({
+              label,
+              values: slots.map((v) => {
+                const b = v.pricing?.byBedrooms?.find((x) => x.label === label);
+                return b && b.count >= 5 ? b.medianRate : null;
+              }),
+            }))}
+            series={series}
+            yFmt={(v) => fmtEuro(v)}
+            height={110}
+            emptyLabel="No rate data for these selections"
+          />
+        </div>
+      </div>
+
+      {/* Price distribution — small multiples (overlaid histograms smear) */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-3">
+          <StatLabel id="quartiles" align="left">
+            Price distribution
+          </StatLabel>
+          <p className="text-[11px]" style={{ color: UI.faint }}>
+            listings per €25 rate band · today
+          </p>
+        </div>
+        <div className={`grid grid-cols-1 ${slots.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5`}>
+          {slots.map((v) => (
+            <div key={v.id}>
+              <p className="text-[11px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
+                <SlotDot color={v.color} dash={v.dash} />
+                {v.label}
+              </p>
+              <BarsChart
+                data={(v.pricing?.distribution ?? []).map((d) => ({
+                  label: d.binStart >= 500 ? "€500+" : `€${d.binStart}`,
+                  value: d.count,
+                }))}
+                yFmt={(x) => `${x} listings`}
+                height={90}
+                labelEvery={4}
+                color={v.color}
+                emptyLabel="No rate data"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Revenue by price band — small multiples */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-3">
+          <StatLabel id="sweet_spot" align="left">
+            Revenue by price band
+          </StatLabel>
+          <p className="text-[11px]" style={{ color: UI.faint }}>
+            € per available night per €50 band · tallest = sweet spot
+          </p>
+        </div>
+        <div className={`grid grid-cols-1 ${slots.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5`}>
+          {slots.map((v) => (
+            <div key={v.id}>
+              <p className="text-[11px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
+                <SlotDot color={v.color} dash={v.dash} />
+                {v.label}
+              </p>
+              <BarsChart
+                data={(v.pricing?.occByPrice ?? []).map((b) => ({
+                  label: b.binStart >= 400 ? "€400+" : `€${b.binStart}`,
+                  value: b.medianRevpar ?? null,
+                }))}
+                line={{
+                  label: "occupancy",
+                  values: (v.pricing?.occByPrice ?? []).map((b) => b.medianOcc),
+                  fmt: (x) => `${x.toFixed(0)}% booked`,
+                }}
+                yFmt={(x) => fmtEuro(Math.round(x))}
+                height={90}
+                highlightMax
+                labelEvery={2}
+                color={v.color}
+                emptyLabel="Not enough listings"
+              />
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Amenity premiums — matrix */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-3">
+          <StatLabel id="amenity_premium" align="left">
+            What amenities are worth
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            rate premium with vs without · today
+          </span>
+        </div>
+        <CompareTable
+          slots={slots}
+          rows={Object.keys(PREMIUM_LABEL).map((key) => {
+            const cells = slots.map((v) => {
+              const p = (v.pricing?.premiums ?? []).find((x) => x.key === key);
+              if (!p || p.withCount < MIN_SPLIT || p.withoutCount < MIN_SPLIT) return null;
+              const rateD =
+                p.withMedianRate != null && p.withoutMedianRate != null && p.withoutMedianRate !== 0
+                  ? (100 * (p.withMedianRate - p.withoutMedianRate)) / p.withoutMedianRate
+                  : null;
+              const occD =
+                p.withMedianOcc != null && p.withoutMedianOcc != null
+                  ? p.withMedianOcc - p.withoutMedianOcc
+                  : null;
+              return { rateD, occD };
+            });
+            return {
+              label: PREMIUM_LABEL[key],
+              values: cells.map((c) =>
+                c?.rateD != null ? `${c.rateD >= 0 ? "+" : ""}${c.rateD.toFixed(0)}% rate` : null
+              ),
+              hints: cells.map((c) =>
+                c?.occD != null ? `${c.occD >= 0 ? "+" : ""}${c.occD.toFixed(1)}pp occupancy` : null
+              ),
+              best: null,
+            };
+          })}
+        />
+        <p className="text-[11px] mt-3" style={{ color: UI.faint }}>
+          — means too few listings on one side of the split in that area (needs {MIN_SPLIT}+ with
+          and without).
+        </p>
+      </div>
+
+      {/* Discounting behaviour — district grain */}
+      {behaviors.some((b) => b.latest) && (
+        <div className="glass-card rounded-2xl p-5 mt-2.5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="discounting" align="left">
+              How hosts manage prices
+            </StatLabel>
+            <span className="text-[11px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+              district-level · dates still open 2 weeks before arrival
+              <Explain id="compare_district_grain" align="right" />
+            </span>
+          </div>
+          {sameDistrict && (
+            <p className="text-[12px] mb-3" style={{ color: "#D98B6A" }}>
+              Some of these areas sit in the same district, so their discounting numbers are
+              identical — this dataset only exists at district level.
+            </p>
+          )}
+          <CompareTable
+            slots={slots}
+            rows={[
+              {
+                label: "Open dates cut ≥10%",
+                values: behaviors.map((b) => fmtShare(b.latest?.pctCut10 ?? null)),
+                hints: behaviors.map((b) =>
+                  b.latest ? `${b.scope} · ${fmtMonthLong(b.latest.month)}` : null
+                ),
+                best: null,
+              },
+              {
+                label: "Median cut depth",
+                values: behaviors.map((b) =>
+                  b.latest?.medCutDepth != null ? `${b.latest.medCutDepth.toFixed(1)}%` : null
+                ),
+                best: null,
+              },
+              {
+                label: "Cutters vs holders booked",
+                explain: "hold_vs_cut",
+                values: behaviors.map((b) =>
+                  b.latest ? `${fmtShare(b.latest.convCut)} vs ${fmtShare(b.latest.convHold)}` : null
+                ),
+                best: null,
+              },
+              {
+                label: "Never touch their prices",
+                explain: "static_pricers",
+                values: behaviors.map((b) => fmtShare(b.latest?.staticShare ?? null)),
+                best: null,
+              },
+            ]}
+          />
+        </div>
+      )}
+
+      {/* Early-bird economics — grouped */}
+      {birdUnion.length > 0 && (
+        <div className="glass-card rounded-2xl p-5 mt-2.5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="early_bird" align="left">
+              What booking early actually costs
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              median nightly price locked in, by how far ahead guests booked
+            </span>
+          </div>
+          <GroupedBars
+            data={birdUnion.map((bucket) => ({
+              label: bucket,
+              values: slots.map(
+                (v) => v.pricing?.earlyBird?.find((b) => b.bucket === bucket)?.medPrice ?? null
+              ),
+            }))}
+            series={series}
+            yFmt={(v) => fmtEuro(v)}
+            height={110}
+            emptyLabel="Not enough priced bookings yet"
+          />
+          <p className="text-[11px] mt-3" style={{ color: UI.faint }}>
+            Real transaction prices captured at booking time (tracked since 26 Mar 2026), not
+            asking rates.
+          </p>
+        </div>
+      )}
+    </div>
+  );
+}

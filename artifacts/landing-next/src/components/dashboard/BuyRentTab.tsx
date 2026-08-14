@@ -3,10 +3,11 @@
 import { useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { ExternalLink, Home, Info, KeyRound } from "lucide-react";
-import type { DealRow, InvestStats, MarketResponse, RentalStats, Selection } from "@/lib/dashboard/types";
+import type { DealRow, InvestStats, MarketResponse, RentalStats, Selection, SlotView } from "@/lib/dashboard/types";
 import { fmtEuro, fmtInt, fmtPct } from "@/lib/dashboard/format";
 import { UI } from "./tokens";
-import { BarsChart } from "./charts";
+import { BarsChart, GroupedBars } from "./charts";
+import { CompareTable, SlotDot, bestIndex } from "./compare";
 import { Slider } from "./controls";
 import Explain, { StatLabel } from "./Explain";
 
@@ -20,12 +21,25 @@ function fmtDom(d: Pick<DealRow, "dom" | "domCensored">): string {
   return `${d.domCensored ? "≥" : ""}${d.dom}d`;
 }
 
+export default function BuyRentTab({ slots }: { slots: SlotView[] }) {
+  if (slots.length > 1) return <CompareBuyRent slots={slots} />;
+  const v = slots[0];
+  return (
+    <SingleBuyRent
+      invest={v?.invest ?? null}
+      rentals={v?.rentals ?? null}
+      market={v?.market ?? null}
+      selection={v?.selection ?? { kind: "all" }}
+    />
+  );
+}
+
 /**
  * Buy & Rent — for-sale and long-term-rental markets in one place.
  * Everything is phrased as money and years, not finance jargon; the
  * verdict card answers the one question buyers actually ask.
  */
-export default function BuyRentTab({
+function SingleBuyRent({
   invest,
   rentals,
   market,
@@ -36,7 +50,6 @@ export default function BuyRentTab({
   market: MarketResponse | null;
   selection: Selection;
 }) {
-  const [budget, setBudget] = useState(500000);
   // Cost assumptions for the verdict — STR runs far heavier than a tenant
   // (cleaning, management, platform fees, utilities). Comparing gross to
   // gross would bias the verdict toward Airbnb.
@@ -63,11 +76,6 @@ export default function BuyRentTab({
       : null;
   const strWins = strNet != null && ltrNet != null && strNet > ltrNet;
   const verdictMax = Math.max(strNet ?? 0, ltrNet ?? 0, 1);
-
-  const screener = useMemo(
-    () => (invest?.screener ?? []).filter((d) => d.price <= budget).slice(0, 8),
-    [invest, budget]
-  );
 
   const buyCards = [
     {
@@ -325,6 +333,33 @@ export default function BuyRentTab({
         </div>
       </div>
 
+      <DealsBlock invest={invest} />
+
+      <div
+        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[12px] leading-relaxed"
+        style={{ background: "rgba(217,139,106,0.06)", border: "1px solid rgba(217,139,106,0.2)", color: UI.muted }}
+      >
+        <Info size={14} style={{ color: NEG }} className="shrink-0 mt-0.5" />
+        <span>
+          Earnings figures are <b style={{ color: UI.text }}>estimates from comparable rentals
+          nearby</b>, before costs and taxes. Time on market marked ≥ predates our tracking
+          (mid-April 2026). Want to run your own numbers? Use the Revenue calculator tab.
+        </span>
+      </div>
+    </div>
+  );
+}
+
+/** Deal screener + motivated sellers — shared by single and per-slot views. */
+function DealsBlock({ invest }: { invest: InvestStats | null }) {
+  const [budget, setBudget] = useState(500000);
+  const screener = useMemo(
+    () => (invest?.screener ?? []).filter((d) => d.price <= budget).slice(0, 8),
+    [invest, budget]
+  );
+
+  return (
+    <>
       {/* Deal screener */}
       <div className="glass-card rounded-2xl p-5 mt-2.5">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
@@ -460,6 +495,291 @@ export default function BuyRentTab({
           </p>
         )}
       </div>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Comparison mode — buy & rent split by slot.
+// ---------------------------------------------------------------------------
+
+function CompareBuyRent({ slots }: { slots: SlotView[] }) {
+  const [strCostPct, setStrCostPct] = useState(40);
+  const [ltrCostPct, setLtrCostPct] = useState(15);
+  const [dealsSlotId, setDealsSlotId] = useState(slots[0].id);
+  const dealsSlot = slots.find((s) => s.id === dealsSlotId) ?? slots[0];
+
+  const per = slots.map((v) => {
+    const invest = v.invest;
+    const rentals = v.rentals;
+    const medianPrice = invest?.priceQuartiles?.[1] ?? null;
+    const strYear = invest?.strRevenueMedian ?? null;
+    const ltrYear = invest?.ltrRentMedian != null ? invest.ltrRentMedian * 12 : null;
+    const paybackStr = medianPrice != null && strYear ? medianPrice / strYear : null;
+    const paybackLtr = medianPrice != null && ltrYear ? medianPrice / ltrYear : null;
+    const strNet = strYear != null ? strYear * (1 - strCostPct / 100) : null;
+    const ltrNet = ltrYear != null ? ltrYear * (1 - ltrCostPct / 100) : null;
+    const parity = invest?.parityMedian ?? null;
+    const parityNet =
+      parity != null && strCostPct < 100
+        ? parity * ((1 - ltrCostPct / 100) / (1 - strCostPct / 100))
+        : null;
+    const areaOcc = v.market?.snapshot?.occQuartiles?.[1] ?? null;
+    return {
+      v,
+      invest,
+      rentals,
+      medianPrice,
+      strYear,
+      ltrYear,
+      paybackStr,
+      paybackLtr,
+      strNet,
+      ltrNet,
+      parityNet,
+      areaOcc,
+    };
+  });
+
+  const bedroomBuyUnion = [
+    ...new Set(
+      slots.flatMap((v) => (v.invest?.byBedrooms ?? []).filter((b) => b.count > 0).map((b) => b.label))
+    ),
+  ];
+  const bedroomRentUnion = [
+    ...new Set(
+      slots.flatMap((v) => (v.rentals?.byBedrooms ?? []).filter((b) => b.count > 0).map((b) => b.label))
+    ),
+  ];
+  const series = slots.map((v) => ({ label: v.label, color: v.color }));
+
+  return (
+    <div>
+      {/* Buying head to head */}
+      <div className="glass-card rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-2">
+          <StatLabel id="compare" align="left">
+            Buying head to head
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            named areas matched by distance from the area centre
+          </span>
+        </div>
+        <CompareTable
+          slots={slots}
+          rows={[
+            {
+              label: "Homes for sale",
+              explain: "observed_supply",
+              values: per.map((p) => (p.invest ? fmtInt(p.invest.supply) : null)),
+              best: null,
+            },
+            {
+              label: "Median asking price",
+              explain: "quartiles",
+              values: per.map((p) => fmtEuro(p.medianPrice)),
+              best: null,
+            },
+            {
+              label: "Median € / m²",
+              explain: "eur_m2",
+              values: per.map((p) =>
+                p.invest?.eurPerM2Median != null ? fmtEuro(p.invest.eurPerM2Median) : null
+              ),
+              best: null,
+            },
+            {
+              label: "Avg time on market",
+              explain: "dom",
+              values: per.map((p) => (p.invest?.domAvg != null ? `${p.invest.domAvg} days` : null)),
+              hints: per.map((p) =>
+                p.invest?.domCensoredShare != null
+                  ? `${p.invest.domCensoredShare.toFixed(0)}% predate tracking`
+                  : null
+              ),
+              best: null,
+            },
+            {
+              label: "Sellers who cut the price",
+              explain: "price_cuts",
+              values: per.map((p) =>
+                p.invest?.cutsCount != null ? fmtInt(p.invest.cutsCount) : null
+              ),
+              hints: per.map((p) =>
+                p.invest?.cutsMedianPct != null ? `median ${p.invest.cutsMedianPct.toFixed(1)}%` : null
+              ),
+              best: null,
+            },
+          ]}
+        />
+      </div>
+
+      {/* Earning head to head — with the shared cost assumptions */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-2">
+          <StatLabel id="verdict" align="left">
+            Airbnb it or rent it out?
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            typical property per area · per year, after the running costs you set below
+          </span>
+        </div>
+        <CompareTable
+          slots={slots}
+          rows={[
+            {
+              label: "Median monthly rent",
+              explain: "monthly_rent",
+              values: per.map((p) =>
+                p.rentals?.rentQuartiles ? fmtEuro(p.rentals.rentQuartiles[1]) : null
+              ),
+              best: null,
+            },
+            {
+              label: "Airbnb · net €/yr",
+              values: per.map((p) => (p.strNet != null ? fmtEuro(Math.round(p.strNet)) : null)),
+              hints: per.map((p) =>
+                p.strYear != null ? `${fmtEuro(Math.round(p.strYear))} gross` : null
+              ),
+              best: bestIndex(per.map((p) => p.strNet)),
+            },
+            {
+              label: "Tenant · net €/yr",
+              values: per.map((p) => (p.ltrNet != null ? fmtEuro(Math.round(p.ltrNet)) : null)),
+              hints: per.map((p) =>
+                p.ltrYear != null ? `${fmtEuro(Math.round(p.ltrYear))} gross` : null
+              ),
+              best: bestIndex(per.map((p) => p.ltrNet)),
+            },
+            {
+              label: "Verdict at these costs",
+              values: per.map((p) =>
+                p.strNet != null && p.ltrNet != null
+                  ? p.strNet > p.ltrNet
+                    ? "Airbnb earns more"
+                    : "Tenant earns more"
+                  : null
+              ),
+              hints: per.map((p) =>
+                p.parityNet != null
+                  ? p.parityNet > 100
+                    ? "tenant wins whatever the calendar does"
+                    : `needs ${p.parityNet.toFixed(0)}%+ of nights booked${
+                        p.areaOcc != null ? ` · runs at ${fmtPct(p.areaOcc)}` : ""
+                      }`
+                  : null
+              ),
+              best: null,
+            },
+            {
+              label: "Pays for itself · Airbnb · gross",
+              explain: "payback_years",
+              values: per.map((p) => fmtYears(p.paybackStr)),
+              best: bestIndex(per.map((p) => p.paybackStr), "min"),
+            },
+            {
+              label: "Pays for itself · tenant · gross",
+              explain: "payback_years",
+              values: per.map((p) => fmtYears(p.paybackLtr)),
+              best: bestIndex(per.map((p) => p.paybackLtr), "min"),
+            },
+          ]}
+        />
+        <div className="grid grid-cols-2 gap-x-4 mt-4 pt-4" style={{ borderTop: `1px solid ${UI.border}` }}>
+          <Slider
+            label="Airbnb running costs"
+            value={strCostPct}
+            min={20}
+            max={60}
+            step={1}
+            fmt={(v) => `${v}% of revenue`}
+            onChange={setStrCostPct}
+          />
+          <Slider
+            label="Tenant running costs"
+            value={ltrCostPct}
+            min={5}
+            max={30}
+            step={1}
+            fmt={(v) => `${v}% of rent`}
+            onChange={setLtrCostPct}
+          />
+        </div>
+      </div>
+
+      {/* Buy vs rent, by bedrooms — grouped */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="quartiles" align="left">
+              What buying costs
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              median asking price by bedrooms
+            </span>
+          </div>
+          <GroupedBars
+            data={bedroomBuyUnion.map((label) => ({
+              label,
+              values: slots.map(
+                (v) => v.invest?.byBedrooms.find((b) => b.label === label)?.medianPrice ?? null
+              ),
+            }))}
+            series={series}
+            yFmt={(v) => fmtEuro(v)}
+            height={120}
+            emptyLabel="No sale listings match these selections"
+          />
+        </div>
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="monthly_rent" align="left">
+              What renting pays
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              median monthly rent by bedrooms
+            </span>
+          </div>
+          <GroupedBars
+            data={bedroomRentUnion.map((label) => ({
+              label,
+              values: slots.map(
+                (v) => v.rentals?.byBedrooms.find((b) => b.label === label)?.medianRent ?? null
+              ),
+            }))}
+            series={series}
+            yFmt={(v) => fmtEuro(v)}
+            height={120}
+            emptyLabel="No rental listings match these selections"
+          />
+        </div>
+      </div>
+
+      {/* Deals — one area at a time (rows don't compare across areas) */}
+      <div className="flex items-center gap-2 mt-2.5">
+        <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
+          Deals in
+        </span>
+        {slots.map((v) => {
+          const active = v.id === dealsSlot.id;
+          return (
+            <button
+              key={v.id}
+              onClick={() => setDealsSlotId(v.id)}
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-semibold transition-colors"
+              style={
+                active
+                  ? { color: UI.text, border: `1px solid ${v.color}88`, background: `${v.color}1A` }
+                  : { color: UI.muted, border: `1px solid ${UI.border}` }
+              }
+            >
+              <SlotDot color={v.color} dash={v.dash} />
+              {v.label}
+            </button>
+          );
+        })}
+      </div>
+      <DealsBlock key={dealsSlot.id} invest={dealsSlot.invest} />
 
       <div
         className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[12px] leading-relaxed"

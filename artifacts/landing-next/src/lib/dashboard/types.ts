@@ -183,6 +183,37 @@ export type Selection =
   | { kind: "area"; area: AreaInfo }
   | { kind: "polygon"; coords: PolygonCoords };
 
+// ---------------------------------------------------------------------------
+// Area comparison (up to 3 selections side by side).
+// ---------------------------------------------------------------------------
+
+/**
+ * One comparison slot. Colour and dash are assigned at creation and stay
+ * with the slot for its lifetime, so removing a slot never recolours the
+ * others (colour follows the entity, not its position).
+ */
+export interface CompareSlot {
+  id: string;
+  color: string;
+  /** SVG dash pattern — the non-colour cue that keeps lines tellable apart. */
+  dash?: string;
+  selection: Selection;
+}
+
+/** A slot enriched with everything the tabs need to render it. */
+export interface SlotView {
+  id: string;
+  color: string;
+  dash?: string;
+  label: string;
+  selection: Selection;
+  market: MarketResponse | null;
+  pricing: PricingData | null;
+  invest: InvestStats | null;
+  rentals: RentalStats | null;
+  pace: PaceData | null;
+}
+
 /** One week of market metrics (path A or re-aggregated path B). */
 export interface WeeklyRow {
   weekStart: string; // Monday, ISO date

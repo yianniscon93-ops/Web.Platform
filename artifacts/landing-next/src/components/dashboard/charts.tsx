@@ -188,9 +188,14 @@ export function LineAreaChart({
 export interface TrendSeries {
   label: string;
   color: string;
-  dashed?: boolean;
+  /** true → default benchmark dash; a string is used as the SVG dash pattern
+   * directly (comparison slots carry their own pattern as a non-colour cue). */
+  dashed?: boolean | string;
   data: Array<{ x: string; y: number | null }>;
 }
+
+const seriesDash = (d: boolean | string | undefined): string | undefined =>
+  typeof d === "string" ? d : d ? "4 3" : undefined;
 
 /** Calendar event drawn over a date-domain chart (see lib/dashboard/events). */
 export interface ChartEvent {
@@ -237,6 +242,7 @@ export function TrendChart({
   height = 120,
   emptyLabel = "Not enough data yet",
   events = [],
+  equalWeight = false,
 }: {
   main: TrendSeries;
   benchmarks?: TrendSeries[];
@@ -249,6 +255,9 @@ export function TrendChart({
   /** Calendar events — only meaningful when x values are ISO dates. Point
    * events render as dots along the top; school ranges as shaded bands. */
   events?: ChartEvent[];
+  /** Comparison mode: all series are peers — same stroke weight, full
+   * opacity, no area fill under the first series. */
+  equalWeight?: boolean;
 }) {
   const xs$ = main.data.map((p) => p.x);
   const all = [main, ...benchmarks];
@@ -383,7 +392,7 @@ export function TrendChart({
         {[0.28, 0.55, 0.82].map((f) => (
           <line key={f} x1={PAD} x2={W - PAD} y1={H * f} y2={H * f} stroke="rgba(255,255,255,0.06)" strokeWidth={1} />
         ))}
-        {mainSeries.length >= 2 && (
+        {!equalWeight && mainSeries.length >= 2 && (
           <polygon
             points={`${xs(xi.get(mainSeries[0].x)!)},${H} ${linePts(main)} ${xs(xi.get(last.x)!)},${H}`}
             fill={`url(#${gradId})`}
@@ -395,12 +404,12 @@ export function TrendChart({
             points={linePts(b)}
             fill="none"
             stroke={b.color}
-            strokeWidth={1.3}
-            strokeDasharray={b.dashed ? "4 3" : undefined}
+            strokeWidth={equalWeight ? 2.2 : 1.3}
+            strokeDasharray={seriesDash(b.dashed)}
             strokeLinecap="round"
             strokeLinejoin="round"
             vectorEffect="non-scaling-stroke"
-            opacity={0.8}
+            opacity={equalWeight ? 1 : 0.8}
           />
         ))}
         <polyline
@@ -683,6 +692,7 @@ export function BarsChart({
   showValues = false,
   emptyLabel = "Not enough data yet",
   line,
+  color,
 }: {
   data: Array<{ label: string; value: number | null }>;
   yFmt?: (v: number) => string;
@@ -702,6 +712,8 @@ export function BarsChart({
     /** Legend label for the bars themselves (legend only renders with a line). */
     barsLabel?: string;
   };
+  /** Tint all bars with one series colour (comparison small multiples). */
+  color?: string;
 }) {
   const vals = data.map((d) => d.value ?? 0);
   const max = Math.max(...vals, 0);
@@ -751,9 +763,13 @@ export function BarsChart({
               className="rounded-t-[3px] transition-colors"
               style={{
                 height: `${pct}%`,
-                background: isMax
-                  ? UI.green
-                  : "linear-gradient(180deg, rgba(143,204,128,0.75), rgba(74,94,58,0.55))",
+                background: color
+                  ? isMax
+                    ? color
+                    : `linear-gradient(180deg, ${color}C0, ${color}60)`
+                  : isMax
+                    ? UI.green
+                    : "linear-gradient(180deg, rgba(143,204,128,0.75), rgba(74,94,58,0.55))",
                 filter: hover === i ? "brightness(1.25)" : undefined,
               }}
             />
@@ -769,7 +785,7 @@ export function BarsChart({
                   className="absolute left-0 right-0 text-center text-[10px] font-medium whitespace-nowrap"
                   style={{
                     bottom: `calc(${pct}% + 3px)`,
-                    color: isMax ? UI.green : UI.muted,
+                    color: isMax ? (color ?? UI.green) : UI.muted,
                     fontWeight: isMax ? 600 : 500,
                   }}
                 >
@@ -837,6 +853,102 @@ export function BarsChart({
           </span>
         </div>
       )}
+    </div>
+  );
+}
+
+export interface GroupedSeries {
+  label: string;
+  color: string;
+}
+
+/**
+ * Grouped columns — one cluster per category, one bar per comparison slot.
+ * Bars keep a 2px surface gap inside the cluster; the legend names every
+ * series so identity is never colour-alone.
+ */
+export function GroupedBars({
+  data,
+  series,
+  yFmt = (v) => String(v),
+  height = 110,
+  labelEvery = 1,
+  emptyLabel = "Not enough data yet",
+}: {
+  /** values[i] belongs to series[i]; null renders as a missing bar. */
+  data: Array<{ label: string; values: Array<number | null> }>;
+  series: GroupedSeries[];
+  yFmt?: (v: number) => string;
+  height?: number;
+  labelEvery?: number;
+  emptyLabel?: string;
+}) {
+  const [hover, setHover] = useState<number | null>(null);
+  const all = data.flatMap((d) => d.values).filter((v): v is number => v != null);
+  const max = Math.max(...all, 0);
+
+  if (!data.length || max === 0) {
+    return (
+      <div
+        className="h-24 flex items-center justify-center rounded-xl text-sm"
+        style={{ background: "rgba(255,255,255,0.04)", color: UI.faint }}
+      >
+        {emptyLabel}
+      </div>
+    );
+  }
+
+  return (
+    <div>
+      <div className="relative flex items-end gap-[7px]" style={{ height }} onMouseLeave={() => setHover(null)}>
+        {data.map((d, i) => (
+          <div
+            key={`${d.label}-${i}`}
+            className="flex-1 h-full flex items-end gap-[2px]"
+            onMouseEnter={() => setHover(i)}
+            style={{ filter: hover === i ? "brightness(1.2)" : undefined }}
+          >
+            {d.values.map((v, si) => (
+              <div key={si} className="flex-1 h-full flex flex-col justify-end">
+                {v != null && (
+                  <div
+                    className="rounded-t-[3px]"
+                    style={{
+                      height: `${Math.max(2, (100 * v) / max)}%`,
+                      background: `linear-gradient(180deg, ${series[si]?.color ?? UI.green}E6, ${series[si]?.color ?? UI.green}80)`,
+                    }}
+                  />
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+        {hover != null && data[hover] && (
+          <ChartTip
+            xPct={((hover + 0.5) / data.length) * 100}
+            title={data[hover].label}
+            lines={series
+              .map((s, si) => ({ s, v: data[hover].values[si] }))
+              .filter((e): e is { s: GroupedSeries; v: number } => e.v != null)
+              .map(({ s, v }) => ({ label: s.label, value: yFmt(v), color: s.color }))}
+          />
+        )}
+      </div>
+      <div className="flex gap-[7px] mt-1.5">
+        {data.map((d, i) => (
+          <span key={`${d.label}-${i}`} className="flex-1 text-center text-[10px] truncate" style={{ color: UI.faint }}>
+            {i % labelEvery === 0 ? d.label : ""}
+          </span>
+        ))}
+      </div>
+      <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
+        {series.map((s) => (
+          <span key={s.label} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+            <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: s.color }} />
+            {s.label}
+          </span>
+        ))}
+      </div>
     </div>
   );
 }

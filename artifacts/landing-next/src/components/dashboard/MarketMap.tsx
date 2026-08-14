@@ -240,24 +240,41 @@ function FitPolygon({
     const t = setTimeout(() => map.invalidateSize(), 200);
     return () => clearTimeout(t);
   }, [map]);
-  useEffect(() => {
-    if (polygon) {
-      map.fitBounds(L.latLngBounds(polygon.map(([a, b]) => L.latLng(a, b))), {
-        padding: [60, 60],
-        maxZoom: 14,
-      });
-    }
-  }, [map, polygon]);
+  // One effect for all camera moves — polygon fit beats focus beats reset —
+  // so a polygon target can't race a stale focus fly-to (or vice versa).
+  const key = JSON.stringify({ polygon, focus });
   useEffect(() => {
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (polygon) {
+      map.fitBounds(L.latLngBounds(polygon.map(([a, b]) => L.latLng(a, b))), {
+        padding: [60, 60],
+        maxZoom: 14,
+        animate: !reduce,
+      });
+      return;
+    }
     const target: [number, number] = focus ? [focus.lat, focus.lng] : CYPRUS_CENTER;
     const zoom = focus ? focus.zoom : CYPRUS_ZOOM;
     if (reduce) map.setView(target, zoom, { animate: false });
     else map.flyTo(target, zoom, { duration: 1.1, easeLinearity: 0.25 });
-  }, [map, focus]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [map, key]);
   return null;
+}
+
+/** One drawn selection rendered on the map, in its comparison-slot colour. */
+export interface MapShape {
+  coords: PolygonCoords;
+  color: string;
+}
+
+/** Ring marking a named-area selection's centre, in its slot colour. */
+export interface MapAreaMark {
+  lat: number;
+  lng: number;
+  color: string;
 }
 
 export default function MarketMap({
@@ -265,7 +282,9 @@ export default function MarketMap({
   areas,
   window_,
   drawing,
-  polygon,
+  shapes,
+  areaMarks,
+  fitTo,
   focus,
   onHover,
   onPick,
@@ -277,7 +296,10 @@ export default function MarketMap({
   areas: AreaInfo[];
   window_: OccWindow;
   drawing: boolean;
-  polygon: PolygonCoords | null;
+  shapes: MapShape[];
+  areaMarks: MapAreaMark[];
+  /** Polygon to fit the viewport to (the most recently added drawn area). */
+  fitTo: PolygonCoords | null;
   focus: { lat: number; lng: number; zoom: number } | null;
   onHover: (id: string | null) => void;
   onPick: (id: string) => void;
@@ -316,20 +338,37 @@ export default function MarketMap({
 
       <AreaMarkersLayer areas={areas} zoom={zoom} drawing={drawing} onAreaPick={onAreaPick} />
 
-      {polygon && (
+      {shapes.map((s, i) => (
         <Polygon
-          positions={polygon}
+          key={`shape-${i}`}
+          positions={s.coords}
           pathOptions={{
             color: "#1F2A16",
             weight: 2.5,
-            fillColor: "#8FCC80",
-            fillOpacity: 0.14,
+            fillColor: s.color,
+            fillOpacity: 0.16,
           }}
         />
-      )}
+      ))}
+
+      {/* dim_areas has no boundary polygons — a slot-coloured ring around the
+          area centre (search_radius_km) marks named selections instead. */}
+      {areaMarks.map((m, i) => (
+        <CircleMarker
+          key={`mark-${i}`}
+          center={[m.lat, m.lng]}
+          radius={14}
+          pathOptions={{
+            color: m.color,
+            weight: 3,
+            fillColor: m.color,
+            fillOpacity: 0.15,
+          }}
+        />
+      ))}
 
       {drawing && <DrawLayer onComplete={onPolygonComplete} onCancel={onDrawCancel} />}
-      <FitPolygon polygon={polygon} focus={focus} />
+      <FitPolygon polygon={fitTo} focus={focus} />
     </MapContainer>
   );
 }

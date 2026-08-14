@@ -227,6 +227,14 @@ export const EXPLAINERS = {
     title: "Supply churn",
     text: "Listings added versus delisted each month. Net growth with strong occupancy is a healthy market; net growth with falling occupancy means supply is outrunning demand.",
   },
+  compare: {
+    title: "Comparing areas",
+    text: "Each area's numbers are computed independently with the same filters and date range, so the comparison is like for like. 'Best' marks the strongest value per row — it says which area leads on that metric, not which is the better investment overall.",
+  },
+  compare_district_grain: {
+    title: "District-level data",
+    text: "This dataset exists at district level only. Two areas in the same district will show identical numbers here — the comparison only becomes meaningful across districts.",
+  },
 } as const satisfies Record<string, Explainer>;
 
 export type ExplainerId = keyof typeof EXPLAINERS;

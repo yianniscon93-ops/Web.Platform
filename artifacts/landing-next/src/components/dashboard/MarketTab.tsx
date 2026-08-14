@@ -2,14 +2,15 @@
 
 import { motion } from "framer-motion";
 import { Info } from "lucide-react";
-import type { AreaHealth, MarketResponse, WeeklyRow } from "@/lib/dashboard/types";
+import type { AreaHealth, MarketResponse, SlotView, WeeklyRow } from "@/lib/dashboard/types";
 import { fmtEuro, fmtInt, fmtPct, TYPE_GROUP_LABELS } from "@/lib/dashboard/format";
 import { AMENITIES } from "@/lib/dashboard/filters";
 import { CY_EVENTS, eventsInWeek } from "@/lib/dashboard/events";
 import { currentWeekMonday } from "@/lib/dashboard/weeks";
 import type { ExplainerId } from "@/lib/dashboard/explain";
 import { UI } from "./tokens";
-import { TrendChart, BarsChart, GapBars, LineAreaChart, type TrendSeries } from "./charts";
+import { TrendChart, BarsChart, GapBars, GroupedBars, LineAreaChart, type TrendSeries } from "./charts";
+import { CompareTable, bestIndex, type CompareRow } from "./compare";
 import Explain, { StatLabel } from "./Explain";
 
 const fmtWeek = (iso: string) =>
@@ -74,6 +75,17 @@ function DeltaBadge({ delta, fmt, suffix }: { delta: number | null; fmt: (v: num
 }
 
 export default function MarketTab({
+  slots,
+  health,
+}: {
+  slots: SlotView[];
+  health: AreaHealth | null;
+}) {
+  if (slots.length > 1) return <CompareMarket slots={slots} health={health} />;
+  return <SingleMarket market={slots[0]?.market ?? null} health={health} />;
+}
+
+function SingleMarket({
   market,
   health,
 }: {
@@ -573,9 +585,17 @@ export default function MarketTab({
         </div>
       )}
 
-      {/* Area health — island-wide district league + supply dynamics */}
-      {health && health.districts.length > 0 && (
-        <>
+      <IslandHealth health={health} />
+    </div>
+  );
+}
+
+/** Island-wide district league + supply dynamics — selection-independent,
+ * so comparison mode renders it once, exactly like single mode. */
+function IslandHealth({ health }: { health: AreaHealth | null }) {
+  if (!health || health.districts.length === 0) return null;
+  return (
+    <>
           <div className="glass-card rounded-2xl p-5 mt-2.5">
             <div className="flex items-center justify-between mb-3">
               <StatLabel id="composite_score" align="left">
@@ -702,8 +722,341 @@ export default function MarketTab({
               </div>
             </div>
           </div>
-        </>
+    </>
+  );
+}
+
+// ---------------------------------------------------------------------------
+// Comparison mode — every metric split by slot, like for like.
+// ---------------------------------------------------------------------------
+
+function CompareMarket({ slots, health }: { slots: SlotView[]; health: AreaHealth | null }) {
+  const cur = currentWeekMonday();
+
+  const per = slots.map((v) => {
+    const weekly = v.market?.weekly ?? [];
+    const realized = weekly.filter((w) => w.weekStart < cur);
+    const scope = realized.length ? realized : weekly;
+    return { v, weekly, scope, agg: aggregate(scope), isForward: realized.length === 0 && weekly.length > 0 };
+  });
+  const allForward = per.every((p) => p.isForward) && per.some((p) => p.weekly.length > 0);
+  const scopeLens = per.map((p) => p.scope.length).filter((n) => n > 0);
+
+  const occs = per.map((p) => p.agg.effOcc);
+  const revpars = per.map((p) => p.agg.revpar);
+  const bookingsPer = per.map((p) => p.agg.bookingsPerListing);
+  const revenuePer = per.map((p) => p.agg.revenuePerListing);
+
+  const rows: CompareRow[] = [
+    {
+      label: "Listings tracked",
+      explain: "listings",
+      values: per.map((p) => fmtInt(p.agg.listings)),
+      best: null,
+    },
+    {
+      label: allForward ? "Occupancy · on the books" : "Occupancy",
+      explain: allForward ? "on_the_books" : "eff_occ",
+      values: occs.map((v) => fmtPct(v)),
+      best: bestIndex(occs),
+    },
+    {
+      label: "Median nightly rate",
+      explain: "median_adr",
+      values: per.map((p) => fmtEuro(p.agg.medianAdr != null ? Math.round(p.agg.medianAdr) : null)),
+      best: null,
+    },
+    {
+      label: "RevPAR",
+      explain: "revpar",
+      values: revpars.map((v) => fmtEuro(v != null ? Math.round(v) : null)),
+      best: bestIndex(revpars),
+    },
+    {
+      label: "Avg bookings / listing",
+      explain: "bookings",
+      values: bookingsPer.map((v) => (v != null ? v.toFixed(1) : null)),
+      best: bestIndex(bookingsPer),
+    },
+  ];
+  if (revenuePer.some((v) => v != null)) {
+    rows.push({
+      label: "Avg est. revenue / listing",
+      explain: "revenue_est",
+      values: revenuePer.map((v) => fmtEuro(v != null ? Math.round(v) : null)),
+      best: bestIndex(revenuePer),
+    });
+  }
+
+  const slotSeries = (metric: MetricKey): TrendSeries[] =>
+    slots.map((v) => ({
+      label: v.label,
+      color: v.color,
+      dashed: v.dash,
+      data: (v.market?.weekly ?? []).map((w) => ({ x: w.weekStart, y: w[metric] as number | null })),
+    }));
+
+  const ignored = slots.filter((v) => v.market?.filtersIgnored);
+
+  // Snapshot comparisons (current-state, ignores the week picker).
+  const snaps = slots.map((v) => v.market?.snapshot ?? null);
+  const bedroomLabels = [...new Set(snaps.flatMap((s) => s?.bedrooms.map((b) => b.label) ?? []))];
+  const amenityKeys = [...new Set(snaps.flatMap((s) => s?.amenities.map((a) => a.key) ?? []))]
+    .map((key) => ({
+      key,
+      maxShare: Math.max(...snaps.map((s) => s?.amenities.find((a) => a.key === key)?.share ?? 0)),
+    }))
+    .sort((a, b) => b.maxShare - a.maxShare)
+    .slice(0, 8)
+    .map((e) => e.key);
+
+  return (
+    <div>
+      {ignored.length > 0 && (
+        <div
+          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[13px]"
+          style={{ background: "rgba(217,139,106,0.08)", border: "1px solid rgba(217,139,106,0.25)", color: UI.text }}
+        >
+          <Info size={15} style={{ color: NEG }} className="shrink-0" />
+          Attribute filters aren&apos;t available for{" "}
+          <b>{ignored.map((v) => v.label).join(", ")}</b> (small area type) — those columns show
+          all listings instead.
+        </div>
       )}
+
+      {/* KPI matrix — replaces the KPI cards in comparison mode */}
+      <div className="glass-card rounded-2xl p-5">
+        <div className="flex items-center justify-between mb-2">
+          <StatLabel id="compare" align="left">
+            Head to head
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            {allForward
+              ? "on the books · upcoming weeks in your range"
+              : `over ${Math.max(...scopeLens, 0)} completed ${Math.max(...scopeLens, 0) === 1 ? "week" : "weeks"} in your range`}
+          </span>
+        </div>
+        <CompareTable slots={slots} rows={rows} />
+      </div>
+
+      {/* Trends — one line per area, split at the current week */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-2.5 mt-2.5">
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="eff_occ" align="left">
+              Weekly occupancy
+            </StatLabel>
+            <span className="text-[11px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+              % · dots &amp; shading mark events
+              <Explain id="event_overlay" align="right" />
+            </span>
+          </div>
+          <TrendChart
+            main={slotSeries("effOcc")[0]}
+            benchmarks={slotSeries("effOcc").slice(1)}
+            equalWeight
+            splitX={cur}
+            yFmt={(v) => `${v.toFixed(1)}%`}
+            xFmt={fmtWeek}
+            events={CY_EVENTS}
+            emptyLabel="No weekly data in this range"
+          />
+        </div>
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="median_adr" align="left">
+              Weekly median rate
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              € / night
+            </span>
+          </div>
+          <TrendChart
+            main={slotSeries("medianAdr")[0]}
+            benchmarks={slotSeries("medianAdr").slice(1)}
+            equalWeight
+            splitX={cur}
+            yFmt={(v) => fmtEuro(v)}
+            xFmt={fmtWeek}
+            events={CY_EVENTS}
+            emptyLabel="No weekly data in this range"
+          />
+        </div>
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="bookings" align="left">
+              Weekly bookings
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              detected · absolute counts favour bigger areas
+            </span>
+          </div>
+          <TrendChart
+            main={slotSeries("bookings")[0]}
+            benchmarks={slotSeries("bookings").slice(1)}
+            equalWeight
+            splitX={cur}
+            yFmt={(v) => fmtInt(v)}
+            xFmt={fmtWeek}
+            events={CY_EVENTS}
+            emptyLabel="No weekly data in this range"
+          />
+        </div>
+      </div>
+
+      {/* Supply-shift context */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-3">
+          <StatLabel id="listing_count_trend" align="left">
+            Listings tracked per week
+          </StatLabel>
+          <span className="text-[11px]" style={{ color: UI.faint }}>
+            read occupancy moves together with supply
+          </span>
+        </div>
+        <TrendChart
+          main={slotSeries("listings")[0]}
+          benchmarks={slotSeries("listings").slice(1)}
+          equalWeight
+          splitX={cur}
+          yFmt={(v) => fmtInt(v)}
+          xFmt={fmtWeek}
+          height={72}
+          emptyLabel="No weekly data in this range"
+        />
+      </div>
+
+      {/* Current-state snapshot, side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-4">
+            <StatLabel id="quartiles" align="left">
+              Price &amp; occupancy spread
+            </StatLabel>
+            <span
+              className="text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1"
+              style={{ background: "rgba(255,255,255,0.06)", color: UI.muted }}
+            >
+              today <Explain id="current_state" align="right" />
+            </span>
+          </div>
+          <CompareTable
+            slots={slots}
+            rows={[
+              {
+                label: "Nightly rate p25–median–p75",
+                values: snaps.map((s) =>
+                  s?.adrQuartiles
+                    ? `${fmtEuro(Math.round(s.adrQuartiles[0]))} · ${fmtEuro(Math.round(s.adrQuartiles[1]))} · ${fmtEuro(Math.round(s.adrQuartiles[2]))}`
+                    : null
+                ),
+                best: null,
+              },
+              {
+                label: "Occupancy p25–median–p75",
+                values: snaps.map((s) =>
+                  s?.occQuartiles
+                    ? `${s.occQuartiles[0].toFixed(0)}% · ${s.occQuartiles[1].toFixed(0)}% · ${s.occQuartiles[2].toFixed(0)}%`
+                    : null
+                ),
+                best: bestIndex(snaps.map((s) => s?.occQuartiles?.[1] ?? null)),
+              },
+              {
+                label: "Superhost share",
+                explain: "superhost",
+                values: snaps.map((s) => fmtPct(s?.superhostShare)),
+                best: null,
+              },
+            ]}
+          />
+        </div>
+
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="supply_mix" align="left">
+              Bedrooms
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              listings per size · today
+            </span>
+          </div>
+          <GroupedBars
+            data={bedroomLabels.map((label) => ({
+              label,
+              values: snaps.map((s) => s?.bedrooms.find((b) => b.label === label)?.count ?? null),
+            }))}
+            series={slots.map((v) => ({ label: v.label, color: v.color }))}
+            yFmt={(v) => fmtInt(v)}
+            height={110}
+            emptyLabel="No listings in these selections"
+          />
+        </div>
+      </div>
+
+      {/* Type mix + amenities, side by side */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="supply_mix" align="left">
+              Property types
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              share of listings · today
+            </span>
+          </div>
+          <CompareTable
+            slots={slots}
+            rows={(["apartment", "house", "hotel", "other"] as const).map((g) => {
+              const shares = snaps.map((s) => {
+                if (!s) return null;
+                const total = s.typeMix.reduce((sum, m) => sum + m.count, 0);
+                const m = s.typeMix.find((x) => x.group === g);
+                return total && m ? (100 * m.count) / total : null;
+              });
+              return {
+                label: TYPE_GROUP_LABELS[g],
+                values: shares.map((v) => (v != null ? `${v.toFixed(0)}%` : null)),
+                best: null,
+              };
+            })}
+          />
+        </div>
+
+        <div className="glass-card rounded-2xl p-5">
+          <div className="flex items-center justify-between mb-3">
+            <StatLabel id="supply_mix" align="left">
+              Amenities
+            </StatLabel>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              % of listings that have it · today
+            </span>
+          </div>
+          {amenityKeys.length ? (
+            <CompareTable
+              slots={slots}
+              rows={amenityKeys.map((key) => ({
+                label: AMENITY_LABEL.get(key) ?? key,
+                values: snaps.map((s) => {
+                  const a = s?.amenities.find((x) => x.key === key);
+                  return a ? `${a.share.toFixed(0)}%` : null;
+                }),
+                best: null,
+              }))}
+            />
+          ) : (
+            <p className="text-sm" style={{ color: UI.faint }}>
+              No amenity data for these selections.
+            </p>
+          )}
+        </div>
+      </div>
+
+      <p className="text-[11px] mt-2.5" style={{ color: UI.faint }}>
+        Absolute counts (listings, bookings) favour bigger areas — lean on the per-listing and
+        percentage rows when the areas differ in size.
+      </p>
+
+      <IslandHealth health={health} />
     </div>
   );
 }
