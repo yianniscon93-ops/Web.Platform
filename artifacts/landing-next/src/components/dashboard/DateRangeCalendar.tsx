@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { CalendarRange, ChevronLeft, ChevronRight } from "lucide-react";
+import { CalendarRange, ChevronDown, ChevronLeft, ChevronRight } from "lucide-react";
 import { addDays, addWeeks, currentWeekMonday, mondayOf, sundayOf } from "@/lib/dashboard/weeks";
 import { UI } from "./tokens";
 
@@ -178,16 +178,29 @@ export default function DateRangeCalendar({
           setView(ym(selStart));
           setDraftStart(null);
         }}
-        className="flex items-center gap-2 rounded-xl px-3.5 h-9 glass-card transition-colors hover:bg-white/[0.06]"
+        aria-expanded={open}
+        className="flex items-center gap-2 rounded-xl pl-3 pr-2.5 h-10 glass-card transition-colors hover:bg-white/[0.06]"
+        style={open ? { boxShadow: `0 0 0 1.5px ${UI.green}66` } : undefined}
       >
-        <CalendarRange size={14} style={{ color: UI.green }} />
-        <span className="text-[13px] font-semibold" style={{ color: UI.text }}>
-          {fmtDay(selStart)} → {fmtDay(selEnd)}
+        <CalendarRange size={15} style={{ color: UI.green }} />
+        <span className="flex flex-col items-start leading-tight">
+          <span className="text-[9.5px] font-bold uppercase tracking-wider" style={{ color: UI.faint }}>
+            Date range
+          </span>
+          <span className="flex items-baseline gap-1.5">
+            <span className="text-[13px] font-semibold" style={{ color: UI.text }}>
+              {fmtDay(selStart)} → {fmtDay(selEnd)}
+            </span>
+            <span className="text-[11px]" style={{ color: UI.faint }}>
+              {Math.round((+new Date(`${addDays(sundayOf(selEnd), 1)}T00:00:00Z`) - +new Date(`${mondayOf(selStart)}T00:00:00Z`)) / (7 * 86400000))}{" "}
+              wks
+            </span>
+          </span>
         </span>
-        <span className="text-[11px]" style={{ color: UI.faint }}>
-          {Math.round((+new Date(`${addDays(sundayOf(selEnd), 1)}T00:00:00Z`) - +new Date(`${mondayOf(selStart)}T00:00:00Z`)) / (7 * 86400000))}{" "}
-          wks
-        </span>
+        <ChevronDown
+          size={14}
+          style={{ color: UI.faint, transform: open ? "rotate(180deg)" : "none", transition: "transform 0.18s" }}
+        />
       </button>
 
       {open && (

@@ -28,11 +28,11 @@ function ChartTip({ xPct, title, lines }: { xPct: number; title: string; lines: 
         boxShadow: "0 6px 20px rgba(0,0,0,0.45)",
       }}
     >
-      <p className="text-[11px] font-semibold" style={{ color: UI.text }}>
+      <p className="text-[12px] font-semibold" style={{ color: UI.text }}>
         {title}
       </p>
       {lines.map((l, i) => (
-        <p key={i} className="text-[11px] flex items-center gap-1.5" style={{ color: UI.muted }}>
+        <p key={i} className="text-[12px] flex items-center gap-1.5" style={{ color: UI.muted }}>
           {l.color && (
             <span className="w-2 h-2 rounded-full inline-block shrink-0" style={{ background: l.color }} />
           )}
@@ -167,7 +167,7 @@ export function LineAreaChart({
       )}
       </div>
       <div className="flex justify-between items-baseline mt-1.5">
-        <span className="text-[11px]" style={{ color: UI.faint }}>
+        <span className="text-[12px]" style={{ color: UI.faint }}>
           {xFmt(series[0].x)}
         </span>
         <span className="text-xs font-semibold" style={{ color: UI.text }}>
@@ -177,7 +177,7 @@ export function LineAreaChart({
             · peak {yFmt(peak.y)}
           </span>
         </span>
-        <span className="text-[11px]" style={{ color: UI.faint }}>
+        <span className="text-[12px]" style={{ color: UI.faint }}>
           {xFmt(last.x)}
         </span>
       </div>
@@ -462,11 +462,11 @@ export function TrendChart({
       )}
       </div>
       <div className="flex justify-between items-baseline mt-1.5">
-        <span className="text-[11px]" style={{ color: UI.faint }}>
+        <span className="text-[12px]" style={{ color: UI.faint }}>
           {xFmt(xs$[0])}
         </span>
         {splitPx != null ? (
-          <span className="text-[11px] font-medium" style={{ color: UI.muted }}>
+          <span className="text-[12px] font-medium" style={{ color: UI.muted }}>
             ← realized · on the books →
           </span>
         ) : (
@@ -476,18 +476,18 @@ export function TrendChart({
             </span>
           )
         )}
-        <span className="text-[11px]" style={{ color: UI.faint }}>
+        <span className="text-[12px]" style={{ color: UI.faint }}>
           {xFmt(xs$[xs$.length - 1])}
         </span>
       </div>
       {benchmarks.length > 0 && (
         <div className="flex items-center gap-3 mt-1.5">
-          <span className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+          <span className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
             <span className="w-3 h-[2.5px] rounded-full inline-block" style={{ background: main.color }} />
             {main.label}
           </span>
           {benchmarks.map((b) => (
-            <span key={b.label} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+            <span key={b.label} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
               <span
                 className="w-3 h-[2px] rounded-full inline-block"
                 style={{ background: b.color, opacity: 0.85 }}
@@ -589,7 +589,7 @@ export function GapBars({
       </div>
       <div className="flex gap-[3px] mt-1.5">
         {data.map((d, i) => (
-          <span key={`${d.label}-${i}`} className="flex-1 text-center text-[10px] truncate" style={{ color: UI.faint }}>
+          <span key={`${d.label}-${i}`} className="flex-1 text-center text-[11px] truncate" style={{ color: UI.faint }}>
             {i % labelEvery === 0 ? d.label : ""}
           </span>
         ))}
@@ -666,14 +666,14 @@ export function StackedBars({
       </div>
       <div className="flex gap-[5px] mt-1.5">
         {data.map((d) => (
-          <span key={d.label} className="flex-1 text-center text-[10px] truncate" style={{ color: UI.faint }}>
+          <span key={d.label} className="flex-1 text-center text-[11px] truncate" style={{ color: UI.faint }}>
             {d.label}
           </span>
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
         {segments.map((seg) => (
-          <span key={seg.key} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+          <span key={seg.key} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
             <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: seg.color }} />
             {seg.label}
           </span>
@@ -782,7 +782,7 @@ export function BarsChart({
             >
               {showValues && d.value != null && (
                 <span
-                  className="absolute left-0 right-0 text-center text-[10px] font-medium whitespace-nowrap"
+                  className="absolute left-0 right-0 text-center text-[11px] font-medium whitespace-nowrap"
                   style={{
                     bottom: `calc(${pct}% + 3px)`,
                     color: isMax ? (color ?? UI.green) : UI.muted,
@@ -832,7 +832,7 @@ export function BarsChart({
         {data.map((d, i) => (
           <span
             key={`${d.label}-${i}`}
-            className="flex-1 text-center text-[10px] truncate"
+            className="flex-1 text-center text-[11px] truncate"
             style={{ color: UI.faint }}
           >
             {i % labelEvery === 0 ? d.label : ""}
@@ -842,12 +842,12 @@ export function BarsChart({
       {line && (
         <div className="flex items-center gap-3 mt-1.5">
           {line.barsLabel && (
-            <span className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+            <span className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
               <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: "rgba(143,204,128,0.7)" }} />
               {line.barsLabel}
             </span>
           )}
-          <span className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+          <span className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
             <span className="w-3 h-[2px] rounded-full inline-block" style={{ background: lineColor }} />
             {line.label}
           </span>
@@ -936,14 +936,14 @@ export function GroupedBars({
       </div>
       <div className="flex gap-[7px] mt-1.5">
         {data.map((d, i) => (
-          <span key={`${d.label}-${i}`} className="flex-1 text-center text-[10px] truncate" style={{ color: UI.faint }}>
+          <span key={`${d.label}-${i}`} className="flex-1 text-center text-[11px] truncate" style={{ color: UI.faint }}>
             {i % labelEvery === 0 ? d.label : ""}
           </span>
         ))}
       </div>
       <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-2">
         {series.map((s) => (
-          <span key={s.label} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+          <span key={s.label} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
             <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: s.color }} />
             {s.label}
           </span>

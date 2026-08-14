@@ -103,7 +103,7 @@ export function CompareLegend({ slots }: { slots: Array<Pick<SlotView, "label" |
   return (
     <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
       {slots.map((s) => (
-        <span key={s.label} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+        <span key={s.label} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
           <SlotDot color={s.color} dash={s.dash} />
           {s.label}
         </span>
@@ -141,7 +141,7 @@ export function CompareTable({
         <thead>
           <tr>
             <th
-              className="text-[10px] uppercase tracking-wider font-semibold py-2 pr-4"
+              className="text-[11px] uppercase tracking-wider font-semibold py-2 pr-4"
               style={{ color: UI.faint, borderBottom: `1px solid ${UI.border}` }}
             >
               Metric
@@ -149,7 +149,7 @@ export function CompareTable({
             {slots.map((s) => (
               <th
                 key={s.label}
-                className="text-[12px] font-bold py-2 pr-4 whitespace-nowrap"
+                className="text-[13px] font-bold py-2 pr-4 whitespace-nowrap"
                 style={{ color: UI.text, borderBottom: `1px solid ${UI.border}` }}
               >
                 <span className="inline-flex items-center gap-1.5">
@@ -164,7 +164,7 @@ export function CompareTable({
           {rows.map((r) => (
             <tr key={r.label}>
               <td
-                className="py-2.5 pr-4 text-[12px] font-medium whitespace-nowrap"
+                className="py-2.5 pr-4 text-[13px] font-medium whitespace-nowrap"
                 style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}
               >
                 <span className="inline-flex items-center gap-1.5">
@@ -181,7 +181,7 @@ export function CompareTable({
                     style={{ borderBottom: `1px solid ${UI.border}` }}
                   >
                     <span
-                      className={`text-[13.5px] ${isBest ? "font-bold" : "font-medium"} inline-flex items-center gap-1.5 rounded-md ${isBest ? "px-1.5 py-0.5" : ""}`}
+                      className={`text-[14.5px] ${isBest ? "font-bold" : "font-medium"} inline-flex items-center gap-1.5 rounded-md ${isBest ? "px-1.5 py-0.5" : ""}`}
                       style={{
                         color: UI.text,
                         background: isBest ? "rgba(143,204,128,0.12)" : undefined,
@@ -189,13 +189,13 @@ export function CompareTable({
                     >
                       {r.values[i] ?? "—"}
                       {isBest && (
-                        <span className="text-[9px] font-bold uppercase tracking-wider" style={{ color: UI.green }}>
+                        <span className="text-[10px] font-bold uppercase tracking-wider" style={{ color: UI.green }}>
                           best
                         </span>
                       )}
                     </span>
                     {r.hints?.[i] && (
-                      <span className="block text-[10.5px] mt-0.5" style={{ color: UI.faint }}>
+                      <span className="block text-[11.5px] mt-0.5" style={{ color: UI.faint }}>
                         {r.hints[i]}
                       </span>
                     )}

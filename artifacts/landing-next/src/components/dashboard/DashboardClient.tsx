@@ -3,11 +3,12 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Link from "next/link";
-import { AnimatePresence } from "framer-motion";
+import { AnimatePresence, motion } from "framer-motion";
 import {
   BarChart3,
   Building2,
   Calculator,
+  CheckCircle2,
   Hexagon,
   LineChart,
   PenLine,
@@ -18,7 +19,6 @@ import {
 } from "lucide-react";
 import { BRAND } from "@/lib/brand";
 import type {
-  AreaHealth,
   AreaInfo,
   CompareSlot,
   DashboardSummary,
@@ -161,7 +161,6 @@ export default function DashboardClient() {
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [areas, setAreas] = useState<AreaInfo[] | null>(null);
   const [points, setPoints] = useState<PointRow[] | null>(null);
-  const [health, setHealth] = useState<AreaHealth | null>(null);
 
   const [markets, setMarkets] = useState<SlotRecord<MarketResponse>>({});
   const [pricings, setPricings] = useState<SlotRecord<PricingData>>({});
@@ -179,6 +178,15 @@ export default function DashboardClient() {
   const [pinnedId, setPinnedId] = useState<string | null>(null);
   const [detail, setDetail] = useState<ListingDetail | null>(null);
   const detailCache = useRef(new Map<string, ListingDetail>());
+
+  // Brief confirmation after a selection is made — reminds the user the whole
+  // dashboard below is now scoped to what they just picked/drew.
+  const [selectionToast, setSelectionToast] = useState<string | null>(null);
+  useEffect(() => {
+    if (!selectionToast) return;
+    const t = setTimeout(() => setSelectionToast(null), 4500);
+    return () => clearTimeout(t);
+  }, [selectionToast]);
 
   // Date range picked at day level (Airbnb-style calendar); the data
   // aggregates by whole ISO weeks (Cyprus time) underneath. Bounds come
@@ -222,6 +230,9 @@ export default function DashboardClient() {
         return [...prev, { id: `s${++slotSeq.current}`, ...style, selection: sel }];
       });
       setArmed(false);
+      const label =
+        sel.kind === "area" ? sel.area.nameEn : sel.kind === "polygon" ? "your drawn area" : null;
+      if (label) setSelectionToast(label);
       if (sel.kind === "area" && sel.area.lat != null && sel.area.lng != null) {
         setMapCam({
           focus: { lat: sel.area.lat, lng: sel.area.lng, zoom: zoomForRadius(sel.area.radiusKm) },
@@ -249,6 +260,7 @@ export default function DashboardClient() {
       { id: `s${++slotSeq.current}`, color: SLOT_COLORS[0], dash: SLOT_DASH[0], selection: { kind: "all" } },
     ]);
     setArmed(false);
+    setSelectionToast(null);
     setMapCam({ focus: null, fit: null });
   }, []);
 
@@ -262,11 +274,6 @@ export default function DashboardClient() {
     fetch("/api/dashboard/areas")
       .then((r) => r.json())
       .then(setAreas)
-      .catch(console.error);
-    // Area health is island-wide and selection-independent — one fetch.
-    fetch("/api/dashboard/health")
-      .then((r) => r.json())
-      .then(setHealth)
       .catch(console.error);
   }, []);
 
@@ -598,6 +605,37 @@ export default function DashboardClient() {
           onDrawCancel={handleDrawCancel}
         />
 
+        {/* Selection confirmation — reminds the user the tabs below are now
+            scoped to what they just picked/drew. Auto-dismisses. */}
+        <AnimatePresence>
+          {selectionToast && (
+            <motion.div
+              key={selectionToast}
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 12 }}
+              transition={{ duration: 0.25 }}
+              className="absolute left-1/2 -translate-x-1/2 bottom-3 z-[960] flex items-center gap-2.5 glass-dark rounded-xl pl-3 pr-3.5 py-2.5 max-w-[calc(100%-1.5rem)]"
+              style={{ boxShadow: `0 0 0 1.5px ${UI.green}44` }}
+            >
+              <CheckCircle2 size={17} style={{ color: UI.green }} className="shrink-0" />
+              <span className="text-[13px] leading-snug" style={{ color: UI.text }}>
+                Now showing{" "}
+                <b style={{ color: UI.green }}>{selectionToast}</b>
+                {" — "}
+                <span style={{ color: UI.muted }}>every tab below is scoped to this selection.</span>
+              </span>
+              <button
+                onClick={() => setSelectionToast(null)}
+                className="ml-1 p-0.5 rounded-md hover:bg-white/10 shrink-0"
+                aria-label="Dismiss"
+              >
+                <X size={13} style={{ color: UI.muted }} />
+              </button>
+            </motion.div>
+          )}
+        </AnimatePresence>
+
         {/* Search + draw toolbar (top-centre) */}
         <div className="absolute left-1/2 -translate-x-1/2 top-3 z-[950] flex items-center gap-2">
           <SearchBar
@@ -852,7 +890,7 @@ export default function DashboardClient() {
 
       {/* Tab content */}
       <div className="px-3 md:px-4 py-4 pb-12">
-        {tab === "market" && <MarketTab slots={slotViews} health={health} />}
+        {tab === "market" && <MarketTab slots={slotViews} />}
         {tab === "pricing" && <PricingTab slots={slotViews} />}
         {tab === "pace" && <PaceTab slots={slotViews} />}
         {tab === "buyrent" && <BuyRentTab slots={slotViews} />}

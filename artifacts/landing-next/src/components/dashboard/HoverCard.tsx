@@ -59,7 +59,7 @@ export default function HoverCard({
         <span className="font-display font-bold text-sm mb-0.5" style={{ color: UI.oliveMid }}>
           %
         </span>
-        <span className="text-[11px] mb-1" style={{ color: UI.faint }}>
+        <span className="text-[12px] mb-1" style={{ color: UI.faint }}>
           booked · {window_ === "todate" ? "season to date" : "next 60d"}
         </span>
       </div>
@@ -97,7 +97,7 @@ export default function HoverCard({
         <div className="flex gap-1.5 mt-2.5">
           {listing.isSuperhost && (
             <span
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-semibold"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] font-semibold"
               style={{ background: "rgba(143,204,128,0.12)", color: UI.green }}
             >
               <Award size={9} /> Superhost
@@ -105,7 +105,7 @@ export default function HoverCard({
           )}
           {listing.isGuestFav && (
             <span
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[11px] font-semibold"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] font-semibold"
               style={{ background: "rgba(168,194,144,0.12)", color: UI.oliveLight }}
             >
               <Heart size={9} /> Guest favourite
@@ -115,7 +115,7 @@ export default function HoverCard({
       )}
 
       {amenityLabels.length > 0 && (
-        <p className="text-[11px] mt-2 leading-relaxed" style={{ color: UI.faint }}>
+        <p className="text-[12px] mt-2 leading-relaxed" style={{ color: UI.faint }}>
           {amenityLabels.join(" · ")}
           {listing.amenities.length > 5 && ` · +${listing.amenities.length - 5} more`}
         </p>

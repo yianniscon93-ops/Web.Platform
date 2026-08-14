@@ -24,7 +24,7 @@ export default function CalculatorTab({ slots }: { slots: SlotView[] }) {
     <div>
       {slots.length > 1 && (
         <div className="flex items-center gap-2 mb-2.5 flex-wrap">
-          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
+          <span className="text-[12px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
             Run the numbers for
           </span>
           {slots.map((v) => {
@@ -142,7 +142,7 @@ function SingleCalculator({
           <StatLabel id="buy_costs" align="left">
             What it costs to buy in {scopeLabel}
           </StatLabel>
-          <span className="text-[11px]" style={{ color: UI.faint }}>
+          <span className="text-[12px]" style={{ color: UI.faint }}>
             tap a size to load it into the calculator
           </span>
         </div>
@@ -164,13 +164,13 @@ function SingleCalculator({
                     background: active ? "rgba(143,204,128,0.1)" : "rgba(255,255,255,0.03)",
                   }}
                 >
-                  <p className="text-[13px] font-bold" style={{ color: active ? UI.green : UI.text }}>
+                  <p className="text-[14px] font-bold" style={{ color: active ? UI.green : UI.text }}>
                     {b.label}
                   </p>
-                  <p className="text-[13px] font-semibold" style={{ color: UI.text }}>
+                  <p className="text-[14px] font-semibold" style={{ color: UI.text }}>
                     {fmtEuro(b.medianPrice)}
                   </p>
-                  <p className="text-[10px]" style={{ color: UI.faint }}>
+                  <p className="text-[11px]" style={{ color: UI.faint }}>
                     {fmtInt(b.count)} for sale
                   </p>
                 </button>
@@ -182,7 +182,7 @@ function SingleCalculator({
             </p>
           )}
         </div>
-        <p className="text-[11px] mt-3" style={{ color: UI.faint }}>
+        <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
           Median asking prices in this selection. Breakdown by year of construction is coming soon
           — that attribute isn&apos;t in our synced data yet.
         </p>
@@ -195,7 +195,7 @@ function SingleCalculator({
             <StatLabel id="rev_calc" align="left">
               Your scenario
             </StatLabel>
-            <p className="text-[11px] mt-1" style={{ color: UI.faint }}>
+            <p className="text-[12px] mt-1" style={{ color: UI.faint }}>
               pre-filled with real numbers from {scopeLabel} — drag anything
             </p>
           </div>
@@ -229,7 +229,7 @@ function SingleCalculator({
             <StatLabel id="rev_calc" align="left">
               What you&apos;d make
             </StatLabel>
-            <span className="text-[11px]" style={{ color: UI.faint }}>
+            <span className="text-[12px]" style={{ color: UI.faint }}>
               pre-tax, first-year estimate
             </span>
           </div>
@@ -247,7 +247,7 @@ function SingleCalculator({
                 /year
               </span>
             </p>
-            <p className="text-[13px] mt-1.5" style={{ color: UI.muted }}>
+            <p className="text-[14px] mt-1.5" style={{ color: UI.muted }}>
               {calc.net >= 0 ? "profit" : "loss"} · {fmtEuro(Math.round(calc.net / 12))}/month after
               all costs{calc.mortgage > 0 ? " and the mortgage" : ""}
             </p>
@@ -255,23 +255,23 @@ function SingleCalculator({
 
           <div className="grid grid-cols-2 gap-x-4 gap-y-3 mt-5">
             <div>
-              <p className="text-[10px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>Gross revenue</p>
+              <p className="text-[11px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>Gross revenue</p>
               <p className="text-sm font-bold" style={{ color: UI.text }}>{fmtEuro(Math.round(calc.gross))}/yr</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>All costs</p>
+              <p className="text-[11px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>All costs</p>
               <p className="text-sm font-bold" style={{ color: UI.text }}>
                 {fmtEuro(Math.round(calc.variable + fixed + calc.mortgage))}/yr
               </p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>
+              <p className="text-[11px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>
                 {mortgageOn ? "Cash invested" : "Total invested"}
               </p>
               <p className="text-sm font-bold" style={{ color: UI.text }}>{fmtEuro(Math.round(calc.invested))}</p>
             </div>
             <div>
-              <p className="text-[10px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>Money back in</p>
+              <p className="text-[11px] uppercase tracking-wider font-medium" style={{ color: UI.muted }}>Money back in</p>
               <p className="text-sm font-bold" style={{ color: UI.text }}>
                 {calc.payback != null && calc.payback < 100 ? `~${calc.payback.toFixed(0)} years` : "—"}
               </p>
@@ -280,7 +280,7 @@ function SingleCalculator({
 
           {/* Where the revenue goes */}
           <div className="mt-5">
-            <p className="text-[11px] font-semibold uppercase tracking-wider mb-2" style={{ color: UI.muted }}>
+            <p className="text-[12px] font-semibold uppercase tracking-wider mb-2" style={{ color: UI.muted }}>
               Where the revenue goes
             </p>
             <div className="flex h-3 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
@@ -294,13 +294,13 @@ function SingleCalculator({
             </div>
             <div className="flex flex-wrap gap-x-4 gap-y-1 mt-2">
               {splitSegments.map((s) => (
-                <span key={s.label} className="flex items-center gap-1.5 text-[11px]" style={{ color: UI.muted }}>
+                <span key={s.label} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
                   <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: s.color }} />
                   {s.label} {fmtEuro(Math.round(s.value))}
                 </span>
               ))}
               {loss > 0 && (
-                <span className="text-[11px] font-semibold" style={{ color: NEG }}>
+                <span className="text-[12px] font-semibold" style={{ color: NEG }}>
                   shortfall {fmtEuro(Math.round(loss))}/yr
                 </span>
               )}
@@ -310,7 +310,7 @@ function SingleCalculator({
           {/* Break-even sentence */}
           {calc.occNeeded != null && (
             <div
-              className="flex items-start gap-2 rounded-xl px-3.5 py-3 mt-5 text-[12.5px] leading-relaxed"
+              className="flex items-start gap-2 rounded-xl px-3.5 py-3 mt-5 text-[13.5px] leading-relaxed"
               style={{ background: "rgba(143,204,128,0.06)", border: `1px solid ${UI.border}`, color: UI.text }}
             >
               <span className="mt-0.5">
@@ -334,7 +334,7 @@ function SingleCalculator({
           )}
 
           {ltrYear != null && (
-            <p className="text-[12px] mt-3.5" style={{ color: UI.faint }}>
+            <p className="text-[13px] mt-3.5" style={{ color: UI.faint }}>
               Hands-off alternative: a long-term tenant here grosses ~{fmtEuro(ltrYear)}/yr (median
               advertised rent).
             </p>
@@ -343,7 +343,7 @@ function SingleCalculator({
       </div>
 
       <div
-        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[12px] leading-relaxed"
+        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[13px] leading-relaxed"
         style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${UI.border}`, color: UI.muted }}
       >
         <Info size={14} style={{ color: UI.green }} className="shrink-0 mt-0.5" />
