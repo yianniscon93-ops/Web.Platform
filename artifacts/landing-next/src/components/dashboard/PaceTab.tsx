@@ -82,7 +82,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
     <div>
       {pace && (
         <div
-          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[14px]"
+          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[15px]"
           style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${UI.border}`, color: UI.text }}
         >
           <Info size={15} style={{ color: UI.green }} className="shrink-0" />
@@ -106,7 +106,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             <p className="font-display font-bold text-2xl leading-none" style={{ color: c.accent ? UI.green : UI.text }}>
               {c.value}
             </p>
-            <p className="text-[12px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
+            <p className="text-[13px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
               {c.label}
               <Explain id={c.id} align="left" />
             </p>
@@ -121,7 +121,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             <StatLabel id="lead_time" align="left">
               How far ahead guests book
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               median days before arrival · per stay month
             </span>
           </div>
@@ -136,7 +136,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             showValues
             emptyLabel="No booking data for this scope yet"
           />
-          <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+          <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
             Future months show bookings made <i>so far</i> — the true median will fall as
             last-minute bookers arrive.
           </p>
@@ -148,7 +148,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             <StatLabel id="booking_window" align="left">
               Booking window
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               % of booked nights already reserved N days out
             </span>
           </div>
@@ -162,7 +162,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             height={120}
             emptyLabel="No completed stays in the last 90 days"
           />
-          <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+          <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
             From stays completed in the last 90 days — recent, fully booked history.
           </p>
         </div>
@@ -173,7 +173,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             <StatLabel id="lead_time" align="left">
               Lead time by district
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               stays in the next 90 days · booked so far
             </span>
           </div>
@@ -184,10 +184,10 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
               return (
                 <div key={d.district}>
                   <div className="flex items-center justify-between mb-1">
-                    <span className="text-[13px] font-medium" style={{ color: UI.text }}>
+                    <span className="text-[14px] font-medium" style={{ color: UI.text }}>
                       {shortDistrict(d.district)}
                     </span>
-                    <span className="text-[12px] font-semibold" style={{ color: UI.muted }}>
+                    <span className="text-[13px] font-semibold" style={{ color: UI.muted }}>
                       {d.medianLead != null ? `${d.medianLead} days` : "—"} ·{" "}
                       {fmtInt(d.nights)} nights
                     </span>
@@ -215,7 +215,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             <StatLabel id="stay_mix" align="left">
               Stay-length mix
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               share of bookings · per stay month
             </span>
           </div>
@@ -237,7 +237,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
           <StatLabel id="otb_pace" align="left">
             Pickup — how upcoming weeks are filling
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             {pace ? `${pace.pickupScope} · ` : ""}district-level snapshots incl. owner blocks ·
             read the slope
           </span>
@@ -260,7 +260,7 @@ function SinglePace({ pace }: { pace: PaceData | null }) {
             No pace snapshots for this scope yet
           </div>
         )}
-        <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+        <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
           Snapshots taken since March 2026. This is raw unavailability — owner-blocked nights are
           included, so compare how fast weeks fill, not their absolute level.
         </p>
@@ -323,13 +323,13 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
   return (
     <div>
       <div
-        className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[14px] flex-wrap"
+        className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[15px] flex-wrap"
         style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${UI.border}`, color: UI.text }}
       >
         <Info size={15} style={{ color: UI.green }} className="shrink-0" />
         <span>Booking stats follow each area&apos;s scope and your filters:</span>
         {slots.map((v) => (
-          <span key={v.id} className="inline-flex items-center gap-1.5 text-[13px]" style={{ color: UI.muted }}>
+          <span key={v.id} className="inline-flex items-center gap-1.5 text-[14px]" style={{ color: UI.muted }}>
             <SlotDot color={v.color} dash={v.dash} />
             {v.pace?.scope ?? v.label}
           </span>
@@ -341,7 +341,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
           <StatLabel id="compare" align="left">
             Pace head to head
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             lead times are lower bounds (≤2-day detection lag)
           </span>
         </div>
@@ -377,7 +377,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
             <StatLabel id="lead_time" align="left">
               How far ahead guests book
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               median days before arrival · per stay month
             </span>
           </div>
@@ -393,7 +393,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
             height={120}
             emptyLabel="No booking data for these scopes yet"
           />
-          <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+          <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
             Future months show bookings made <i>so far</i> — the true median will fall as
             last-minute bookers arrive.
           </p>
@@ -405,7 +405,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
             <StatLabel id="booking_window" align="left">
               Booking window
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               % of booked nights already reserved N days out
             </span>
           </div>
@@ -428,7 +428,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
               No completed stays in the last 90 days
             </div>
           )}
-          <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+          <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
             From stays completed in the last 90 days — recent, fully booked history.
           </p>
         </div>
@@ -440,7 +440,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
           <StatLabel id="stay_mix" align="left">
             Stay-length mix
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             share of bookings · all months in scope
           </span>
         </div>
@@ -449,7 +449,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
             const mix = mixes[i];
             return (
               <div key={v.id}>
-                <p className="text-[12px] font-semibold mb-1.5 flex items-center gap-1.5" style={{ color: UI.muted }}>
+                <p className="text-[13px] font-semibold mb-1.5 flex items-center gap-1.5" style={{ color: UI.muted }}>
                   <SlotDot color={v.color} dash={v.dash} />
                   {v.label}
                 </p>
@@ -467,7 +467,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
                     ))}
                   </div>
                 ) : (
-                  <p className="text-[13px]" style={{ color: UI.faint }}>
+                  <p className="text-[14px]" style={{ color: UI.faint }}>
                     No booking data yet.
                   </p>
                 )}
@@ -477,7 +477,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
         </div>
         <div className="flex flex-wrap items-center gap-x-3 gap-y-1 mt-3">
           {STAY_SEGMENTS.map((seg) => (
-            <span key={seg.key} className="flex items-center gap-1.5 text-[12px]" style={{ color: UI.muted }}>
+            <span key={seg.key} className="flex items-center gap-1.5 text-[13px]" style={{ color: UI.muted }}>
               <span className="w-2.5 h-2.5 rounded-[3px] inline-block" style={{ background: seg.color }} />
               {seg.label}
             </span>
@@ -492,13 +492,13 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
             <StatLabel id="otb_pace" align="left">
               Pickup — how upcoming weeks are filling
             </StatLabel>
-            <span className="text-[12px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+            <span className="text-[13px] flex items-center gap-1.5" style={{ color: UI.faint }}>
               district-level snapshots incl. owner blocks · read the slope
               <Explain id="compare_district_grain" align="right" />
             </span>
           </div>
           {samePickupScope && (
-            <p className="text-[13px] mb-3" style={{ color: "#D98B6A" }}>
+            <p className="text-[14px] mb-3" style={{ color: "#D98B6A" }}>
               Some of these areas resolve to the same district, so their pickup curves are
               identical — pickup data only exists at district level.
             </p>
@@ -530,7 +530,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
               });
               return (
                 <div key={week}>
-                  <p className="text-[12px] font-semibold mb-2" style={{ color: UI.muted }}>
+                  <p className="text-[13px] font-semibold mb-2" style={{ color: UI.muted }}>
                     Week of {fmtWeek(week)}
                   </p>
                   {domain.length >= 2 ? (
@@ -556,7 +556,7 @@ function ComparePace({ slots }: { slots: SlotView[] }) {
               );
             })}
           </div>
-          <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+          <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
             Raw unavailability — owner-blocked nights included. Compare how fast each area&apos;s
             curve rises, not the absolute level.
           </p>

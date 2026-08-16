@@ -150,7 +150,7 @@ export default function SearchBar({
       {open && results.length > 0 && (
         <div className="absolute top-12 left-0 right-0 glass-dark rounded-xl overflow-hidden py-1.5 max-h-[340px] overflow-y-auto ps-scroll">
           {armed && (
-            <p className="px-3.5 pt-1 pb-1.5 text-[11px] font-semibold" style={{ color: UI.green }}>
+            <p className="px-3.5 pt-1 pb-1.5 text-[12px] font-semibold" style={{ color: UI.green }}>
               Adding to comparison
             </p>
           )}
@@ -172,12 +172,12 @@ export default function SearchBar({
                     {a.nameEn}
                   </span>
                   {sub && (
-                    <span className="text-[11px] block" style={{ color: UI.faint }}>
+                    <span className="text-[12px] block" style={{ color: UI.faint }}>
                       {sub}
                     </span>
                   )}
                 </span>
-                <span className="text-xs shrink-0" style={{ color: UI.faint }}>
+                <span className="text-[13px] shrink-0" style={{ color: UI.faint }}>
                   {a.listingCount.toLocaleString("en-GB")}
                 </span>
               </button>

@@ -1,16 +1,16 @@
 "use client";
 
-import { useState } from "react";
+import { Fragment, useState } from "react";
 import { motion } from "framer-motion";
 import { Info } from "lucide-react";
 import type { MarketResponse, SlotView, WeeklyRow } from "@/lib/dashboard/types";
-import { fmtEuro, fmtInt, fmtPct, TYPE_GROUP_LABELS } from "@/lib/dashboard/format";
+import { fmtEuro, fmtInt, fmtPct } from "@/lib/dashboard/format";
 import { AMENITIES } from "@/lib/dashboard/filters";
 import { CY_EVENTS } from "@/lib/dashboard/events";
 import { currentWeekMonday } from "@/lib/dashboard/weeks";
 import type { ExplainerId } from "@/lib/dashboard/explain";
 import { UI } from "./tokens";
-import { TrendChart, BarsChart, GroupedBars, type TrendSeries } from "./charts";
+import { TrendChart, ImpactQuadrant, type TrendSeries, type QuadPoint } from "./charts";
 import { CompareTable, bestIndex, type CompareRow } from "./compare";
 import Explain, { StatLabel } from "./Explain";
 
@@ -19,6 +19,12 @@ const fmtWeek = (iso: string) =>
 
 const AMENITY_LABEL = new Map(AMENITIES.map((a) => [a.key, a.label]));
 const NEG = "#D98B6A"; // warm terracotta for declines — no cool tones
+
+const THIN_SAMPLE = 80; // fewer "with" listings than this → dim + flag as low-confidence
+const signColor = (v: number | null) => (v == null ? UI.muted : v >= 0 ? UI.green : NEG);
+const fmtSignedPp = (v: number | null) => (v == null ? "—" : `${v >= 0 ? "+" : "−"}${Math.abs(v).toFixed(1)}pp`);
+const fmtSignedEuro = (v: number | null) =>
+  v == null ? "—" : `${v >= 0 ? "+" : "−"}${fmtEuro(Math.abs(v))}`;
 
 type MetricKey = "effOcc" | "medianAdr" | "revpar" | "bookings" | "listings";
 
@@ -56,14 +62,14 @@ function aggregate(rows: WeeklyRow[]) {
 function DeltaBadge({ delta, fmt, suffix }: { delta: number | null; fmt: (v: number) => string; suffix?: string }) {
   if (delta == null)
     return (
-      <span className="text-[12px]" style={{ color: UI.faint }}>
+      <span className="text-[13px]" style={{ color: UI.faint }}>
         —
       </span>
     );
   const up = delta >= 0;
   return (
     <span
-      className="inline-flex items-center gap-0.5 text-[12px] font-bold px-1.5 py-0.5 rounded-md"
+      className="inline-flex items-center gap-0.5 text-[13px] font-bold px-1.5 py-0.5 rounded-md"
       style={{
         color: up ? UI.green : NEG,
         background: up ? "rgba(143,204,128,0.1)" : "rgba(217,139,106,0.1)",
@@ -81,7 +87,7 @@ export default function MarketTab({ slots }: { slots: SlotView[] }) {
 }
 
 function SingleMarket({ market }: { market: MarketResponse | null }) {
-  const [amenitiesExpanded, setAmenitiesExpanded] = useState(false);
+  const [impactExpanded, setImpactExpanded] = useState(false);
   const cur = currentWeekMonday();
   const weekly = market?.weekly ?? [];
   const realized = weekly.filter((w) => w.weekStart < cur);
@@ -187,14 +193,49 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
   });
 
   const snap = market?.snapshot ?? null;
-  const mixTotal = snap?.typeMix.reduce((s, m) => s + m.count, 0) ?? 0;
-  const bedTotal = snap?.bedrooms.reduce((s, b) => s + b.count, 0) ?? 0;
+  const impact = snap?.amenityImpact ?? [];
+  // Curated default = biggest reliable gainers + any genuine losers; the rest
+  // appear only on "view all". Thin-sample amenities never make the default.
+  const solid = impact.filter((a) => a.nWith >= THIN_SAMPLE);
+  const standoutKeys = new Set(
+    [
+      ...solid.filter((a) => (a.revLift ?? 0) > 0).slice(0, 5),
+      ...solid.filter((a) => (a.revLift ?? 0) < 0).slice(-2),
+    ].map((a) => a.key)
+  );
+  if (standoutKeys.size === 0) impact.slice(0, 5).forEach((a) => standoutKeys.add(a.key));
+  const toQuad = (a: (typeof impact)[number]): QuadPoint => ({
+    key: a.key,
+    label: AMENITY_LABEL.get(a.key) ?? a.key,
+    x: a.occLift ?? 0,
+    y: a.ratePct ?? 0,
+    size: a.revLift ?? 0,
+    tone: (a.revLift ?? 0) < 0 ? "neg" : "pos",
+    thin: a.nWith < THIN_SAMPLE,
+    labeled: standoutKeys.has(a.key),
+    tip: [
+      { label: "Revenue / night", value: fmtSignedEuro(a.revLift), color: signColor(a.revLift) },
+      { label: "Occupancy", value: fmtSignedPp(a.occLift), color: signColor(a.occLift) },
+      {
+        label: "Price",
+        value:
+          a.rateLift != null
+            ? `${fmtSignedEuro(a.rateLift)}${a.ratePct != null ? ` (${a.ratePct >= 0 ? "+" : "−"}${Math.abs(a.ratePct)}%)` : ""}`
+            : "—",
+      },
+      { label: "Listings (with/without)", value: `${a.nWith} / ${a.nWithout}` },
+    ],
+  });
+  const quadPoints = (impactExpanded ? impact : impact.filter((a) => standoutKeys.has(a.key))).map(toQuad);
+  const beds = snap?.bedrooms ?? [];
+  const bedTotal = beds.reduce((s, b) => s + b.count, 0);
+  const maxBedRev = Math.max(1, ...beds.map((b) => b.revpar ?? 0));
 
   return (
     <div>
       {market?.filtersIgnored && (
         <div
-          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[14px]"
+          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[15px]"
           style={{ background: "rgba(217,139,106,0.08)", border: "1px solid rgba(217,139,106,0.25)", color: UI.text }}
         >
           <Info size={15} style={{ color: NEG }} className="shrink-0" />
@@ -219,7 +260,7 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
               </p>
               <DeltaBadge delta={c.delta} fmt={c.deltaFmt} suffix={c.deltaSuffix} />
             </div>
-            <p className="text-[12px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
+            <p className="text-[13px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
               {c.label}
               <Explain id={c.id} align={c.explainAlign ?? "left"} />
             </p>
@@ -227,7 +268,7 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
         ))}
       </motion.div>
       {scope.length > 0 && (
-        <p className="text-[12px] mt-1.5 flex items-center gap-1.5" style={{ color: UI.faint }}>
+        <p className="text-[13px] mt-1.5 flex items-center gap-1.5" style={{ color: UI.faint }}>
           {kpiIsForward
             ? `On the books across ${scope.length} upcoming ${scope.length === 1 ? "week" : "weeks"}`
             : `Across ${scope.length} completed ${scope.length === 1 ? "week" : "weeks"} (${fmtWeek(scope[0].weekStart)} – ${fmtWeek(scope[scope.length - 1].weekStart)})`}
@@ -249,7 +290,7 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
             <StatLabel id="eff_occ" align="left">
               Weekly occupancy
             </StatLabel>
-            <span className="text-[12px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+            <span className="text-[13px] flex items-center gap-1.5" style={{ color: UI.faint }}>
               % · dots &amp; shading mark events
               <Explain id="event_overlay" align="right" />
             </span>
@@ -269,7 +310,7 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
             <StatLabel id="median_adr" align="left">
               Weekly median rate
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               € / night
             </span>
           </div>
@@ -285,126 +326,98 @@ function SingleMarket({ market }: { market: MarketResponse | null }) {
         </div>
       </div>
 
-      {/* Current-state snapshot: distribution + supply mix */}
-      {snap && (
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-2.5 mt-2.5">
-          <div className="glass-card rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-4">
-              <StatLabel id="quartiles" align="left">
-                Price & occupancy spread
-              </StatLabel>
-              <span
-                className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1"
-                style={{ background: "rgba(255,255,255,0.06)", color: UI.muted }}
-              >
-                today <Explain id="current_state" align="right" />
-              </span>
-            </div>
-            <QuartileBar
-              label="Nightly rate"
-              q={snap.adrQuartiles}
-              fmt={(v) => fmtEuro(Math.round(v))}
-            />
-            <div className="mt-5">
-              <QuartileBar label="Occupancy" q={snap.occQuartiles} fmt={(v) => `${v.toFixed(0)}%`} />
-            </div>
-            <p className="text-[13px] mt-5 flex items-center gap-1.5" style={{ color: UI.muted }}>
-              Superhost share{" "}
-              <span className="font-bold" style={{ color: UI.text }}>
-                {fmtPct(snap.superhostShare)}
-              </span>
-              <Explain id="superhost" align="left" />
-            </p>
+      {/* What each amenity is worth — impact quadrant (occupancy × price,
+          bubble = revenue), like-for-like by bedroom×type. Default = the
+          standouts; "view all" reveals the rest. Association, not causation. */}
+      {snap && impact.length > 0 && (
+        <div className="glass-card rounded-2xl p-5 mt-2.5">
+          <div className="flex items-center justify-between mb-1">
+            <StatLabel id="amenity_impact" align="left">
+              What each amenity is worth here
+            </StatLabel>
+            <span className="text-[14px]" style={{ color: UI.faint }}>
+              vs similar-size, same-type places
+            </span>
           </div>
-
-          <div className="glass-card rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <StatLabel id="supply_mix" align="left">
-                Bedrooms
-              </StatLabel>
-              <span className="text-[12px]" style={{ color: UI.faint }}>
-                {fmtInt(bedTotal)} listings
+          <p className="text-[14px] mb-3" style={{ color: UI.faint }}>
+            Right = higher occupancy · up = higher price · bigger bubble = more
+            revenue a night. An association, not a guarantee.
+          </p>
+          <ImpactQuadrant
+            points={quadPoints}
+            xLabel="Occupancy increase  →"
+            yLabel="Price increase  ↑"
+            xFmt={(v) => `${v > 0 ? "+" : ""}${v}`}
+            yFmt={(v) => `${v > 0 ? "+" : ""}${v}%`}
+            corners={{ tl: "PREMIUM DRAW", tr: "TOP ALL-ROUNDER", br: "CROWD-PLEASER" }}
+          />
+          <div className="flex items-center justify-between flex-wrap gap-2 mt-3">
+            <div className="flex items-center gap-4">
+              <span className="flex items-center gap-1.5 text-[13px]" style={{ color: UI.muted }}>
+                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: UI.green }} /> earns more
+              </span>
+              <span className="flex items-center gap-1.5 text-[13px]" style={{ color: UI.muted }}>
+                <span className="w-2.5 h-2.5 rounded-full inline-block" style={{ background: NEG }} /> earns less
+              </span>
+              <span className="flex items-center gap-1.5 text-[13px]" style={{ color: UI.faint }}>
+                <span className="w-2.5 h-2.5 rounded-full inline-block border" style={{ borderColor: UI.faint, borderStyle: "dashed" }} /> thin sample
               </span>
             </div>
-            <BarsChart
-              data={snap.bedrooms.map((b) => ({ label: b.label, value: b.count }))}
-              yFmt={(v) => fmtInt(v)}
-              height={110}
-              highlightMax
-              showValues
-              emptyLabel="No listings in selection"
-            />
-            <div className="mt-4 flex flex-col gap-2.5">
-              {snap.typeMix.map((m) => {
-                const share = mixTotal ? (100 * m.count) / mixTotal : 0;
-                return (
-                  <div key={m.group}>
-                    <div className="flex items-center justify-between mb-1">
-                      <span className="text-[13px] font-medium" style={{ color: UI.text }}>
-                        {TYPE_GROUP_LABELS[m.group]}
-                      </span>
-                      <span className="text-[12px] font-semibold" style={{ color: UI.muted }}>
-                        {fmtInt(m.count)} · {share.toFixed(0)}%
-                      </span>
-                    </div>
-                    <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
-                      <motion.div
-                        className="h-full rounded-full"
-                        style={{ background: "linear-gradient(90deg,#4A5E3A,#8FCC80)" }}
-                        initial={{ width: 0 }}
-                        animate={{ width: `${share}%` }}
-                        transition={{ duration: 0.5 }}
-                      />
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          </div>
-
-          <div className="glass-card rounded-2xl p-5">
-            <div className="flex items-center justify-between mb-3">
-              <StatLabel id="supply_mix" align="left">
-                Amenities
-              </StatLabel>
-              <span className="text-[12px]" style={{ color: UI.faint }}>
-                % of listings that have it
-              </span>
-            </div>
-            <div className="flex flex-col gap-2.5">
-              {(amenitiesExpanded ? snap.amenities : snap.amenities.slice(0, 8)).map((a) => (
-                <div key={a.key}>
-                  <div className="flex items-center justify-between mb-1">
-                    <span className="text-[13px] font-medium" style={{ color: UI.text }}>
-                      {AMENITY_LABEL.get(a.key) ?? a.key}
-                    </span>
-                    <span className="text-[12px] font-semibold" style={{ color: UI.muted }}>
-                      {a.share.toFixed(0)}%
-                    </span>
-                  </div>
-                  <div className="h-1.5 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
-                    <div
-                      className="h-full rounded-full"
-                      style={{ background: "linear-gradient(90deg,#6B7B4F,#A8C290)", width: `${a.share}%` }}
-                    />
-                  </div>
-                </div>
-              ))}
-              {!snap.amenities.length && (
-                <p className="text-sm" style={{ color: UI.faint }}>
-                  No amenity data for this selection.
-                </p>
-              )}
-            </div>
-            {snap.amenities.length > 8 && (
+            {impact.length > quadPoints.length || impactExpanded ? (
               <button
-                onClick={() => setAmenitiesExpanded((v) => !v)}
-                className="mt-3 text-[13px] font-semibold transition-colors hover:opacity-80"
+                onClick={() => setImpactExpanded((v) => !v)}
+                className="text-[14px] font-semibold transition-colors hover:opacity-80"
                 style={{ color: UI.green }}
               >
-                {amenitiesExpanded ? "Show less" : `Show all ${snap.amenities.length}`}
+                {impactExpanded ? "Show fewer" : `View all ${impact.length} amenities`}
               </button>
-            )}
+            ) : null}
+          </div>
+        </div>
+      )}
+
+      {/* Supply vs return by size — how many of each size, and what they earn. */}
+      {snap && beds.length > 0 && bedTotal > 0 && (
+        <div className="glass-card rounded-2xl p-5 mt-2.5">
+          <div className="flex items-center justify-between mb-1">
+            <StatLabel id="supply_return" align="left">
+              Supply vs return, by size
+            </StatLabel>
+            <span className="text-[14px]" style={{ color: UI.faint }}>
+              today
+            </span>
+          </div>
+          <p className="text-[14px] mb-4" style={{ color: UI.faint }}>
+            How common each size is here, next to what it actually earns a night — where the
+            competition is vs where the money is.
+          </p>
+          <div className="grid gap-2" style={{ gridTemplateColumns: "64px 1fr 1fr", alignItems: "center" }}>
+            <span className="text-[12px] uppercase tracking-wider font-semibold" style={{ color: UI.faint }}>Size</span>
+            <span className="text-[12px] uppercase tracking-wider font-semibold" style={{ color: UI.faint }}>Share of listings</span>
+            <span className="text-[12px] uppercase tracking-wider font-semibold" style={{ color: UI.faint }}>Median €/night</span>
+            {beds.map((b) => {
+              const share = bedTotal ? (100 * b.count) / bedTotal : 0;
+              const isTop = b.revpar != null && b.revpar === maxBedRev && maxBedRev > 1;
+              return (
+                <Fragment key={b.label}>
+                  <span className="text-[14px] font-semibold" style={{ color: UI.text }}>{b.label}</span>
+                  <span className="flex items-center gap-2">
+                    <span className="relative block h-2 flex-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${share}%`, background: "linear-gradient(90deg,#4A5E3A,#6B7B4F)" }} />
+                    </span>
+                    <span className="text-[13px] tabular-nums w-9 text-right" style={{ color: UI.muted }}>{share.toFixed(0)}%</span>
+                  </span>
+                  <span className="flex items-center gap-2">
+                    <span className="relative block h-2 flex-1 rounded-full overflow-hidden" style={{ background: "rgba(255,255,255,0.07)" }}>
+                      <span className="absolute inset-y-0 left-0 rounded-full" style={{ width: `${b.revpar != null ? (b.revpar / maxBedRev) * 100 : 0}%`, background: isTop ? UI.green : "linear-gradient(90deg,rgba(143,204,128,0.7),#8FCC80)" }} />
+                    </span>
+                    <span className="text-[14px] font-bold tabular-nums w-12 text-right" style={{ color: isTop ? UI.green : UI.text }}>
+                      {b.revpar != null ? fmtEuro(b.revpar) : "—"}
+                    </span>
+                  </span>
+                </Fragment>
+              );
+            })}
           </div>
         </div>
       )}
@@ -487,7 +500,6 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
 
   // Snapshot comparisons (current-state, ignores the week picker).
   const snaps = slots.map((v) => v.market?.snapshot ?? null);
-  const bedroomLabels = [...new Set(snaps.flatMap((s) => s?.bedrooms.map((b) => b.label) ?? []))];
   const amenityKeysAll = [...new Set(snaps.flatMap((s) => s?.amenities.map((a) => a.key) ?? []))]
     .map((key) => ({
       key,
@@ -501,7 +513,7 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
     <div>
       {ignored.length > 0 && (
         <div
-          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[14px]"
+          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[15px]"
           style={{ background: "rgba(217,139,106,0.08)", border: "1px solid rgba(217,139,106,0.25)", color: UI.text }}
         >
           <Info size={15} style={{ color: NEG }} className="shrink-0" />
@@ -517,7 +529,7 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
           <StatLabel id="compare" align="left">
             Head to head
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             {allForward
               ? "on the books · upcoming weeks in your range"
               : `over ${Math.max(...scopeLens, 0)} completed ${Math.max(...scopeLens, 0) === 1 ? "week" : "weeks"} in your range`}
@@ -533,7 +545,7 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
             <StatLabel id="eff_occ" align="left">
               Weekly occupancy
             </StatLabel>
-            <span className="text-[12px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+            <span className="text-[13px] flex items-center gap-1.5" style={{ color: UI.faint }}>
               % · dots &amp; shading mark events
               <Explain id="event_overlay" align="right" />
             </span>
@@ -554,7 +566,7 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
             <StatLabel id="median_adr" align="left">
               Weekly median rate
             </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[13px]" style={{ color: UI.faint }}>
               € / night
             </span>
           </div>
@@ -571,204 +583,48 @@ function CompareMarket({ slots }: { slots: SlotView[] }) {
         </div>
       </div>
 
-      {/* Current-state snapshot, side by side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-4">
-            <StatLabel id="quartiles" align="left">
-              Price &amp; occupancy spread
-            </StatLabel>
-            <span
-              className="text-[11px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full flex items-center gap-1"
-              style={{ background: "rgba(255,255,255,0.06)", color: UI.muted }}
-            >
-              today <Explain id="current_state" align="right" />
-            </span>
-          </div>
+      {/* Current-state snapshot: amenities */}
+      <div className="glass-card rounded-2xl p-5 mt-2.5">
+        <div className="flex items-center justify-between mb-3">
+          <StatLabel id="supply_mix" align="left">
+            Amenities
+          </StatLabel>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
+            % of listings that have it · today
+          </span>
+        </div>
+        {amenityKeys.length ? (
           <CompareTable
             slots={slots}
-            rows={[
-              {
-                label: "Nightly rate p25–median–p75",
-                values: snaps.map((s) =>
-                  s?.adrQuartiles
-                    ? `${fmtEuro(Math.round(s.adrQuartiles[0]))} · ${fmtEuro(Math.round(s.adrQuartiles[1]))} · ${fmtEuro(Math.round(s.adrQuartiles[2]))}`
-                    : null
-                ),
-                best: null,
-              },
-              {
-                label: "Occupancy p25–median–p75",
-                values: snaps.map((s) =>
-                  s?.occQuartiles
-                    ? `${s.occQuartiles[0].toFixed(0)}% · ${s.occQuartiles[1].toFixed(0)}% · ${s.occQuartiles[2].toFixed(0)}%`
-                    : null
-                ),
-                best: bestIndex(snaps.map((s) => s?.occQuartiles?.[1] ?? null)),
-              },
-              {
-                label: "Superhost share",
-                explain: "superhost",
-                values: snaps.map((s) => fmtPct(s?.superhostShare)),
-                best: null,
-              },
-            ]}
-          />
-        </div>
-
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <StatLabel id="supply_mix" align="left">
-              Bedrooms
-            </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
-              listings per size · today
-            </span>
-          </div>
-          <GroupedBars
-            data={bedroomLabels.map((label) => ({
-              label,
-              values: snaps.map((s) => s?.bedrooms.find((b) => b.label === label)?.count ?? null),
+            rows={amenityKeys.map((key) => ({
+              label: AMENITY_LABEL.get(key) ?? key,
+              values: snaps.map((s) => {
+                const a = s?.amenities.find((x) => x.key === key);
+                return a ? `${a.share.toFixed(0)}%` : null;
+              }),
+              best: null,
             }))}
-            series={slots.map((v) => ({ label: v.label, color: v.color }))}
-            yFmt={(v) => fmtInt(v)}
-            height={110}
-            emptyLabel="No listings in these selections"
           />
-        </div>
+        ) : (
+          <p className="text-sm" style={{ color: UI.faint }}>
+            No amenity data for these selections.
+          </p>
+        )}
+        {amenityKeysAll.length > 8 && (
+          <button
+            onClick={() => setAmenitiesExpanded((v) => !v)}
+            className="mt-3 text-[14px] font-semibold transition-colors hover:opacity-80"
+            style={{ color: UI.green }}
+          >
+            {amenitiesExpanded ? "Show less" : `Show all ${amenityKeysAll.length}`}
+          </button>
+        )}
       </div>
 
-      {/* Type mix + amenities, side by side */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <StatLabel id="supply_mix" align="left">
-              Property types
-            </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
-              share of listings · today
-            </span>
-          </div>
-          <CompareTable
-            slots={slots}
-            rows={(["apartment", "house", "hotel", "other"] as const).map((g) => {
-              const shares = snaps.map((s) => {
-                if (!s) return null;
-                const total = s.typeMix.reduce((sum, m) => sum + m.count, 0);
-                const m = s.typeMix.find((x) => x.group === g);
-                return total && m ? (100 * m.count) / total : null;
-              });
-              return {
-                label: TYPE_GROUP_LABELS[g],
-                values: shares.map((v) => (v != null ? `${v.toFixed(0)}%` : null)),
-                best: null,
-              };
-            })}
-          />
-        </div>
-
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
-            <StatLabel id="supply_mix" align="left">
-              Amenities
-            </StatLabel>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
-              % of listings that have it · today
-            </span>
-          </div>
-          {amenityKeys.length ? (
-            <CompareTable
-              slots={slots}
-              rows={amenityKeys.map((key) => ({
-                label: AMENITY_LABEL.get(key) ?? key,
-                values: snaps.map((s) => {
-                  const a = s?.amenities.find((x) => x.key === key);
-                  return a ? `${a.share.toFixed(0)}%` : null;
-                }),
-                best: null,
-              }))}
-            />
-          ) : (
-            <p className="text-sm" style={{ color: UI.faint }}>
-              No amenity data for these selections.
-            </p>
-          )}
-          {amenityKeysAll.length > 8 && (
-            <button
-              onClick={() => setAmenitiesExpanded((v) => !v)}
-              className="mt-3 text-[13px] font-semibold transition-colors hover:opacity-80"
-              style={{ color: UI.green }}
-            >
-              {amenitiesExpanded ? "Show less" : `Show all ${amenityKeysAll.length}`}
-            </button>
-          )}
-        </div>
-      </div>
-
-      <p className="text-[12px] mt-2.5" style={{ color: UI.faint }}>
+      <p className="text-[13px] mt-2.5" style={{ color: UI.faint }}>
         Absolute counts (listings, bookings) favour bigger areas — lean on the per-listing and
         percentage rows when the areas differ in size.
       </p>
-    </div>
-  );
-}
-
-/** p25 → median → p75 as a range bar with labelled markers. */
-function QuartileBar({
-  label,
-  q,
-  fmt,
-}: {
-  label: string;
-  q: [number, number, number] | null;
-  fmt: (v: number) => string;
-}) {
-  if (!q) {
-    return (
-      <div>
-        <p className="text-[13px] font-medium mb-1.5" style={{ color: UI.text }}>
-          {label}
-        </p>
-        <p className="text-sm" style={{ color: UI.faint }}>
-          Not enough data.
-        </p>
-      </div>
-    );
-  }
-  const [p25, med, p75] = q;
-  const lo = p25 * 0.75;
-  const hi = p75 * 1.2;
-  const pos = (v: number) => `${Math.max(0, Math.min(100, (100 * (v - lo)) / (hi - lo)))}%`;
-  return (
-    <div>
-      <p className="text-[13px] font-medium mb-2" style={{ color: UI.text }}>
-        {label}
-      </p>
-      <div className="relative h-2 rounded-full" style={{ background: "rgba(255,255,255,0.07)" }}>
-        <div
-          className="absolute h-full rounded-full"
-          style={{
-            left: pos(p25),
-            width: `calc(${pos(p75)} - ${pos(p25)})`,
-            background: "linear-gradient(90deg,rgba(143,204,128,0.35),rgba(143,204,128,0.7))",
-          }}
-        />
-        <div
-          className="absolute w-[3px] h-4 -top-1 rounded-full"
-          style={{ left: pos(med), background: UI.green }}
-        />
-      </div>
-      <div className="flex justify-between mt-2 text-[12px]" style={{ color: UI.muted }}>
-        <span>
-          25% under <b style={{ color: UI.text }}>{fmt(p25)}</b>
-        </span>
-        <span>
-          median <b style={{ color: UI.green }}>{fmt(med)}</b>
-        </span>
-        <span>
-          25% over <b style={{ color: UI.text }}>{fmt(p75)}</b>
-        </span>
-      </div>
     </div>
   );
 }

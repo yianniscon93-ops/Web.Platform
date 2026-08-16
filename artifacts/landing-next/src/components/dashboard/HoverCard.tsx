@@ -47,7 +47,7 @@ export default function HoverCard({
         )}
       </div>
 
-      <p className="flex items-center gap-1 text-xs mt-1" style={{ color: UI.muted }}>
+      <p className="flex items-center gap-1 text-[13px] mt-1" style={{ color: UI.muted }}>
         <MapPin size={9} style={{ color: UI.oliveMid }} />
         {listing.areaLabel ?? areaLabel(listing.areaSlug)} · {listing.propertyType ?? "—"}
       </p>
@@ -59,34 +59,34 @@ export default function HoverCard({
         <span className="font-display font-bold text-sm mb-0.5" style={{ color: UI.oliveMid }}>
           %
         </span>
-        <span className="text-[12px] mb-1" style={{ color: UI.faint }}>
+        <span className="text-[13px] mb-1" style={{ color: UI.faint }}>
           booked · {window_ === "todate" ? "season to date" : "next 60d"}
         </span>
       </div>
 
       <div className="grid grid-cols-2 gap-x-3 gap-y-1 mt-2.5">
-        <span className="text-xs" style={{ color: UI.muted }}>
+        <span className="text-[13px]" style={{ color: UI.muted }}>
           <BedDouble size={9} className="inline mr-1 -mt-px" style={{ color: UI.oliveMid }} />
           {listing.bedrooms ?? "—"} bed · {listing.beds ?? "—"} beds
         </span>
-        <span className="text-xs text-right font-semibold" style={{ color: UI.text }}>
+        <span className="text-[13px] text-right font-semibold" style={{ color: UI.text }}>
           {fmtEuro(listing.nightlyRate)}/night
         </span>
-        <span className="text-xs" style={{ color: UI.muted }}>
+        <span className="text-[13px]" style={{ color: UI.muted }}>
           <Star size={9} className="inline mr-1 -mt-px" fill={UI.oliveLight} color={UI.oliveLight} />
           {listing.rating != null ? `${listing.rating.toFixed(2)} (${listing.reviewCount ?? 0})` : "no rating"}
         </span>
-        <span className="text-xs text-right" style={{ color: UI.muted }}>
+        <span className="text-[13px] text-right" style={{ color: UI.muted }}>
           pace {fmtPct(listing.effOccFwd60)}
         </span>
         {listing.sizeSqm != null && (
-          <span className="text-xs" style={{ color: UI.muted }}>
+          <span className="text-[13px]" style={{ color: UI.muted }}>
             <Ruler size={9} className="inline mr-1 -mt-px" style={{ color: UI.oliveMid }} />
             {listing.sizeSqm} m²
           </span>
         )}
         {listing.proximityBeachMin != null && (
-          <span className="text-xs text-right" style={{ color: UI.muted }}>
+          <span className="text-[13px] text-right" style={{ color: UI.muted }}>
             <Waves size={9} className="inline mr-1 -mt-px" style={{ color: UI.oliveMid }} />
             beach {listing.proximityBeachMin} min
           </span>
@@ -97,7 +97,7 @@ export default function HoverCard({
         <div className="flex gap-1.5 mt-2.5">
           {listing.isSuperhost && (
             <span
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] font-semibold"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[13px] font-semibold"
               style={{ background: "rgba(143,204,128,0.12)", color: UI.green }}
             >
               <Award size={9} /> Superhost
@@ -105,7 +105,7 @@ export default function HoverCard({
           )}
           {listing.isGuestFav && (
             <span
-              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[12px] font-semibold"
+              className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded text-[13px] font-semibold"
               style={{ background: "rgba(168,194,144,0.12)", color: UI.oliveLight }}
             >
               <Heart size={9} /> Guest favourite
@@ -115,7 +115,7 @@ export default function HoverCard({
       )}
 
       {amenityLabels.length > 0 && (
-        <p className="text-[12px] mt-2 leading-relaxed" style={{ color: UI.faint }}>
+        <p className="text-[13px] mt-2 leading-relaxed" style={{ color: UI.faint }}>
           {amenityLabels.join(" · ")}
           {listing.amenities.length > 5 && ` · +${listing.amenities.length - 5} more`}
         </p>

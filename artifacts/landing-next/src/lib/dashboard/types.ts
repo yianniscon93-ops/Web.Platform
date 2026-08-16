@@ -238,10 +238,34 @@ export interface MarketSnapshot {
   adrQuartiles: [number, number, number] | null; // p25 / median / p75
   occQuartiles: [number, number, number] | null;
   superhostShare: number | null;
-  bedrooms: Array<{ label: string; count: number }>;
+  /** count = listings of that size; revpar/rate = medians for that size (current). */
+  bedrooms: Array<{ label: string; count: number; revpar: number | null; rate: number | null }>;
   typeMix: Array<{ group: TypeGroup; count: number }>;
   /** share = % of listings in selection that have the amenity (0–100). */
   amenities: Array<{ key: string; share: number }>;
+  /** Like-for-like amenity association (cohort-stratified). Empty if the
+   * selection is too thin to compare. Ranked by revenue lift, desc. */
+  amenityImpact: AmenityImpact[];
+}
+
+/**
+ * How an amenity is *associated with* performance, holding property size and
+ * type roughly constant (compared within bedroom × type cohorts in the
+ * selection, then sample-weighted). Association, not causation.
+ */
+export interface AmenityImpact {
+  key: string;
+  /** Median occupancy points, with − without (pp). */
+  occLift: number | null;
+  /** Median nightly rate difference, with − without (€). */
+  rateLift: number | null;
+  /** Same as rateLift but as a % of the without-median. */
+  ratePct: number | null;
+  /** Median realised €/available night (rate × occ), with − without (€). */
+  revLift: number | null;
+  /** Listings backing the comparison (summed over qualifying cohorts). */
+  nWith: number;
+  nWithout: number;
 }
 
 export interface MarketResponse {

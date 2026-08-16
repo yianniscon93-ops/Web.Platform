@@ -146,7 +146,7 @@ export default function DateRangeCalendar({
         disabled={disabled}
         onClick={() => pick(day)}
         onMouseEnter={() => setHoverDay(day)}
-        className="relative w-9 h-9 flex items-center justify-center text-[12.5px] font-medium rounded-full transition-colors disabled:cursor-not-allowed"
+        className="relative w-9 h-9 flex items-center justify-center text-[13px] font-medium rounded-full transition-colors disabled:cursor-not-allowed"
         style={{
           color: disabled ? "rgba(234,240,223,0.22)" : isStart || isEnd ? "#0C100A" : UI.text,
           background:
@@ -184,14 +184,14 @@ export default function DateRangeCalendar({
       >
         <CalendarRange size={15} style={{ color: UI.green }} />
         <span className="flex flex-col items-start leading-tight">
-          <span className="text-[9.5px] font-bold uppercase tracking-wider" style={{ color: UI.faint }}>
+          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: UI.faint }}>
             Date range
           </span>
           <span className="flex items-baseline gap-1.5">
-            <span className="text-[13px] font-semibold" style={{ color: UI.text }}>
+            <span className="text-[14px] font-semibold" style={{ color: UI.text }}>
               {fmtDay(selStart)} → {fmtDay(selEnd)}
             </span>
-            <span className="text-[11px]" style={{ color: UI.faint }}>
+            <span className="text-[12px]" style={{ color: UI.faint }}>
               {Math.round((+new Date(`${addDays(sundayOf(selEnd), 1)}T00:00:00Z`) - +new Date(`${mondayOf(selStart)}T00:00:00Z`)) / (7 * 86400000))}{" "}
               wks
             </span>
@@ -223,7 +223,7 @@ export default function DateRangeCalendar({
             >
               <ChevronLeft size={15} style={{ color: UI.text }} />
             </button>
-            <p className="text-[12px]" style={{ color: UI.muted }}>
+            <p className="text-[13px]" style={{ color: UI.muted }}>
               {draftStart ? "Now pick the last day" : "Pick the first day of your range"}
             </p>
             <button
@@ -239,12 +239,12 @@ export default function DateRangeCalendar({
           <div className="flex gap-6 justify-center">
             {months.map((m) => (
               <div key={m} className="hidden first:block sm:block">
-                <p className="text-center text-[13px] font-bold mb-2" style={{ color: UI.text }}>
+                <p className="text-center text-[14px] font-bold mb-2" style={{ color: UI.text }}>
                   {fmtMonth(m)}
                 </p>
                 <div className="grid grid-cols-7 gap-y-0.5">
                   {DOW.map((d) => (
-                    <span key={d} className="w-9 h-7 flex items-center justify-center text-[10.5px] font-bold uppercase" style={{ color: UI.faint }}>
+                    <span key={d} className="w-9 h-7 flex items-center justify-center text-[12px] font-bold uppercase" style={{ color: UI.faint }}>
                       {d}
                     </span>
                   ))}
@@ -255,7 +255,7 @@ export default function DateRangeCalendar({
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3" style={{ borderTop: `1px solid ${UI.border}` }}>
-            <span className="text-[11.5px]" style={{ color: UI.muted }}>
+            <span className="text-[13px]" style={{ color: UI.muted }}>
               Stats aggregate by whole weeks:{" "}
               <b style={{ color: UI.text }}>
                 Mon {fmtDay(snapStart)} – Sun {fmtDay(snapEnd)}
@@ -271,7 +271,7 @@ export default function DateRangeCalendar({
                     setDraftStart(null);
                     setOpen(false);
                   }}
-                  className="px-2.5 py-1 rounded-md text-[11.5px] font-semibold transition-colors hover:bg-white/[0.08]"
+                  className="px-2.5 py-1 rounded-md text-[13px] font-semibold transition-colors hover:bg-white/[0.08]"
                   style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
                 >
                   {p.label}

@@ -97,7 +97,7 @@ function Segmented<T extends string>({
           <button
             key={o.value}
             onClick={() => onChange(o.value)}
-            className="px-3 py-1.5 rounded-md text-xs font-semibold transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 rounded-md text-[13px] font-semibold transition-colors whitespace-nowrap"
             style={
               active
                 ? { background: UI.olive, color: "#FFFFFF" }
@@ -554,7 +554,7 @@ export default function DashboardClient() {
 
         <div className="flex items-center gap-3">
           {summary && (
-            <span className="text-xs hidden md:flex items-center gap-1.5" style={{ color: UI.muted }}>
+            <span className="text-[13px] hidden md:flex items-center gap-1.5" style={{ color: UI.muted }}>
               Calendars through {fmtDate(summary.todateEnd)}
               {summary.bookingsThrough && <> · bookings to {fmtDate(summary.bookingsThrough)}</>}
               <Explain id="freshness" align="right" />
@@ -562,7 +562,7 @@ export default function DashboardClient() {
           )}
           {summary && (
             <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[11px] font-bold tracking-wide"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold tracking-wide"
               style={
                 summary.source === "live"
                   ? { background: "rgba(143,204,128,0.12)", color: UI.green }
@@ -619,7 +619,7 @@ export default function DashboardClient() {
               style={{ boxShadow: `0 0 0 1.5px ${UI.green}44` }}
             >
               <CheckCircle2 size={17} style={{ color: UI.green }} className="shrink-0" />
-              <span className="text-[13px] leading-snug" style={{ color: UI.text }}>
+              <span className="text-[14px] leading-snug" style={{ color: UI.text }}>
                 Now showing{" "}
                 <b style={{ color: UI.green }}>{selectionToast}</b>
                 {" — "}
@@ -685,14 +685,14 @@ export default function DashboardClient() {
         </div>
         {drawing && (
           <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
-            <span className="glass-dark rounded-xl px-3.5 py-2 text-xs font-medium whitespace-nowrap" style={{ color: UI.text }}>
+            <span className="glass-dark rounded-xl px-3.5 py-2 text-[13px] font-medium whitespace-nowrap" style={{ color: UI.text }}>
               Click to add points · double-click or ⏎ to finish · Esc to cancel
             </span>
           </div>
         )}
         {armed && !drawing && (
           <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
-            <span className="glass-dark rounded-xl px-3.5 py-2 text-xs font-medium whitespace-nowrap" style={{ color: UI.text }}>
+            <span className="glass-dark rounded-xl px-3.5 py-2 text-[13px] font-medium whitespace-nowrap" style={{ color: UI.text }}>
               Search an area or draw one — it&apos;ll be added to the comparison
             </span>
           </div>
@@ -706,7 +706,7 @@ export default function DashboardClient() {
         {/* Mobile filter toggle + drawer */}
         <button
           onClick={() => setMobileFilters(true)}
-          className="lg:hidden absolute left-3 top-3 z-[900] glass-dark rounded-xl px-3 h-11 flex items-center gap-2 text-xs font-semibold"
+          className="lg:hidden absolute left-3 top-3 z-[900] glass-dark rounded-xl px-3 h-11 flex items-center gap-2 text-[13px] font-semibold"
           style={{ color: UI.text }}
         >
           <SlidersHorizontal size={14} style={{ color: UI.green }} />
@@ -749,7 +749,7 @@ export default function DashboardClient() {
 
         {/* Occupancy legend + map-colour window toggle */}
         <div className="absolute left-3 lg:left-[304px] bottom-3 z-[900] glass-light rounded-lg px-3 py-2">
-          <p className="text-[10px] font-semibold mb-1" style={{ color: "#4C5546" }}>
+          <p className="text-[12px] font-semibold mb-1" style={{ color: "#4C5546" }}>
             Occupancy · {window_ === "todate" ? "season to date" : "next 60 days"}
           </p>
           <div
@@ -757,8 +757,8 @@ export default function DashboardClient() {
             style={{ background: "linear-gradient(90deg,#D8DECB,#8FA36B,#4A5E3A,#26331C)" }}
           />
           <div className="flex justify-between mt-0.5">
-            <span className="text-[9px]" style={{ color: "#69725F" }}>40%</span>
-            <span className="text-[9px]" style={{ color: "#69725F" }}>95%</span>
+            <span className="text-[11px]" style={{ color: "#69725F" }}>40%</span>
+            <span className="text-[11px]" style={{ color: "#69725F" }}>95%</span>
           </div>
         </div>
       </section>
@@ -793,7 +793,7 @@ export default function DashboardClient() {
             {canAdd && (
               <button
                 onClick={() => setArmed((a) => !a)}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
                 style={
                   armed
                     ? { color: UI.green, border: `1px solid ${UI.green}66` }
@@ -805,7 +805,7 @@ export default function DashboardClient() {
             )}
             <button
               onClick={clearAll}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
               style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
             >
               <X size={11} /> Clear all
@@ -827,7 +827,7 @@ export default function DashboardClient() {
             {single.selection.kind !== "all" && (
               <button
                 onClick={clearAll}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
                 style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
               >
                 <X size={11} /> Clear selection
@@ -835,7 +835,7 @@ export default function DashboardClient() {
             )}
             <button
               onClick={() => setArmed((a) => !a)}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold transition-colors hover:bg-white/10 sm:hidden"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10 sm:hidden"
               style={
                 armed
                   ? { color: UI.green, border: `1px solid ${UI.green}66` }

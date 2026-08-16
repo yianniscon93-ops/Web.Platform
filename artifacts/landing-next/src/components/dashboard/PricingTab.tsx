@@ -105,12 +105,12 @@ function SinglePricing({
             <p className="font-display font-bold text-2xl leading-none" style={{ color: c.accent ? UI.green : UI.text }}>
               {c.value}
             </p>
-            <p className="text-[12px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
+            <p className="text-[13px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
               {c.label}
               <Explain id={c.id} align="left" />
             </p>
             {"hint" in c && c.hint && (
-              <p className="text-[12px]" style={{ color: UI.faint }}>
+              <p className="text-[13px]" style={{ color: UI.faint }}>
                 {c.hint}
               </p>
             )}
@@ -125,7 +125,7 @@ function SinglePricing({
             <StatLabel id="forward_rates" align="left">
               Forward rates · next 6 months
             </StatLabel>
-            <p className="text-[12px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+            <p className="text-[13px] flex items-center gap-1.5" style={{ color: UI.faint }}>
               Tue/Fri check-in samples
               <Explain id="tue_fri_sample" align="right" />
             </p>
@@ -165,7 +165,7 @@ function SinglePricing({
             <StatLabel id="quartiles" align="left">
               Price distribution
             </StatLabel>
-            <p className="text-[12px]" style={{ color: UI.faint }}>
+            <p className="text-[13px]" style={{ color: UI.faint }}>
               listings per €25 rate band · today
             </p>
           </div>
@@ -189,7 +189,7 @@ function SinglePricing({
             <StatLabel id="price_by_bedrooms" align="left">
               Median rate by bedrooms
             </StatLabel>
-            <p className="text-[12px]" style={{ color: UI.faint }}>
+            <p className="text-[13px]" style={{ color: UI.faint }}>
               count per size in brackets · today
             </p>
           </div>
@@ -212,7 +212,7 @@ function SinglePricing({
             <StatLabel id="sweet_spot" align="left">
               Revenue by price band
             </StatLabel>
-            <p className="text-[12px]" style={{ color: UI.faint }}>
+            <p className="text-[13px]" style={{ color: UI.faint }}>
               € per available night per €50 band · tallest = sweet spot
             </p>
           </div>
@@ -243,7 +243,7 @@ function SinglePricing({
           <StatLabel id="amenity_premium" align="left">
             What amenities are worth here
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             inside your current selection · today
           </span>
         </div>
@@ -267,15 +267,15 @@ function SinglePricing({
                     <span className="font-display font-bold text-xl" style={{ color: rateD != null && rateD >= 0 ? UI.green : "#D98B6A" }}>
                       {rateD != null ? `${rateD >= 0 ? "+" : ""}${rateD.toFixed(0)}%` : "—"}
                     </span>
-                    <span className="text-[13px]" style={{ color: UI.muted }}>
+                    <span className="text-[14px]" style={{ color: UI.muted }}>
                       on the nightly rate
                     </span>
                   </div>
-                  <p className="text-[13px] mt-1" style={{ color: UI.muted }}>
+                  <p className="text-[14px] mt-1" style={{ color: UI.muted }}>
                     {fmtEuro(p.withMedianRate)} with · {fmtEuro(p.withoutMedianRate)} without
                   </p>
                   {occD != null && (
-                    <p className="text-[13px] mt-1.5" style={{ color: UI.muted }}>
+                    <p className="text-[14px] mt-1.5" style={{ color: UI.muted }}>
                       Occupancy{" "}
                       <b style={{ color: occD >= 0 ? UI.green : "#D98B6A" }}>
                         {occD >= 0 ? "+" : ""}
@@ -284,7 +284,7 @@ function SinglePricing({
                       ({fmtPct(p.withMedianOcc)} vs {fmtPct(p.withoutMedianOcc)})
                     </p>
                   )}
-                  <p className="text-[12px] mt-1.5" style={{ color: UI.faint }}>
+                  <p className="text-[13px] mt-1.5" style={{ color: UI.faint }}>
                     {p.withCount.toLocaleString("en-GB")} with · {p.withoutCount.toLocaleString("en-GB")} without
                   </p>
                 </div>
@@ -297,7 +297,7 @@ function SinglePricing({
             to compare pool, sea-view and hot-tub premiums.
           </p>
         )}
-        <p className="text-[12px] mt-3.5" style={{ color: UI.faint }}>
+        <p className="text-[13px] mt-3.5" style={{ color: UI.faint }}>
           Coming soon: weekend &amp; holiday premiums (needs day-of-week price rotation).
         </p>
       </div>
@@ -336,7 +336,7 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
           <StatLabel id="compare" align="left">
             Pricing head to head
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             current asking rates · today
           </span>
         </div>
@@ -385,7 +385,7 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
             <StatLabel id="forward_rates" align="left">
               Forward rates · next 6 months
             </StatLabel>
-            <p className="text-[12px] flex items-center gap-1.5" style={{ color: UI.faint }}>
+            <p className="text-[13px] flex items-center gap-1.5" style={{ color: UI.faint }}>
               medians · Tue/Fri check-in samples
               <Explain id="tue_fri_sample" align="right" />
             </p>
@@ -418,7 +418,7 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
             <StatLabel id="price_by_bedrooms" align="left">
               Median rate by bedrooms
             </StatLabel>
-            <p className="text-[12px]" style={{ color: UI.faint }}>
+            <p className="text-[13px]" style={{ color: UI.faint }}>
               sizes with ≥5 listings · today
             </p>
           </div>
@@ -444,14 +444,14 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
           <StatLabel id="quartiles" align="left">
             Price distribution
           </StatLabel>
-          <p className="text-[12px]" style={{ color: UI.faint }}>
+          <p className="text-[13px]" style={{ color: UI.faint }}>
             listings per €25 rate band · today
           </p>
         </div>
         <div className={`grid grid-cols-1 ${slots.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5`}>
           {slots.map((v) => (
             <div key={v.id}>
-              <p className="text-[12px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
+              <p className="text-[13px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
                 <SlotDot color={v.color} dash={v.dash} />
                 {v.label}
               </p>
@@ -477,14 +477,14 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
           <StatLabel id="sweet_spot" align="left">
             Revenue by price band
           </StatLabel>
-          <p className="text-[12px]" style={{ color: UI.faint }}>
+          <p className="text-[13px]" style={{ color: UI.faint }}>
             € per available night per €50 band · tallest = sweet spot
           </p>
         </div>
         <div className={`grid grid-cols-1 ${slots.length === 2 ? "lg:grid-cols-2" : "lg:grid-cols-3"} gap-5`}>
           {slots.map((v) => (
             <div key={v.id}>
-              <p className="text-[12px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
+              <p className="text-[13px] font-semibold mb-2 flex items-center gap-1.5" style={{ color: UI.muted }}>
                 <SlotDot color={v.color} dash={v.dash} />
                 {v.label}
               </p>
@@ -516,7 +516,7 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
           <StatLabel id="amenity_premium" align="left">
             What amenities are worth
           </StatLabel>
-          <span className="text-[12px]" style={{ color: UI.faint }}>
+          <span className="text-[13px]" style={{ color: UI.faint }}>
             rate premium with vs without · today
           </span>
         </div>
@@ -548,7 +548,7 @@ function ComparePricing({ slots }: { slots: SlotView[] }) {
             };
           })}
         />
-        <p className="text-[12px] mt-3" style={{ color: UI.faint }}>
+        <p className="text-[13px] mt-3" style={{ color: UI.faint }}>
           — means too few listings on one side of the split in that area (needs {MIN_SPLIT}+ with
           and without).
         </p>

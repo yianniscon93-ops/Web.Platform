@@ -97,7 +97,7 @@ export default function Explain({ id, align = "center" }: { id: ExplainerId; ali
           e.stopPropagation();
           setOpen((o) => !o);
         }}
-        className="inline-flex items-center justify-center w-[19px] h-[19px] rounded-full text-[11px] leading-none transition-transform hover:scale-110"
+        className="inline-flex items-center justify-center w-[19px] h-[19px] rounded-full text-[12px] leading-none transition-transform hover:scale-110"
         style={{
           background: open ? "rgba(143,204,128,0.18)" : "rgba(255,255,255,0.07)",
           border: `1px solid ${open ? "rgba(143,204,128,0.4)" : UI.border}`,
@@ -130,10 +130,10 @@ export default function Explain({ id, align = "center" }: { id: ExplainerId; ali
                 onMouseEnter={() => setOpen(true)}
                 onMouseLeave={() => setOpen(false)}
               >
-                <span className="block text-[13.5px] font-bold mb-1" style={{ color: UI.green }}>
+                <span className="block text-[14px] font-bold mb-1" style={{ color: UI.green }}>
                   💡 {title}
                 </span>
-                <span className="block text-[13.5px] leading-[1.5] font-normal normal-case tracking-normal" style={{ color: UI.text }}>
+                <span className="block text-[14px] leading-[1.5] font-normal normal-case tracking-normal" style={{ color: UI.text }}>
                   {text}
                 </span>
               </motion.span>
@@ -157,7 +157,7 @@ export function StatLabel({
 }) {
   return (
     <span className="inline-flex items-center gap-1.5">
-      <span className="text-[13px] font-bold uppercase tracking-wider" style={{ color: UI.text }}>
+      <span className="text-[14px] font-bold uppercase tracking-wider" style={{ color: UI.text }}>
         {children}
       </span>
       <Explain id={id} align={align} />

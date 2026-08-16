@@ -9,7 +9,7 @@ import { UI } from "./tokens";
 function Chip({ label, onClear }: { label: string; onClear: () => void }) {
   return (
     <span
-      className="inline-flex items-center gap-1 pl-2.5 pr-1.5 py-1 rounded-full text-[11px] font-semibold"
+      className="inline-flex items-center gap-1 pl-2.5 pr-1.5 py-1 rounded-full text-[12px] font-semibold"
       style={{ background: UI.olive, color: "#FFFFFF" }}
     >
       {label}
@@ -40,13 +40,13 @@ function Section({
     <div className="border-t pt-3 mt-3" style={{ borderColor: UI.border }}>
       <button className="w-full flex items-center justify-between" onClick={() => setOpen(!open)}>
         <span
-          className="text-[11px] font-bold uppercase tracking-[0.14em] flex items-center gap-1.5"
+          className="text-[12px] font-bold uppercase tracking-[0.14em] flex items-center gap-1.5"
           style={{ color: UI.text }}
         >
           {title}
           {badge != null && badge > 0 && (
             <span
-              className="w-4 h-4 rounded-full text-[10px] font-bold flex items-center justify-center"
+              className="w-4 h-4 rounded-full text-[12px] font-bold flex items-center justify-center"
               style={{ background: UI.green, color: UI.bg }}
             >
               {badge}
@@ -92,7 +92,7 @@ function Check({
         )}
       </span>
       <span
-        className="text-[13px] flex-1 truncate transition-colors group-hover:text-white"
+        className="text-[14px] flex-1 truncate transition-colors group-hover:text-white"
         style={{ color: checked ? UI.text : UI.muted }}
       >
         {label}
@@ -153,13 +153,13 @@ export default function FilterPanel({
       {/* Header */}
       <div className="flex items-center justify-between">
         <span
-          className="flex items-center gap-2 text-xs font-bold uppercase tracking-[0.16em]"
+          className="flex items-center gap-2 text-[13px] font-bold uppercase tracking-[0.16em]"
           style={{ color: UI.text }}
         >
           <SlidersHorizontal size={14} style={{ color: UI.green }} />
           Filter
         </span>
-        <span className="text-xs font-semibold" style={{ color: UI.muted }}>
+        <span className="text-[13px] font-semibold" style={{ color: UI.muted }}>
           {resultCount != null ? `${resultCount.toLocaleString("en-GB")} results` : "…"}
         </span>
       </div>
@@ -168,11 +168,11 @@ export default function FilterPanel({
       {active > 0 && (
         <div className="mt-3">
           <div className="flex items-center justify-between mb-1.5">
-            <span className="text-[11px]" style={{ color: UI.muted }}>
+            <span className="text-[12px]" style={{ color: UI.muted }}>
               Active filters
             </span>
             <button
-              className="text-[11px] font-semibold hover:underline"
+              className="text-[12px] font-semibold hover:underline"
               style={{ color: UI.green }}
               onClick={() => onChange({ ...DEFAULT_FILTERS })}
             >
@@ -208,7 +208,7 @@ export default function FilterPanel({
               <button
                 key={n}
                 onClick={() => set({ minBeds: n })}
-                className="flex-1 py-2 rounded-lg text-xs font-semibold transition-colors"
+                className="flex-1 py-2 rounded-lg text-[13px] font-semibold transition-colors"
                 style={
                   activeBed
                     ? { background: UI.olive, color: "#FFFFFF" }
@@ -231,7 +231,7 @@ export default function FilterPanel({
               className="flex-1 flex items-center gap-1 rounded-lg px-2.5 py-2"
               style={{ background: "rgba(255,255,255,0.06)", border: `1px solid ${UI.border}` }}
             >
-              <span className="text-xs" style={{ color: UI.faint }}>
+              <span className="text-[13px]" style={{ color: UI.faint }}>
                 €
               </span>
               <input
@@ -242,7 +242,7 @@ export default function FilterPanel({
                 onChange={(e) =>
                   set({ [k]: e.target.value === "" ? null : Math.max(0, Number(e.target.value)) })
                 }
-                className="w-full bg-transparent outline-none text-[13px]"
+                className="w-full bg-transparent outline-none text-[14px]"
                 style={{ color: UI.text }}
               />
             </div>
@@ -256,7 +256,7 @@ export default function FilterPanel({
           onClick={() => setAdvanced(!advanced)}
           className="w-full flex items-center justify-between py-1"
         >
-          <span className="text-[13px] font-bold" style={{ color: UI.green }}>
+          <span className="text-[14px] font-bold" style={{ color: UI.green }}>
             Advanced filters
           </span>
           <ChevronDown
@@ -287,7 +287,7 @@ export default function FilterPanel({
               onChange={() => set({ entireOnly: !filters.entireOnly })}
             />
 
-            <p className="text-[11px] font-bold uppercase tracking-wider mt-3 mb-1.5" style={{ color: UI.text }}>
+            <p className="text-[12px] font-bold uppercase tracking-wider mt-3 mb-1.5" style={{ color: UI.text }}>
               Minimum rating
             </p>
             <div className="flex gap-1.5">
@@ -297,7 +297,7 @@ export default function FilterPanel({
                   <button
                     key={r}
                     onClick={() => set({ minRating: on ? null : r })}
-                    className="flex-1 py-2 rounded-lg text-xs font-semibold transition-colors"
+                    className="flex-1 py-2 rounded-lg text-[13px] font-semibold transition-colors"
                     style={on ? { background: UI.olive, color: "#FFF" } : { background: "rgba(255,255,255,0.06)", color: UI.muted }}
                   >
                     ★ {r}+
@@ -306,7 +306,7 @@ export default function FilterPanel({
               })}
             </div>
 
-            <p className="text-[11px] font-bold uppercase tracking-wider mt-3 mb-1.5" style={{ color: UI.text }}>
+            <p className="text-[12px] font-bold uppercase tracking-wider mt-3 mb-1.5" style={{ color: UI.text }}>
               Beach within
             </p>
             <div className="flex gap-1.5">
@@ -316,7 +316,7 @@ export default function FilterPanel({
                   <button
                     key={m}
                     onClick={() => set({ beachMax: on ? null : m })}
-                    className="flex-1 py-2 rounded-lg text-xs font-semibold transition-colors"
+                    className="flex-1 py-2 rounded-lg text-[13px] font-semibold transition-colors"
                     style={on ? { background: UI.olive, color: "#FFF" } : { background: "rgba(255,255,255,0.06)", color: UI.muted }}
                   >
                     {m} min
@@ -327,7 +327,7 @@ export default function FilterPanel({
 
             {amenityGroups.map(([group, items]) => (
               <div key={group}>
-                <p className="text-[11px] font-bold uppercase tracking-wider mt-3 mb-1" style={{ color: UI.text }}>
+                <p className="text-[12px] font-bold uppercase tracking-wider mt-3 mb-1" style={{ color: UI.text }}>
                   {group}
                 </p>
                 {items.map((a) => (

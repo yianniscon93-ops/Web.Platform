@@ -78,6 +78,14 @@ export const EXPLAINERS = {
     title: "Amenity premium",
     text: "How listings with an amenity (pool, sea view, hot tub) price and book compared to those without it, inside your current selection. Shown only when both groups are big enough to be meaningful.",
   },
+  amenity_impact: {
+    title: "What an amenity is worth",
+    text: "Each bubble is an amenity, placed by how it changes performance vs listings without it — further right means it fills more nights (occupancy), higher up means it commands a bigger price, and a bigger bubble means more revenue a night overall. Comparisons are like-for-like: with vs without, but only against listings of the same bedroom count and property type, so it isn't just 'villas earn more'. Green earns more, terracotta earns less. It's an association, not proof that adding it causes the lift. We show the clear standouts by default; 'view all' reveals the rest, and dashed 'thin' bubbles have too few comparable listings to trust.",
+  },
+  supply_return: {
+    title: "Supply vs return, by size",
+    text: "For each property size: how common it is here (share of listings — the competition) next to what it actually earns a night (median rate × occupancy — the return). A size that's scarce but high-earning can be a gap worth filling; a crowded low-earning size is a tougher place to compete.",
+  },
   eur_m2: {
     title: "Price per m²",
     text: "The asking price divided by interior size, for listings that report their size. The median across the selection is shown.",

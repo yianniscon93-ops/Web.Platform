@@ -2,6 +2,7 @@ import type postgres from "postgres";
 import { getSql } from "./db";
 import { demo } from "./demoData";
 import type {
+  AmenityImpact,
   AmenityPremium,
   AreaHealth,
   AreaInfo,
@@ -667,6 +668,98 @@ async function listingWeekly(sql: Sql, where: Frag, s: string, e: string): Promi
 const BEDROOM_LABELS = ["Studio", "1 bed", "2 bed", "3 bed", "4 bed", "5+ bed"];
 
 /** Current-state snapshot over a listing set (does NOT follow the picker). */
+const AMENITY_MIN_SIDE = 5; // per-cohort listings needed on each side
+const AMENITY_MIN_TOTAL = 15; // total qualifying listings needed to publish a row
+const AMENITY_COARSEN_BELOW = 500; // below this many listings, drop the type split so cohorts pool
+
+/**
+ * Like-for-like amenity association. For each amenity, compare with vs without
+ * *inside* bedroom×type cohorts (so a pool is judged against same-size,
+ * same-type places, not against studios), then sample-weight the cohort
+ * differences. Strips the "premium amenities live on premium properties"
+ * confounding. Association, not causation.
+ */
+async function amenityImpact(sql: Sql, where: Frag): Promise<AmenityImpact[]> {
+  const amenityCols = sql.unsafe(AMENITIES.map((a) => a.key).join(", "));
+  // Whitelisted keys (AMENITIES) — safe to interpolate as identifiers.
+  const valuesList = sql.unsafe(AMENITIES.map((a) => `('${a.key}', ${a.key} IS TRUE)`).join(", "));
+  // Small regions can't fill bedroom×type cohorts with 5-on-each-side, so rows
+  // get filtered out and the map comes up empty. When the area is small, coarsen
+  // to bedrooms-only cohorts so listings pool and survive the gates (still
+  // like-for-like by size, just not by type).
+  const [{ n: total }] = await sql`
+    SELECT COUNT(*)::int AS n FROM str_listings
+    WHERE ${where} AND eff_occ_todate IS NOT NULL AND avg_nightly_rate IS NOT NULL
+  `;
+  const typExpr = total < AMENITY_COARSEN_BELOW ? sql`'all'::text` : TYPE_MIX_CASE(sql);
+  const rows = await sql`
+    WITH base AS (
+      SELECT
+        LEAST(COALESCE(bedrooms, 0), 4)::int AS bed,
+        ${typExpr} AS typ,
+        eff_occ_todate::float AS occ,
+        avg_nightly_rate::float AS rate,
+        (avg_nightly_rate * eff_occ_todate / 100.0)::float AS revpar,
+        ${amenityCols}
+      FROM str_listings
+      WHERE ${where}
+        AND eff_occ_todate IS NOT NULL
+        AND avg_nightly_rate IS NOT NULL
+    )
+    SELECT
+      am.akey AS akey, base.bed AS bed, base.typ AS typ, am.has AS has,
+      COUNT(*)::int AS n,
+      percentile_cont(0.5) WITHIN GROUP (ORDER BY base.occ)::float AS med_occ,
+      percentile_cont(0.5) WITHIN GROUP (ORDER BY base.rate)::float AS med_rate,
+      percentile_cont(0.5) WITHIN GROUP (ORDER BY base.revpar)::float AS med_revpar
+    FROM base, LATERAL (VALUES ${valuesList}) AS am(akey, has)
+    GROUP BY am.akey, base.bed, base.typ, am.has
+  `;
+
+  type Cell = { n: number; occ: number | null; rate: number | null; rev: number | null };
+  const byKey = new Map<string, Map<string, { t?: Cell; f?: Cell }>>();
+  for (const r of rows) {
+    if (!byKey.has(r.akey)) byKey.set(r.akey, new Map());
+    const cohorts = byKey.get(r.akey)!;
+    const ck = `${r.bed}|${r.typ}`;
+    if (!cohorts.has(ck)) cohorts.set(ck, {});
+    const cell: Cell = { n: r.n, occ: r.med_occ, rate: r.med_rate, rev: r.med_revpar };
+    if (r.has) cohorts.get(ck)!.t = cell;
+    else cohorts.get(ck)!.f = cell;
+  }
+
+  const out: AmenityImpact[] = [];
+  for (const [key, cohorts] of byKey) {
+    let wOcc = 0, occW = 0;
+    let wRate = 0, wBaseRate = 0, rateW = 0;
+    let wRev = 0, revW = 0;
+    let nWith = 0, nWithout = 0;
+    for (const { t, f } of cohorts.values()) {
+      if (!t || !f || t.n < AMENITY_MIN_SIDE || f.n < AMENITY_MIN_SIDE) continue;
+      const w = Math.min(t.n, f.n);
+      nWith += t.n;
+      nWithout += f.n;
+      if (t.occ != null && f.occ != null) { wOcc += (t.occ - f.occ) * w; occW += w; }
+      if (t.rate != null && f.rate != null) { wRate += (t.rate - f.rate) * w; wBaseRate += f.rate * w; rateW += w; }
+      if (t.rev != null && f.rev != null) { wRev += (t.rev - f.rev) * w; revW += w; }
+    }
+    if (nWith < AMENITY_MIN_TOTAL || nWithout < AMENITY_MIN_TOTAL) continue;
+    const rateLift = rateW ? wRate / rateW : null;
+    const baseRate = rateW ? wBaseRate / rateW : null;
+    out.push({
+      key,
+      occLift: occW ? Math.round((wOcc / occW) * 10) / 10 : null,
+      rateLift: rateLift != null ? Math.round(rateLift) : null,
+      ratePct: rateLift != null && baseRate ? Math.round((100 * rateLift) / baseRate) : null,
+      revLift: revW ? Math.round(wRev / revW) : null,
+      nWith,
+      nWithout,
+    });
+  }
+  out.sort((a, b) => (b.revLift ?? -1e9) - (a.revLift ?? -1e9));
+  return out;
+}
+
 async function listingSnapshot(sql: Sql, where: Frag): Promise<MarketSnapshot> {
   const [agg] = await sql`
     SELECT
@@ -681,7 +774,11 @@ async function listingSnapshot(sql: Sql, where: Frag): Promise<MarketSnapshot> {
     FROM str_listings WHERE ${where}
   `;
   const beds = await sql`
-    SELECT LEAST(COALESCE(bedrooms, 0), 5)::int AS b, COUNT(*)::int AS count
+    SELECT LEAST(COALESCE(bedrooms, 0), 5)::int AS b, COUNT(*)::int AS count,
+      percentile_cont(0.5) WITHIN GROUP (ORDER BY avg_nightly_rate * eff_occ_todate / 100.0)
+        FILTER (WHERE avg_nightly_rate IS NOT NULL AND eff_occ_todate IS NOT NULL)::float AS revpar,
+      percentile_cont(0.5) WITHIN GROUP (ORDER BY avg_nightly_rate)
+        FILTER (WHERE avg_nightly_rate IS NOT NULL)::float AS rate
     FROM str_listings WHERE ${where}
     GROUP BY 1 ORDER BY 1 ASC
   `;
@@ -696,6 +793,7 @@ async function listingSnapshot(sql: Sql, where: Frag): Promise<MarketSnapshot> {
   const [am] = await sql`
     SELECT ${sql.unsafe(shareCols)} FROM str_listings WHERE ${where}
   `;
+  const impact = await amenityImpact(sql, where);
   const round1 = (v: unknown) => (v == null ? null : Math.round(Number(v) * 10) / 10);
   const q3 = (a: unknown): [number, number, number] | null =>
     Array.isArray(a) && a.length === 3 && a.every((x) => x != null)
@@ -706,12 +804,18 @@ async function listingSnapshot(sql: Sql, where: Frag): Promise<MarketSnapshot> {
     adrQuartiles: q3(agg.adr_q),
     occQuartiles: q3(agg.occ_q),
     superhostShare: agg.n ? agg.sh : null,
-    bedrooms: beds.map((b) => ({ label: BEDROOM_LABELS[b.b], count: b.count })),
+    bedrooms: beds.map((b) => ({
+      label: BEDROOM_LABELS[b.b],
+      count: b.count,
+      revpar: b.revpar != null ? Math.round(b.revpar) : null,
+      rate: b.rate != null ? Math.round(b.rate) : null,
+    })),
     typeMix: mix.map((m) => ({ group: m.grp as TypeGroup, count: m.count })),
     amenities: AMENITIES
       .map((a) => ({ key: a.key, share: round1(am?.[a.key]) ?? 0 }))
       .filter((a) => a.share > 0)
       .sort((a, b) => b.share - a.share),
+    amenityImpact: impact,
   };
 }
 
@@ -1486,12 +1590,12 @@ function demoMarket(f: Filters, polygon: PolygonCoords | null): MarketResponse {
           : null,
       superhostShare: stats.superhostShare,
       bedrooms: [
-        { label: "Studio", count: Math.round(stats.listingCount * 0.08) },
-        { label: "1 bed", count: Math.round(stats.listingCount * 0.3) },
-        { label: "2 bed", count: Math.round(stats.listingCount * 0.34) },
-        { label: "3 bed", count: Math.round(stats.listingCount * 0.19) },
-        { label: "4 bed", count: Math.round(stats.listingCount * 0.06) },
-        { label: "5+ bed", count: Math.round(stats.listingCount * 0.03) },
+        { label: "Studio", count: Math.round(stats.listingCount * 0.08), revpar: 58, rate: 82 },
+        { label: "1 bed", count: Math.round(stats.listingCount * 0.3), revpar: 74, rate: 105 },
+        { label: "2 bed", count: Math.round(stats.listingCount * 0.34), revpar: 96, rate: 140 },
+        { label: "3 bed", count: Math.round(stats.listingCount * 0.19), revpar: 118, rate: 178 },
+        { label: "4 bed", count: Math.round(stats.listingCount * 0.06), revpar: 142, rate: 225 },
+        { label: "5+ bed", count: Math.round(stats.listingCount * 0.03), revpar: 165, rate: 290 },
       ],
       typeMix: stats.typeMix,
       amenities: [
@@ -1502,6 +1606,16 @@ function demoMarket(f: Filters, polygon: PolygonCoords | null): MarketResponse {
         { key: "has_fast_wifi", share: 24.6 },
         { key: "has_bbq", share: 18.3 },
         { key: "has_hot_tub", share: 7.1 },
+      ],
+      // Like-for-like (within bedroom×type) demo associations, ranked by revenue.
+      amenityImpact: [
+        { key: "has_pool", occLift: 4.2, rateLift: 34, ratePct: 24, revLift: 31, nWith: 210, nWithout: 340 },
+        { key: "has_sea_view", occLift: 5.1, rateLift: 22, ratePct: 16, revLift: 24, nWith: 150, nWithout: 400 },
+        { key: "has_hot_tub", occLift: 2.6, rateLift: 26, ratePct: 18, revLift: 19, nWith: 60, nWithout: 480 },
+        { key: "has_bbq", occLift: 3.3, rateLift: 8, ratePct: 6, revLift: 11, nWith: 120, nWithout: 420 },
+        { key: "has_fast_wifi", occLift: 3.8, rateLift: 4, ratePct: 3, revLift: 8, nWith: 160, nWithout: 380 },
+        { key: "has_free_parking", occLift: 1.4, rateLift: 2, ratePct: 1, revLift: 3, nWith: 350, nWithout: 190 },
+        { key: "has_patio_or_balcony", occLift: 0.9, rateLift: 1, ratePct: 1, revLift: 1, nWith: 400, nWithout: 140 },
       ],
     },
   };
