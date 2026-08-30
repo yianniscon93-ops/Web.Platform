@@ -12,8 +12,8 @@ enriched and verified 2026-07-12; sample values are real. Full DDL in
 
 **Operational note:** `booking_stays`, `dim_calendar`, `pricing_behavior`,
 `area_pace`, and the new `sale_listings` columns (ROI + DOM) are one-off
-backfills as of 2026-07-12. Wiring them into `sync_to_postgres.py` for
-automatic refresh is a pending Data.Noesis task — check
+backfills as of 2026-07-12. Wiring them into `noesis.storage.postgres` for
+automatic refresh is a pending Core.Noesis task — check
 `sync_meta`/`detected_at` maxima for freshness until then.
 
 ---

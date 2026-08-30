@@ -10,7 +10,7 @@ This doc answers two questions:
 1. **What does DuckDB hold that Postgres is missing (or getting wrong)?**
 2. **What analytics should the PropSights dashboard actually serve?**
 
-Architecture recap: Data.Noesis scrapes → DuckDB gold → `sync_to_postgres.py`
+Architecture recap: the data pipelines (Core.Noesis + Data.* repos) scrape → DuckDB gold → `noesis.storage.postgres` sync → Postgres.py`
 publishes pre-aggregated tables to Postgres. The product repo reads those
 tables; the database is the contract. This repo owns the schema
 ([schema.sql](schema.sql)).
@@ -306,7 +306,7 @@ sudo -u postgres psql -d bnb                  # admin / DDL
 psql postgresql://bnb:bnb@localhost/bnb       # application user
 ```
 
-`DATABASE_URL=postgresql://bnb:bnb@localhost/bnb` in `/opt/bnb_git/.env`.
+`DATABASE_URL=postgresql://bnb:bnb@localhost/bnb` in `/opt/data-str/.env`.
 Postgres listens on `localhost` only — the product API either runs on this
 server or the network question gets decided first (open item).
 
@@ -314,9 +314,9 @@ server or the network question gets decided first (open item).
 `DATABASE_URL`). Manual:
 
 ```bash
-cd /opt/bnb_git
-venv/bin/python3 sync_to_postgres.py --all                 # everything (~37s)
-venv/bin/python3 sync_to_postgres.py --domains str,weekly  # subset
+cd /opt/data-str
+/opt/noesis-venv/bin/python -m noesis.storage.postgres --all       # everything (~37s)
+/opt/noesis-venv/bin/python -m noesis.storage.postgres --domains str,weekly  # subset
 ```
 
 Domains: `str, weekly, area, meta, pricing, ltr, sale` — one transaction each;

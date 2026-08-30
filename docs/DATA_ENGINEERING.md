@@ -3,16 +3,16 @@
 The serving layer that the PropSights product repo reads from. This repo (Data.Noesis) is data engineering only — it scrapes, computes the gold layer in DuckDB, and publishes pre-aggregated, query-ready tables to PostgreSQL. The product repo (frontend + API) consumes from these tables.
 
 ```
-Data.Noesis (this repo)                          PropSights repo
+Core.Noesis + Data.* repos                          PropSights repo
 ┌─────────────────────────────────┐             ┌──────────────────┐
 │ scrape → DuckDB → gold           │             │ API + dashboard  │
-│        → sync_to_postgres.py ────┼──► Postgres ─┼──► reads tables  │
+│        → noesis.storage.postgres ────┼──► Postgres ─┼──► reads tables  │
 └─────────────────────────────────┘   (bnb DB)   └──────────────────┘
         OUR JOB ENDS HERE ▲                              ▲ THEIR JOB
                     the database IS the contract
 ```
 
-**Design principle:** DuckDB does the heavy aggregation at sync time; PostgreSQL stores ~query-ready rows so the dashboard never aggregates raw calendar data at request time. See `schema.sql` for the canonical DDL and `../sync_to_postgres.py` for the population logic.
+**Design principle:** DuckDB does the heavy aggregation at sync time; PostgreSQL stores ~query-ready rows so the dashboard never aggregates raw calendar data at request time. See `schema.sql` for the canonical DDL and `../noesis.storage.postgres` for the population logic.
 
 **Schema ownership:** this repo owns the schema. The product repo should introspect it (`drizzle-kit pull`), never define migrations against it.
 
@@ -22,12 +22,12 @@ Data.Noesis (this repo)                          PropSights repo
 
 1. Installed PostgreSQL + PostGIS on the Hetzner server.
 2. Created 7 analytics tables (`db/schema.sql`) — pre-aggregated, not raw mirrors.
-3. Built `sync_to_postgres.py` — reads DuckDB, upserts to Postgres (`ON CONFLICT DO UPDATE`, never truncates, so dashboard reads are never blocked).
+3. Built `noesis.storage.postgres` — reads DuckDB, upserts to Postgres (`ON CONFLICT DO UPDATE`, never truncates, so dashboard reads are never blocked).
 4. Wired the sync into the pipeline so it auto-publishes after every run:
    - `run_availability.py` (every 48h) → `str_listings`, `str_listings_weekly`, `str_area_weekly`, `sync_meta` (~30s)
    - `run_pricing.py` (weekly) → `pricing_calendar`
-   - `run_bazaraki_sale/rental/enrich.py` (1st & 15th) → `sale_listings`, `ltr_listings`
-5. Secrets moved to `/opt/bnb_git/.env` (`DATABASE_URL`, `SMTP_PASSWORD`), loaded via `python-dotenv` in each runner.
+   - Data.Property `jobs/run_sale|rental|enrich.py` (Mon chain) → `sale_listings`, `ltr_listings`
+5. Secrets live in `/opt/data-str/.env` + `/opt/data-property/.env` (`DATABASE_URL`, proxies, `SMTP_PASSWORD`), loaded via `python-dotenv` in each job wrapper.
 
 ---
 
@@ -55,7 +55,7 @@ psql postgresql://bnb:bnb@localhost/bnb
 | Port | `5432` |
 | Database | `bnb` |
 | User / password | `bnb` / `bnb` |
-| `DATABASE_URL` | `postgresql://bnb:bnb@localhost/bnb` (in `/opt/bnb_git/.env`) |
+| `DATABASE_URL` | `postgresql://bnb:bnb@localhost/bnb` (in `/opt/data-str/.env`) |
 | Extensions | PostGIS |
 
 > **Remote access:** Postgres currently listens on `localhost` only. The product repo can reach it two ways: (a) run the product API on this same server (localhost works as-is), or (b) open Postgres to the network (`listen_addresses` in `postgresql.conf` + a `pg_hba.conf` rule + firewall). This is an open decision — see Remaining Steps.
@@ -220,13 +220,13 @@ These match the legacy `_ADJ_OCC_SQL` definition so numbers reconcile across vie
 
 ## How the tables are populated
 
-`sync_to_postgres.py` runs at the end of each pipeline job (gated on `DATABASE_URL`). Manual run:
+`noesis.storage.postgres` runs at the end of each pipeline job (gated on `DATABASE_URL`). Manual run:
 
 ```bash
 ssh root@204.168.209.175
-cd /opt/bnb_git
-venv/bin/python3 sync_to_postgres.py --all                 # everything
-venv/bin/python3 sync_to_postgres.py --domains str,weekly  # subset
+cd /opt/data-str
+/opt/noesis-venv/bin/python -m noesis.storage.postgres --all                 # everything
+/opt/noesis-venv/bin/python -m noesis.storage.postgres --domains str,weekly  # subset
 ```
 
 Domains: `str`, `weekly`, `area`, `meta`, `pricing`, `ltr`, `sale`. Each runs in its own transaction — one domain failing doesn't roll back the others. Full sync ≈ 37s; the availability subset ≈ 30s.
@@ -243,4 +243,4 @@ These are consumer-side (product repo) — data engineering's job ends at "Postg
    - On this Hetzner server → localhost Postgres works as-is.
    - Elsewhere → open Postgres to the network (`postgresql.conf listen_addresses`, `pg_hba.conf` rule, firewall) and use a strong password.
 
-3. **Rotate the Gmail app password** (it was committed in git history) and env it in `run_discovery.py` / `run_enrichment.py` (the two runners still holding the literal). The rotated value goes in `/opt/bnb_git/.env` as `SMTP_PASSWORD`.
+3. **Rotate the Gmail app password** (it was committed in the pre-split repo's git history; the hardcoded literals were removed in the 2026-08 restructure). The rotated value goes in `/opt/data-str/.env` + `/opt/data-property/.env` as `SMTP_PASSWORD`.
