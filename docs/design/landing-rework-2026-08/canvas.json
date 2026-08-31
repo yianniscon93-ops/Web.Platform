@@ -1,0 +1,78 @@
+{
+  "artboards": [
+    {
+      "file": "StyleTile.dc.html",
+      "title": "Style tile",
+      "x": 0,
+      "y": 0,
+      "w": 1200,
+      "h": 960
+    },
+    {
+      "file": "Main.dc.html",
+      "title": "Landing — desktop",
+      "x": 0,
+      "y": 1120,
+      "w": 1440,
+      "h": 4700,
+      "expand": "fill"
+    },
+    {
+      "file": "LandingMobile.dc.html",
+      "title": "Landing — mobile",
+      "x": 1560,
+      "y": 1120,
+      "w": 390,
+      "h": 1560
+    },
+    {
+      "file": "Playground.dc.html",
+      "title": "Playground — desktop",
+      "x": 2200,
+      "y": 0,
+      "w": 1440,
+      "h": 1140
+    },
+    {
+      "file": "MapStates.dc.html",
+      "title": "Playground — map states",
+      "x": 2200,
+      "y": 1300,
+      "w": 1880,
+      "h": 560
+    }
+  ],
+  "annotations": [
+    {
+      "id": "read-me",
+      "x": 0,
+      "y": -140,
+      "w": 520,
+      "text": "PropSights rework — first layouts.\nLeft column: style tile → landing (desktop + mobile). Right column: Playground → map states.\nOpen question in the style tile: terracotta (A) or mustard (B) as the accent? Everything else uses A for now.\nType v2: Sora (display) · Manrope (body) · JetBrains Mono (labels) — rounded, techy."
+    },
+    {
+      "id": "hero-note",
+      "x": 600,
+      "y": 980,
+      "w": 420,
+      "text": "Hero v4: REAL data — all 14,494 active listings plotted (positions + effective occupancy from the serving DB), real coastline, districts, municipalities and OSM roads. Stats strip below the map uses real numbers for the drawn Protaras polygon (queried 2026-08-30). Map zooms in place (clipped, soft edge) 3.3×, focus beat on Protaras · Pernera before drawing; cursor clicks 5 vertices; stats sit clear below. Three acts, plays once (38s): draw Protaras → glide west, draw Coral Bay → zoom out to both areas + side-by-side comparison (all real numbers, queried 2026-08-30). Holds on the comparison with a Replay chip. Kicker sentence removed (one headline only — Z-pattern); a small mono status line inside the map narrates the steps instead. Hero shows 3 KPIs (occupancy, rate, yield) + occupancy graph per area; full stats live in the Playground card below. BUILD NOTE: start the sequence only when the hero is in view and ~1s after the headline renders; play once; pause if scrolled away."
+    },
+    {
+      "id": "headline-alts",
+      "x": 1060,
+      "y": 980,
+      "w": 440,
+      "text": "Headline alternates (same sub-copy works with each):\nA · The whole Cyprus property market, down to the street.  ← in the mockup\nB · Every rental and every sale in Cyprus, on one map.\nC · Cyprus property, street by street: rent, let, or sell."
+    },
+    {
+      "id": "map-note",
+      "x": 2200,
+      "y": 1180,
+      "w": 520,
+      "text": "Map control borrows the idea (not the look) from Bazaraki: one “Where?” field with search / draw / radius / locate, explicit Cancel–Apply, selection in the URL."
+    }
+  ],
+  "launch": {
+    "view": "canvas"
+  }
+}

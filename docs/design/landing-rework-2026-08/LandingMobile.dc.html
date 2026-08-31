@@ -1,0 +1,86 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #1A2014; -webkit-font-smoothing: antialiased; }
+    a { color: #4A5E3A; text-decoration: none; } a:hover { color: #26331C; }
+    .display { font-family: Sora, "Segoe UI", "Helvetica Neue", Arial, sans-serif;  letter-spacing: -0.02em; }
+    .label { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #8A9082; }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 12px; font-size: 15px; font-weight: 600; border: 1px solid transparent; }
+    .card { background: #FFFFFF; border: 1px solid #D9D2C2; border-radius: 16px; box-shadow: 0 1px 2px rgba(26,32,20,0.04), 0 8px 24px -12px rgba(26,32,20,0.12); }
+  </style>
+</helmet>
+<div style="width: 390px; background: #F5F1E8; display: flex; flex-direction: column;">
+  <div style="height: 60px; display: flex; align-items: center; justify-content: space-between; padding: 0 20px; border-bottom: 1px solid rgba(217,210,194,0.6);">
+    <div style="display: flex; align-items: center; gap: 8px;">
+      <div style="width: 26px; height: 26px; border-radius: 7px; background: #4A5E3A; display: flex; align-items: center; justify-content: center;"><span class="display" style="color: #F5F1E8; font-weight: 700; font-size: 16px;">P</span></div>
+      <span class="display" style="font-size: 20px; font-weight: 700;">Prop<span style="color: #6B7B4F;">Sights</span></span>
+    </div>
+    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#1A2014" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"></path></svg>
+  </div>
+
+  <div style="position: relative; overflow: hidden; padding: 56px 20px 48px; display: flex; flex-direction: column; gap: 20px;">
+    <svg viewBox="0 0 390 420" fill="none" stroke="#4A5E3A" stroke-opacity="0.16" stroke-width="1.2" style="position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none;">
+      <path d="M-20 330 C 80 290, 160 370, 240 320 S 360 280, 410 320"></path>
+      <path d="M-20 360 C 80 320, 160 400, 240 350 S 360 310, 410 350"></path>
+      <path d="M-20 390 C 80 350, 160 430, 240 380 S 360 340, 410 380"></path>
+    </svg>
+    <div style="display: inline-flex; align-items: center; gap: 8px; height: 28px; padding: 0 10px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9D2C2; width: fit-content; font-size: 11px; font-weight: 600; color: #4C5546; position: relative;"><span style="width: 7px; height: 7px; border-radius: 50%; background: #4A5E3A;"></span> Live · updated every 48 hours</div>
+    <h1 class="display" style="margin: 0; font-size: 40px; font-weight: 600; line-height: 1.05; letter-spacing: -0.03em; position: relative; text-wrap: balance;">Know any street in Cyprus <span style="color: #4A5E3A;">before you invest in it.</span></h1>
+    <p style="margin: 0; font-size: 16px; line-height: 1.55; color: #4C5546; position: relative; text-wrap: pretty;">Occupancy, nightly rates and revenue for every listing on the island — on a map, or as analysis built around your question.</p>
+    <div style="display: flex; flex-direction: column; gap: 10px; position: relative;">
+      <span class="btn" style="background: #4A5E3A; color: #FFFFFF;">Open the Playground →</span>
+      <span class="btn" style="background: #FFFFFF; color: #1A2014; border-color: #D9D2C2;">See how we work</span>
+    </div>
+  </div>
+
+  <div style="padding: 24px 20px; background: #EDE7D9; border-top: 1px solid #D9D2C2; border-bottom: 1px solid #D9D2C2; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px;">
+    <div><div class="display" style="font-size: 32px; font-weight: 700; color: #4A5E3A; line-height: 1;">14.9k</div><div style="font-size: 12px; color: #4C5546;">listings tracked</div></div>
+    <div><div class="display" style="font-size: 32px; font-weight: 700; color: #4A5E3A; line-height: 1;">157</div><div style="font-size: 12px; color: #4C5546;">named areas</div></div>
+    <div><div class="display" style="font-size: 32px; font-weight: 700; color: #4A5E3A; line-height: 1;">48h</div><div style="font-size: 12px; color: #4C5546;">refresh cycle</div></div>
+    <div><div class="display" style="font-size: 32px; font-weight: 700; color: #4A5E3A; line-height: 1;">2+ yrs</div><div style="font-size: 12px; color: #4C5546;">weekly history</div></div>
+  </div>
+
+  <div style="padding: 56px 20px; display: flex; flex-direction: column; gap: 20px;">
+    <div class="label">What we do</div>
+    <h2 class="display" style="margin: 0; font-size: 36px; font-weight: 700; line-height: 1.02;">Two ways to work with the data.</h2>
+    <div style="display: flex; gap: 8px; overflow: hidden;">
+      <span style="height: 32px; padding: 0 12px; border-radius: 999px; background: #1A2014; color: #F5F1E8; font-size: 13px; font-weight: 600; display: inline-flex; align-items: center; white-space: nowrap;">01 Playground</span>
+      <span style="height: 32px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9D2C2; color: #4C5546; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; white-space: nowrap;">02 Insights</span>
+      <span style="height: 32px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9D2C2; color: #4C5546; font-size: 13px; font-weight: 500; display: inline-flex; align-items: center; white-space: nowrap;">03 Reporting</span>
+    </div>
+    <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 14px; border-color: #A8C290;">
+      <div style="position: relative; height: 180px; border-radius: 12px; background: #EDE7D9; border: 1px solid #D9D2C2; overflow: hidden;">
+        <svg viewBox="0 0 600 300" style="position: absolute; inset: 0; width: 100%; height: 100%;" preserveAspectRatio="xMidYMid slice">
+          <path d="M 60 190 C 80 150, 140 120, 200 110 C 230 105, 250 80, 300 90 C 340 95, 380 110, 430 120 C 470 125, 520 90, 600 55 C 590 80, 540 120, 500 150 C 490 180, 520 200, 520 215 C 480 225, 440 215, 400 225 C 350 235, 300 230, 260 235 C 230 240, 210 260, 195 250 C 170 235, 140 215, 100 210 Z" fill="#F5F1E8" stroke="#D9D2C2"></path>
+          <g fill="#8FA36B"><circle cx="110" cy="200" r="4"></circle><circle cx="160" cy="210" r="4"></circle><circle cx="200" cy="230" r="4"></circle><circle cx="300" cy="222" r="4"></circle><circle cx="410" cy="212" r="4"></circle><circle cx="470" cy="200" r="4"></circle><circle cx="500" cy="190" r="4"></circle><circle cx="340" cy="104" r="3"></circle></g>
+          <path d="M 468 186 L 512 180 L 522 204 L 500 218 L 474 210 Z" fill="rgba(217,140,74,0.18)" stroke="#D98C4A" stroke-width="2.5" stroke-dasharray="6 4"></path>
+        </svg>
+        <div style="position: absolute; left: 12px; bottom: 12px; height: 28px; padding: 0 10px; border-radius: 999px; background: #F6E3D2; color: #8A4A18; font-size: 12px; font-weight: 600; display: inline-flex; align-items: center;">Protaras · 71% · €142</div>
+      </div>
+      <div class="display" style="font-size: 30px; font-weight: 700; line-height: 1;">Playground</div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #4C5546;">Draw any area with your finger and see occupancy, rates, booking pace and revenue for exactly those listings.</p>
+      <span class="btn" style="background: #4A5E3A; color: #FFFFFF; height: 44px;">Open the Playground →</span>
+    </div>
+    <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+      <div class="label" style="color: #4A5E3A;">02 · Analyst-led</div>
+      <div class="display" style="font-size: 28px; font-weight: 700; line-height: 1;">Insights &amp; forecasts</div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #4C5546;">Bring the question; we answer it with the full dataset, our models, and a person who explains the result.</p>
+    </div>
+    <div class="card" style="padding: 20px; display: flex; flex-direction: column; gap: 10px;">
+      <div class="label" style="color: #4A5E3A;">03 · Built for you</div>
+      <div class="display" style="font-size: 28px; font-weight: 700; line-height: 1;">Tailored reporting</div>
+      <p style="margin: 0; font-size: 14px; line-height: 1.55; color: #4C5546;">Your portfolio and your competitors, on a schedule, in the format you already share.</p>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>

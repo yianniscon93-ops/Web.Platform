@@ -1,0 +1,128 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #1A2014; -webkit-font-smoothing: antialiased; }
+    a { color: #4A5E3A; } a:hover { color: #26331C; }
+    .display { font-family: Sora, "Segoe UI", "Helvetica Neue", Arial, sans-serif;  letter-spacing: -0.02em; }
+    .label { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #8A9082; }
+    .swatch { display: flex; flex-direction: column; gap: 8px; }
+    .swatch .chip { height: 72px; border-radius: 12px; border: 1px solid rgba(26,32,20,0.08); }
+    .swatch .name { font-size: 12px; font-weight: 600; color: #1A2014; }
+    .swatch .hex { font-size: 11px; color: #8A9082; font-variant-numeric: tabular-nums; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; height: 44px; padding: 0 18px; border-radius: 12px; font-size: 14px; font-weight: 600; border: 1px solid transparent; }
+    .card { background: #FFFFFF; border: 1px solid #D9D2C2; border-radius: 16px; box-shadow: 0 1px 2px rgba(26,32,20,0.04), 0 8px 24px -12px rgba(26,32,20,0.12); }
+  </style>
+</helmet>
+<div style="width: 1200px; min-height: 940px; background: #F5F1E8; padding: 48px; display: flex; flex-direction: column; gap: 40px;">
+
+  <div style="display: flex; align-items: baseline; justify-content: space-between;">
+    <div style="display: flex; flex-direction: column; gap: 6px;">
+      <div class="label">PropSights · Style tile</div>
+      <h1 class="display" style="margin: 0; font-size: 44px; font-weight: 700; line-height: 1; color: #1A2014;">Off-white, olive, one warm accent.</h1>
+    </div>
+    <div style="font-size: 13px; color: #4C5546; max-width: 380px; text-wrap: pretty;">Professional and clear by default; playfulness lives in motion and the accent, never in the type or the grid.</div>
+  </div>
+
+  <!-- Palette -->
+  <div style="display: flex; flex-direction: column; gap: 14px;">
+    <div class="label">Ground &amp; ink</div>
+    <div style="display: grid; grid-template-columns: repeat(8, minmax(0, 1fr)); gap: 16px;">
+      <div class="swatch"><div class="chip" style="background: #F5F1E8;"></div><div class="name">Paper</div><div class="hex">#F5F1E8</div></div>
+      <div class="swatch"><div class="chip" style="background: #EDE7D9;"></div><div class="name">Paper 2</div><div class="hex">#EDE7D9</div></div>
+      <div class="swatch"><div class="chip" style="background: #FFFFFF;"></div><div class="name">Card</div><div class="hex">#FFFFFF</div></div>
+      <div class="swatch"><div class="chip" style="background: #D9D2C2;"></div><div class="name">Border</div><div class="hex">#D9D2C2</div></div>
+      <div class="swatch"><div class="chip" style="background: #E6EBDD;"></div><div class="name">Olive tint</div><div class="hex">#E6EBDD</div></div>
+      <div class="swatch"><div class="chip" style="background: #8A9082;"></div><div class="name">Dim</div><div class="hex">#8A9082</div></div>
+      <div class="swatch"><div class="chip" style="background: #4C5546;"></div><div class="name">Muted text</div><div class="hex">#4C5546</div></div>
+      <div class="swatch"><div class="chip" style="background: #1A2014;"></div><div class="name">Ink</div><div class="hex">#1A2014</div></div>
+    </div>
+  </div>
+
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px;">
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div class="label">Olive family (brand)</div>
+      <div style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px;">
+        <div class="swatch"><div class="chip" style="background: #A8C290;"></div><div class="name">Olive light</div><div class="hex">#A8C290</div></div>
+        <div class="swatch"><div class="chip" style="background: #6B7B4F;"></div><div class="name">Olive mid</div><div class="hex">#6B7B4F</div></div>
+        <div class="swatch"><div class="chip" style="background: #4A5E3A;"></div><div class="name">Olive</div><div class="hex">#4A5E3A</div></div>
+        <div class="swatch"><div class="chip" style="background: #26331C;"></div><div class="name">Olive deep</div><div class="hex">#26331C</div></div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div class="label">Playful accent — pick one</div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px;">
+        <div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; gap: 8px;"><div style="flex: 1; height: 56px; border-radius: 10px; background: #D98C4A;"></div><div style="width: 56px; height: 56px; border-radius: 10px; background: #F6E3D2;"></div></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><div class="name" style="font-weight: 600; font-size: 13px;">A · Terracotta</div><div class="hex" style="font-size: 11px; color: #8A9082;">#D98C4A</div></div>
+          <div style="font-size: 12px; color: #4C5546;">Earthy, Mediterranean. Strong against olive, reads as “highlight”.</div>
+          <div style="display: flex; gap: 8px; align-items: center;"><span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; background: #F6E3D2; color: #8A4A18; font-size: 12px; font-weight: 600;">Custom area · 214 listings</span><span style="width: 10px; height: 10px; border-radius: 50%; background: #D98C4A; box-shadow: 0 0 0 4px rgba(217,140,74,0.25);"></span></div>
+        </div>
+        <div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 12px;">
+          <div style="display: flex; gap: 8px;"><div style="flex: 1; height: 56px; border-radius: 10px; background: #D9B44A;"></div><div style="width: 56px; height: 56px; border-radius: 10px; background: #F7ECC9;"></div></div>
+          <div style="display: flex; justify-content: space-between; align-items: baseline;"><div class="name" style="font-weight: 600; font-size: 13px;">B · Mustard</div><div class="hex" style="font-size: 11px; color: #8A9082;">#D9B44A</div></div>
+          <div style="font-size: 12px; color: #4C5546;">Sunnier, more playful. Closer to olive, so the whole page stays calmer.</div>
+          <div style="display: flex; gap: 8px; align-items: center;"><span style="display: inline-flex; align-items: center; gap: 6px; height: 28px; padding: 0 10px; border-radius: 999px; background: #F7ECC9; color: #6E5410; font-size: 12px; font-weight: 600;">Custom area · 214 listings</span><span style="width: 10px; height: 10px; border-radius: 50%; background: #D9B44A; box-shadow: 0 0 0 4px rgba(217,180,74,0.28);"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Type + components -->
+  <div style="display: grid; grid-template-columns: 1.1fr 1fr; gap: 40px;">
+    <div style="display: flex; flex-direction: column; gap: 16px;">
+      <div class="label">Type — Sora (display) · Manrope (body) · JetBrains Mono (labels)</div>
+      <div class="display" style="font-size: 52px; font-weight: 600; line-height: 1.04; letter-spacing: -0.03em; color: #1A2014;">Know any street<br>before you buy it.</div>
+      <div class="display" style="font-size: 32px; font-weight: 700; line-height: 1.05; color: #1A2014;">Section heading, 32 / 700</div>
+      <div style="font-size: 17px; line-height: 1.55; color: #4C5546; max-width: 520px; text-wrap: pretty;">Body 17 / 1.55 in muted ink. Sentence-case headings, tight tracking. Small labels in mono for a data-tool feel. Numbers use tabular figures.</div>
+      <div style="display: flex; gap: 20px; align-items: baseline;">
+        <div class="display" style="font-size: 40px; font-weight: 700; color: #4A5E3A; font-variant-numeric: tabular-nums;">67%</div>
+        <div class="label">KPI number 40 / olive</div>
+      </div>
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 18px;">
+      <div class="label">Controls</div>
+      <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+        <span class="btn" style="background: #4A5E3A; color: #FFFFFF;">Open the Playground</span>
+        <span class="btn" style="background: #FFFFFF; color: #1A2014; border-color: #D9D2C2;">See how we work</span>
+        <span class="btn" style="background: transparent; color: #4A5E3A; height: 40px; padding: 0 8px;">Ghost link →</span>
+      </div>
+      <div style="display: flex; gap: 10px; align-items: center;">
+        <div style="flex: 1; height: 44px; border-radius: 12px; background: #FFFFFF; border: 1px solid #D9D2C2; display: flex; align-items: center; gap: 10px; padding: 0 14px; color: #8A9082; font-size: 14px;">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#8A9082" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><path d="M20 20l-3.5-3.5"></path></svg>
+          Search an area — Protaras, Λεμεσός, Peyia…
+        </div>
+        <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #E6EBDD; color: #26331C; font-size: 13px; font-weight: 600;">Entire place</span>
+        <span style="display: inline-flex; align-items: center; height: 32px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9D2C2; color: #4C5546; font-size: 13px; font-weight: 500;">2+ beds</span>
+      </div>
+      <div style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px;">
+        <div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+          <div class="label">Occupancy · effective</div>
+          <div class="display" style="font-size: 36px; font-weight: 700; color: #1A2014; line-height: 1; font-variant-numeric: tabular-nums;">67%</div>
+          <div style="font-size: 12px; color: #4A5E3A; font-weight: 600;">+4.2 pp vs Cyprus</div>
+        </div>
+        <div class="card" style="padding: 16px; display: flex; flex-direction: column; gap: 6px;">
+          <div class="label">Median nightly rate</div>
+          <div class="display" style="font-size: 36px; font-weight: 700; color: #1A2014; line-height: 1; font-variant-numeric: tabular-nums;">€128</div>
+          <div style="font-size: 12px; color: #8A9082; font-weight: 500;">Mean €146</div>
+        </div>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 8px;">
+        <div class="label">Occupancy ramp on paper</div>
+        <div style="height: 12px; border-radius: 999px; background: linear-gradient(90deg, #D8DECB, #8FA36B, #4A5E3A, #26331C);"></div>
+        <div style="display: flex; justify-content: space-between; font-size: 11px; color: #8A9082;"><span>Low</span><span>High</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+</x-dc>
+</body>
+</html>
