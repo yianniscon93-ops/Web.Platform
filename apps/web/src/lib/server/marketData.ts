@@ -553,7 +553,7 @@ export function getStats(f: Filters, polygon: PolygonCoords | null): Promise<Sel
 }
 
 // ---------------------------------------------------------------------------
-// Data-contract v2 (Data.Noesis, 11 Jul 2026): dim_areas + the two query
+// Data-contract v2 (Core.Noesis, 11 Jul 2026): dim_areas + the two query
 // paths. Path A = pre-aggregated str_area_weekly for named areas without
 // attribute filters; path B = str_listings → str_listings_weekly for
 // polygons / filtered selections, occupancy re-weighted by covered_nights.

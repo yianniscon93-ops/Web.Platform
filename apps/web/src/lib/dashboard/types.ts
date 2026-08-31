@@ -151,7 +151,7 @@ export interface DashboardSummary {
 export type PolygonCoords = Array<[number, number]>;
 
 // ---------------------------------------------------------------------------
-// Data-contract types (Data.Noesis contract, 11 Jul 2026)
+// Data-contract types (Core.Noesis contract, 11 Jul 2026)
 // ---------------------------------------------------------------------------
 
 export type AreaType =

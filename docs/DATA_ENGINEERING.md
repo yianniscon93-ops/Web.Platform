@@ -1,6 +1,6 @@
 # PostgreSQL Serving Layer (PropSights)
 
-The serving layer that the PropSights product repo reads from. This repo (Data.Noesis) is data engineering only — it scrapes, computes the gold layer in DuckDB, and publishes pre-aggregated, query-ready tables to PostgreSQL. The product repo (frontend + API) consumes from these tables.
+The serving layer that the PropSights product repo reads from. The data-engineering side (the Core.Noesis package, run by the Data.STR and Data.Property job repos) scrapes, computes the gold layer in DuckDB, and publishes pre-aggregated, query-ready tables to PostgreSQL. The product repo (frontend + API) consumes from these tables.
 
 ```
 Core.Noesis + Data.* repos                          PropSights repo

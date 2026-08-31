@@ -437,5 +437,5 @@ artifacts/landing/src/
   `fetch(`${BASE_URL}api/areas`)`.
 - `@tanstack/react-query` and `drizzle-orm` are already in the
   workspace catalog — no version needed when installing.
-- Do **not** mention Airbnb, Bazaraki, or "Data.Noesis" anywhere in
+- Do **not** mention Airbnb, Bazaraki, or "Core.Noesis"/"Data.Noesis" anywhere in
   user-visible copy.

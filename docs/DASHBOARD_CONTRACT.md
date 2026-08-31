@@ -1,7 +1,7 @@
 # PropSights Dashboard — Data Contract & Query Guide
 
 **Audience: the PropSights repo (frontend + API).** Written 2026-07-11 by
-Data.Noesis, which owns the PostgreSQL schema and the DuckDB→Postgres sync.
+Core.Noesis (then Data.Noesis), which owns the PostgreSQL schema and the DuckDB→Postgres sync.
 The database is the contract: PropSights reads these tables and never
 aggregates raw calendar data at request time — every widget below resolves to
 a single indexed SELECT (verified: area trend queries run in ~0.05 ms).
