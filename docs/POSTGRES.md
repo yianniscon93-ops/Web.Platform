@@ -32,6 +32,7 @@ tables; the database is the contract. This repo owns the schema
 | `reviews_bronze` | 51k snapshots | Latest snapshot only |
 | `bazaraki_sale_latest` (27 cols) | 34,478 | 15 of 27 columns → `sale_listings` (condition, energy_efficiency, construction_year + derived min/max added 2026-07-14) |
 | `bazaraki_rental_latest` (25 cols) | 11,431 | 10 of 25 columns → `ltr_listings` |
+| `bazaraki_relist_links` | ~1k | full mirror → `relist_links`; both listing tables also carry `canonical_id` (root of an ad's re-post chain — group history/DOM by it, not `listing_id`). Added 2026-09-05, DDL applied by the sync itself; method in Core.Noesis/docs/bazaraki-relist.md |
 | `bazaraki_sale_log` / `rental_log` | 108k / 16k | No — price history & days-on-market unused |
 
 Coverage windows: gold spans 2026-03-21 → 2027-05-31; realized occupancy is
