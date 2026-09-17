@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700&family=Manrope:wght@400;500;600;700&family=JetBrains+Mono:wght@500&display=swap">
+  <style>
+    body { margin: 0; font-family: Manrope, "Segoe UI", "Helvetica Neue", Arial, sans-serif; color: #1A2014; background: #F5F1E8; -webkit-font-smoothing: antialiased; }
+    a { color: #4A5E3A; text-decoration: none; } a:hover { color: #26331C; }
+    button, input { font-family: inherit; }
+    .display { font-family: Sora, "Segoe UI", "Helvetica Neue", Arial, sans-serif; letter-spacing: -0.02em; }
+    .label { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 11px; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; color: #5F6758; }
+    .mono { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-variant-numeric: tabular-nums; }
+    .snap { font-family: "JetBrains Mono", ui-monospace, Menlo, monospace; font-size: 10.5px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: #5F6758; }
+    .card { background: #FFFFFF; border: 1px solid #D9D2C2; border-radius: 16px; box-shadow: 0 1px 2px rgba(26,32,20,0.04), 0 8px 24px -12px rgba(26,32,20,0.12); }
+    .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; height: 48px; padding: 0 18px; border-radius: 12px; font-size: 15px; font-weight: 600; border: 1px solid transparent; cursor: pointer; text-decoration: none; }
+    .btn-olive { background: #4A5E3A; color: #FFFFFF; }
+    .btn-terra { background: #D98C4A; color: #1A2014; }
+    .btn-ghost { background: #FFFFFF; color: #1A2014; border-color: #D9D2C2; }
+    .chip { display: inline-flex; align-items: center; gap: 6px; height: 34px; padding: 0 12px; border-radius: 999px; background: #FFFFFF; border: 1px solid #D9D2C2; font-size: 13px; font-weight: 600; color: #1A2014; white-space: nowrap; }
+    .chip-terra { background: #F6E3D2; border-color: #EBC7A6; color: #8A4A18; }
+    .field { display: flex; flex-direction: column; gap: 6px; }
+    .field label { font-size: 13px; font-weight: 600; color: #1A2014; }
+    .field input { height: 48px; border: 1px solid #D9D2C2; border-radius: 12px; padding: 0 14px; font-size: 15px; color: #1A2014; background: #FFFFFF; }
+    .field input::placeholder { color: #8A9082; }
+    .hint { font-size: 12px; color: #5F6758; line-height: 1.45; }
+    .tab { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 0 0; color: #5F6758; font-size: 11px; font-weight: 600; text-decoration: none; }
+    .tab.on { color: #4A5E3A; }
+    .kpi { display: flex; flex-direction: column; gap: 4px; padding: 12px 12px 10px; background: #FFFFFF; border: 1px solid #D9D2C2; border-radius: 14px; }
+    .kpi .v { font-family: Sora, "Segoe UI", Arial, sans-serif; font-size: 20px; font-weight: 700; letter-spacing: -0.02em; color: #1A2014; line-height: 1.05; }
+    .kpi .k { font-size: 11px; font-weight: 600; color: #4C5546; line-height: 1.3; }
+    .row { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .divider { height: 1px; background: #E8E2D4; }
+    .sea { background: #E4E8DD; }
+  </style>
+</helmet>
+
+<div style="width: 390px; height: 844px; box-sizing: border-box; position: relative; overflow: hidden; background: #F5F1E8; display: flex; flex-direction: column;">
+
+  <div style="padding: 14px 16px 0; display: flex; justify-content: flex-end;">
+    <a href="Home.dc.html" aria-label="Close" style="width: 40px; height: 40px; border-radius: 12px; background: #FFFFFF; border: 1px solid #D9D2C2; display: inline-flex; align-items: center; justify-content: center;"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#1A2014" stroke-width="2.2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"></path></svg></a>
+  </div>
+
+  <div style="flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 22px; padding: 0 24px; text-align: center;">
+    <div style="width: 88px; height: 88px; border-radius: 50%; background: #E6EBDD; display: flex; align-items: center; justify-content: center;">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="#4A5E3A" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5 9-10"></path></svg>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 10px;">
+      <h1 class="display" style="margin: 0; font-size: 32px; font-weight: 700; line-height: 1.05;">Order received</h1>
+      <p style="margin: 0; font-size: 17px; line-height: 1.45; color: #4C5546; text-wrap: balance;">Your Buyer Report will be ready <strong style="color: #1A2014;">within 48 hours</strong>. We will email you and notify you here.</p>
+    </div>
+
+    <div class="card" style="width: 100%; padding: 4px 16px; display: flex; flex-direction: column; text-align: left;">
+      <div class="row" style="padding: 12px 0;"><span style="font-size: 13px; color: #4C5546;">Order</span><span class="mono" style="font-size: 13px; font-weight: 600;">PS-2026-0917-042</span></div>
+      <div class="divider"></div>
+      <div class="row" style="padding: 12px 0;"><span style="font-size: 13px; color: #4C5546;">Property</span><span style="font-size: 13px; font-weight: 600; text-align: right;">2-bed apartment, Pernera</span></div>
+      <div class="divider"></div>
+      <div class="row" style="padding: 12px 0;"><span style="font-size: 13px; color: #4C5546;">Ready by</span><span class="mono" style="font-size: 13px; font-weight: 600; color: #4A5E3A;">Sat 19 Sep 2026 · 14:20</span></div>
+      <div class="divider"></div>
+      <div class="row" style="padding: 12px 0;"><span style="font-size: 13px; color: #4C5546;">Paid</span><span class="mono" style="font-size: 13px; font-weight: 600;">€390.00</span></div>
+    </div>
+
+    <div class="hint" style="max-width: 300px;">Closing on 10 Oct: you will have the report 3 weeks before. A copy goes to your lawyer at the same time.</div>
+  </div>
+
+  <div style="padding: 12px 16px 28px; display: flex; flex-direction: column; gap: 10px;">
+    <button type="button" class="btn btn-ghost" style="width: 100%;">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="3"></rect><path d="M3 10h18M8 3v4M16 3v4"></path></svg>
+      Add delivery to calendar
+    </button>
+    <a href="Home.dc.html" class="btn btn-olive" style="width: 100%;">Back to Explore</a>
+  </div>
+</div>
+</x-dc>
+<script data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+  renderVals() { return {}; }
+}
+</script>
+</body>
+</html>
+
