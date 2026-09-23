@@ -281,8 +281,9 @@ reconcile across views.
 **Current Postgres tables (Phase A Jun 2026 + landing-page additions Jul 11):**
 `dim_areas` (157-row Cyprus hierarchy — search bar / named-area filtering,
 active `listing_count` per area), `str_listings` (1 row/listing, PostGIS
-`geog`, GiST-indexed; now carries `district/municipality/community/
-tourist_area/area_label` + `is_active` — §2.4 delisted-leak fixed),
+`geog`, GiST-indexed; now carries `district/municipality/community/quarter/
+tourist_area/area_label` (`quarter` = neighbourhood below `community`;
+Athens: OSM polygons, nullable) + `is_active` — §2.4 delisted-leak fixed),
 `str_listings_weekly` (~880k rows — the workhorse for polygon + filters +
 week-range queries), `str_area_weekly` (rekeyed by `dim_areas.area_id` at
 every hierarchy level + `CY` island row; adds `booked_nights`, `revpar`,

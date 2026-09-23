@@ -67,7 +67,8 @@ are first-class.
   `search_radius_km` (fly-to + zoom), `listing_count` (active STRs — rank
   search results by it, hide zeros).
 - `str_listings`: geo (`geog` GiST-indexed, `latitude/longitude`), named
-  areas (`district`, `municipality`, `community`, `tourist_area`,
+  areas (`district`, `municipality`, `community`, `quarter` — neighbourhood
+  below `community`; Athens: OSM polygons, nullable — `tourist_area`,
   `area_label` — use `area_label` for tooltips), `is_active`, attributes
   (`property_type`, `bedrooms`, `beds`, `avg_rating`, `review_count`,
   `is_superhost`, 22 `has_*` amenity flags), current-state metrics
