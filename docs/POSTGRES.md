@@ -12,8 +12,9 @@ This doc answers two questions:
 
 Architecture recap: the data pipelines (Core.Noesis + Data.* repos) scrape → DuckDB gold → `noesis.storage.postgres` sync → Postgres.py`
 publishes pre-aggregated tables to Postgres. The product repo reads those
-tables; the database is the contract. This repo owns the schema
-([schema.sql](schema.sql)).
+tables; the database is the contract. Core.Noesis owns the schema and sync —
+see its `docs/serving.md` (per-domain shapes) and `docs/storage.md` (core
+sync).
 
 ---
 
@@ -124,26 +125,29 @@ signals a buy-side user can get. Publish `sale_price_history` + derived
 `days_on_market`, `price_drop_pct` columns. (Pre-fix, the only clean baseline
 is the Apr 15 run.)
 
-**2.10 Revenue estimates are stubbed, but computable today.**
-`str_area_weekly.revenue_estimate` is synced as literal NULL, and the four ROI
-columns on `sale_listings` are NULL. Yet gold already supports:
+**2.10 Revenue estimates are stubbed, but computable today.** *(Resolved —
+see §6: `str_area_weekly.revenue_est`, not `revenue_estimate`, is populated,
+and the ROI columns below are recomputed every classifieds-enrich run.)*
+`str_area_weekly.revenue_estimate` was synced as literal NULL, and the four
+ROI columns on `sale_listings` were NULL. Gold already supported:
 `revenue_est = Σ(booking_confidence × price_per_night)` per listing/week, and
-`RevPAR = eff_occ × ADR`. Listing-level annual revenue estimates then unlock
-the `sale_listings` ROI columns via PostGIS comp-matching (`ST_DWithin` +
-bedroom match → median ADR & eff-occ → `str_gross_yield`). Blocked only by the
-P0 price fix on the denominator side.
+`RevPAR = eff_occ × ADR`. Listing-level annual revenue estimates then
+unlocked the `sale_listings` ROI columns via PostGIS comp-matching
+(`ST_DWithin` + bedroom match → median ADR & eff-occ → `str_gross_yield`).
 
 ### P2 — smaller omissions, cheap to add
 
 - **Rating history**: `reviews_bronze` has up to 18 snapshots/listing; 2,352
   listings show rating movement. Only the latest is synced. A reputation-trend
   spark line is a differentiator for host users.
-- **`min_nights`**: not synced at all. It's both a user filter and market
-  structure (mode is 3 nights; 8k future dates require 14+).
-- **3 of 25 amenity flags** silently missing from the sync list:
-  `has_pack_n_play`, `has_kids_toys`, `has_exercise_equipment`.
+- **`min_nights`**: now synced as `min_nights_typical` (`str_extra` domain) —
+  the lower median of `availability_latest.min_nights` over the next 90 days.
+- **3 of 25 amenity flags**, previously missing from the sync list, are now
+  synced via `str_extra`: `has_pack_n_play`, `has_kids_toys`,
+  `has_exercise_equipment`.
 - **`city`, `proximity_airport_min`, `host_type`, `guest_profile`** on
-  `listings` — not synced (the last two only ~20–30% covered, still useful).
+  `listings` are now synced via `str_extra` (the last two only ~20–30%
+  covered, still useful).
 - **Historical pricing**: `pricing_calendar` only receives future dates; rows
   for past dates persist only because the sync never deletes — i.e. history
   accretes from the late-June go-live, with nothing before. `pricing_bronze`
@@ -252,11 +256,11 @@ time, Postgres stores query-ready rows, upsert never truncates.
 | B1 | `str_listings` += `district`, `municipality`, `community`, `tourist_area`, `is_active`, `city`, `min_nights_mode`, 3 missing amenity flags, `proximity_airport_min`; same geo columns on `sale_listings`/`ltr_listings` via assigner | §3.1–3.3, honest polygons |
 | B2 | `str_area_weekly.revenue_estimate` = Σ(confidence × price); add `revpar`; keyed by district not bbox codename | §3.1, §3.3 |
 | B3 | `dim_calendar` (date, dow, is_weekend, season, is_holiday, holiday_name) — ~800 rows | §3.4, §3.5 |
-| B4 | `booking_stays` (booking_id PK, listing_id, area, first_night, stay_length_nights, lead_time_days, detected_at, confidence, est_value) — one row per stay from gold | §3.4 |
-| B5 | `sale_listings`/`ltr_listings` += `bathrooms`, `condition` ✅, `furnishing`, `construction_year` ✅ (+ derived `construction_year_min/_max` ✅, sale only, 2026-07-14), `energy_efficiency` ✅, `postal_code`, `days_on_market` ✅, `price_drop_pct` ✅, `last_price_change_at` ✅; new `sale_price_history` (listing_id, observed_at, price) | §3.7, §3.8 |
+| B4 | **Done** — `booking_stays` (PK `booking_id`: `listing_id`, `district`/`municipality`/`area_id`/`area`, `first_night`/`last_night`, `stay_length_nights`, `lead_time_days`, `detected_at`, `confidence`, `stale_listing`, `price_at_booking`, `priced_nights`, `est_value`, `season`), synced by the availability run's `stays` domain | §3.4 |
+| B5 | **Done** — `sale_listings`/`ltr_listings` now carry `bathrooms`, `condition`, `furnishing`, `construction_year` (+ derived `construction_year_min/_max`, sale only), `energy_efficiency`, `postal_code`, `days_on_market`, `dom_left_censored`, `price_change_pct` (not `price_drop_pct`), `n_price_drops`, `last_price_change_at`, `first_price`, `price_changed`, `is_active` via the `classified_extra` domain; price history is `classified_events` (per source/listing_type/listing_id/event_type/observed_at), not a separate `sale_price_history` table | §3.7, §3.8 |
 | B6 | ROI comp-matching job → populate `sale_listings.str_annual_revenue_est`, `str_gross_yield`, `ltr_monthly_rent_est`, `ltr_gross_yield` (PostGIS `ST_DWithin` + bedrooms) | §3.7 yield map |
-| B7 | `listing_rating_history` (listing_id, snapshot_date, avg_rating, review_count) from `reviews_bronze` | §3.6 |
-| B8 | `pricing_gold` in DuckDB (price-change dynamics from `pricing_bronze`), then a pace/pricing dynamics table | §3.5 depth |
+| B7 | **Done** — `listing_rating_history` (PK `listing_id, snapshot_date`: `avg_rating`, `review_count`, `observed_at`), synced by the `ratings` domain | §3.6 |
+| B8 | **Done** — `str_price_events` (per-night price-change events, from `pricing_bronze`) and `pricing_behavior` (district × `stay_month` discounting/conversion stats), synced by the pricing run's `price_events`/`pricing_behavior` domains | §3.5 depth |
 
 ---
 
@@ -289,9 +293,10 @@ week-range queries), `str_area_weekly` (rekeyed by `dim_areas.area_id` at
 every hierarchy level + `CY` island row; adds `booked_nights`, `revpar`,
 `revenue_est` — §2.5/B1/B2 shipped), `pricing_calendar` (~300k rows, weekly
 cadence), `ltr_listings`, `sale_listings`, `sync_meta` (freshness, single
-row). Full DDL in [schema.sql](schema.sql); migrations in
-[migrations/](migrations/). Tier gating lives in the product API (live
-`SELECT tier FROM users`, not JWT claims), never in the DB.
+row), plus the domains listed below. DDL and migrations are owned by
+Core.Noesis, per-module and idempotent — see its `docs/serving.md` and
+`docs/storage.md` (no `schema.sql` in this repo). Tier gating lives in the
+product API (live `SELECT tier FROM users`, not JWT claims), never in the DB.
 
 **Landing-page product decisions (Jul 2026):** map-centric landing merges
 Market Pulse + Map Explorer; date picker is week-resolution; selection
@@ -321,9 +326,20 @@ cd /opt/data-str
 /opt/noesis-venv/bin/python -m noesis.storage.postgres --domains str,weekly  # subset
 ```
 
-Domains: `str, weekly, area, meta, pricing, ltr, sale` — one transaction each;
-a failing domain rolls back alone. Cadences: availability domains every 48h,
-`pricing` weekly, `ltr`/`sale` on the 1st & 15th (**currently stalled — §2.2**).
+Domains: the core sync's original nine — `str, weekly, area, dim_areas, meta,
+pricing, ltr, sale, relists` — plus the newer domains registered under
+`noesis/storage/serving/`, grouped by which run feeds them (Core.Noesis
+docs/serving.md):
+
+| Run | Domains |
+|---|---|
+| availability / gold repair | `str, weekly, area, dim_areas, meta, str_extra, dim_calendar, ratings, stays, pace, calendar` |
+| pricing | `pricing, price_events, pricing_behavior` |
+| classifieds enrich (after `ltr`/`sale`/`relists`) | `classified_extra, classified_events, roi` |
+
+One transaction per domain; a failing domain rolls back alone. Cadences:
+availability domains every 48h, `pricing` weekly, `ltr`/`sale` on the 1st &
+15th (**currently stalled — §2.2**).
 
 **Standing item:** rotate the Gmail app password (committed to git history);
 env it in `run_discovery.py` / `run_enrichment.py` as `SMTP_PASSWORD`.

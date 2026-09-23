@@ -11,10 +11,14 @@ enriched and verified 2026-07-12; sample values are real. Full DDL in
 "occupancy" (Easter-week gap was 28pp).
 
 **Operational note:** `booking_stays`, `dim_calendar`, `pricing_behavior`,
-`area_pace`, and the new `sale_listings` columns (ROI + DOM) are one-off
-backfills as of 2026-07-12. Wiring them into `noesis.storage.postgres` for
-automatic refresh is a pending Core.Noesis task — check
-`sync_meta`/`detected_at` maxima for freshness until then.
+`area_pace`, and the `sale_listings` ROI + DOM columns are no longer one-off
+backfills — `noesis.storage.postgres` refreshes them automatically: the
+availability run's `stays`/`pace`/`calendar` domains feed `booking_stays` /
+`area_pace` / `dim_calendar`; the pricing run's `pricing_behavior` domain
+feeds `pricing_behavior`; the classifieds-enrich run's `roi` domain
+recomputes the `sale_listings` ROI columns every run (after
+`classified_extra` and `str`). Check `sync_meta`/`detected_at` maxima for
+freshness as before.
 
 ---
 
@@ -45,6 +49,11 @@ automatic refresh is a pending Core.Noesis task — check
 ## C. Booking pace / lead time — `booking_stays` (198,948 stays) + `area_pace` (20,404 rows)
 
 Filter `confidence ≥ 0.8 AND NOT stale_listing` for all demand analytics.
+`price_at_booking` (used in `est_value` below and the early-bird analysis in
+§D) is now a mean over the stay's priced nights — each priced night's latest
+quote taken in the 9 days up to detection, averaged over `priced_nights` of
+`stay_length_nights`; pricing samples Tue/Fri check-ins weekly, so only about
+a third of stays are priced (`priced_nights = 0` → NULL, not a bad quote).
 
 | Statistic | Display | Serve from | Notes |
 |---|---|---|---|
@@ -60,10 +69,10 @@ Filter `confidence ≥ 0.8 AND NOT stale_listing` for all demand analytics.
 
 | Statistic | Display | Serve from | Notes |
 |---|---|---|---|
-| Area Discounting Index | number + monthly trend | `pricing_behavior.pct_cut10/pct_cut20/med_cut_depth_pct` | Jul CY: 32.9% of open dates cut ≥10%, median depth −20.9% |
-| Hold-vs-cut conversion | paired bars | `pricing_behavior.conv_cut_pct` vs `conv_hold_pct` | Cutters convert better: Jul 51.1% vs 39.0%. Caveat (also in DDL): universe = dates still open at T-14 |
-| Static-pricer share | number per district | `pricing_behavior.static_pricer_share` | ~3–4% never touch any price among the observed universe |
-| Early-bird economics | scatter / number | `booking_stays.price_at_booking` vs `lead_time_days` | 87,927 stays with price-at-booking (Mar 26 onward) |
+| Area Discounting Index | number + monthly trend | `pricing_behavior.pct_cut10`/`pct_cut20`/`med_cut_depth_pct` | Universe: nights first priced at/before T−14 and not booked by T−14. **Cut** = ≤ −10%; depth = lowest pre-booking price vs the first observed price (negative). Jul CY: 32.9% of open dates cut ≥10%, median depth −20.9%. Every month is recomputed each run (a market-wide row sits under the root id; district × `stay_month` PK) |
+| Hold-vs-cut conversion | paired bars | `pricing_behavior.conv_cut_pct` vs `conv_hold_pct` | **Held** = 0% cut; **converted** = booked between T−14 and the night. Cutters convert better: Jul 51.1% vs 39.0%. ~23% of `bookings` rows have `booked_at` after the night (calendar roll-off) and are excluded from conversion |
+| Static-pricer share | number per district | `pricing_behavior.static_pricer_share` | Listings whose every night that month kept one price; ~3–4% of the observed universe |
+| Early-bird economics | scatter / number | `booking_stays.price_at_booking` vs `lead_time_days` | `price_at_booking` is a mean over the stay's priced nights (see `priced_nights`, §C); 87,927 stays with price-at-booking (Mar 26 onward) |
 | Forward ADR curve | line by area/bedrooms | `pricing_calendar` × `str_listings` | Label honestly: prices are Tue/Fri check-in samples |
 | Price dispersion (p25–p75) | band chart | `pricing_calendar` percentiles per area-week | Compression = commoditization signal |
 | Revenue estimates / RevPAR | numbers + trend | `str_area_weekly.revenue_est`, `revpar` | shipped Jul 11 |
@@ -76,7 +85,7 @@ Filter `confidence ≥ 0.8 AND NOT stale_listing` for all demand analytics.
 |---|---|---|---|
 | Seasonality / weekend / holiday context | chart annotations | `dim_calendar` (467 days) | join anything by `calendar_date` |
 | Cancellation rate | number + trend | ⏳ DuckDB signal verified (150k booked-future-date reversals) — needs a `cancelled_at` pass + artifact filtering before publishing | high value, medium effort |
-| Review velocity / rating trend | sparkline | ⏳ `reviews_bronze` in DuckDB (9,163 listings, median 6 snapshots) — needs B7 `listing_rating_history` sync | trivial sync addition |
+| Review velocity / rating trend | sparkline | `listing_rating_history` (PK `listing_id, snapshot_date`: `avg_rating`, `review_count`, `observed_at`) | Latest `reviews_bronze` snapshot per listing per day, kept only where a value changed (27k rows vs 92k raw for Cyprus); incremental on `MAX(observed_at)` |
 | Data freshness badge | badge | `sync_meta` + `MAX(booking_stays.detected_at)` | trust is the product — always show "data as of" |
 
 ---

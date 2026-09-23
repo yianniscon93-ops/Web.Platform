@@ -8,7 +8,8 @@ a single indexed SELECT (verified: area trend queries run in ~0.05 ms).
 
 Connection: PostgreSQL + PostGIS on the Hetzner box, `localhost` only —
 `postgresql://bnb:bnb@localhost/bnb` (the FastAPI service runs on the same
-server). Full DDL: [schema.sql](schema.sql).
+server). Schema and sync are owned by Core.Noesis — see its `docs/serving.md`
+(per-domain table shapes) and `docs/storage.md` (the core sync).
 
 ---
 
@@ -248,21 +249,34 @@ Build now:
 - **Rate positioning**: a listing's `avg_nightly_rate` percentile within the
   selection's distribution (path B percentile query + one listing lookup).
 
-Stub: weekend premium and holiday uplift (needs `dim_calendar`), price-vs-
-lead-time dynamics (needs `pricing_gold` upstream).
+Stub: weekend premium and holiday uplift — `dim_calendar` is synced, but
+pricing still only samples Tue/Fri check-ins, so no weekend/holiday price
+rows exist yet. Price-vs-lead-time dynamics: build from `str_price_events`
+(listing × night × `observed_at`, one row per price change, with `prev_price`
+and `change_pct`) joined to `booking_stays.lead_time_days`.
 
-### 6.3 Booking Pace — ⛔ stub
+### 6.3 Booking Pace — ✅ build now
 
 The differentiator page: lead-time curve by stay month (June books ~10 days
 out, October ~137), pickup curves (on-the-books at 30/60/90 days before
-arrival), stay-length mix. The data exists in DuckDB gold but is not
-published yet — waiting on `booking_stays` (one row per stay: `listing_id`,
-`district`, `first_night`, `stay_length_nights`, `lead_time_days`,
-`confidence`, `est_value`) + `dim_calendar`. Both are next in this repo's
-queue; the shapes above are stable enough to design against.
+arrival), stay-length mix. Served from `booking_stays` (one row per detected
+stay, PK `booking_id`: `listing_id`, `district`/`municipality`/`area_id`/
+`area`, `first_night`/`last_night`, `stay_length_nights`, `lead_time_days`,
+`detected_at`, `confidence`, `stale_listing`, `price_at_booking`,
+`priced_nights`, `est_value`, `season`), refreshed by the availability sync's
+`stays` domain, joined to `dim_calendar` for seasonality/weekday/holiday
+splits. Pickup curves come from `area_pace` (one on-the-books snapshot per
+sync day: `district`/`area_id`/`area_type`/`area_name` × `stay_week` ×
+`as_of_date` → `otb_raw_pct`, `otb_eff_pct`, `listing_count`, `booked_nights`,
+`covered_nights`) — compare `otb_raw_pct` across `as_of_date` for a fixed
+`stay_week`, never a single snapshot's level. Filter demand analytics on
+`confidence >= 0.8 AND NOT stale_listing`; lead time is a lower bound
+(detection lags up to ~2 days) and forward months are right-censored. Full
+shapes in Core.Noesis docs/serving.md.
 
-Meanwhile the landing `bookings` series (weekly detected bookings) is the
-only demand-velocity signal — don't try to derive lead times from it.
+Meanwhile the landing `bookings` series (weekly detected bookings) is a
+separate, coarser demand-velocity signal — don't try to derive lead times
+from it.
 
 ### 6.4 Investments (buy-side) — 🔶 partial, with a data caveat
 
@@ -278,10 +292,15 @@ Build now against `sale_listings` (`price`, `geog`, `bedrooms`,
 
 Stub: days-on-market and price-cut lists (blocked on the expiry fix +
 `sale_price_history`), condition / energy-efficiency / construction-year
-segmentation (columns not yet synced), and the four ROI columns
-(`str_annual_revenue_est`, `str_gross_yield`, `ltr_monthly_rent_est`,
-`ltr_gross_yield` — present in the schema, currently NULL; render "—" until
-populated, they'll fill in without a schema change).
+segmentation (columns not yet synced).
+
+The four ROI columns (`str_annual_revenue_est`, `str_gross_yield`,
+`ltr_monthly_rent_est`, `ltr_gross_yield`) are now populated — Core.Noesis's
+`roi` domain recomputes them in Postgres every classifieds-enrich run (after
+`classified_extra` and `str`): STR comps are active entire-home
+`str_listings` within 2km (same bedrooms first, then ±1, then any; ≥3 comps
+required), LTR comps are ≥3 same-bedroom `ltr_listings` within 2km; rows with
+no qualifying comps are NULL. Formulas in Core.Noesis docs/serving.md.
 
 Note: `sale_listings.area` is NULL today (named-area assignment not yet run
 for Bazaraki) — geographic filtering is polygon-only on this tab for now.
@@ -291,8 +310,11 @@ for Bazaraki) — geographic filtering is polygon-only on this tab for now.
 Build now against `ltr_listings` (`monthly_rent` is clean post the July 6
 price-repair): median rent by bedrooms within a polygon, rent distribution,
 supply. Same NULL-`area` limitation as 6.4 — polygon-only until the assigner
-runs for Bazaraki. Stub: rent trends over time (needs the log-history table)
-and rent-vs-STR arbitrage (needs 6.4's ROI columns).
+runs for Bazaraki. Rent trends over time: build from `classified_events`
+(price-change events per listing — `price`, `prev_price`, `change_pct`,
+`canonical_id` — for `listing_type` = rental, grouped by `canonical_id`,
+never `listing_id`). Rent-vs-STR arbitrage is now buildable off 6.4's ROI
+columns (`ltr_monthly_rent_est` vs `str_annual_revenue_est / 12`).
 
 ### 6.6 Listing Benchmark (drill-down card, not a tab) — ✅ build now
 
@@ -304,15 +326,18 @@ Click a map pin → one listing vs its selection comp set:
 - History: its `str_listings_weekly` rows vs the selection's weekly medians.
 - Amenity gaps: flags false on this listing but >50% true across `sel`.
 
-Stub: rating trend sparkline (needs `listing_rating_history`).
+Rating trend sparkline: `listing_rating_history` (PK `listing_id,
+snapshot_date`: `avg_rating`, `review_count`, `observed_at` — the latest
+`reviews_bronze` snapshot per listing per day, kept only where a value
+changed).
 
 ---
 
 ## 7. Sequencing & source of truth
 
-Upstream work order in this repo (per `db/POSTGRES.md` §4): `booking_stays` +
-`dim_calendar` → 6.3 unblocks; sale expiry fix + Bazaraki named areas +
-enrichment columns → 6.4/6.5 complete; `area_fwd_daily` if the 6.2 forward
-curve needs pre-aggregation at scale. Schema changes land here first — this
-file and `schema.sql` are the source of truth; if a query in the PropSights
-repo disagrees with this contract, this repo wins.
+Upstream work order in this repo (per `db/POSTGRES.md` §4): sale expiry fix +
+Bazaraki named areas + enrichment columns → 6.4/6.5 complete; `area_fwd_daily`
+if the 6.2 forward curve needs pre-aggregation at scale. Schema changes land
+in Core.Noesis first — its `docs/serving.md` and `docs/storage.md` are the
+source of truth; if a query in the PropSights repo disagrees with this
+contract, this repo wins.
