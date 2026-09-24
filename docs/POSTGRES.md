@@ -283,17 +283,24 @@ reconcile across views.
 ## 6. Operations reference
 
 **Current Postgres tables (Phase A Jun 2026 + landing-page additions Jul 11):**
-`dim_areas` (157-row Cyprus hierarchy — search bar / named-area filtering,
-active `listing_count` per area), `str_listings` (1 row/listing, PostGIS
+`dim_areas` (552-row Cyprus hierarchy since 2026-09-24 — search bar /
+named-area filtering, active `listing_count` per area, OSM `boundary`
+`geography(MultiPolygon,4326)` on 528 rows; NULL for parishes, tourist
+areas and the country row), `str_listings` (1 row/listing, PostGIS
 `geog`, GiST-indexed; now carries `district/municipality/community/quarter/
 tourist_area/area_label` (`quarter` = neighbourhood below `community`;
-Athens: OSM polygons, nullable) + `is_active` — §2.4 delisted-leak fixed),
+Athens: OSM polygons, nullable) + `area_id` + `is_active` — §2.4
+delisted-leak fixed),
 `str_listings_weekly` (~880k rows — the workhorse for polygon + filters +
 week-range queries), `str_area_weekly` (rekeyed by `dim_areas.area_id` at
 every hierarchy level + `CY` island row; adds `booked_nights`, `revpar`,
 `revenue_est` — §2.5/B1/B2 shipped), `pricing_calendar` (~300k rows, weekly
 cadence), `ltr_listings`, `sale_listings`, `sync_meta` (freshness, single
-row), plus the domains listed below. DDL and migrations are owned by
+row), plus the domains listed below. `sale_listings` / `ltr_listings`
+(+ `_athens`) carry `area_district, area_municipality, area_community,
+area_quarter, area_tourist_area, area_label, area_id` from the same
+AreaAssigner (Core.Noesis 89a9e63) — the §2.5 "same assigner for Bazaraki"
+item is done. DDL and migrations are owned by
 Core.Noesis, per-module and idempotent — see its `docs/serving.md` and
 `docs/storage.md` (no `schema.sql` in this repo). Tier gating lives in the
 product API (live `SELECT tier FROM users`, not JWT claims), never in the DB.
@@ -301,9 +308,15 @@ product API (live `SELECT tier FROM users`, not JWT claims), never in the DB.
 **Landing-page product decisions (Jul 2026):** map-centric landing merges
 Market Pulse + Map Explorer; date picker is week-resolution; selection
 (area/polygon + dates + filters) is global context followed by all pages.
-Named-area selection filters by assigned area columns (consistent with the
-radius-based assigner), not boundary polygons (we have none — centroids +
-radii only).
+Named-area selection filters by assigned area columns, never by an
+`ST_Covers` against the boundary: `str_listings` by `district` /
+`municipality` / `community` / `tourist_area`, sale and rental ads by the
+matching `area_*` column (parish → its parent's predicate; country →
+everything). The old centroid-circle fallback for ads (`ST_DWithin` on the
+`dim_areas` centre + `search_radius_km`) is removed. `dim_areas.boundary` is
+display-only: the map outlines a selected area in its slot colour and fits
+to it, keeping the centre ring for rows without one; boundaries are fetched
+per selection (`/api/dashboard/areas?ids=`), not with the full list.
 
 **Connect:**
 

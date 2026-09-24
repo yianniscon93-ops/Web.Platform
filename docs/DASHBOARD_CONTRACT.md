@@ -52,12 +52,12 @@ are first-class.
 
 | Table | Grain | Use |
 |---|---|---|
-| `dim_areas` | 1 row per named area (157) | search bar, hierarchy, fly-to coords |
+| `dim_areas` | 1 row per named area (552 Cyprus since 2026-09-24) | search bar, hierarchy, fly-to coords, boundary outline |
 | `str_listings` | 1 row per STR listing (~14.9k) | map pins, polygon/filter path, listing attributes, current-state occupancy |
 | `str_listings_weekly` | listing × week (~880k) | **the workhorse**: any polygon/filtered selection × any week range |
 | `str_area_weekly` | named area × week (~9.7k) | **the fast path**: unfiltered named-area KPIs, trends, deltas |
 | `pricing_calendar` | listing × future date (~300k) | forward nightly rates (pricing page) |
-| `ltr_listings`, `sale_listings` | 1 row per Bazaraki listing | rent/buy-side pages (later phases) |
+| `ltr_listings`, `sale_listings` | 1 row per Bazaraki listing | rent/buy-side pages; named-area scope via `area_*` |
 | `sync_meta` | 1 row | freshness badge |
 
 ### Column notes
@@ -66,15 +66,30 @@ are first-class.
   `name_el`, `area_type` (country/district/municipality/community/quarter/
   parish/tourist_area), `parent_id` (hierarchy), `latitude/longitude` +
   `search_radius_km` (fly-to + zoom), `listing_count` (active STRs — rank
-  search results by it, hide zeros).
+  search results by it, hide zeros), `boundary` (`geography(MultiPolygon,
+  4326)`, OSM admin polygon; NULL for parishes, tourist areas and the
+  country row — 528 of 552 Cyprus rows and 34 Athens rows have one).
+  Core.Noesis 89a9e63 took Cyprus from 157 to 552 rows (409 communities,
+  88 quarters; new ids `CYC-…` / `CYQ-…`, old ids and names unchanged).
+  Names repeat across levels (e.g. "Agios Ioannis" is a Lefkosia quarter
+  and a Nicosia community) but never within one level, so `(area_type,
+  name_en)` is unique.
 - `str_listings`: geo (`geog` GiST-indexed, `latitude/longitude`), named
   areas (`district`, `municipality`, `community`, `quarter` — neighbourhood
   below `community`; Athens: OSM polygons, nullable — `tourist_area`,
-  `area_label` — use `area_label` for tooltips), `is_active`, attributes
+  `area_label` — use `area_label` for tooltips; `area_id` = the most
+  specific `dim_areas` row, from the sync after 2026-09-24; the level
+  columns are consistent — `municipality` always agrees with the
+  quarter's parent), `is_active`, attributes
   (`property_type`, `bedrooms`, `beds`, `avg_rating`, `review_count`,
   `is_superhost`, 22 `has_*` amenity flags), current-state metrics
   (`eff_occ_todate`, `eff_occ_fwd60`, `avg_nightly_rate`, `bookings_30d`).
   The legacy `area` column is an internal scrape codename — never display it.
+- `sale_listings` / `ltr_listings` (+ `_athens`): `area_district`,
+  `area_municipality`, `area_community`, `area_quarter`,
+  `area_tourist_area`, `area_label`, `area_id` — nullable, written by the
+  same AreaAssigner as `str_listings`. Bazaraki's own free-text `district` /
+  `quarter` columns are separate; don't scope by them.
 - `str_listings_weekly`: `raw_occ`, `eff_occ`, `avg_price`, `booked_nights`,
   `covered_nights` (denominator ≤ 7), `bookings`. PK `(listing_id, week_start)`.
 - `str_area_weekly`: `listing_count`, `raw_occ`, `eff_occ`, `avg_adr`,
@@ -193,9 +208,17 @@ WHERE is_active IS TRUE
 - **`listing_count` varies by week** in `str_area_weekly` (supply changes,
   scrape coverage). Show it next to trends so occupancy moves aren't
   misread when supply shifts.
-- **No boundary polygons exist** for named areas — assignment is
-  nearest-centroid-within-radius. Don't attempt to draw an outline for a
-  selected named area; fit bounds to matched pins instead.
+- **Boundaries are for drawing, not membership.** `dim_areas.boundary`
+  holds the OSM polygon for 528 of 552 Cyprus rows; the assigner uses those
+  polygons (1 km boundary snap, parent-chain consistency), so a listing's
+  area columns — not an `ST_Covers` against the boundary — decide
+  membership. Draw the outline of a selected named area and fit the map to
+  it; rows with a NULL boundary (parishes, tourist areas, country) get a
+  centre ring. Serve it simplified:
+  `ST_AsGeoJSON(ST_SimplifyPreserveTopology(boundary::geometry, 0.0002), 5)`
+  — all 528 polygons simplified this way are ~1.7 MB of GeoJSON, so the app
+  lists areas without boundaries and fetches one per selection
+  (`/api/dashboard/areas?ids=…`, largest row = a district at ~35 KB).
 - **`bookings` = detected calendar flips** at a 2-day scrape cadence — a
   demand velocity signal, not a reservation count from Airbnb.
 
@@ -302,15 +325,19 @@ The four ROI columns (`str_annual_revenue_est`, `str_gross_yield`,
 required), LTR comps are ≥3 same-bedroom `ltr_listings` within 2km; rows with
 no qualifying comps are NULL. Formulas in Core.Noesis docs/serving.md.
 
-Note: `sale_listings.area` is NULL today (named-area assignment not yet run
-for Bazaraki) — geographic filtering is polygon-only on this tab for now.
+Named-area scope (since 2026-09-24): equality on the ad's level column —
+`area_district` / `area_municipality` / `area_community` / `area_quarter` /
+`area_tourist_area` = the area's `name_en`; country = every row; a parish
+(no ad column) uses its parent's predicate. Drawn polygons keep
+`ST_Covers(polygon, geog)`. The earlier centroid-circle approximation
+(`ST_DWithin` on `dim_areas` centre + `search_radius_km`) is gone. The
+legacy `area` column stays NULL — never scope by it.
 
 ### 6.5 Rentals (LTR) — 🔶 partial
 
 Build now against `ltr_listings` (`monthly_rent` is clean post the July 6
 price-repair): median rent by bedrooms within a polygon, rent distribution,
-supply. Same NULL-`area` limitation as 6.4 — polygon-only until the assigner
-runs for Bazaraki. Rent trends over time: build from `classified_events`
+supply. Same named-area membership rule as 6.4 (`area_*` columns). Rent trends over time: build from `classified_events`
 (price-change events per listing — `price`, `prev_price`, `change_pct`,
 `canonical_id` — for `listing_type` = rental, grouped by `canonical_id`,
 never `listing_id`). Rent-vs-STR arbitrage is now buildable off 6.4's ROI

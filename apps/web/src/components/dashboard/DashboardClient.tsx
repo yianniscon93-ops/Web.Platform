@@ -19,6 +19,7 @@ import {
 } from "lucide-react";
 import { BRAND } from "@/lib/brand";
 import type {
+  AreaBoundary,
   AreaInfo,
   CompareSlot,
   DashboardSummary,
@@ -153,10 +154,18 @@ export default function DashboardClient() {
 
   // Camera target — set explicitly on selection changes so removals never
   // yank the map around.
+  // `areaId` = a named area whose boundary the camera should fit once it is
+  // loaded (falls back to `focus` when it has none).
   const [mapCam, setMapCam] = useState<{
     focus: { lat: number; lng: number; zoom: number } | null;
     fit: PolygonCoords | null;
+    areaId?: string | null;
   }>({ focus: null, fit: null });
+
+  // Area boundaries fetched on selection (areaId → GeoJSON; null = none or
+  // the fetch failed, so the centre ring is used instead).
+  const [boundaries, setBoundaries] = useState<Record<string, AreaBoundary | null>>({});
+  const boundaryRequested = useRef(new Set<string>());
 
   const [summary, setSummary] = useState<DashboardSummary | null>(null);
   const [areas, setAreas] = useState<AreaInfo[] | null>(null);
@@ -237,6 +246,7 @@ export default function DashboardClient() {
         setMapCam({
           focus: { lat: sel.area.lat, lng: sel.area.lng, zoom: zoomForRadius(sel.area.radiusKm) },
           fit: null,
+          areaId: sel.area.hasBoundary ? sel.area.areaId : null,
         });
       } else if (sel.kind === "polygon") {
         setMapCam({ focus: null, fit: sel.coords });
@@ -276,6 +286,29 @@ export default function DashboardClient() {
       .then(setAreas)
       .catch(console.error);
   }, []);
+
+  // Boundaries for the selected named areas (the full list omits them).
+  useEffect(() => {
+    const want = slots
+      .map((s) => (s.selection.kind === "area" ? s.selection.area : null))
+      .filter((a): a is AreaInfo => !!a && !!a.hasBoundary && !boundaryRequested.current.has(a.areaId))
+      .map((a) => a.areaId);
+    if (!want.length) return;
+    for (const id of want) boundaryRequested.current.add(id);
+    // No abort on cleanup: results are cached by id whichever slot asked.
+    fetch(`/api/dashboard/areas?ids=${want.map(encodeURIComponent).join(",")}`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`areas ${r.status}`))))
+      .then((rows: AreaInfo[]) => {
+        const got: Record<string, AreaBoundary | null> = {};
+        for (const id of want) got[id] = null;
+        for (const r of rows) got[r.areaId] = r.boundary ?? null;
+        setBoundaries((prev) => ({ ...prev, ...got }));
+      })
+      .catch((e: Error) => {
+        console.error(e);
+        setBoundaries((prev) => ({ ...prev, ...Object.fromEntries(want.map((id) => [id, null])) }));
+      });
+  }, [slots]);
 
   // Map dots: attribute filters only — the selections are drawn on top.
   useEffect(() => {
@@ -471,6 +504,18 @@ export default function DashboardClient() {
     [slots]
   );
 
+  // Named selections: the OSM boundary in the slot colour when dim_areas has
+  // one (single and compare mode); otherwise, in compare mode, a centre ring.
+  const areaOutlines = useMemo(
+    () =>
+      slots.flatMap((s) => {
+        if (s.selection.kind !== "area") return [];
+        const b = boundaries[s.selection.area.areaId];
+        return b ? [{ boundary: b, color: s.color }] : [];
+      }),
+    [slots, boundaries]
+  );
+
   const areaMarks = useMemo(
     () =>
       compare
@@ -478,14 +523,20 @@ export default function DashboardClient() {
             .filter((s) => s.selection.kind === "area")
             .map((s) => {
               const a = (s.selection as Extract<Selection, { kind: "area" }>).area;
+              // Boundary pending → draw nothing yet; loaded → outline instead.
+              if (a.hasBoundary && boundaries[a.areaId] !== null) return null;
               return a.lat != null && a.lng != null
                 ? { lat: a.lat, lng: a.lng, color: s.color }
                 : null;
             })
             .filter((m): m is { lat: number; lng: number; color: string } => m != null)
         : [],
-    [slots, compare]
+    [slots, compare, boundaries]
   );
+
+  // Camera: fit a selected area's boundary; hold still while it loads.
+  const camBoundary = mapCam.areaId ? boundaries[mapCam.areaId] : null;
+  const camHold = !!mapCam.areaId && camBoundary === undefined;
 
   const single = slots[0];
   const singleLabel =
@@ -596,7 +647,10 @@ export default function DashboardClient() {
           drawing={drawing}
           shapes={shapes}
           areaMarks={areaMarks}
+          areaOutlines={areaOutlines}
           fitTo={mapCam.fit}
+          fitBoundary={camBoundary ?? null}
+          holdCamera={camHold}
           focus={mapCam.focus}
           onHover={handleHover}
           onPick={handlePick}

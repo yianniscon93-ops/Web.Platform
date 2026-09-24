@@ -5,6 +5,7 @@ import type {
   AmenityImpact,
   AmenityPremium,
   AreaHealth,
+  AreaBoundary,
   AreaInfo,
   AreaType,
   BenchmarkSeries,
@@ -564,10 +565,11 @@ import { countActive } from "@/lib/dashboard/filters";
 
 /** str_listings column that carries each dim_areas level; quarter/parish
  * have none yet → those selections degrade to path A (filters ignored). */
-const AREA_COLUMN: Partial<Record<AreaType, "district" | "municipality" | "community" | "tourist_area">> = {
+const AREA_COLUMN: Partial<Record<AreaType, "district" | "municipality" | "community" | "quarter" | "tourist_area">> = {
   district: "district",
   municipality: "municipality",
   community: "community",
+  quarter: "quarter",
   tourist_area: "tourist_area",
 };
 
@@ -583,17 +585,39 @@ function rowToArea(r: postgres.Row): AreaInfo {
     lng: r.longitude,
     radiusKm: r.search_radius_km,
     listingCount: r.listing_count ?? 0,
+    ...(r.has_boundary != null ? { hasBoundary: !!r.has_boundary } : {}),
+    ...(r.boundary !== undefined ? { boundary: parseBoundary(r.boundary) } : {}),
   };
 }
 
-/** All named areas (search bar filters client-side — the table is tiny). */
+function parseBoundary(v: unknown): AreaBoundary | null {
+  if (v == null) return null;
+  try {
+    const g = (typeof v === "string" ? JSON.parse(v) : v) as AreaBoundary;
+    return g && (g.type === "MultiPolygon" || g.type === "Polygon") ? g : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Boundary simplification tolerance in degrees (~20 m) and GeoJSON
+ * coordinate precision (5 dp ≈ 1 m). */
+const BOUNDARY_TOLERANCE = 0.0002;
+const BOUNDARY_DECIMALS = 5;
+/** Cap on `?ids=` — the dashboard needs at most one per comparison slot. */
+export const MAX_BOUNDARY_IDS = 10;
+
+/** All named areas (search bar filters client-side — 552 Cyprus rows,
+ * ~115 KB). Boundaries are NOT included — all 528 simplified polygons come
+ * to ~1.7 MB — only `hasBoundary`; fetch them per selection with
+ * getAreaBoundaries. */
 export function getAreas(): Promise<AreaInfo[]> {
   return tryLive<AreaInfo[]>(
     async (sql) => {
       const rows = await sql`
         SELECT area_id, name_en, name_el, area_type, district, parent_id,
                latitude, longitude, search_radius_km::float AS search_radius_km,
-               listing_count
+               listing_count, boundary IS NOT NULL AS has_boundary
         FROM dim_areas
         ORDER BY listing_count DESC NULLS LAST
       `;
@@ -601,6 +625,31 @@ export function getAreas(): Promise<AreaInfo[]> {
     },
     demoAreas,
     "areas"
+  );
+}
+
+/** The given areas with their simplified boundary as GeoJSON (null where
+ * dim_areas has none). Unknown ids are dropped. */
+export function getAreaBoundaries(ids: string[]): Promise<AreaInfo[]> {
+  const want = [...new Set(ids)].slice(0, MAX_BOUNDARY_IDS);
+  return tryLive<AreaInfo[]>(
+    async (sql) => {
+      if (!want.length) return [];
+      const rows = await sql`
+        SELECT area_id, name_en, name_el, area_type, district, parent_id,
+               latitude, longitude, search_radius_km::float AS search_radius_km,
+               listing_count, boundary IS NOT NULL AS has_boundary,
+               ST_AsGeoJSON(
+                 ST_SimplifyPreserveTopology(boundary::geometry, ${BOUNDARY_TOLERANCE}::float8),
+                 ${BOUNDARY_DECIMALS}::int
+               ) AS boundary
+        FROM dim_areas
+        WHERE area_id IN ${sql(want)}
+      `;
+      return rows.map(rowToArea);
+    },
+    () => demoAreas().filter((a) => want.includes(a.areaId)).map((a) => ({ ...a, boundary: null })),
+    "area-boundaries"
   );
 }
 
@@ -994,49 +1043,64 @@ function saleFilterCond(sql: Sql, f: Filters): Frag {
   return conds.reduce((a, c) => sql`${a} AND ${c}`);
 }
 
-/** Named-area circle for sale/ltr tables (they carry no area assignment
- * yet): dim_areas centre + search radius. NOTE: must return plain data, not
- * a fragment — postgres fragments are thenables, so returning one from an
- * async fn would execute it as a standalone query on await. */
-async function saleAreaCircle(
+/** sale_listings / ltr_listings column for each dim_areas level. The ads
+ * carry the same AreaAssigner output as str_listings (Core.Noesis 89a9e63);
+ * parish has no column → the parent's predicate is used. */
+const SALE_AREA_COLUMN: Partial<Record<AreaType, string>> = {
+  district: "area_district",
+  municipality: "area_municipality",
+  community: "area_community",
+  quarter: "area_quarter",
+  tourist_area: "area_tourist_area",
+};
+
+/** Membership rule for a named area on the ad tables: equality on the
+ * level column (country = everything; parish → nearest ancestor with a
+ * column). Unknown id → everything, as before. NOTE: must return plain
+ * data, not a fragment — postgres fragments are thenables, so returning one
+ * from an async fn would execute it as a standalone query on await. */
+async function saleAreaMatch(
   sql: Sql,
   areaId: string
-): Promise<{ lat: number; lng: number; meters: number } | null> {
-  const rows = await sql`
-    SELECT area_type, latitude, longitude, search_radius_km::float AS r
-    FROM dim_areas WHERE area_id = ${areaId} LIMIT 1
-  `;
-  const a = rows[0];
-  if (a && a.area_type !== "country" && a.latitude != null && a.longitude != null && a.r != null) {
-    return { lat: a.latitude, lng: a.longitude, meters: a.r * 1000 };
+): Promise<{ column: string; value: string } | null> {
+  let id: string | null = areaId;
+  // dim_areas is shallow (parish → municipality → district); the bound only
+  // guards against a cyclic parent_id.
+  for (let depth = 0; id && depth < 6; depth++) {
+    const rows: postgres.Row[] = await sql`
+      SELECT area_type, name_en, parent_id FROM dim_areas WHERE area_id = ${id} LIMIT 1
+    `;
+    const a: postgres.Row | undefined = rows[0];
+    if (!a || a.area_type === "country") return null;
+    const column = SALE_AREA_COLUMN[a.area_type as AreaType];
+    if (column) return { column, value: a.name_en };
+    id = a.parent_id ?? null;
   }
   return null;
 }
 
 /** Geo + attribute scope for sale/ltr tables: exact polygon, or a named
- * area approximated by its centre + search radius, plus the translatable
- * filter subset. Wrapped in an object — awaiting a bare fragment would
- * execute it (fragments are thenables). */
+ * area by its assigned area column, plus the translatable filter subset.
+ * Wrapped in an object — awaiting a bare fragment would execute it
+ * (fragments are thenables). */
 async function saleScope(
   sql: Sql,
   polygon: PolygonCoords | null,
   areaId: string | null | undefined,
   f: Filters
 ): Promise<{ where: Frag }> {
-  const circle = !polygon && areaId ? await saleAreaCircle(sql, areaId) : null;
+  const match = !polygon && areaId ? await saleAreaMatch(sql, areaId) : null;
   const geo = polygon
     ? sql`ST_Covers(ST_GeogFromText(${polygonWkt(polygon)}), geog)`
-    : circle
-      ? sql`ST_DWithin(geog,
-          ST_SetSRID(ST_MakePoint(${circle.lng}, ${circle.lat}), 4326)::geography,
-          ${circle.meters})`
+    : match
+      ? sql`${sql(match.column)} = ${match.value}`
       : sql`TRUE`;
   return { where: sql`(${geo}) AND (${saleFilterCond(sql, f)})` };
 }
 
 /** Buy-side snapshot + ROI enrichment (backfilled 12 Jul 2026).
- * Scope: exact polygon, or named area via centre+radius; bedrooms and
- * property-type filters apply (the rest are Airbnb-only). */
+ * Scope: exact polygon, or named area by its assigned area column; bedrooms
+ * and property-type filters apply (the rest are Airbnb-only). */
 export function getInvest(
   polygon: PolygonCoords | null,
   areaId?: string | null,

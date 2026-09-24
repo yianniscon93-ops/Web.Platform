@@ -1,9 +1,9 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { MapContainer, TileLayer, Polygon, Polyline, CircleMarker, useMap, useMapEvents } from "react-leaflet";
 import L from "leaflet";
-import type { AreaInfo, OccWindow, PointRow, PolygonCoords } from "@/lib/dashboard/types";
+import type { AreaBoundary, AreaInfo, OccWindow, PointRow, PolygonCoords } from "@/lib/dashboard/types";
 import { occupancyColor } from "@/lib/dashboard/format";
 
 const CYPRUS_CENTER: [number, number] = [34.98, 33.25];
@@ -152,6 +152,26 @@ function AreaMarkersLayer({
   return null;
 }
 
+/** GeoJSON [lng, lat] rings → Leaflet [lat, lng] positions (polygon or
+ * multi-polygon, holes kept). */
+function boundaryLatLngs(b: AreaBoundary): [number, number][][][] {
+  const polys = b.type === "Polygon" ? [b.coordinates] : b.coordinates;
+  return polys.map((rings) => rings.map((ring) => ring.map(([lng, lat]) => [lat, lng] as [number, number])));
+}
+
+function boundaryBounds(b: AreaBoundary): L.LatLngBounds {
+  return L.latLngBounds(boundaryLatLngs(b).flat(2).map(([lat, lng]) => L.latLng(lat, lng)));
+}
+
+function AreaOutline({ outline }: { outline: MapAreaOutline }) {
+  const positions = useMemo(() => boundaryLatLngs(outline.boundary), [outline.boundary]);
+  const pathOptions = useMemo(
+    () => ({ color: outline.color, weight: 2.5, fillColor: outline.color, fillOpacity: 0.1 }),
+    [outline.color]
+  );
+  return <Polygon positions={positions} interactive={false} pathOptions={pathOptions} />;
+}
+
 function ZoomTracker({ onZoom }: { onZoom: (z: number) => void }) {
   const map = useMapEvents({
     zoomend() {
@@ -230,9 +250,15 @@ function DrawLayer({
 
 function FitPolygon({
   polygon,
+  boundary,
+  hold,
   focus,
 }: {
   polygon: PolygonCoords | null;
+  /** A selected named area's boundary — fitted when there is no polygon. */
+  boundary: AreaBoundary | null;
+  /** Boundary still loading: keep the camera where it is. */
+  hold: boolean;
   focus: { lat: number; lng: number; zoom: number } | null;
 }) {
   const map = useMap();
@@ -240,10 +266,13 @@ function FitPolygon({
     const t = setTimeout(() => map.invalidateSize(), 200);
     return () => clearTimeout(t);
   }, [map]);
-  // One effect for all camera moves — polygon fit beats focus beats reset —
-  // so a polygon target can't race a stale focus fly-to (or vice versa).
-  const key = JSON.stringify({ polygon, focus });
+  // One effect for all camera moves — polygon fit beats boundary fit beats
+  // focus beats reset — so a polygon target can't race a stale focus fly-to
+  // (or vice versa). The boundary is keyed by identity, not serialised.
+  const boundaryId = boundaryKey(boundary);
+  const key = JSON.stringify({ polygon, focus, hold, boundaryId });
   useEffect(() => {
+    if (hold) return;
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
@@ -255,6 +284,13 @@ function FitPolygon({
       });
       return;
     }
+    if (boundary) {
+      const bounds = boundaryBounds(boundary);
+      if (bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15, animate: !reduce });
+        return;
+      }
+    }
     const target: [number, number] = focus ? [focus.lat, focus.lng] : CYPRUS_CENTER;
     const zoom = focus ? focus.zoom : CYPRUS_ZOOM;
     if (reduce) map.setView(target, zoom, { animate: false });
@@ -264,16 +300,34 @@ function FitPolygon({
   return null;
 }
 
+/** Stable small id per boundary object, so the camera key changes only when
+ * a different boundary is passed (serialising one can be ~35 KB). */
+const boundaryIds = new WeakMap<object, number>();
+let boundarySeq = 0;
+function boundaryKey(b: AreaBoundary | null): number | null {
+  if (!b) return null;
+  let id = boundaryIds.get(b);
+  if (id == null) boundaryIds.set(b, (id = ++boundarySeq));
+  return id;
+}
+
 /** One drawn selection rendered on the map, in its comparison-slot colour. */
 export interface MapShape {
   coords: PolygonCoords;
   color: string;
 }
 
-/** Ring marking a named-area selection's centre, in its slot colour. */
+/** Ring marking a named-area selection's centre, in its slot colour —
+ * used only for areas without a boundary (parishes, tourist areas). */
 export interface MapAreaMark {
   lat: number;
   lng: number;
+  color: string;
+}
+
+/** A named-area selection's boundary, in its slot colour. */
+export interface MapAreaOutline {
+  boundary: AreaBoundary;
   color: string;
 }
 
@@ -284,7 +338,10 @@ export default function MarketMap({
   drawing,
   shapes,
   areaMarks,
+  areaOutlines,
   fitTo,
+  fitBoundary,
+  holdCamera,
   focus,
   onHover,
   onPick,
@@ -298,8 +355,13 @@ export default function MarketMap({
   drawing: boolean;
   shapes: MapShape[];
   areaMarks: MapAreaMark[];
+  areaOutlines: MapAreaOutline[];
   /** Polygon to fit the viewport to (the most recently added drawn area). */
   fitTo: PolygonCoords | null;
+  /** Boundary of the most recently picked named area, once loaded. */
+  fitBoundary: AreaBoundary | null;
+  /** The picked area's boundary is still loading — don't move yet. */
+  holdCamera: boolean;
   focus: { lat: number; lng: number; zoom: number } | null;
   onHover: (id: string | null) => void;
   onPick: (id: string) => void;
@@ -351,8 +413,14 @@ export default function MarketMap({
         />
       ))}
 
-      {/* dim_areas has no boundary polygons — a slot-coloured ring around the
-          area centre (search_radius_km) marks named selections instead. */}
+      {/* Named selections with a dim_areas boundary: the outline in the slot
+          colour. Non-interactive so pins underneath stay clickable. */}
+      {areaOutlines.map((o, i) => (
+        <AreaOutline key={`outline-${i}-${o.color}`} outline={o} />
+      ))}
+
+      {/* Areas without a boundary (parishes, tourist areas, demo data): a
+          slot-coloured ring around the area centre instead. */}
       {areaMarks.map((m, i) => (
         <CircleMarker
           key={`mark-${i}`}
@@ -368,7 +436,7 @@ export default function MarketMap({
       ))}
 
       {drawing && <DrawLayer onComplete={onPolygonComplete} onCancel={onDrawCancel} />}
-      <FitPolygon polygon={fitTo} focus={focus} />
+      <FitPolygon polygon={fitTo} boundary={fitBoundary} hold={holdCamera} focus={focus} />
     </MapContainer>
   );
 }

@@ -175,7 +175,18 @@ export interface AreaInfo {
   lng: number | null;
   radiusKm: number | null;
   listingCount: number;
+  /** dim_areas.boundary IS NOT NULL (OSM polygon; parishes, tourist areas
+   * and the country row have none). Absent in demo data. */
+  hasBoundary?: boolean;
+  /** Simplified boundary as GeoJSON — only on `/api/dashboard/areas?ids=`
+   * responses (the full list omits it to stay small). */
+  boundary?: AreaBoundary | null;
 }
+
+/** GeoJSON geometry of an area boundary ([lng, lat] positions). */
+export type AreaBoundary =
+  | { type: "Polygon"; coordinates: number[][][] }
+  | { type: "MultiPolygon"; coordinates: number[][][][] };
 
 /** One active selection scopes the map focus and every tab below it. */
 export type Selection =
