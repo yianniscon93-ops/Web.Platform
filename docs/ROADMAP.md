@@ -22,6 +22,9 @@ The CTA form currently fakes a submission with a `setTimeout`. No emails are col
 - Set the **Framework** to Next.js (Vercel auto-detects this)
 - Confirm the first deploy succeeds and the preview URL is live
 - Every push to `main` will auto-deploy from this point on
+- Set `MAP_LINK_SECRET` (same value as the MCP connector) and point the
+  connector's `NOESIS_DASHBOARD_URL` at the public URL — enables `/m/<token>`
+  map links (docs/MAP_LINKS.md)
 
 ---
 

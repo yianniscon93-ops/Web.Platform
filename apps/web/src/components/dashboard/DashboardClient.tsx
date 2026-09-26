@@ -37,7 +37,7 @@ import type {
 } from "@/lib/dashboard/types";
 import { DEFAULT_FILTERS, encodeFilters, type Filters } from "@/lib/dashboard/filters";
 import { fmtDate, fmtInt } from "@/lib/dashboard/format";
-import { FIRST_WEEK, clampRange, mondayOf, sundayOf } from "@/lib/dashboard/weeks";
+import { FIRST_WEEK, addDays, clampRange, cyprusToday, mondayOf, sundayOf } from "@/lib/dashboard/weeks";
 import { UI } from "./tokens";
 import {
   MAX_SLOTS,
@@ -134,12 +134,25 @@ function cachePut<T>(map: Map<string, T>, key: string, value: T) {
 
 type SlotRecord<T> = Record<string, T | null>;
 
+/** Trailing connector periods → days back from today (docs/MAP_LINKS.md).
+ * Season periods (peak/shoulder/off) have no single range here: ignored. */
+const LINK_PERIOD_DAYS: Record<string, number> = { last_30d: 30, last_90d: 90, last_12m: 365 };
+
+/** Initial selection from the URL (`/m/<token>` redirects here with
+ * ?market=&area=&period=&via=link). Read once on mount, never synced back. */
+interface LinkParams {
+  area: string | null;
+  period: string | null;
+  viaLink: boolean;
+}
+
 export default function DashboardClient() {
   const [filters, setFilters] = useState<Filters>({ ...DEFAULT_FILTERS });
   const [window_, setWindow] = useState<OccWindow>("todate");
   const [drawing, setDrawing] = useState(false);
   const [mobileFilters, setMobileFilters] = useState(false);
   const [tab, setTab] = useState<TabId>("market");
+  const [link, setLink] = useState<LinkParams | null>(null);
 
   // --- Comparison slots -----------------------------------------------------
   // One slot = today's single-selection behaviour. "+ Compare" arms add-mode:
@@ -273,6 +286,29 @@ export default function DashboardClient() {
     setSelectionToast(null);
     setMapCam({ focus: null, fit: null });
   }, []);
+
+  // --- Initial selection from URL params (signed map links) -----------------
+  // The app is Cyprus-only today, so `market` is accepted but ignored; an
+  // area id that isn't in the list (e.g. an Athens id) leaves the default view.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search);
+    const area = q.get("area");
+    const period = q.get("period");
+    setLink({ area, period, viaLink: q.get("via") === "link" });
+    const days = period ? LINK_PERIOD_DAYS[period] : undefined;
+    if (days) {
+      const today = cyprusToday();
+      setDayRange([addDays(today, -days), addDays(today, -1)]);
+    }
+  }, []);
+
+  const linkApplied = useRef(false);
+  useEffect(() => {
+    if (linkApplied.current || !link || !areas) return;
+    linkApplied.current = true;
+    const hit = link.area ? areas.find((a) => a.areaId === link.area) : undefined;
+    if (hit) pickSelection({ kind: "area", area: hit });
+  }, [link, areas, pickSelection]);
 
   // --- Shared fetches (selection-independent) -------------------------------
 
@@ -629,6 +665,17 @@ export default function DashboardClient() {
           )}
         </div>
       </header>
+
+      {link?.viaLink && (
+        // Hook for a later token-gated mode; nothing is hidden yet.
+        <div
+          className="mx-3 md:mx-4 mt-3 px-3 py-1.5 rounded-lg text-[13px] glass-card"
+          style={{ color: UI.muted }}
+          role="note"
+        >
+          Opened from Claude · read-only view
+        </div>
+      )}
 
       {/* Map hero */}
       <section
