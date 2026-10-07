@@ -21,4 +21,5 @@ PropSights web app — Next.js 15 (App Router) frontend + backend.
 - UI/design work: use the vendored [Impeccable](https://github.com/pbakaus/impeccable)
   skill (`/impeccable`, release skill-v4.5.0) in `.claude/skills/impeccable/` +
   `.claude/agents/impeccable-*.md`. Don't hand-edit it; refresh with
-  `npx impeccable update`.
+  `npx impeccable update`. Its design-detector hook (`.claude/settings.json`)
+  checks UI edits and runs a deeper pass on Stop; `/impeccable hooks off` pauses it.
