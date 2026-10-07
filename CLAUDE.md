@@ -18,3 +18,7 @@ PropSights web app — Next.js 15 (App Router) frontend + backend.
 - Documentation lives in `docs/` — big changes should update the relevant
   docs/ file (or add a brief one) in the same commit. Keep it short; don't
   document routine tweaks.
+- UI/design work: use the vendored [Impeccable](https://github.com/pbakaus/impeccable)
+  skill (`/impeccable`, release skill-v4.5.0) in `.claude/skills/impeccable/` +
+  `.claude/agents/impeccable-*.md`. Don't hand-edit it; refresh with
+  `npx impeccable update`.
