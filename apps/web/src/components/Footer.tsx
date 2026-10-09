@@ -1,36 +1,24 @@
 import { BRAND } from "@/lib/brand";
+import AreaMark from "@/components/landing/AreaMark";
 
+/** The foot of the landing page, on ink with the access form above it (styles in app/landing-sections.css). */
 export default function Footer() {
   return (
-    <footer
-      className="py-8 px-6 border-t"
-      style={{ background: "#0C100A", borderColor: "rgba(255,255,255,0.06)" }}
-    >
-      <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-4">
-        <div className="flex items-center gap-2">
-          <div
-            className="w-6 h-6 rounded-md flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #4A5E3A, #6B7B4F)" }}
-          >
-            <span className="text-white font-display text-xs font-bold">P</span>
-          </div>
-          <span className="font-display font-bold text-base uppercase tracking-tight">
-            <span style={{ color: "#D0DCC0" }}>{BRAND.namePart1}</span>
-            <span style={{ color: "#6B7B4F" }}>{BRAND.namePart2}</span>
+    <footer className="th-landing ps-foot">
+      <div className="ps-foot-in">
+        <div className="ps-foot-brand">
+          <AreaMark size={24} stroke="var(--th-close-ink)" />
+          <span>
+            {BRAND.namePart1}
+            {BRAND.namePart2}
           </span>
         </div>
 
-        <p className="text-xs" style={{ color: "#828D74" }}>
-          © 2026 {BRAND.name}
-        </p>
+        <p className="ps-foot-rights">© 2026 {BRAND.name}</p>
 
-        <div className="flex gap-5 text-xs" style={{ color: "#ADB8A0" }}>
-          <a href="#" className="transition-colors hover:text-white">
-            Privacy
-          </a>
-          <a href="#" className="transition-colors hover:text-white">
-            Terms
-          </a>
+        <div className="ps-foot-links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
         </div>
       </div>
     </footer>

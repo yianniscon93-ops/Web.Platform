@@ -1,0 +1,1189 @@
+/* ── Landing: the product cards and the close ─────────────── */
+/* Everything under the hero: Playground, Reports and Connector as a stack of cards on the hero's beige
+   ground, then the access form and the footer on ink. Colours are the --th-* roles from the "Landing (nav
+   and hero)" block of globals.css; the roles added here are for jobs the hero does not have. Type is the
+   hero's six sizes (11, 13, 15, 16, 17, 18) and one more, the section heading (a card's name is that size
+   scaled to its 56px header row). */
+:root {
+  /* A product's name: the section-heading size. */
+  --th-heading: clamp(2.125rem, 2.78vw, 2.5rem);
+  /* The three cards' grounds: the plain surface, the olive tint, and a light tint of the accent on the map's land. */
+  --th-card-playground: var(--th-surface);
+  --th-card-reports: var(--th-tint);
+  --th-card-connector: color-mix(in srgb, var(--th-a) 12%, var(--th-map-land));
+  /* The stack's measures (ProductSections.tsx has the same): where a pinned card's top rests under the 72px
+     nav, the ground left under it, and the height of a card's header row. */
+  --ps-pin-top: 80px;
+  --ps-pin-bottom: 16px;
+  --ps-head: 56px;
+  /* The outline of a control drawn on a surface, and a slider's empty track: 3:1 or better on white and on the ground. */
+  --th-edge: color-mix(in srgb, var(--th-muted) 70%, var(--th-surface));
+  /* The close: the palette turned over. Paper on ink, a quieter paper for secondary lines, two weights of rule. */
+  --th-close: var(--th-ink);
+  --th-close-ink: var(--th-ground);
+  --th-close-muted: color-mix(in srgb, var(--th-ground) 74%, var(--th-ink));
+  --th-close-line: color-mix(in srgb, var(--th-ground) 20%, var(--th-ink));
+  --th-close-edge: color-mix(in srgb, var(--th-ground) 46%, var(--th-ink));
+}
+
+.ps-sections { background: var(--th-ground); color: var(--th-ink); font-variant-numeric: tabular-nums; }
+.ps-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 0 16px; }
+.ps-sections b { font-weight: 600; }
+/* A figure whose area has moved and whose new value has not arrived: still there, a step back from ink. */
+.ps-sections [data-pending],
+.ps-sections [data-pending] :is(b, dd, dt, td, th, p, figcaption) { color: var(--th-pending); }
+.ps-sections [data-pending] .ps-chart-line { stroke: var(--th-pending); }
+.ps-sections [data-pending] .ps-chart-end { border-color: var(--th-pending); }
+.ps-sections [data-pending] .ps-bar i { background: var(--th-pending); }
+.ps-sections [data-pending] .ps-finding::before { border-color: var(--th-pending); background: var(--th-pending); }
+
+/* One line ties the cards to the hero: they are all about the area on its map. */
+.ps-tie {
+  position: relative;
+  display: grid;
+  grid-template-columns: 28px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: start;
+  padding: 24px 0;
+  font-size: 17px;
+  line-height: 26px;
+  text-wrap: pretty;
+}
+.ps-tie-mark { display: flex; margin-top: -1px; }
+.ps-tie .th-link { font-weight: 600; white-space: nowrap; }
+/* A link in a line of text: its target reaches 44px without moving the line. */
+.ps-tie .th-link { display: inline-block; margin: -9px 0; padding: 9px 0; }
+.ps-reply-link .th-link { display: inline-block; margin: -11px 0; padding: 11px 0; }
+
+/* ── The stack ── */
+/* Three cards and, last, the close. A card is a rounded surface in its own ground with a hairline: the card is
+   the surface, and nothing boxed sits on it but the report's sheet of paper. */
+.ps-stack { position: relative; }
+.ps-card {
+  --ps-ground: var(--th-card-playground);
+  /* The room a pinned card has inside its border. */
+  --ps-room: calc(100svh - var(--ps-pin-top) - var(--i, 0) * var(--ps-tab, 0px) - var(--ps-pin-bottom) - 2px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 32px);
+  max-width: 1312px;
+  margin: 0 auto 16px;
+  border: 1px solid var(--th-line);
+  border-radius: 26px;
+  background: var(--ps-ground);
+  scroll-margin-top: var(--ps-pin-top);
+}
+/* On a tinted ground the hairlines are mixed from that ground, so they hold on it. */
+.ps-card[data-card="reports"] { --ps-ground: var(--th-card-reports); --th-line: color-mix(in srgb, var(--th-muted) 24%, var(--ps-ground)); }
+.ps-card[data-card="connector"] { --ps-ground: var(--th-card-connector); --th-line: color-mix(in srgb, var(--th-muted) 24%, var(--ps-ground)); }
+/* The card's own height: it stretches to the card's when the card is pinned, and the stack measures it. */
+.ps-card-in { position: relative; display: flex; flex: 1; flex-direction: column; min-width: 0; }
+/* The header row, 56px: the icon, the name, and (from 1024px) the card's one action at the far right. With other
+   cards over this one, the row is all that shows of it. */
+.ps-card-head {
+  position: relative;
+  display: flex;
+  flex: none;
+  align-items: center;
+  gap: 12px;
+  height: var(--ps-head);
+  padding: 0 8px 0 18px;
+  border-bottom: 1px solid var(--th-line);
+}
+.ps-card-icon { display: flex; flex: none; }
+.ps-card-name {
+  font-size: calc(var(--th-heading) * 0.7);
+  font-weight: var(--th-display-weight);
+  line-height: 1;
+  letter-spacing: var(--th-display-tracking);
+}
+/* The name is a link to the card, and the whole row is its target. */
+.ps-card-name a::after { content: ""; position: absolute; inset: 0; border-radius: 25px 25px 0 0; }
+.ps-card-action { position: relative; display: none; align-items: center; gap: 14px; margin-left: auto; transition: opacity 0.2s, visibility 0.2s; }
+.ps-card-head :is(.th-go, .ps-solid) { min-height: 40px; padding: 0 18px; }
+/* Under another card the row is a tab: its action steps out. */
+.ps-card[data-covered] .ps-card-action { visibility: hidden; opacity: 0; }
+/* The body, in the order a phone shows it: the sentence, what drives the object, the object, the plain statements,
+   the action. From 1024px the sentence and the statements share the first column. */
+.ps-card-body {
+  display: grid;
+  flex: 1;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 20px;
+  align-content: start;
+  padding: 16px 16px 20px;
+  /* Under the next card the body recedes from its top; the header row above it does not. */
+  transform-origin: 50% 0;
+}
+.ps-card-body > * { min-width: 0; }
+.ps-lede { max-width: 35em; color: var(--th-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
+.ps-h3 { margin-bottom: 8px; font-size: 16px; font-weight: 600; line-height: 22px; }
+/* The product's statements: plain lines. Under them, a note on what the card's object is. */
+.ps-notes li { padding: 4px 0; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-card-foot .ps-under { margin-top: 14px; }
+.ps-card-end { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.ps-action-note { color: var(--th-muted); font-size: 13px; line-height: 18px; }
+/* A request to the team: the solid ink button. The accent fill is kept for opening the Playground. */
+.ps-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  background: var(--th-solid);
+  color: var(--th-solid-ink);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.ps-solid:hover { background-color: var(--th-solid-hover); }
+.ps-solid:active { transform: scale(0.97); }
+.ps-solid svg { transition: transform 0.2s var(--th-ease); }
+.ps-solid:hover svg { transform: translateX(3px); }
+.ps-under { margin-top: 12px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.ps-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--th-solid);
+  color: var(--th-solid-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+/* Under a figure block: whether it is demo data, and what it covers. */
+.ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: 13px; line-height: 20px; }
+/* Words where a figure block has no figures. */
+.ps-standin { padding: 6px 0; color: var(--th-muted); font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-textbtn {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  color: var(--th-ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline 1.5px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.ps-textbtn:hover { text-underline-offset: 7px; }
+
+/* ── Playground: the five views ── */
+/* The tabs and the charts sit on the card itself: no box of their own. */
+.ps-views { container-type: inline-size; }
+.ps-tabs { position: relative; border-bottom: 1px solid var(--th-line); }
+.ps-tablist {
+  display: flex;
+  gap: 2px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  scroll-behavior: smooth;
+}
+.ps-tablist::-webkit-scrollbar { display: none; }
+.ps-tablist button {
+  position: relative;
+  flex: none;
+  min-height: 52px;
+  padding: 0 12px 0 0;
+  margin-right: 12px;
+  color: var(--th-muted);
+  font-size: 15px;
+  font-weight: 500;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.ps-tablist button span::after { content: attr(data-label); display: block; height: 0; overflow: hidden; font-weight: 600; visibility: hidden; }
+.ps-tablist button:hover { color: var(--th-ink); }
+.ps-tablist button[aria-selected="true"] { color: var(--th-ink); font-weight: 600; cursor: default; }
+/* The selected view is underlined in ink, on the row's own rule. */
+.ps-tablist button::after {
+  content: "";
+  position: absolute;
+  right: 12px;
+  bottom: 0;
+  left: 0;
+  height: 2px;
+  background: var(--th-ink);
+  transform: scaleX(0);
+  transition: transform 0.25s var(--th-ease);
+}
+.ps-tablist button[aria-selected="true"]::after { transform: scaleX(1); }
+.ps-tablist button:not([aria-selected="true"]):hover::after { transform: scaleX(1); background: var(--th-line); }
+/* Inside a surface the ring sits within the control, so the surface's edge never cuts it. */
+.th-landing .ps-tablist button:focus-visible { outline-offset: -6px; border-radius: 6px; }
+/* When the row is wider than its surface, the hidden side fades out and an arrow says there is more. */
+.ps-tabs-cue {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 1px;
+  display: none;
+  align-items: center;
+  justify-content: flex-end;
+  width: 56px;
+  padding-right: 10px;
+  background: linear-gradient(to right, transparent, var(--th-surface) 60%);
+  color: var(--th-ink);
+  pointer-events: none;
+}
+.ps-tabs[data-more-end] .ps-tabs-cue { display: flex; }
+.ps-tabs[data-more-start]::before {
+  content: "";
+  position: absolute;
+  z-index: 1;
+  top: 0;
+  bottom: 1px;
+  left: 0;
+  width: 28px;
+  background: linear-gradient(to left, transparent, var(--th-surface) 70%);
+  pointer-events: none;
+}
+/* "Head to head", above the views as the Playground's compared areas sit above its tabs: one row to a figure,
+   one column to an area, the leading figure of each row in ink and the others a step back. */
+.ps-versus { padding: 0 0 12px; border-bottom: 1px solid var(--th-line); }
+.ps-versus h3 { font-size: 16px; font-weight: 600; line-height: 22px; }
+.ps-versus .ps-table thead th { padding-bottom: 6px; font-size: 13px; line-height: 18px; vertical-align: bottom; }
+.ps-versus .ps-table :is(thead th:not(:first-child), td) { width: 23%; padding: 6px 0 6px 10px; text-align: right; }
+/* The visitor's own area carries the corner of the area on the map. */
+.ps-versus th[data-mine]::before {
+  content: "";
+  display: inline-block;
+  width: 9px;
+  height: 9px;
+  margin-right: 6px;
+  border: 2px solid var(--th-ink);
+  background: var(--th-a);
+}
+.ps-versus .ps-table tbody th { padding: 6px 0; font-weight: 400; white-space: normal; }
+.ps-versus tbody th small { color: var(--th-muted); font-size: 13px; white-space: nowrap; }
+.ps-versus .ps-table td { color: var(--th-muted); font-size: 16px; }
+.ps-versus .ps-covers { padding-top: 10px; }
+.ps-view { display: flex; flex-direction: column; min-height: 312px; padding: 18px 0 0; }
+.th-landing .ps-view:focus-visible { outline-offset: 2px; border-radius: 6px; }
+.ps-view > .ps-fig { display: flex; flex: 1; flex-direction: column; }
+.ps-view > .ps-covers, .ps-view > .ps-fig > .ps-covers { margin-top: auto; }
+.ps-fig { min-width: 0; }
+.ps-fig-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 16px; }
+.ps-fig h3 { font-size: 16px; font-weight: 600; line-height: 22px; }
+/* The newest value of a series, beside its title. */
+.ps-fig-now { color: var(--th-muted); font-size: 13px; line-height: 22px; white-space: nowrap; }
+.ps-fig-now b { margin-right: 3px; color: var(--th-ink); font-size: 16px; }
+.ps-fig-sub { margin-top: 2px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.ps-fig-sub b { color: var(--th-ink); }
+.ps-pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; }
+
+/* A chart in the hero chart's style: one 2px line, the value axis's two ends, up to three ticks. */
+.ps-chart { --ps-chart-h: 132px; margin-top: 2px; }
+.ps-pair .ps-chart { --ps-chart-h: 156px; }
+.ps-chart-cap {
+  overflow: hidden;
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 18px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.ps-chart-cap b { color: var(--th-ink); }
+.ps-chart-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: var(--ps-chart-h) 17px;
+  column-gap: 8px;
+  margin-top: 10px;
+}
+.ps-chart-y {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: -5px 0;
+  color: var(--th-muted);
+  font-size: 11px;
+  line-height: 11px;
+  text-align: right;
+}
+.ps-chart-plot {
+  position: relative;
+  border-top: 1px solid var(--th-line);
+  border-bottom: 1px solid var(--th-line);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+/* The line's own box: clear of the frame by half the end node, so the node is never cut. */
+.ps-chart-area { position: absolute; inset: 5px 6px 5px 0; }
+.ps-chart-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ps-chart-line { fill: none; stroke: var(--th-ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
+/* The series ends in the brand's square node. */
+.ps-chart-end {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border: 2px solid var(--th-ink);
+  background: var(--th-surface);
+}
+.ps-chart-cross { position: absolute; top: -5px; bottom: -5px; width: 1px; margin-left: -0.5px; background: var(--th-muted); }
+.ps-chart-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 9999px;
+  background: var(--th-ink);
+  box-shadow: 0 0 0 2px var(--th-surface);
+}
+.ps-chart-x { position: relative; grid-column: 2; margin-right: 6px; color: var(--th-muted); font-size: 11px; line-height: 11px; }
+.ps-chart-x span { position: absolute; top: 6px; transform: translateX(-50%); }
+.ps-chart-x span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 4px; background: var(--th-map-road-major); }
+/* Bars: each named beneath and valued above. With a value axis the top rule is its upper end and a value may
+   stand above it; without one the bars stand on the baseline alone, each with room for its value inside the plot. */
+.ps-bars[data-axis] .ps-chart-body { margin-top: 28px; }
+.ps-bars:not([data-axis]) .ps-chart-body { grid-template-columns: minmax(0, 1fr); }
+.ps-bars:not([data-axis]) .ps-chart-plot { border-top: 0; }
+.ps-bars:not([data-axis]) .ps-bars-x { grid-column: 1; }
+.ps-bars .ps-chart-plot { cursor: default; }
+/* The two lines over the plot: what the bars are, and how the figures were arrived at. */
+.ps-bars-cap { display: grid; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-bars-cap b { color: var(--th-ink); font-weight: 600; }
+.ps-bars-cap :is(b, span) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-bars-row { position: absolute; inset: 0; display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; align-items: end; padding: 0 4px; }
+.ps-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
+.ps-bar i { flex: none; width: min(24px, 50%); height: calc(var(--ps-bar) * 100%); min-height: 2px; background: var(--th-ink); }
+.ps-bars:not([data-axis]) .ps-bar i { height: calc(var(--ps-bar) * (100% - 18px)); }
+.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: 13px; font-weight: 600; line-height: 13px; white-space: nowrap; }
+.ps-bars-x {
+  display: grid;
+  grid-column: 2;
+  grid-auto-columns: minmax(0, 1fr);
+  grid-auto-flow: column;
+  padding: 6px 4px 0;
+  color: var(--th-muted);
+  font-size: 11px;
+  line-height: 11px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+/* A table of figures: hairline rows, each column saying what it covers. */
+.ps-table { width: 100%; border-collapse: collapse; text-align: left; }
+.ps-table thead th { padding: 0 12px 8px 0; font-size: 16px; font-weight: 600; line-height: 22px; vertical-align: top; }
+.ps-table thead small { display: block; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.ps-table tbody :is(th, td) {
+  padding: 7px 12px 7px 0;
+  border-top: 1px solid var(--th-line);
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 22px;
+  vertical-align: top;
+}
+.ps-table tbody th { color: var(--th-ink); font-size: 15px; font-weight: 500; white-space: nowrap; }
+.ps-table td { white-space: nowrap; }
+.ps-table td b { color: var(--th-ink); font-size: 16px; }
+.ps-table td b.ps-none { color: var(--th-muted); font-weight: 400; }
+.ps-table :is(th, td):last-child { padding-right: 0; }
+
+/* Revenue calculator: two sliders, one sum. */
+.ps-calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
+.ps-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; margin-top: 12px; }
+.ps-field label { font-size: 15px; font-weight: 500; line-height: 22px; }
+.ps-field output { font-size: 16px; font-weight: 600; line-height: 22px; }
+.ps-field input, .ps-field-note { grid-column: 1 / -1; }
+.ps-field-note { margin-top: -4px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+/* The slider: a hairline track filled in ink up to the thumb, and the brand's square handle to hold. */
+.ps-field input[type="range"] {
+  --ps-fill: 50%;
+  width: 100%;
+  height: 44px;
+  margin: 0;
+  background: transparent;
+  cursor: grab;
+  touch-action: pan-y;
+  -webkit-appearance: none;
+  appearance: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.ps-field input[type="range"]:active { cursor: grabbing; }
+.ps-field input[type="range"]::-webkit-slider-runnable-track {
+  height: 2px;
+  background: linear-gradient(to right, var(--th-ink) var(--ps-fill), var(--th-edge) var(--ps-fill));
+}
+.ps-field input[type="range"]::-moz-range-track { height: 2px; background: var(--th-edge); }
+.ps-field input[type="range"]::-moz-range-progress { height: 2px; background: var(--th-ink); }
+.ps-field input[type="range"]::-webkit-slider-thumb {
+  width: 16px;
+  height: 16px;
+  margin-top: -7px;
+  border: 2px solid var(--th-ink);
+  border-radius: 0;
+  background: var(--th-surface);
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ps-field input[type="range"]::-moz-range-thumb {
+  box-sizing: border-box;
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--th-ink);
+  border-radius: 0;
+  background: var(--th-surface);
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.ps-field input[type="range"]:hover::-webkit-slider-thumb,
+.ps-field input[type="range"]:active::-webkit-slider-thumb { background: var(--th-a); transform: scale(1.2); }
+.ps-field input[type="range"]:hover::-moz-range-thumb,
+.ps-field input[type="range"]:active::-moz-range-thumb { background: var(--th-a); transform: scale(1.2); }
+/* The ring goes on the handle, as on the map's corners. */
+.th-landing .ps-field input[type="range"]:focus-visible { outline: none; }
+.ps-field input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+.ps-field input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+.ps-calc-out { display: flex; flex-direction: column; align-items: flex-start; }
+.ps-calc-sum { display: block; margin: 12px 0 6px; font-size: 18px; line-height: 1.35; text-wrap: balance; }
+.ps-calc-sum b { font-weight: 700; }
+.ps-calc-out .ps-fig-sub + .ps-fig-sub { margin-top: 8px; }
+.ps-calc-out .ps-textbtn { margin-top: 4px; }
+.ps-calc-out .ps-covers { margin-top: auto; }
+
+/* ── Reports: a report to leaf through ── */
+.ps-report-nav { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
+/* For a property, or for an area: the hero's place switch, here choosing the kind of report. */
+.ps-switch {
+  display: inline-grid;
+  grid-auto-flow: column;
+  gap: 2px;
+  justify-self: start;
+  padding: 3px;
+  border: 1px solid var(--th-line);
+  border-radius: 12px;
+  background: var(--th-surface);
+}
+.ps-switch button {
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: 6px;
+  color: var(--th-ink);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.ps-switch button:hover { background: var(--th-tint); }
+.ps-switch button[aria-pressed="true"] { background: var(--th-solid); color: var(--th-solid-ink); cursor: default; }
+/* Under 1024px: the contents as one control. */
+.ps-contents-select { position: relative; display: grid; row-gap: 4px; }
+.ps-contents-select > span { color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-contents-select select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 44px 0 14px;
+  border: 1px solid var(--th-edge);
+  border-radius: 12px;
+  background: var(--th-surface);
+  color: var(--th-ink);
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  -webkit-appearance: none;
+  appearance: none;
+}
+.ps-contents-select::after {
+  content: "";
+  position: absolute;
+  right: 18px;
+  bottom: 21px;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid var(--th-ink);
+  border-bottom: 2px solid var(--th-ink);
+  transform: rotate(45deg);
+  pointer-events: none;
+}
+/* From 1024px: the contents as a rail, drawn like an edge of the area on the map, a line with square corners.
+   The corner of the section on show is filled. */
+.ps-contents { display: none; }
+.ps-contents ol { position: relative; }
+.ps-contents ol::before { content: ""; position: absolute; top: 22px; bottom: 22px; left: 5px; width: 2px; background: var(--th-a); }
+.ps-contents button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 44px;
+  padding: 6px 0 6px 28px;
+  color: var(--th-muted);
+  font-size: 15px;
+  line-height: 20px;
+  text-align: left;
+  text-wrap: balance;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.ps-contents button::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: -6px;
+  border: 2px solid var(--th-ink);
+  background: var(--th-surface);
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+/* A title's bold setting lies unseen under the one on show, so a row is as tall as whichever wraps to more lines
+   and choosing a section moves nothing. */
+.ps-contents-label { display: grid; flex: 1; min-width: 0; }
+.ps-contents-label > span, .ps-contents-label::after { grid-area: 1 / 1; }
+.ps-contents-label::after { content: attr(data-bold); font-weight: 600; visibility: hidden; }
+.ps-contents button:hover { color: var(--th-ink); }
+.ps-contents button:hover::before { background: var(--th-a); transform: scale(1.2); }
+.ps-contents button[aria-current] { color: var(--th-ink); font-weight: 600; cursor: default; }
+.ps-contents button[aria-current]::before { background: var(--th-ink); transform: none; }
+.th-landing .ps-contents button:focus-visible { outline-offset: 0; border-radius: 6px; }
+/* The sheet: a sheet of white paper lying on the card, with one soft shadow under it and no outline of its own. */
+.ps-sheet {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-width: 0;
+  min-height: 380px;
+  padding: 18px 18px 14px;
+  overflow: clip;
+  border-radius: 6px;
+  background: var(--th-surface);
+  box-shadow: 0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow);
+  transform-origin: 100% 100%;
+  container-type: inline-size;
+}
+.ps-sheet-col { display: flex; flex-direction: column; min-width: 0; height: 100%; }
+/* The running head of every page: which report on the left, which page of it on the right. */
+.ps-sheet-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--th-line);
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+.ps-sheet-head > :last-child { flex: none; }
+/* The page itself: its title and sentence, its sample or its contents, and at its foot the key finding where it has one. */
+.ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding-top: 18px; }
+.ps-sheet-page h3 { font-size: 18px; font-weight: 700; line-height: 24px; letter-spacing: -0.01em; text-wrap: balance; }
+.ps-sheet-page p { max-width: 32em; margin-top: 6px; font-size: 16px; line-height: 1.45; text-wrap: pretty; }
+.ps-sample { min-width: 0; }
+.ps-sample-words { color: var(--th-muted); font-size: 15px; line-height: 1.45; }
+.ps-sample-cap { margin-bottom: 6px; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-sample .ps-chart { --ps-chart-h: 112px; }
+.ps-sample .ps-covers { padding-top: 10px; }
+/* What a section contains, where the page has no figures of its own for it: hairline rows, each behind an empty corner. */
+.ps-contains li { position: relative; padding: 9px 0 9px 24px; border-top: 1px solid var(--th-line); font-size: 16px; line-height: 22px; text-wrap: pretty; }
+.ps-contains li:last-child { border-bottom: 1px solid var(--th-line); }
+.ps-contains li::before, .ps-finding::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 9px;
+  height: 9px;
+  border: 2px solid var(--th-ink);
+  background: var(--th-surface);
+}
+.ps-contains li::before { top: 15px; }
+/* The key finding an analysis section ends in, at the foot of its page. Written, it stands between two rules behind a
+   filled corner; not yet written (it is the team's to write) the slot is drawn empty: dashed rules, an empty corner. */
+.ps-finding {
+  position: relative;
+  margin-top: auto;
+  padding: 11px 0 12px 24px;
+  border-top: 1px solid var(--th-line);
+  border-bottom: 1px solid var(--th-line);
+  font-size: 15px;
+  line-height: 1.45;
+  text-wrap: pretty;
+}
+.ps-finding::before { top: 16px; background: var(--th-ink); }
+.ps-finding[data-empty] { border-top: 1px dashed var(--th-edge); border-bottom: 1px dashed var(--th-edge); color: var(--th-muted); }
+.ps-finding[data-empty]::before { background: var(--th-surface); }
+.ps-finding[data-empty] b { color: var(--th-ink); }
+.ps-facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--th-line); }
+.ps-facts > div:last-child { border-bottom: 1px solid var(--th-line); }
+.ps-facts dt { font-size: 15px; line-height: 22px; }
+.ps-facts dt small { margin-left: 6px; color: var(--th-muted); font-size: 13px; white-space: nowrap; }
+.ps-facts dd { font-size: 16px; font-weight: 600; line-height: 22px; white-space: nowrap; }
+.ps-facts dd span { color: var(--th-muted); font-size: 13px; font-weight: 400; }
+.ps-comps caption { padding-bottom: 6px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-align: left; }
+.ps-comps thead th { padding-bottom: 6px; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.ps-comps tbody th { font-size: 15px; white-space: normal; }
+.ps-comps :is(th, td):not(:first-child) { width: 1%; text-align: right; white-space: nowrap; }
+.ps-comps tbody tr:last-child :is(th, td) { border-bottom: 1px solid var(--th-line); }
+.ps-sheet-foot { padding-top: 20px; }
+.ps-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--th-line); }
+.ps-pager button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 8px;
+  min-width: 44px;
+  min-height: 48px;
+  color: var(--th-ink);
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 20px;
+  text-align: right;
+  cursor: pointer;
+}
+.ps-pager button:first-child { justify-content: flex-start; }
+.ps-pager button svg { flex: none; transition: transform 0.2s var(--th-ease); }
+.ps-pager button:not([aria-disabled]):last-child:hover svg { transform: translateX(3px); }
+.ps-pager button:not([aria-disabled]):first-child:hover svg { transform: translateX(-3px); }
+/* At either end the button keeps the keyboard (it is not `disabled`) and steps back. */
+.ps-pager button[aria-disabled] { color: var(--th-pending); font-weight: 500; cursor: default; }
+.ps-pager-next { color: var(--th-muted); font-weight: 400; }
+.ps-pager-next::after { content: ":"; }
+.ps-pager-title { margin-left: -4px; white-space: nowrap; }
+@container (max-width: 400px) {
+  .ps-pager-title { display: none; }
+  .ps-pager-next { color: inherit; font-weight: inherit; }
+  .ps-pager-next::after { content: none; }
+}
+/* The page's footer: how a real report is delivered. */
+.ps-sheet-line { padding-top: 10px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: 13px; line-height: 18px; }
+
+/* ── Connector: what you can ask, and the conversation ── */
+/* The questions: a list to choose one from. The square beside the chosen one is filled. */
+.ps-questions { display: grid; }
+.ps-questions button {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  min-height: 44px;
+  padding: 12px 0;
+  border-top: 1px solid var(--th-line);
+  color: var(--th-ink);
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.35;
+  text-align: left;
+  text-wrap: pretty;
+  cursor: pointer;
+}
+.ps-questions button:last-child { border-bottom: 1px solid var(--th-line); }
+.ps-questions i { width: 12px; height: 12px; margin-top: 5px; border: 2px solid var(--th-ink); background: var(--th-surface); transition: background-color 0.15s, transform 0.15s var(--th-ease); }
+.ps-questions button:hover i { background: var(--th-a); transform: scale(1.2); }
+.ps-questions button[aria-checked="true"] { font-weight: 600; cursor: default; }
+.ps-questions button[aria-checked="true"] i { background: var(--th-ink); transform: none; }
+.ps-questions small { display: block; margin-top: 1px; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.th-landing .ps-questions button:focus-visible { outline-offset: -2px; border-radius: 6px; }
+/* The conversation: the hero's two bubbles, the visitor's in olive and the answer on white. Each question asked
+   adds an exchange under the earlier ones. */
+.ps-chat { display: flex; flex-direction: column; min-height: 0; }
+.ps-chat-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 44px;
+  border-bottom: 1px solid var(--th-line);
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 18px;
+}
+.ps-chat-head p { padding: 12px 0; text-wrap: pretty; }
+/* Back to the first exchange: a small text control whose target is the head's full height. */
+.ps-chat-clear {
+  flex: none;
+  min-width: 44px;
+  min-height: 44px;
+  color: var(--th-ink);
+  font-size: 13px;
+  font-weight: 600;
+  text-align: right;
+  text-decoration: underline 1.5px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.ps-chat-clear:hover { text-underline-offset: 7px; }
+.ps-chat-log { position: relative; display: flex; flex-direction: column; gap: 24px; padding: 18px 0 20px; }
+/* A short conversation sits at the foot of its space, next to the composer, as conversations do. */
+.ps-chat-log > :first-child { margin-top: auto; }
+/* A question and what came back. On a phone the page scrolls to it, clear of the fixed nav. */
+.ps-exchange { display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 88px; }
+/* Where the questions are above the conversation and not beside it: the way back up to them. */
+.ps-chat-foot { display: flex; }
+.ps-chat-foot .ps-textbtn { gap: 6px; }
+/* The composer: one line at the foot of the conversation where the chosen question is typed and sent. It is a
+   display, not a field: no box, no caret at rest, and the brand's corner where a field would have its edge. */
+.ps-composer {
+  display: grid;
+  flex: none;
+  grid-template-columns: 12px minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: center;
+  min-height: 48px;
+  border-top: 1px solid var(--th-line);
+  font-size: 16px;
+  line-height: 22px;
+}
+.ps-composer i { width: 12px; height: 12px; border: 2px solid var(--th-ink); background: var(--th-surface); }
+.ps-composer[data-on] i { background: var(--th-ink); }
+.ps-composer > span { grid-row: 1; grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-composer-text { font-weight: 500; }
+.ps-composer-idle { color: var(--th-muted); font-size: 13px; }
+.ps-composer[data-on] .ps-composer-idle { visibility: hidden; }
+.ps-bubble { max-width: min(94%, 35em); font-size: 16px; line-height: 1.45; }
+.ps-bubble-q {
+  align-self: flex-end;
+  padding: 10px 18px;
+  border-radius: 26px 26px 6px 26px;
+  background: var(--th-visitor);
+  color: var(--th-visitor-ink);
+  font-weight: 500;
+  transform-origin: 100% 100%;
+}
+.ps-bubble-a {
+  align-self: flex-start;
+  padding: 13px 18px 14px;
+  border: 1px solid var(--th-line);
+  border-radius: 26px 26px 26px 6px;
+  background: var(--th-surface);
+  transform-origin: 0 100%;
+}
+.ps-tool { color: var(--th-muted); font-size: 13px; font-weight: 600; line-height: 18px; }
+.ps-reply { margin-top: 4px; text-wrap: pretty; }
+.ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 600; }
+.ps-reply-link small { color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+/* How firm the answer is, in the connector's words, then the date it refers to. */
+.ps-firm { margin-top: 8px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; color: var(--th-muted); font-size: 13px; line-height: 20px; }
+/* The wait before an answer: three of the brand's squares. Without motion, words instead. */
+.ps-typing { display: flex; align-items: center; min-height: 48px; padding: 0 20px; }
+.ps-typing-dots { display: flex; gap: 6px; }
+.ps-typing-dots i { width: 6px; height: 6px; background: var(--th-muted); }
+.ps-typing-words { display: none; color: var(--th-muted); font-size: 15px; }
+/* The area on its street map, as a message of its own: the map takes the answer bubble's corners and hairline. */
+.ps-minimap {
+  position: relative;
+  flex: none;
+  align-self: flex-start;
+  overflow: hidden;
+  width: 332px;
+  aspect-ratio: 4 / 3;
+  border: 1px solid var(--th-line);
+  border-radius: 26px 26px 26px 6px;
+  background: var(--th-map-land);
+  transform-origin: 0 100%;
+}
+/* The basemap's own parts (AreaBasemap) expect the hero's map view around them: this stands in for it, uncropped. */
+.ps-minimap-view { --th-crop-x: 0px; --th-crop-y: 0px; position: absolute; inset: 0; }
+.ps-minimap-view > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.ps-minimap-fill { fill: var(--th-a); fill-opacity: var(--th-area-tint); }
+.ps-minimap-line { fill: none; stroke: var(--th-a); stroke-width: 2px; stroke-linejoin: round; }
+/* The listings inside the line, as the hero's map paints them: each shade inside a thin ring of the darkest. */
+.ps-minimap-dots { fill: var(--th-dot); stroke: var(--th-occ-ring); stroke-width: 2.8px; paint-order: stroke; }
+.ps-minimap-dots[data-step="1"] { fill: var(--th-occ-1); }
+.ps-minimap-dots[data-step="2"] { fill: var(--th-occ-2); }
+.ps-minimap-dots[data-step="3"] { fill: var(--th-occ-3); }
+.ps-minimap-dots[data-step="4"] { fill: var(--th-occ-4); }
+.ps-minimap-node { position: absolute; z-index: 3; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border: 2px solid var(--th-ink); background: var(--th-surface); }
+
+/* ── The close: the access form and the footer, on ink ── */
+/* The close is the stack's last sheet: it comes up over the cards. */
+.ps-close { --th-focus: var(--th-close-ink); position: relative; z-index: 1; background: var(--th-close); color: var(--th-close-ink); scroll-margin-top: 72px; }
+.ps-close ::selection { background: var(--th-close-ink); color: var(--th-close); }
+.ps-close-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 28px; max-width: 1440px; margin: 0 auto; padding: 64px 16px 56px; }
+.ps-close h2 {
+  font-size: var(--th-heading);
+  font-weight: var(--th-display-weight);
+  line-height: 1.08;
+  letter-spacing: var(--th-display-tracking);
+  text-wrap: balance;
+}
+.ps-close-lede { max-width: 30em; margin-top: 14px; color: var(--th-close-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
+/* A request carried down from a section is named in the heading, a step back from the heading's own words. */
+.ps-close h2 span { color: var(--th-close-muted); }
+/* Over the field: the brand's drawn area, quietly, with a line down to the field. A carried request stands beside
+   it and fills it in. */
+.ps-close-top { display: flex; align-items: flex-end; gap: 18px; }
+.ps-close-area { display: block; flex: none; }
+.ps-close-wire { stroke: var(--th-close-edge); stroke-width: 1px; }
+.ps-close-shape {
+  fill: var(--th-a);
+  fill-opacity: 0;
+  stroke: var(--th-close-edge);
+  stroke-width: 1.5px;
+  stroke-linejoin: round;
+  transition: fill-opacity 0.3s, stroke 0.3s;
+}
+.ps-close-nodes rect { fill: var(--th-close); stroke: var(--th-close-muted); stroke-width: 2px; transition: stroke 0.3s; }
+.ps-close-area[data-on] .ps-close-shape { fill-opacity: 1; stroke: var(--th-close-ink); }
+.ps-close-area[data-on] .ps-close-wire, .ps-close-area[data-on] .ps-close-nodes rect { stroke: var(--th-close-ink); }
+.ps-close-carried { margin-bottom: 30px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-close-form { display: flex; flex-direction: column; gap: 10px; }
+.ps-close-form input {
+  flex: 1;
+  min-width: 0;
+  min-height: 48px;
+  padding: 0 16px;
+  border: 1.5px solid var(--th-close-edge);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--th-close-ink);
+  font: inherit;
+  font-size: 16px;
+  caret-color: var(--th-close-ink);
+  transition: border-color 0.15s;
+}
+.ps-close-form input::placeholder { color: var(--th-close-muted); opacity: 1; }
+.ps-close-form input:hover, .ps-close-form input:focus { border-color: var(--th-close-ink); }
+.ps-close-form input:disabled { opacity: 0.5; }
+.ps-close-form input:-webkit-autofill { -webkit-text-fill-color: var(--th-close-ink); box-shadow: 0 0 0 100px var(--th-close) inset; }
+/* The submit: solid paper, ink text. */
+.ps-close-form button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 120px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  background: var(--th-close-ink);
+  color: var(--th-close);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.ps-close-form button:hover { background: var(--th-surface); }
+.ps-close-form button:active { transform: scale(0.97); }
+.ps-close-form button:disabled { cursor: default; }
+.ps-close-form button svg { transition: transform 0.2s var(--th-ease); }
+.ps-close-form button:hover svg { transform: translateX(3px); }
+.ps-close-small { margin-top: 12px; color: var(--th-close-muted); font-size: 13px; line-height: 18px; }
+.ps-foot { --th-focus: var(--th-close-ink); border-top: 1px solid var(--th-close-line); background: var(--th-close); color: var(--th-close-ink); }
+.ps-foot-in {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 24px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 18px 16px 22px;
+}
+.ps-foot-brand { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; letter-spacing: -0.035em; }
+.ps-foot-rights { color: var(--th-close-muted); font-size: 13px; }
+.ps-foot-links { display: flex; gap: 16px; font-size: 13px; }
+.ps-foot-links a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  text-decoration: underline transparent 1.5px;
+  text-underline-offset: 5px;
+  transition: text-decoration-color 0.2s;
+}
+.ps-foot-links a:hover { text-decoration-color: currentColor; }
+
+@container (min-width: 520px) {
+  .ps-versus .ps-table thead th { font-size: 15px; line-height: 22px; }
+  .ps-versus .ps-table :is(thead th:not(:first-child), td) { width: 20%; }
+  .ps-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
+  .ps-calc { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; }
+  .ps-calc > :first-child { padding-right: 28px; }
+  .ps-calc-out { padding-left: 28px; border-left: 1px solid var(--th-line); }
+}
+
+@media (min-width: 640px) {
+  .ps-in { padding: 0 32px; }
+  .ps-tie { padding: 28px 0; font-size: 18px; }
+  .ps-card { width: calc(100% - 64px); }
+  .ps-card-head { padding: 0 8px 0 22px; }
+  .ps-card-body { padding: 20px 24px 24px; }
+  .ps-tablist button { padding-right: 14px; margin-right: 14px; }
+  .ps-tablist button::after { right: 14px; }
+  .ps-sheet { min-height: 440px; padding: 22px 26px 16px; }
+  .ps-chat-log { padding: 22px 0 24px; }
+  .ps-bubble { font-size: 17px; }
+  .ps-close-in { padding: 80px 32px 72px; }
+  .ps-close-lede { font-size: 18px; }
+  .ps-close-form { flex-direction: row; }
+  .ps-foot-in { padding: 14px 32px 18px; }
+}
+
+@media (min-width: 1024px) {
+  .ps-in { padding: 0 64px; }
+  .ps-card { width: calc(100% - 128px); }
+  /* The action is in the header row; the copy of it at the card's foot is for narrower screens. */
+  .ps-card-action { display: flex; }
+  .ps-card-end { display: none; }
+  /* The sentence and the statements share the first column; the object takes the rest, after what drives it. */
+  .ps-card-body {
+    grid-template-columns: minmax(0, 3fr) minmax(0, 9fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 32px;
+    row-gap: 14px;
+    align-content: stretch;
+    padding: var(--ps-pad-top) 28px var(--ps-pad-bottom);
+  }
+  /* The body's padding above and below: less in a short window (below), where the card still has to fit its pin. */
+  .ps-card { --ps-pad-top: 20px; --ps-pad-bottom: 22px; }
+  .ps-card[data-card="reports"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(216px, 2.5fr) minmax(0, 6.5fr); }
+  /* The kind of report, across the rail's own width. */
+  .ps-report-nav .ps-switch { display: grid; grid-auto-columns: minmax(0, 1fr); justify-self: stretch; }
+  .ps-report-nav .ps-switch button { padding: 0 6px; font-size: 13px; }
+  .ps-card[data-card="connector"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 5fr); }
+  /* Seven questions in a column beside the conversation: a size down and closer set, so the list fits a pinned card. */
+  .ps-questions button { padding: 10px 0; font-size: 16px; }
+  .ps-lede { grid-row: 1; grid-column: 1; }
+  .ps-card-foot { grid-row: 2; grid-column: 1; }
+  .ps-card-lead { grid-row: 1 / span 2; grid-column: 2; }
+  .ps-card-object { display: flex; flex-direction: column; grid-row: 1 / span 2; grid-column: 2; }
+  .ps-card-body[data-lead] > .ps-card-object { grid-column: 3; }
+  .ps-card-object > * { display: flex; flex: 1; flex-direction: column; min-height: 0; }
+  .ps-contents-select { display: none; }
+  .ps-contents { display: block; }
+  /* Pinned, the sheet fills the card. Not pinned, it keeps one height from page to page: the tallest page's, or
+     in a short window the height it would have in a pinned card, so the sheet itself never stops the cards pinning. */
+  .ps-sheet {
+    min-height: min(568px, calc(100svh - var(--ps-pin-top) - var(--ps-pin-bottom) - 2px - var(--ps-head) - var(--ps-pad-top) - var(--ps-pad-bottom)));
+  }
+  .ps-stack[data-pin] .ps-sheet { min-height: 0; }
+  .ps-sample .ps-chart { --ps-chart-h: 84px; }
+  /* Beside the questions the conversation takes the height the card has, and scrolls in it once it is longer. */
+  .ps-chat { flex: 1; }
+  .ps-chat-log {
+    flex: 1 1 0;
+    min-height: 250px;
+    overflow-y: auto;
+    /* At either end of the conversation the wheel goes on to the page: a pinned card must not hold the scroll. */
+    scrollbar-width: thin;
+    scrollbar-color: var(--th-edge) transparent;
+    /* An exchange scrolled up out of the conversation fades at its top edge, not cut by it. */
+    mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
+  }
+  .ps-chat-foot { display: none; }
+  .ps-close-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 40px; align-items: end; padding: 104px 64px 96px; }
+  .ps-foot-in { padding: 14px 64px 18px; }
+
+  /* Pinned: each card sticks under the nav and fills the room it has there, and the next slides up over it. With
+     `data-tabs` (the window is tall enough) each pins one header row lower than the one before. */
+  .ps-stack[data-tabs] { --ps-tab: var(--ps-head); }
+  .ps-stack[data-pin] > .ps-card {
+    position: sticky;
+    top: calc(var(--ps-pin-top) + var(--i, 0) * var(--ps-tab, 0px));
+    min-height: calc(var(--ps-room) + 2px);
+    scroll-margin-top: calc(var(--ps-pin-top) + var(--i, 0) * var(--ps-tab, 0px));
+  }
+}
+
+/* A tall window: the charts take some of the room the pinned card has to spare. */
+@media (min-width: 1024px) and (min-height: 880px) {
+  .ps-view .ps-chart { --ps-chart-h: 224px; }
+  .ps-view { min-height: 372px; }
+}
+/* A wide and tall window has room for the questions at their full size. */
+@media (min-width: 1280px) and (min-height: 880px) {
+  .ps-questions button { padding: 12px 0; font-size: 17px; }
+}
+
+/* A laptop-height window (under 780px: 1366×768, 1280×720): every card still fits its pin. Nothing is left out and
+   no type goes below the scale; the paddings, the gaps, the rows and the charts close up. */
+@media (min-width: 1024px) and (max-height: 779px) {
+  .ps-card { --ps-pad-top: 16px; --ps-pad-bottom: 16px; }
+  .ps-card-body { row-gap: 12px; }
+  /* Playground: the head to head's rows, the tab row and the views. */
+  .ps-versus { padding-bottom: 10px; }
+  .ps-versus .ps-table :is(thead th:not(:first-child), td) { padding-top: 4px; padding-bottom: 4px; }
+  .ps-versus .ps-table tbody th { padding: 4px 0; }
+  .ps-versus .ps-table thead th { padding-bottom: 4px; }
+  .ps-versus .ps-covers { padding-top: 8px; }
+  .ps-tablist button { min-height: 46px; }
+  .ps-view { min-height: 298px; padding-top: 14px; }
+  .ps-pair .ps-chart { --ps-chart-h: 144px; }
+  .ps-view .ps-table thead th { padding-bottom: 6px; }
+  .ps-view .ps-table tbody :is(th, td) { padding-top: 5px; padding-bottom: 5px; }
+  .ps-view .ps-covers { padding-top: 10px; }
+  /* Reports: the sheet's own paddings and gaps, and the sample's chart. */
+  /* The sheet's shadow keeps inside the card's shallower foot. */
+  .ps-sheet { padding: 16px 26px 12px; box-shadow: 0 1px 2px -1px var(--th-shadow), 0 14px 22px -16px var(--th-shadow); }
+  .ps-sheet-body { gap: 14px; padding-top: 14px; }
+  .ps-sheet-foot { padding-top: 14px; }
+  .ps-sample .ps-chart { --ps-chart-h: 72px; }
+  /* Connector: the questions. */
+  .ps-h3 { margin-bottom: 6px; }
+  .ps-questions button { padding: 8px 0; font-size: 15px; }
+  .ps-questions i { margin-top: 4px; }
+  .ps-chat-log { gap: 18px; padding: 16px 0 18px; }
+}
+/* Shorter still (under 700px: 1366×650). */
+@media (min-width: 1024px) and (max-height: 699px) {
+  .ps-card { --ps-pad-top: 12px; --ps-pad-bottom: 12px; }
+  .ps-card-body { row-gap: 10px; }
+  .ps-versus { padding-bottom: 8px; }
+  .ps-versus .ps-table :is(thead th:not(:first-child), td) { padding-top: 3px; padding-bottom: 3px; }
+  .ps-versus .ps-table tbody th { padding: 3px 0; }
+  .ps-versus .ps-covers { padding-top: 6px; }
+  .ps-tablist button { min-height: 44px; }
+  .ps-view { min-height: 262px; padding-top: 10px; }
+  .ps-chart, .ps-pair .ps-chart { --ps-chart-h: 116px; }
+  .ps-view .ps-table thead th { padding-bottom: 4px; }
+  .ps-view .ps-table tbody :is(th, td) { padding-top: 3px; padding-bottom: 3px; }
+  .ps-view .ps-covers { padding-top: 8px; }
+  .ps-field { margin-top: 6px; }
+  .ps-field input[type="range"] { height: 40px; }
+  .ps-calc-sum { margin: 8px 0 4px; }
+  .ps-report-nav { row-gap: 10px; }
+  .ps-contents button { min-height: 40px; padding-top: 4px; padding-bottom: 4px; }
+  .ps-contents ol::before { top: 20px; bottom: 20px; }
+  .ps-sheet { padding: 12px 26px 8px; box-shadow: 0 1px 2px -1px var(--th-shadow), 0 10px 16px -12px var(--th-shadow); }
+  .ps-sheet-head { padding-bottom: 8px; }
+  .ps-sheet-body { gap: 10px; padding-top: 10px; }
+  .ps-sheet-page p { margin-top: 4px; }
+  .ps-finding { padding-top: 8px; padding-bottom: 8px; }
+  .ps-finding::before { top: 13px; }
+  .ps-sheet-foot { padding-top: 8px; }
+  .ps-pager button { min-height: 44px; }
+  .ps-sheet-line { padding-top: 6px; }
+  .ps-sample .ps-chart { --ps-chart-h: 56px; }
+  .ps-sample .ps-covers { padding-top: 6px; }
+  .ps-questions button { padding: 6px 0; }
+  .ps-chat-head { min-height: 40px; }
+  .ps-chat-head p { padding: 8px 0; }
+  .ps-chat-log { gap: 14px; padding: 12px 0 14px; min-height: 220px; }
+  .ps-composer { min-height: 44px; }
+}
+
+@media (min-width: 1280px) {
+  /* Room for the kind-of-report switch at its full size, and for the longest title on one line in its bold setting. */
+  .ps-card[data-card="reports"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(280px, 2.6fr) minmax(0, 6.4fr); }
+  .ps-report-nav .ps-switch button { padding: 0 10px; font-size: 15px; }
+  .ps-card-body { column-gap: 40px; }
+  .ps-close-in { column-gap: 56px; }
+}
+
+/* A covered card recedes a little as the next comes over it: its body scales from its top and takes a faint veil of
+   ink. Its header row does neither: with the cards stacked that row is what still shows, and it is a working link,
+   so it stays crisp. Driven by the scroll itself (the next card's progress into view), where the browser can do
+   that; without it the stack works the same with no recede. */
+.ps-card-in::after {
+  content: "";
+  position: absolute;
+  z-index: 2;
+  inset: var(--ps-head) 0 0;
+  border-radius: 0 0 25px 25px;
+  background: var(--th-ink);
+  opacity: 0;
+  pointer-events: none;
+}
+@keyframes ps-recede { to { transform: scale(0.97); } }
+@keyframes ps-veil { to { opacity: 0.06; } }
+@supports (animation-timeline: view()) {
+  @media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+    .ps-stack[data-pin] { timeline-scope: --ps-over-reports, --ps-over-connector, --ps-over-close; }
+    .ps-stack[data-pin] > [data-card="reports"] { view-timeline: --ps-over-reports block; }
+    .ps-stack[data-pin] > [data-card="connector"] { view-timeline: --ps-over-connector block; }
+    .ps-stack[data-pin] > .ps-close { view-timeline: --ps-over-close block; }
+    .ps-stack[data-pin] > .ps-card .ps-card-body { animation: ps-recede linear both; animation-range: entry 0% entry 100%; }
+    .ps-stack[data-pin] > .ps-card > .ps-card-in::after { animation: ps-veil linear both; animation-range: entry 0% entry 100%; }
+    .ps-stack[data-pin] > [data-card="playground"] .ps-card-body,
+    .ps-stack[data-pin] > [data-card="playground"] > .ps-card-in::after { animation-timeline: --ps-over-reports; }
+    .ps-stack[data-pin] > [data-card="reports"] .ps-card-body,
+    .ps-stack[data-pin] > [data-card="reports"] > .ps-card-in::after { animation-timeline: --ps-over-connector; }
+    .ps-stack[data-pin] > [data-card="connector"] .ps-card-body,
+    .ps-stack[data-pin] > [data-card="connector"] > .ps-card-in::after { animation-timeline: --ps-over-close; }
+  }
+}
+
+/* What plays on a card, once. Everything is in its final state before it and without it (nothing waits hidden for
+   an observer, and a card has no entrance of its own, pinned or not); under reduced motion none of it runs.
+   `data-arrived` is set for good the first time the card is well into view and `data-arriving` only for the short
+   while after, so what plays at full length on arrival plays briefly, or not at all, afterwards. */
+@keyframes ps-ic-reach { from { transform: translate(4px, 4px); } }
+@keyframes ps-ic-seat { from { transform: translate(2.5px, 4px); } }
+@keyframes ps-trace { from { stroke-dashoffset: 1; } }
+@keyframes ps-fade { from { opacity: 0; } }
+/* A chart line draws from the left; its end node and a rail's corners pop; bars grow from the baseline. */
+@keyframes ps-wipe { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
+@keyframes ps-pop { from { transform: scale(0); } }
+@keyframes ps-grow { from { transform: scaleY(0); } }
+@keyframes ps-underline { from { transform: scaleX(0); } }
+/* The second place joins the head to head: its column comes in from the right and settles. */
+@keyframes ps-join { from { opacity: 0; transform: translateX(36px); } }
+/* The sheet is dealt onto the card from the right, with a slight turn that settles flat. */
+@keyframes ps-deal { from { opacity: 0; transform: translateX(40px) rotate(1.6deg); } to { opacity: 1; transform: translateX(0) rotate(0deg); } }
+/* A page leaves the sheet to one side and the next comes in from the other; `--dir` is 1 forwards, -1 back. */
+@keyframes ps-leaf-out { to { opacity: 0; transform: translateX(calc(var(--dir, 1) * -28px)); } }
+@keyframes ps-leaf-in { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 28px)); } }
+/* A message arriving in the conversation; the visitor's comes up from the composer it was typed in. */
+@keyframes ps-arrive { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
+@keyframes ps-send { from { opacity: 0.3; transform: translateY(44px) scale(0.98); } }
+@keyframes ps-typing { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
+@keyframes ps-caret { 50% { opacity: 0; } }
+@media (prefers-reduced-motion: no-preference) {
+  /* The card's icon makes its one small move: the pointer reaches its corner, the chart line draws, the cable seats. */
+  .ps-card[data-arriving] .th-ic-pointer { animation: ps-ic-reach 0.5s var(--th-ease) 0.1s both; }
+  .ps-card[data-arriving] .th-ic-line { stroke-dasharray: 1; animation: ps-trace 0.5s var(--th-ease) 0.1s both; }
+  .ps-card[data-arriving] .th-ic-node { animation: ps-fade 0.15s ease-out 0.4s both; }
+  .ps-card[data-arriving] .th-ic-cable { animation: ps-ic-seat 0.5s var(--th-ease) 0.1s both; }
+  /* Playground: the lines draw (0.9s on arrival, 0.4s when a tab is opened later), their end nodes pop, the bars
+     grow, the selected tab's underline slides in, and the head to head's second place joins from the right. No
+     figure counts up: each shows its true value throughout. */
+  .ps-card[data-arrived] .ps-chart-area svg { animation: ps-wipe 0.4s var(--th-ease) both; }
+  .ps-card[data-arriving] .ps-chart-area svg { animation-duration: 0.9s; }
+  .ps-card[data-arrived] .ps-chart-end { animation: ps-pop 0.3s var(--th-ease) 0.3s both; }
+  .ps-card[data-arriving] .ps-chart-end { animation-delay: 0.8s; }
+  .ps-card[data-arrived] .ps-bar i { transform-origin: 50% 100%; animation: ps-grow 0.4s var(--th-ease) both; }
+  .ps-card[data-arriving] .ps-tablist button[aria-selected="true"]::after { animation: ps-underline 0.6s var(--th-ease) 0.25s both; }
+  .ps-card[data-arriving] .ps-versus [data-join] { animation: ps-join 0.7s var(--th-ease) 0.15s both; }
+  /* Reports: the sheet is dealt, the rail's corners tick down one by one, and leafing turns the page. */
+  .ps-card[data-arriving] .ps-sheet { animation: ps-deal 0.5s var(--th-ease) both; }
+  .ps-card[data-arriving] .ps-contents button::before { animation: ps-pop 0.25s var(--th-ease) calc(var(--n, 0) * 55ms + 150ms) both; }
+  .ps-sheet-body[data-leaf="out"] { animation: ps-leaf-out 0.25s ease-in both; }
+  .ps-sheet-body[data-leaf="in"] { animation: ps-leaf-in 0.25s var(--th-ease) both; }
+  /* Connector: the question is typed in the composer (script), goes up as the visitor's bubble, and is answered. */
+  .ps-composer[data-on] .ps-composer-text::after {
+    content: "";
+    display: inline-block;
+    width: 2px;
+    height: 1.05em;
+    margin-left: 2px;
+    vertical-align: -0.16em;
+    background: var(--th-ink);
+    animation: ps-caret 0.9s steps(1) infinite;
+  }
+  .ps-bubble[data-play] { animation: ps-arrive 0.45s var(--th-ease) both; }
+  .ps-bubble-q[data-play] { animation: ps-send 0.4s var(--th-ease) both; }
+  .ps-typing-dots i { animation: ps-typing 1.1s ease-in-out infinite; }
+  .ps-typing-dots i:nth-child(2) { animation-delay: 0.16s; }
+  .ps-typing-dots i:nth-child(3) { animation-delay: 0.32s; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ps-typing-dots { display: none; }
+  .ps-typing-words { display: inline; }
+  .ps-tablist { scroll-behavior: auto; }
+  .ps-solid, .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-close-shape, .ps-close-nodes rect,
+  .ps-tablist button, .ps-tablist button::after, .ps-switch button,
+  .ps-contents button, .ps-contents button::before, .ps-pager button svg, .ps-questions i,
+  .ps-close-form input, .ps-close-form button, .ps-close-form button svg, .ps-foot-links a,
+  .ps-card-action,
+  .ps-field input[type="range"]::-webkit-slider-thumb, .ps-field input[type="range"]::-moz-range-thumb { transition: none; }
+}

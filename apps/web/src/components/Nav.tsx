@@ -4,15 +4,9 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { BRAND } from "@/lib/brand";
-
-function BrandMark({ dark = false }: { dark?: boolean }) {
-  return (
-    <span className="font-display text-xl font-bold tracking-tight uppercase">
-      <span style={{ color: dark ? "#FFFFFF" : "#D0DCC0" }}>{BRAND.namePart1}</span>
-      <span style={{ color: "#6B7B4F" }}>{BRAND.namePart2}</span>
-    </span>
-  );
-}
+import AreaMark from "@/components/landing/AreaMark";
+import { ConnectorIcon, ReportsIcon } from "@/components/landing/ProductIcons";
+import { LANDING as C } from "@/components/landing/tokens";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -24,66 +18,63 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
+  // The product icons are shown in the phone menu only; "Ask the team" is not a product and has none.
   const links = [
-    { label: "Products", href: "#products" },
-    { label: "Data", href: "#credibility" },
-    { label: "Dashboard", href: "/dashboard" },
-    { label: "Get Access", href: "#access" },
+    { label: "Reports", href: "#reports", Icon: ReportsIcon },
+    { label: "Connector", href: "#connector", Icon: ConnectorIcon },
+    { label: "Ask the team", href: "#access", Icon: null },
   ];
 
   return (
-    <motion.header
-      initial={{ y: -12, opacity: 0 }}
-      animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.45, ease: "easeOut" }}
-      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
-      style={
-        scrolled
+    // No entrance: the bar is there from the first frame.
+    <header
+      className="th-landing fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
+      style={{
+        color: C.ink,
+        ...(scrolled || open
           ? {
-              background: "rgba(12,16,10,0.92)",
-              backdropFilter: "blur(16px)",
-              borderBottom: "1px solid rgba(255,255,255,0.06)",
+              background: C.ground,
+              borderBottom: `1px solid ${C.groundLine}`,
             }
-          : { background: "transparent" }
-      }
+          : { background: "transparent", borderBottom: "1px solid transparent" }),
+      }}
     >
-      <div className="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="flex items-center gap-2.5 group">
-          <div
-            className="w-7 h-7 rounded-lg flex items-center justify-center"
-            style={{ background: "linear-gradient(135deg, #4A5E3A, #6B7B4F)" }}
-          >
-            <span className="text-white font-display text-sm font-bold">P</span>
-          </div>
-          <BrandMark />
+      <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-4 sm:px-8 lg:px-16">
+        <a href="#" className="flex min-h-11 items-center gap-2.5">
+          <AreaMark size={32} />
+          <span className="text-[22px] font-bold" style={{ letterSpacing: "-0.035em" }}>
+            {BRAND.name}
+          </span>
         </a>
 
-        <nav className="hidden md:flex items-center gap-8">
+        <nav className="hidden items-center gap-9 md:flex">
           {links.map((l) => (
             <a
               key={l.label}
               href={l.href}
-              className="text-sm font-medium transition-colors hover:text-white"
-              style={{ color: "#ADB8A0" }}
+              className="th-navlink flex min-h-11 items-center text-[15px] font-medium"
+              style={{ color: C.ink }}
             >
               {l.label}
             </a>
           ))}
+          <a
+            href="/dashboard"
+            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[15px] font-semibold"
+            style={{ background: C.solid, color: C.solidInk }}
+          >
+            Open the Playground
+          </a>
         </nav>
 
-        <a
-          href="#access"
-          className="hidden md:inline-flex items-center gap-2 px-5 py-2.5 rounded-lg text-sm font-semibold text-white transition-all hover:opacity-90 active:scale-95"
-          style={{ background: "#4A5E3A", border: "1px solid rgba(255,255,255,0.1)" }}
-        >
-          Get Access
-        </a>
-
         <button
-          className="md:hidden p-2 text-[#ADB8A0] hover:text-white transition-colors"
+          className="flex h-11 w-11 items-center justify-center md:hidden"
+          style={{ color: C.ink }}
           onClick={() => setOpen(!open)}
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
         >
-          {open ? <X size={20} /> : <Menu size={20} />}
+          {open ? <X size={22} /> : <Menu size={22} />}
         </button>
       </div>
 
@@ -93,31 +84,33 @@ export default function Nav() {
             initial={{ opacity: 0, y: -8 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -8 }}
-            className="md:hidden px-6 pb-5 border-t"
-            style={{ background: "#0C100A", borderColor: "rgba(255,255,255,0.06)" }}
+            className="px-4 pb-5 sm:px-8 md:hidden"
+            style={{ borderTop: `1px solid ${C.groundLine}` }}
           >
             {links.map((l) => (
               <a
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="block py-3.5 text-sm font-medium border-b transition-colors hover:text-white"
-                style={{ color: "#ADB8A0", borderColor: "rgba(255,255,255,0.06)" }}
+                className="flex min-h-12 items-center gap-3 text-base font-medium"
+                style={{ color: C.ink, borderBottom: `1px solid ${C.groundLine}` }}
               >
+                {/* The icon column is kept on every row, so the labels line up. */}
+                <span className="flex w-6 shrink-0 justify-center">{l.Icon && <l.Icon size={24} />}</span>
                 {l.label}
               </a>
             ))}
             <a
-              href="#access"
+              href="/dashboard"
               onClick={() => setOpen(false)}
-              className="mt-4 block text-center py-3 rounded-lg text-sm font-semibold text-white"
-              style={{ background: "#4A5E3A" }}
+              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-base font-semibold"
+              style={{ background: C.solid, color: C.solidInk }}
             >
-              Get Access
+              Open the Playground
             </a>
           </motion.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 }

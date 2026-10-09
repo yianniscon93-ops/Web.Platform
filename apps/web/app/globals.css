@@ -176,3 +176,782 @@
   color: #8fcc80;
   font-weight: 700;
 }
+
+/* ── Landing (nav and hero) ─────────────────────────────────── */
+/* The landing palette by role: beige ground, olive, and one accent (teal). */
+:root {
+  --th-ground: #F4F1E8;
+  --th-ink: #161C11;
+  --th-muted: #3F4A35;
+  --th-line: #DDD7C6;
+  --th-surface: #FFFFFF;
+  --th-visitor: #4A5E3A;
+  --th-visitor-ink: #F7F5EE;
+  /* The filled action: the accent, with white on it (4.8:1). */
+  --th-action: #0E7F7A;
+  --th-action-ink: #FFFFFF;
+  --th-action-hover: #0A6C68;
+  --th-tint: #E6EBDA;
+  --th-tint-hover: #D9E0C9;
+  --th-solid: #161C11;
+  --th-solid-ink: #FFFFFF;
+  --th-solid-hover: #26331C;
+  /* The drawn area: its outline and fill, and the line to the open panel. */
+  --th-a: #0E7F7A;
+  --th-mark: var(--th-a);
+  --th-map-sea: #C2DADF;
+  --th-map-shore: #6F929B;
+  --th-map-land: #FBFAF4;
+  --th-map-road: #BDB8A7;
+  --th-map-road-major: #958F7B;
+  /* Listings inside and outside the drawn line. AreaMap reads these for its canvas. */
+  --th-dot: #161C11;
+  --th-dot-out: #9AA08E;
+  /* How full a listing inside the line has been this season, in four steps of the accent, emptier to fuller:
+     from nearly white to the accent darkened with ink. A pale fill would vanish on the tinted land, so
+     every inside dot wears a thin ring of the darkest step (--th-occ-ring), which carries the mark: it is 8.1:1 on
+     plain land, 5.3:1 on the tinted land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
+  --th-occ-1: color-mix(in srgb, var(--th-a) 10%, white);
+  --th-occ-2: color-mix(in srgb, var(--th-a) 48%, white);
+  --th-occ-3: var(--th-a);
+  --th-occ-4: color-mix(in srgb, var(--th-a) 60%, var(--th-ink));
+  --th-occ-ring: var(--th-occ-4);
+  --th-focus: var(--th-ink);
+  /* Hairline where the ground itself is divided (the scrolled nav, the phone menu). */
+  --th-ground-line: var(--th-line);
+  /* Derived, so a look only has to name the roles above. */
+  /* A figure whose area has moved and whose new value has not arrived: still readable, a step back from ink. */
+  --th-pending: color-mix(in srgb, var(--th-muted) 80%, var(--th-ground));
+  --th-shadow: color-mix(in srgb, var(--th-ink) 35%, transparent);
+  /* The lines from the area to the panels that are not open. */
+  --th-wire: color-mix(in srgb, var(--th-muted) 45%, var(--th-ground));
+  /* How strongly the drawn area tints the land inside it. At 30% the land reads as the accent and sits just under
+     the sea's lightness (1.08:1; at about 24% the two match exactly). The shoreline, drawn darker than both, and
+     the difference in hue keep land and sea apart inside the area. */
+  --th-area-tint: 0.3;
+  /* Land inside the drawn area: the halo of a place name the area covers. */
+  --th-area-land: color-mix(in srgb, var(--th-a) calc(var(--th-area-tint) * 100%), var(--th-map-land));
+
+  --th-font: "Google Sans", sans-serif;
+  --th-display-weight: 700;
+  --th-display-tracking: -0.025em;
+  --th-ease: cubic-bezier(0.16, 1, 0.3, 1);
+}
+/* Landing face: Google Sans (OFL), self-hosted from public/fonts/google-sans. Latin, Latin Extended and Greek. */
+@font-face {
+  font-family: "Google Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/google-sans/google-sans-greek.woff2) format("woff2");
+  unicode-range: U+0370-0377, U+037A-037F, U+0384-038A, U+038C, U+038E-03A1, U+03A3-03FF;
+}
+@font-face {
+  font-family: "Google Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/google-sans/google-sans-latin-ext.woff2) format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: "Google Sans";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url(/fonts/google-sans/google-sans-latin.woff2) format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.th-landing { font-family: var(--th-font); }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}
+.th-landing ::selection { background: var(--th-visitor); color: var(--th-visitor-ink); }
+.th-landing :focus-visible { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+.th-link {
+  text-decoration: underline;
+  text-decoration-thickness: 1.5px;
+  text-underline-offset: 4px;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.th-link:hover { text-underline-offset: 7px; }
+.th-navlink { text-decoration: underline transparent 1.5px; text-underline-offset: 6px; transition: text-decoration-color 0.2s; }
+.th-navlink:hover { text-decoration-color: currentColor; }
+.th-solid { transition: background-color 0.15s, transform 0.15s var(--th-ease); }
+.th-solid:hover { background-color: var(--th-solid-hover) !important; }
+.th-solid:active { transform: scale(0.97); }
+/* A panel's link down the page to its product's section: a text link with a down arrow, the same in all three. */
+.th-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--th-ink);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.th-more > span {
+  text-decoration: underline 1.5px;
+  text-underline-offset: 4px;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.th-more:hover > span { text-underline-offset: 7px; }
+.th-more svg { transition: transform 0.2s var(--th-ease); }
+.th-more:hover svg { transform: translateY(3px); }
+/* The page's one filled action. */
+.th-go {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 22px;
+  border-radius: 9999px;
+  background: var(--th-action);
+  color: var(--th-action-ink);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.th-go:hover { background-color: var(--th-action-hover); }
+.th-go:active { transform: scale(0.97); }
+.th-go svg { transition: transform 0.2s var(--th-ease); }
+.th-go:hover svg { transform: translateX(3px); }
+/* The filled action has two homes: under the sentence on phones, in the Playground panel from 640px. Only one shows. */
+.th-go-top { justify-self: start; margin-top: -2px; }
+.th-go-panel { display: none; }
+/* A panel's actions, on one row: in the Playground panel the filled button, then the link beside it. */
+.th-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; }
+.th-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 20px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--th-solid);
+  color: var(--th-solid-ink);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+/* Marks an illustration built from live numbers: text, not a badge. */
+.th-sample { color: var(--th-muted); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; white-space: nowrap; }
+.th-hero [data-pending] { color: var(--th-pending); }
+
+/* The hero: a band (headline, one sentence), then the stage (map, three product panels).
+   One column on phones and tablets; from 1024px the band and the stage share a 7:5 grid one viewport tall. */
+.th-hero { background: var(--th-ground); color: var(--th-ink); }
+.th-hero-in {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  row-gap: 20px;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 84px 16px 40px;
+}
+.th-h1 {
+  font-size: clamp(2.25rem, 3.62vw, 3.25rem);
+  font-weight: var(--th-display-weight);
+  line-height: 1.04;
+  letter-spacing: var(--th-display-tracking);
+  text-wrap: balance;
+}
+.th-lede { max-width: 34em; margin-top: -6px; color: var(--th-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
+
+/* The map column: the place switch, the map, the count bar, the credit. */
+.th-map { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.th-map-frame { position: relative; display: flex; flex: 1; flex-direction: column; min-height: 0; }
+/* The place switch floats on the map's top-right corner at every size; on phones it is smaller. */
+.th-switch {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 4;
+  display: grid;
+  grid-template-columns: auto auto;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--th-line);
+  border-radius: 12px;
+  background: var(--th-surface);
+  box-shadow: 0 8px 18px -10px var(--th-shadow);
+}
+.th-switch button {
+  position: relative;
+  min-height: 36px;
+  padding: 0 12px;
+  border-radius: 6px;
+  color: var(--th-ink);
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+/* The option is 36px tall to stay small on the map; its target reaches 44px. */
+.th-switch button::after { content: ""; position: absolute; inset: -4px 0; }
+.th-switch button:hover { background: var(--th-tint); }
+.th-switch button[aria-pressed="true"] { background: var(--th-solid); color: var(--th-solid-ink); cursor: default; }
+/* The frame crops; the view inside it always keeps the basemap's 4:3 and covers the frame. */
+.th-map-port {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 1;
+  container-type: size;
+  border: 1px solid var(--th-line);
+  border-radius: 14px;
+  background: var(--th-map-land);
+}
+.th-map-view {
+  /* How much of the view the frame hides on each side, for what is pinned to the frame's corner. */
+  --th-crop-x: calc((max(100cqw, 100cqh * 4 / 3) - 100cqw) / 2);
+  --th-crop-y: calc((max(100cqh, 100cqw * 3 / 4) - 100cqh) / 2);
+  /* View units per CSS pixel. AreaMap measures it; these are the layouts' values until it has. */
+  --th-u: 1.7;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100cqw, 100cqh * 4 / 3);
+  aspect-ratio: 4 / 3;
+  transform: translate(-50%, -50%);
+}
+.th-map-view > svg, .th-map-dots { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* Nothing drawn on the map takes the pointer except the inside of the area and its corners. */
+.th-map-view > svg, .th-map-dots { pointer-events: none; }
+.th-shore, .th-road, .th-road-major { fill: none; stroke-linecap: round; stroke-linejoin: round; }
+.th-shore { stroke: var(--th-map-shore); stroke-width: 1px; }
+.th-road { stroke: var(--th-map-road); stroke-width: 0.7px; }
+.th-road-major { stroke: var(--th-map-road-major); stroke-width: 1.5px; }
+/* The drawn area. Its strokes are in view units, scaled back to a fixed width on screen, so the outline can be traced on load. */
+.th-area-fill { fill: var(--th-a); fill-opacity: var(--th-area-tint); }
+.th-area-line { fill: none; stroke: var(--th-a); stroke-width: calc(2px * var(--th-u)); stroke-linejoin: round; }
+/* The inside of the area: a press here moves the whole of it. On a touch screen it takes a held finger
+   (AreaMap), so a swipe across the area still scrolls the page; the browser's own long-press menu stays out of it. */
+.th-area-hit {
+  fill: none;
+  stroke: none;
+  pointer-events: fill;
+  cursor: move;
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+/* The area in the hand, or taken by a held finger: it answers by deepening and thickening. */
+.th-area-fill { transition: fill-opacity 0.15s; }
+.th-map[data-held] .th-area-fill, .th-map-view:has(.th-area-key:focus-visible) .th-area-fill { fill-opacity: calc(var(--th-area-tint) + 0.16); }
+.th-map[data-held] .th-area-line { stroke-width: calc(3px * var(--th-u)); }
+/* The whole area as a keyboard control: nothing of its own to see; focused, the outline is the ring. */
+.th-area-key { position: absolute; z-index: 1; width: 1px; height: 1px; opacity: 0; pointer-events: none; }
+.th-landing .th-area-key:focus-visible { outline: none; }
+.th-map-view:has(.th-area-key:focus-visible) .th-area-line { stroke: var(--th-focus); stroke-width: calc(3px * var(--th-u)); }
+/* The lead to the panels, inside the map: a hairline, so it does not read as another edge of the area. */
+.th-trunk { display: none; fill: none; stroke: var(--th-a); stroke-width: calc(1px * var(--th-u)); }
+/* A corner of the area: the brand mark's square handle, here a control. The button is the 44px target, the square is what shows. */
+.th-handle {
+  position: absolute;
+  z-index: 3;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  cursor: grab;
+  touch-action: none;
+  -webkit-tap-highlight-color: transparent;
+}
+.th-handle i {
+  position: relative;
+  width: 12px;
+  height: 12px;
+  border: 2px solid var(--th-ink);
+  background: var(--th-surface);
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.th-handle:hover i, .th-handle[data-dragging] i { background: var(--th-a); transform: scale(1.25); }
+.th-handle[data-dragging] { cursor: grabbing; }
+.th-landing .th-handle:focus-visible { outline: none; }
+.th-handle:focus-visible i { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+/* A place name from the tiles. The halo is the colour of whatever the name sits on. */
+.th-place, .th-cue-label {
+  --th-halo: var(--th-map-land);
+  position: absolute;
+  z-index: 2;
+  transform: translate(-50%, -50%);
+  color: var(--th-ink);
+  font-size: 11px;
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  pointer-events: none;
+  text-shadow:
+    1px 0 0 var(--th-halo), -1px 0 0 var(--th-halo), 0 1px 0 var(--th-halo), 0 -1px 0 var(--th-halo),
+    1px 1px 0 var(--th-halo), -1px -1px 0 var(--th-halo), 1px -1px 0 var(--th-halo), -1px 1px 0 var(--th-halo),
+    0 0 2px var(--th-halo), 0 0 3px var(--th-halo);
+}
+.th-place[data-in] { --th-halo: var(--th-area-land); }
+.th-place[data-kind="water"] { --th-halo: var(--th-map-sea); color: var(--th-muted); font-weight: 500; letter-spacing: 0.08em; }
+/* The invitation, set like a place name beside the corner that invites the first drag: "Drag a corner, or the
+   whole area", or on a touch screen "Drag a corner, or hold the area to move it". Both are in the markup and the
+   pointer picks one. Both places put it over water. Where it goes is worked out here, from the corner's place in
+   the view (--fx, --fy, set by AreaMap), so it keeps clear of the outline, the place switch and the locator in
+   every frame the map is shown in. */
+.th-cue-label {
+  --th-halo: var(--th-map-sea);
+  /* The view's width (as .th-map-view has it) and the corner's place in the view, as lengths. */
+  --vw: max(100cqw, 100cqh * 4 / 3);
+  --cx: calc(var(--fx) * var(--vw));
+  --cy: calc(var(--fy) * var(--vw) * 3 / 4);
+  /* How many lines the words take. The frame's width decides (below), with a width that makes exactly that many. */
+  --n: 1;
+  /* The foot of the place switch, with a little air under it, from the frame's top. */
+  --foot: 60px;
+  width: max-content;
+  font-size: 13px;
+  line-height: 16px;
+  white-space: normal;
+  text-wrap: balance;
+  transform: none;
+}
+.th-cue-coarse { display: none; }
+@media (pointer: coarse) {
+  .th-cue-fine { display: none; }
+  .th-cue-coarse { display: inline; }
+}
+/* To the corner's right, level with it; under the place switch where the frame crops the view so far that the two
+   would meet. The area's edge runs down and to the right from this corner (--run to the right for each unit down),
+   so the lower the words end, the further right they start. */
+.th-cue-label[data-side="right"] {
+  --top: max(calc(var(--cy) - var(--n) * 8px), calc(var(--th-crop-y) + var(--foot)));
+  --dx: max(15px, calc(7px + var(--run) * (var(--top) + var(--n) * 16px - var(--cy))));
+  top: var(--top);
+  left: calc(var(--cx) + var(--dx));
+  max-width: var(--cue-w, none);
+}
+/* Under the corner and running left from just past it, over the water below the area. It stops short of the
+   locator in the frame's corner, and wraps where that leaves it little room. */
+.th-cue-label[data-side="below-left"] {
+  top: calc(var(--cy) + 13px);
+  left: calc(var(--cx) + 20px);
+  max-width: calc(var(--cx) + 20px - var(--th-crop-x) - 72px);
+  transform: translateX(-100%);
+  text-align: right;
+}
+/* A narrow frame: the words beside the corner take two lines, or three on the narrowest touch screens. */
+@container (max-width: 437px) {
+  .th-cue-label[data-side="right"] { --n: 2; --cue-w: 9em; }
+}
+@media (pointer: coarse) {
+  @container (max-width: 545px) {
+    .th-cue-label[data-side="right"] { --n: 2; --cue-w: 11em; }
+  }
+  @container (max-width: 323px) {
+    .th-cue-label[data-side="right"] { --n: 3; --cue-w: 8em; }
+  }
+}
+/* The count beside the corner in hand. AreaMap places and writes it. */
+.th-count-chip {
+  position: absolute;
+  z-index: 4;
+  display: none;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--th-solid);
+  color: var(--th-solid-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 22px;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translate(-50%, calc(-100% - 16px));
+}
+.th-count-chip[data-on] { display: block; }
+.th-count-chip[data-below] { transform: translate(-50%, 16px); }
+/* The whole island with the place marked on it, pinned to the frame's bottom-left corner. */
+.th-locator {
+  position: absolute;
+  bottom: calc(var(--th-crop-y) + 10px);
+  left: calc(var(--th-crop-x) + 10px);
+  z-index: 1;
+  padding: 4px 5px;
+  border: 1px solid var(--th-line);
+  border-radius: 6px;
+  background: var(--th-ground);
+  pointer-events: none;
+}
+.th-locator svg { display: block; width: 44px; height: auto; overflow: visible; }
+/* Under the map on phones: the count runs on into how full and how dear, with Reset to its right once the area has
+   changed; under them, the key to the listings' shades. */
+.th-map-bar {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: start;
+  column-gap: 12px;
+  padding-top: 8px;
+}
+.th-map-count { font-size: 16px; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.th-map-count[aria-busy] > span:first-child { color: var(--th-pending); }
+.th-map-facts { font-weight: 500; }
+/* With a corner in hand the count under the map and beside the corner is live; everything else that
+   describes what is inside the line still speaks for the shape as it was, and steps back until release. */
+.th-hero-in[data-moving] .th-map-facts,
+.th-hero-in[data-moving] [data-follows],
+.th-hero-in[data-moving] td[data-follows] b { color: var(--th-pending); }
+.th-map-count .th-tag { margin-left: 8px; vertical-align: 2px; }
+/* What the shades of the listings inside the line mean: four dots between two words. */
+.th-key {
+  display: inline-flex;
+  grid-row: 2;
+  grid-column: 1 / -1;
+  align-items: center;
+  gap: 8px;
+  margin-top: 6px;
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 18px;
+  white-space: nowrap;
+}
+.th-key-dots { display: inline-flex; gap: 5px; }
+/* The same marks as on the map: each fill inside the thin ring of the darkest step. */
+.th-key-dots i { width: 9px; height: 9px; border: 1px solid var(--th-occ-ring); border-radius: 9999px; }
+.th-key-dots i:nth-child(1) { background: var(--th-occ-1); }
+.th-key-dots i:nth-child(2) { background: var(--th-occ-2); }
+.th-key-dots i:nth-child(3) { background: var(--th-occ-3); }
+.th-key-dots i:nth-child(4) { background: var(--th-occ-4); }
+.th-reset {
+  display: inline-flex;
+  grid-row: 1;
+  grid-column: 2;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  margin-top: -11px;
+  color: var(--th-ink);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: underline 1.5px;
+  text-underline-offset: 4px;
+  cursor: pointer;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.th-reset:hover { text-underline-offset: 7px; }
+.th-credit { margin-top: 6px; color: var(--th-muted); font-size: 11px; text-align: right; text-wrap: balance; }
+.th-credit a { text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+.th-credit a:hover, .th-credit a:focus-visible { text-decoration-color: currentColor; }
+
+/* The three products: one list divided by hairlines, one panel open at a time. */
+.th-panels { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
+.th-panel { border-top: 1px solid var(--th-line); }
+.th-panel:last-child { border-bottom: 1px solid var(--th-line); }
+.th-panel-head {
+  position: relative;
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
+  column-gap: 14px;
+  align-items: start;
+  padding: 14px 0;
+}
+.th-panel-icon { display: flex; }
+.th-panel-title { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
+.th-panel-title h2 { font-size: 18px; font-weight: 600; line-height: 24px; }
+.th-panel-title button { cursor: pointer; }
+.th-panel-title button[aria-disabled] { cursor: default; }
+/* The heading's button covers the whole header. */
+.th-panel-title button::after { content: ""; position: absolute; inset: 0; border-radius: 6px; }
+.th-landing .th-panel-title button:focus-visible { outline: none; }
+.th-panel-title button:focus-visible::after { outline: 2px solid var(--th-focus); outline-offset: 1px; }
+.th-panel:not([data-open]) .th-panel-head:hover h2 { text-decoration: underline 1.5px; text-underline-offset: 4px; }
+.th-panel-about { color: var(--th-muted); font-size: 15px; line-height: 22px; }
+.th-panel-live { font-size: 15px; font-weight: 500; line-height: 22px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.th-panel-chevron { margin-top: 3px; transition: transform 0.32s var(--th-ease); }
+.th-panel[data-open] .th-panel-chevron { transform: rotate(180deg); }
+.th-panel-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s var(--th-ease); }
+.th-panel[data-open] > .th-panel-body { grid-template-rows: 1fr; }
+/* The clip is let out sideways so a focus ring or the sheet's shadow is not cut. */
+.th-panel-in { min-height: 0; margin: 0 -8px; padding: 0 8px; overflow: hidden; }
+.th-panel-pad { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 2px 0 18px; }
+.th-panel-note { font-size: 15px; line-height: 1.45; }
+
+/* Playground: the three markets side by side. Each column says what its figures cover. */
+.th-markets {
+  width: 100%;
+  table-layout: fixed;
+  border-collapse: collapse;
+  font-size: 15px;
+  font-variant-numeric: tabular-nums;
+  text-align: left;
+}
+.th-markets .th-rowhead { width: 0; padding: 0; border: 0; }
+/* At the left foot of the table: a mark when any of its three answers is demo data. Empty otherwise. */
+.th-markets caption { caption-side: bottom; text-align: left; }
+.th-markets caption .th-tag { margin-top: 8px; }
+.th-markets thead th { padding: 0 8px 7px 0; font-weight: 600; line-height: 20px; vertical-align: bottom; }
+.th-markets thead small { display: block; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.th-markets td {
+  padding: 7px 8px 7px 0;
+  border-top: 1px solid var(--th-line);
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 22px;
+  vertical-align: top;
+}
+/* A cell breaks only between its figure and its unit. */
+.th-markets td b, .th-markets td span { white-space: nowrap; }
+.th-markets td b { color: var(--th-ink); font-size: 16px; font-weight: 600; }
+.th-markets td[data-pending] b { color: var(--th-pending); }
+/* The en dash in an empty cell: a figure's size, so a row is the same height with or without one. */
+.th-markets td b.th-none { color: var(--th-muted); font-weight: 400; }
+
+/* Reports: a page of a report, as a sheet of paper. */
+.th-sheet {
+  align-self: stretch;
+  padding: 14px 16px 14px;
+  border: 1px solid var(--th-line);
+  border-radius: 6px;
+  background: var(--th-surface);
+  box-shadow: 0 10px 20px -12px var(--th-shadow);
+}
+/* A written page: its title, the chart with its period, a reading of the chart, and a note on what this page is. */
+.th-sheet h3 { font-size: 16px; font-weight: 600; line-height: 22px; }
+.th-sheet > p { margin-top: 10px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.th-sheet > .th-sample { margin-top: 8px; font-size: 11px; line-height: 16px; white-space: normal; }
+.th-chart, .th-chart-hold, .th-sheet .ps-chart { --th-chart-h: 76px; margin-top: 2px; }
+/* The sample page's bars (SeriesChart, styled in landing-sections.css) at the height the hero has for a chart. */
+.th-sheet .ps-chart { --ps-chart-h: var(--th-chart-h); }
+.th-hero [data-pending] .ps-bar :is(b, i), .th-hero-in[data-moving] [data-follows] .ps-bar b { color: var(--th-pending); }
+.th-hero [data-pending] .ps-bar i, .th-hero-in[data-moving] [data-follows] .ps-bar i { background: var(--th-pending); }
+/* The two caption lines, gap, plot and month row: the chart's height before there is a chart. */
+.th-chart-hold { height: calc(36px + 10px + var(--th-chart-h) + 17px); }
+/* Under a chart that is not the one the page means to show: why. */
+.th-chart-note { margin-top: 6px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.th-chart-cap {
+  overflow: hidden;
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 18px;
+  font-variant-numeric: tabular-nums;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.th-chart-cap b { color: var(--th-ink); font-weight: 600; }
+.th-chart-body {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  grid-template-rows: var(--th-chart-h) 17px;
+  column-gap: 8px;
+  margin-top: 10px;
+}
+.th-chart-y {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  margin: -5px 0;
+  color: var(--th-muted);
+  font-size: 11px;
+  line-height: 11px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.th-chart-plot {
+  position: relative;
+  border-top: 1px solid var(--th-line);
+  border-bottom: 1px solid var(--th-line);
+  cursor: crosshair;
+  touch-action: pan-y;
+}
+.th-chart-plot svg { position: absolute; inset: 4px 0; width: 100%; height: calc(100% - 8px); overflow: visible; }
+.th-chart-line { fill: none; stroke: var(--th-ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
+.th-chart-cross { position: absolute; top: 0; bottom: 0; width: 1px; margin-left: -0.5px; background: var(--th-muted); }
+.th-chart-dot {
+  position: absolute;
+  width: 9px;
+  height: 9px;
+  margin: -4.5px 0 0 -4.5px;
+  border-radius: 9999px;
+  background: var(--th-ink);
+  box-shadow: 0 0 0 2px var(--th-surface);
+}
+.th-chart-x { position: relative; grid-column: 2; color: var(--th-muted); font-size: 11px; line-height: 11px; }
+.th-chart-x span { position: absolute; top: 6px; transform: translateX(-50%); }
+.th-chart-x span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 4px; background: var(--th-map-road-major); }
+
+/* Connector: a question, the tool that answered, the answer. */
+.th-exchange { display: flex; flex-direction: column; align-self: stretch; gap: 6px; }
+.th-asked {
+  align-self: flex-end;
+  max-width: 88%;
+  padding: 9px 16px;
+  border-radius: 26px 26px 6px 26px;
+  background: var(--th-visitor);
+  color: var(--th-visitor-ink);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+.th-tool { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 12px; margin-top: 4px; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.th-answer {
+  align-self: flex-start;
+  max-width: 92%;
+  padding: 11px 16px 12px;
+  border: 1px solid var(--th-line);
+  border-radius: 26px 26px 26px 6px;
+  background: var(--th-surface);
+  font-size: 15px;
+  line-height: 1.45;
+}
+.th-answer .th-link { display: inline-block; margin-top: 4px; font-weight: 600; }
+
+/* A street map mounted out of sight, to count the listings on its land (PlaceCount in DrawHero). */
+.th-measure { position: absolute; width: 0; height: 0; overflow: hidden; visibility: hidden; pointer-events: none; }
+
+/* The lines from the area to the three panels. Desktop only. */
+.th-wires { display: none; position: absolute; inset: 0; z-index: 2; width: 100%; height: 100%; overflow: visible; pointer-events: none; }
+.th-wires path { fill: none; stroke: var(--th-wire); stroke-width: 1px; }
+.th-wires .th-wire-on { stroke: var(--th-a); }
+
+@media (max-width: 639px) {
+  .th-credit { text-align: left; }
+  /* Three columns in a phone's width: each figure stands over its unit, so no cell runs into the next. */
+  .th-markets td { line-height: 18px; vertical-align: top; }
+  .th-markets td b { display: block; line-height: 22px; }
+  /* A unit longer than its column ("occupied this season") takes a second line there, not the next column's room. */
+  .th-markets td span { white-space: normal; }
+}
+@media (min-width: 640px) {
+  .th-go-top { display: none; }
+  .th-go-panel { display: inline-flex; }
+  .th-hero-in { row-gap: 24px; padding: 100px 32px 48px; }
+  .th-lede { margin-top: -8px; font-size: 18px; }
+  /* From here the switch and the count bar sit on the map's own frame. */
+  .th-map-frame { overflow: hidden; border: 1px solid var(--th-line); border-radius: 14px; background: var(--th-surface); }
+  .th-map-port { aspect-ratio: 4 / 3; border: 0; border-radius: 0; }
+  .th-map-view { --th-u: 1.15; }
+  .th-switch { top: 12px; right: 12px; }
+  .th-cue-label { --foot: 64px; }
+  .th-switch button { min-height: 44px; padding: 0 16px; font-size: 15px; }
+  .th-switch button::after { content: none; }
+  /* On the frame the bar is one row: the count and its tag; at the right the key, then Reset once the area has changed. */
+  .th-map-bar { display: flex; align-items: center; column-gap: 20px; min-height: 48px; padding: 0 16px; border-top: 1px solid var(--th-line); }
+  .th-key { margin: 0 0 0 auto; }
+  .th-map-count { white-space: nowrap; }
+  .th-map-facts { display: none; }
+  .th-map-count .th-tag { margin-left: 10px; }
+  .th-reset { margin: 0; }
+}
+@media (min-width: 1024px) {
+  .th-hero-in {
+    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
+    /* One viewport tall, between 700 and 860px. Should an open panel ever need more than the stage has, the stage grows with it. */
+    grid-template-rows: auto minmax(min-content, 1fr);
+    column-gap: 40px;
+    min-height: clamp(700px, 100svh, 860px);
+    padding: 88px 64px 16px;
+  }
+  .th-h1, .th-lede { align-self: end; }
+  .th-lede { margin: 0 0 4px; }
+  .th-map-port { flex: 1; min-height: 0; aspect-ratio: auto; }
+  .th-map-view { --th-u: 1.08; }
+  .th-switch button { min-height: 38px; }
+  .th-trunk { display: inline; }
+  .th-wires { display: block; }
+  /* Beside the filled button the link is "Find out more": the panel is the Playground's and the button has just
+     named it, and the column has no room for the rest. The words stay in the link's name for assistive tech. */
+  .th-actions[data-pair] .th-more-about {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
+}
+@media (min-width: 1280px) {
+  .th-hero-in { column-gap: 56px; }
+}
+/* Tall windows have room to spare beside the map: the panels breathe. */
+@media (min-width: 1024px) and (min-height: 861px) {
+  .th-panel-head { padding: 18px 0; }
+  .th-panel-pad { gap: 18px; padding-bottom: 24px; }
+  .th-chart, .th-chart-hold, .th-sheet .ps-chart { --th-chart-h: 84px; }
+}
+/* Laptop-height windows: tighter headers and a shorter chart keep the open panel and its action in view. */
+@media (min-width: 1024px) and (max-height: 860px) {
+  .th-panel-head { padding: 10px 0; }
+  .th-panel-pad { gap: 12px; padding-bottom: 12px; }
+  .th-sheet { padding: 12px 14px 12px; }
+  .th-sheet > p { margin-top: 8px; }
+  .th-chart, .th-chart-hold, .th-sheet .ps-chart { --th-chart-h: 52px; }
+  .th-markets caption .th-tag { margin-top: 6px; }
+}
+/* The narrow end of the two-column stage at laptop height: the sample page's lines wrap sooner, so its chart and
+   its padding give a little, and the Reports panel still closes inside the stage. */
+@media (min-width: 1024px) and (max-width: 1279px) and (max-height: 860px) {
+  .th-sheet { padding: 10px 14px; }
+  .th-sheet .ps-chart { --th-chart-h: 44px; }
+  .th-panel-pad { gap: 10px; }
+}
+/* Shorter still: the table's rows close up. Below about 760px the stage simply grows past the fold. */
+@media (min-width: 1024px) and (max-height: 760px) {
+  .th-panel-head { padding: 8px 0; }
+  .th-markets td { padding-top: 5px; padding-bottom: 5px; }
+  .th-markets thead th { padding-bottom: 5px; }
+  .th-go { min-height: 42px; }
+}
+
+/* The one authored moment, on first load: the handles drop in, the outline closes, the fill and the
+   listings arrive (AreaMap pops the dots and ticks the count), then the lines reach the panels. */
+@keyframes th-drop {
+  from { opacity: 0; transform: translateY(-16px) scale(0.4); }
+}
+@keyframes th-trace {
+  from { stroke-dashoffset: 1; }
+}
+@keyframes th-fade {
+  from { opacity: 0; }
+}
+@keyframes th-ic-reach {
+  from { transform: translate(4px, 4px); }
+}
+@keyframes th-ic-seat {
+  from { transform: translate(2.5px, 4px); }
+}
+@keyframes th-cue {
+  0% { opacity: 0.9; transform: scale(1); }
+  45%, 100% { opacity: 0; transform: scale(2.8); }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .th-map[data-intro] .th-handle i { animation: th-drop 0.5s var(--th-ease) calc(var(--i) * 90ms + 150ms) both; }
+  .th-map[data-intro] .th-area-line { stroke-dasharray: 1; animation: th-trace 0.75s var(--th-ease) 0.55s both; }
+  .th-map[data-intro] .th-area-fill { animation: th-fade 0.5s ease-out 1s both; }
+  .th-map[data-intro] .th-trunk { stroke-dasharray: 1; animation: th-trace 0.3s var(--th-ease) 1.5s both; }
+  .th-wires[data-intro] path { stroke-dasharray: 1; animation: th-trace 0.5s var(--th-ease) 1.7s both; }
+  .th-map[data-intro] .th-cue-label { animation: th-fade 0.4s ease-out 1.2s both; }
+  /* An icon makes one small move when the visitor opens its panel: the pointer reaches its corner,
+     the chart line draws, the cable seats into its node. */
+  .th-panel[data-open][data-lively] .th-ic-pointer { animation: th-ic-reach 0.4s var(--th-ease) both; }
+  .th-panel[data-open][data-lively] .th-ic-line { stroke-dasharray: 1; animation: th-trace 0.4s var(--th-ease) both; }
+  .th-panel[data-open][data-lively] .th-ic-node { animation: th-fade 0.15s ease-out 0.25s both; }
+  .th-panel[data-open][data-lively] .th-ic-cable { animation: th-ic-seat 0.4s var(--th-ease) both; }
+  /* Until the visitor first moves a corner, one handle sends out a slow ring. */
+  .th-map[data-cue] .th-handle[data-cue] i::after {
+    content: "";
+    position: absolute;
+    inset: -3px;
+    border: 2px solid var(--th-a);
+    opacity: 0;
+    animation: th-cue 3.2s var(--th-ease) 2.8s infinite;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  /* No ring without motion: the inviting corner is filled instead, until a corner is first moved. */
+  .th-map[data-cue] .th-handle[data-cue] i { background: var(--th-a); }
+  .th-link, .th-more > span, .th-more svg, .th-go, .th-go svg, .th-solid, .th-navlink, .th-credit a, .th-reset,
+  .th-handle i, .th-switch button, .th-panel-body, .th-panel-chevron, .th-area-fill { transition: none; }
+}
