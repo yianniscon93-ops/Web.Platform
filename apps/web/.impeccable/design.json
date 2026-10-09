@@ -861,7 +861,7 @@
       },
       "lede": {
         "displayName": "Lede",
-        "purpose": "The one muted sentence under a heading; 18px from 640px. The search field's own text is this size in ink."
+        "purpose": "The one muted sentence under a heading; 18px from 640px. The first screen's is a size up: 18px on phones, 20px from 1024px. The search field's own text is 17px in ink."
       },
       "body": {
         "displayName": "Body",
@@ -1197,7 +1197,7 @@
       },
       {
         "name": "The Seven Sizes Rule",
-        "body": "Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them.",
+        "body": "Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them. The one exception is the first screen's sentence at 20px from 1024px.",
         "section": "typography"
       },
       {

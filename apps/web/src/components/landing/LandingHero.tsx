@@ -145,10 +145,11 @@ export default async function LandingHero() {
           <h1 className="th-h1 m-0" aria-label="Property data and insights for every street in Cyprus.">
             <span className="lh-name">Prop</span>erty data and in<span className="lh-name">sights</span> for every street in Cyprus.
           </h1>
+          {/* Two beats: what we do, then what the visitor sees. "Ratings", not "reviews": the review scores and
+              counts are tracked; the words of the reviews are not (docs/POSTGRES.md). */}
           <p className="th-lede m-0">
-            We are a small data team in Cyprus. Every day we read the island&rsquo;s short&#8209;let, long&#8209;let
-            and for&#8209;sale listings and turn them into property insights: what a place earns, rents for and
-            sells for.
+            We analyse prices, bookings, ratings and locations across the island every day. You see{" "}
+            <b>what any street earns, rents for and sells for.</b>
           </p>
           <PlaceSearch />
         </div>

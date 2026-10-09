@@ -33,8 +33,22 @@ real town drawn from open data; and a picked place going down to our own
 map, not out to the Playground.
 
 Left, from 1024px: the `h1` ("Property data and insights for every street
-in Cyprus."), one sentence
-saying who the team is and what it does, and `PlaceSearch`. In the
+in Cyprus."), one sentence, and `PlaceSearch`. The sentence says what is
+tracked, how often and what is done with it: "We analyse prices, bookings, ratings and
+locations across the island every day. You see what any street earns,
+rents for and sells for." Two beats, what we do and then what the visitor
+sees (the owner's brief for it: "analyzing data daily to give you the
+analytics outcome"; of this wording, chosen over a one-sentence version
+that named "our models": "I think I prefer thus"). Its last clause, what
+the visitor sees, is set in ink at weight 500; the rest is the muted
+lede. The owner asked for it short and for it to show the depth of the
+work (2026-10-09: "we do much more than that. We parse reviews we parse geo
+locations, we parse pricing we parse occupancy we create ml algorithms...
+something nice, to the point, punchy"), and chose this wording over a
+shorter one ("I like this more"). It says "ratings", not "reviews":
+review scores and counts are tracked, the reviews' words are not
+(docs/POSTGRES.md), and the Connector card says as much. It is set a size
+up from the page's other ledes (18px on phones, 20px from 1024px). In the
 headline the letters "Prop" of "Property" and "sights" of "insights" wear
 the mark's light orange (`.lh-name`), so the name is read out of the
 sentence (owner, 2026-10-09: "make Prop with the light orange colour and

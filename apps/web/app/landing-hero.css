@@ -7,7 +7,11 @@
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
-.lh .th-lede { align-self: auto; margin: 14px 0 0; }
+/* The first screen's sentence is read beside the page's largest words: a size up from the page's other ledes,
+   its lines kept even so the last is never two stray words. */
+.lh .th-lede { align-self: auto; margin: 14px 0 0; font-size: 18px; text-wrap: balance; }
+/* What the visitor gets, picked out of the sentence in ink: the rest of it is how. */
+.lh .th-lede b { color: var(--th-ink); font-weight: 500; }
 /* The name, picked out of the headline's own letters ("Prop…sights") in the mark's colour. */
 .lh-name { color: var(--th-mark); }
 
@@ -274,7 +278,7 @@
   .lh-in { display: flex; align-items: center; width: 100%; padding: 112px 64px 72px; pointer-events: none; }
   .lh-copy { width: 42%; max-width: 580px; pointer-events: auto; }
   .lh .th-h1 { font-size: clamp(2.75rem, 4vw, 3.75rem); line-height: 1.04; }
-  .lh .th-lede { max-width: 30em; margin-top: 22px; font-size: 18px; }
+  .lh .th-lede { max-width: 28em; margin-top: 22px; font-size: 20px; }
   .lh-find { margin-top: 32px; }
   .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
   .lh-frame { position: absolute; inset: 0; height: auto; }

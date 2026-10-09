@@ -372,7 +372,7 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 - **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
 - **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
 - **Title** (600, 18px/24px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
-- **Lede** (400, 17px on phones, 18px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the first screen and the close): the one sentence under a heading. The search field's own text is set at this size in ink.
+- **Lede** (400, 17px on phones, 18px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the close): the one sentence under a heading. The first screen's is a size up, 18px on phones and 20px from 1024px on a 28em measure, because it is read beside the page's largest words (owner, 2026-10-09: "arent the letters a bit small?"), and its last clause, what the visitor gets, is picked out in ink at weight 500. The search field's own text is 17px in ink.
 - **Body** (400, 16px, line-height 1.45): the report page, the conversation, form input. 15px for notes, panel text, a row of the place list and what a stop on the How line says.
 - **Figure** (600, 16px/22px, tabular): a number, always followed by its unit at 13px in `muted`. On a pinned card the figures are set as a small table at 13px/20px: a count and a figure in ink at weight 600, their words in `muted`.
 - **Action** (600, 15px): buttons, text links, switch options, tabs (500 until selected).
@@ -380,7 +380,7 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 - **Micro** (600, 11px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
 
 ### Named Rules
-**The Seven Sizes Rule.** Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them.
+**The Seven Sizes Rule.** Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them. The one exception is the first screen's sentence at 20px from 1024px.
 
 **The Weight Not Case Rule.** A label is a sentence-case word at weight 600. There is no uppercase and no monospace anywhere, and tracking is never what makes something a label; the name of a body of water on a map is spaced out (0.08em) as maps do.
 
