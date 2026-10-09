@@ -2,10 +2,10 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
-import { euro, int, lets, pct } from "@/lib/landing/areaLines";
+import { euro, int, pct } from "@/lib/landing/areaLines";
 import { listingPoints } from "@/lib/landing/listingPoints";
 import { inPolygon } from "@/lib/landing/polygon";
-import type { TourArea, TourStop, TownPt } from "@/lib/landing/tour";
+import type { TourArea, TourMarket, TourStop, TownPt } from "@/lib/landing/tour";
 
 // One stop, in ms from the moment its map starts to arrive.
 const DOTS_AT = 400; // the listings start to appear, west to east
@@ -80,26 +80,71 @@ const middle = (ring: TownPt[]): TownPt => [ring.reduce((s, p) => s + p[0], 0) /
 /** An area with too few listings to quote is drawn, with no figures. */
 const quoted = (a: TourArea): a is TourArea & { occupied: number; rate: number } => a.occupied != null && a.rate != null;
 
-/** An area's figures: how full and how dear, with how full drawn as a bar in the listings' own shade. */
-function Figures({ area }: { area: TourArea }) {
-  if (!quoted(area)) return null;
+/** One market's line on a card: what it is, how many listings, and what they come to. `mark` is the shade its listings wear on the map, for the market that is drawn there. */
+function Line({ of, n, mark, children }: { of: string; n: number; mark?: number; children?: React.ReactNode }) {
   return (
     <>
-      <b>
-        {area.name}
-        <small>{lets(area.count)}</small>
-      </b>
-      <span>
-        <em>{pct(area.occupied)}</em>
-        occupied
+      <span className="lh-of" data-step={mark}>
+        {of}
       </span>
-      <span>
-        <em>{euro(area.rate)}</em>a night
-      </span>
-      <i data-step={stepOf(area.occupied)} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties} />
+      <span className="lh-n">{int(n)}</span>
+      <span className="lh-fig">{children}</span>
     </>
   );
 }
+
+/** A market's median, or that its listings are too few to quote one. With none at all there is nothing to say. */
+const median = (m: TourMarket, unit?: string) =>
+  m.median != null ? (
+    <>
+      <em>{euro(m.median)}</em>
+      {unit && <small> {unit}</small>}
+    </>
+  ) : m.count > 0 ? (
+    "too few"
+  ) : null;
+
+/**
+ * An area's figures, a line to a market: the short-lets inside (a night's price and how full they are), the
+ * long-lets (a month's rent) and the homes for sale (the asking price), each with how many there are. The
+ * short-lets are the dots on the map, so their line carries the dots' shade, and how full they are is drawn
+ * again as a bar in it along the card's foot.
+ */
+function Figures({ area }: { area: TourArea }) {
+  if (!quoted(area)) return null;
+  const step = stepOf(area.occupied);
+  return (
+    <>
+      <b>{area.name}</b>
+      <Line of={"Short\u2011let"} n={area.count} mark={step}>
+        <em>{euro(area.rate)}</em>
+        <small> a night</small>
+        <em>{pct(area.occupied)}</em> full
+      </Line>
+      {area.rent && (
+        <Line of={"Long\u2011let"} n={area.rent.count}>
+          {median(area.rent, "a month")}
+        </Line>
+      )}
+      {area.sale && (
+        <Line of="For sale" n={area.sale.count}>
+          {median(area.sale)}
+        </Line>
+      )}
+      <i data-step={step} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties} />
+    </>
+  );
+}
+
+/** The same, said in a sentence for a reader who cannot see the card. */
+const spoken = (a: TourArea & { occupied: number; rate: number }) =>
+  [
+    `${int(a.count)} short\u2011lets, ${pct(a.occupied)} full this season, ${euro(a.rate)} a night`,
+    a.rent && `${int(a.rent.count)} long\u2011lets${a.rent.median != null ? `, ${euro(a.rent.median)} a month` : ""}`,
+    a.sale && `${int(a.sale.count)} homes for sale${a.sale.median != null ? `, ${euro(a.sale.median)} asked` : ""}`,
+  ]
+    .filter(Boolean)
+    .join("; ");
 
 /**
  * The first screen's picture: a tour of drawn town maps that runs by itself. On each, the short-lets there appear
@@ -486,7 +531,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         {stops.flatMap((s) =>
           s.areas.filter(quoted).map((a) => (
             <li key={`${s.key}.${a.name}`}>
-              {s.town}, {a.name}: {pct(a.occupied)} occupied, {euro(a.rate)} a night, {int(a.count)} short&#8209;lets
+              {s.town}, {a.name}: {spoken(a)}
             </li>
           )),
         )}
@@ -498,9 +543,11 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             {stopped ? "Play the tour" : "Pause the tour"}
           </button>
         )}
-        {/* What the shades of the listings inside an area mean, as on the stage's map. */}
+        {/* Which listings the dots are, and what their shades mean, as on the stage's map. */}
         <span className="lh-key">
-          <span className="lh-key-of">Short&#8209;lets this season:</span>
+          <span className="lh-key-of">
+            Short&#8209;lets<span className="lh-key-when"> this season</span>:
+          </span>
           emptier
           <span className="th-key-dots" aria-hidden="true">
             <i />

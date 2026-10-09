@@ -102,7 +102,18 @@ export default function PlaceSearch() {
   const shown = open && places != null;
   return (
     <div className="lh-find">
-      <form className="lh-box" role="search" onSubmit={submit}>
+      <form
+        className="lh-box"
+        role="search"
+        onSubmit={submit}
+        // The field is glass: where its rim catches the light follows a mouse along it, and goes back when the mouse leaves.
+        onPointerMove={(e) => {
+          if (e.pointerType !== "mouse") return;
+          const r = e.currentTarget.getBoundingClientRect();
+          e.currentTarget.style.setProperty("--gx", `${Math.round(((e.clientX - r.left) / r.width) * 1000) / 10}%`);
+        }}
+        onPointerLeave={(e) => e.currentTarget.style.removeProperty("--gx")}
+      >
         <Search size={20} strokeWidth={2.2} aria-hidden="true" />
         <label className="sr-only" htmlFor={`${listId}-q`}>
           A town, resort or district in Cyprus

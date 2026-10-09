@@ -1100,11 +1100,15 @@ async function saleScope(
 
 /** Buy-side snapshot + ROI enrichment (backfilled 12 Jul 2026).
  * Scope: exact polygon, or named area by its assigned area column; bedrooms
- * and property-type filters apply (the rest are Airbnb-only). */
+ * and property-type filters apply (the rest are Airbnb-only).
+ * `headline` asks for the counts and medians alone: the per-bedroom rows
+ * and the two deal lists come back empty and their queries are not run
+ * (the landing's first screen asks about eighteen areas at once). */
 export function getInvest(
   polygon: PolygonCoords | null,
   areaId?: string | null,
-  f: Filters = DEFAULT_FILTERS
+  f: Filters = DEFAULT_FILTERS,
+  { headline = false }: { headline?: boolean } = {}
 ): Promise<InvestStats> {
   return tryLive<InvestStats>(
     async (sql) => {
@@ -1129,13 +1133,13 @@ export function getInvest(
             FILTER (WHERE n_price_drops > 0)::float AS cuts_med
         FROM sale_listings WHERE ${geo}
       `;
-      const beds = await sql`
+      const beds = headline ? [] : await sql`
         SELECT LEAST(COALESCE(bedrooms, 0), 5)::int AS b, COUNT(*)::int AS count,
           percentile_cont(0.5) WITHIN GROUP (ORDER BY price) FILTER (WHERE price > 0)::float AS med
         FROM sale_listings WHERE ${geo}
         GROUP BY 1 ORDER BY 1 ASC
       `;
-      const screener = await sql`
+      const screener = headline ? [] : await sql`
         SELECT ${DEAL_COLUMNS(sql)} FROM sale_listings
         WHERE (${geo}) AND price >= ${SCREENER_MIN_PRICE}
           AND str_comp_count >= ${SCREENER_MIN_COMPS}
@@ -1144,7 +1148,7 @@ export function getInvest(
       `;
       // Cuts deeper than 40% are almost always listing-entry artifacts
       // (spec: trajectory data thin until more post-fix runs accrue).
-      const movers = await sql`
+      const movers = headline ? [] : await sql`
         SELECT ${DEAL_COLUMNS(sql)} FROM sale_listings
         WHERE (${geo}) AND price >= ${SCREENER_MIN_PRICE}
           AND n_price_drops > 0 AND price_change_pct BETWEEN -40 AND -1
@@ -1530,11 +1534,13 @@ export function getAreaHealth(): Promise<AreaHealth> {
   );
 }
 
-/** Rent-side snapshot (ltr_listings) — same scoping rules as sales. */
+/** Rent-side snapshot (ltr_listings) — same scoping rules as sales, and
+ * the same `headline` option: the count and the rent quartiles alone. */
 export function getRentals(
   polygon: PolygonCoords | null,
   areaId?: string | null,
-  f: Filters = DEFAULT_FILTERS
+  f: Filters = DEFAULT_FILTERS,
+  { headline = false }: { headline?: boolean } = {}
 ): Promise<RentalStats> {
   return tryLive<RentalStats>(
     async (sql) => {
@@ -1545,7 +1551,7 @@ export function getRentals(
             WITHIN GROUP (ORDER BY monthly_rent) FILTER (WHERE monthly_rent > 0)::float8[] AS rent_q
         FROM ltr_listings WHERE ${geo}
       `;
-      const beds = await sql`
+      const beds = headline ? [] : await sql`
         SELECT LEAST(COALESCE(bedrooms, 0), 5)::int AS b, COUNT(*)::int AS count,
           percentile_cont(0.5) WITHIN GROUP (ORDER BY monthly_rent) FILTER (WHERE monthly_rent > 0)::float AS med
         FROM ltr_listings WHERE ${geo}

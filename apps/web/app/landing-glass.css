@@ -1,0 +1,115 @@
+/* ── Landing: glass ────────────────────────────────────────── */
+/* After the search field was made glass the owner asked to see it on everything (2026-10-09: "lets try glass
+   everywhere to see how it shows") and chose it ("great I prefer it"). This sheet is that layer: it lies over
+   the components' own flat styles and changes only their material. Every rule is under `.th-glassy`, the class
+   on the page's outer element (app/page.tsx); without the class the page is flat but for the search field,
+   whose glass is its own (landing-hero.css).
+
+   Two materials, as on the search field:
+   - frost: a sheet lying over something (a map, a card's coloured ground, the page going by under the nav). It
+     is white, part see-through, and blurs what is behind it; a fine edge, a white rim inside, light on its top.
+   - bead: a filled button. It keeps its colour and takes a line of light along its top and a shade at its foot.
+   An element that blurs what is behind it cannot sit inside one with `isolation: isolate`: Chromium then gives
+   it only that parent to blur. */
+
+/* Frost. */
+.th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet) {
+  --glass-edge: color-mix(in srgb, var(--th-ink) 38%, transparent);
+  --glass-drop: 0 10px 22px -12px color-mix(in srgb, var(--th-ink) 46%, transparent);
+  border-color: transparent;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.58));
+  -webkit-backdrop-filter: blur(18px) saturate(1.8);
+  backdrop-filter: blur(18px) saturate(1.8);
+  box-shadow:
+    0 0 0 1px var(--glass-edge),
+    inset 0 0 0 1px rgb(255 255 255 / 0.6),
+    inset 0 1.5px 0 #fff,
+    var(--glass-drop);
+}
+/* A card on the first screen's map sits on a busy drawing: a firmer edge, and its bar's track lets the glass through. */
+.th-glassy .lh-pin { --glass-edge: color-mix(in srgb, var(--th-ink) 58%, transparent); }
+.th-glassy .lh-pin i { background: rgb(255 255 255 / 0.3); }
+/* The sheets of a report lie deeper on their cards. */
+.th-glassy :is(.th-sheet, .ps-sheet) { --glass-drop: 0 1px 2px -1px color-mix(in srgb, var(--th-ink) 30%, transparent), 0 22px 34px -22px color-mix(in srgb, var(--th-ink) 50%, transparent); }
+/* A pressed control on the stage's map still answers. */
+.th-glassy :is(.th-zoom-steps button, .th-zoom-whole, .th-draw-here):active { background: color-mix(in srgb, var(--th-a) 16%, transparent); }
+@media (hover: hover) {
+  .th-glassy :is(.th-zoom-steps button, .th-zoom-whole, .th-draw-here):hover { background-color: color-mix(in srgb, var(--th-a) 16%, transparent); }
+}
+.th-glassy .ps-switch button:not([aria-pressed="true"]):hover { background: color-mix(in srgb, var(--th-a) 14%, transparent); }
+
+/* The nav, once the page has moved under it: the paper's own tone, frosted, with the page going by behind. */
+.th-glassy header.th-landing[data-solid] {
+  border-bottom-color: color-mix(in srgb, var(--th-ink) 20%, transparent) !important;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--th-ground) 80%, transparent), color-mix(in srgb, var(--th-ground) 56%, transparent)) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(1.8);
+  backdrop-filter: blur(22px) saturate(1.8);
+  box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.55), 0 16px 28px -22px color-mix(in srgb, var(--th-ink) 45%, transparent);
+}
+
+/* The three product cards: sheets of tinted glass that slide over one another, each showing the last through it. */
+.th-glassy .ps-card {
+  border-color: transparent;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ps-ground) 86%, transparent), color-mix(in srgb, var(--ps-ground) 70%, transparent));
+  -webkit-backdrop-filter: blur(30px) saturate(1.7);
+  backdrop-filter: blur(30px) saturate(1.7);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--th-ink) 26%, transparent),
+    inset 0 0 0 1px rgb(255 255 255 / 0.5),
+    inset 0 2px 0 rgb(255 255 255 / 0.85),
+    0 -20px 40px -32px color-mix(in srgb, var(--th-ink) 50%, transparent);
+}
+
+/* The stage's map, under a plate of glass: a cut edge round its frame, a lit rim over the map itself. */
+@media (min-width: 640px) {
+  .th-glassy .th-map-frame {
+    border-color: transparent;
+    box-shadow: 0 0 0 1px color-mix(in srgb, var(--th-ink) 40%, transparent), 0 26px 42px -28px color-mix(in srgb, var(--th-ink) 46%, transparent);
+  }
+}
+.th-glassy .th-map-port::after {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(255 255 255 / 0.7), inset 0 2px 0 rgb(255 255 255 / 0.9), inset 0 0 26px 2px rgb(255 255 255 / 0.32);
+  pointer-events: none;
+  content: "";
+}
+
+/* Bead: every filled button, the visitor's own bubble, the chosen side of the switch. */
+.th-glassy :is(.th-go, .th-solid, .ps-solid, .th-asked, .ps-bubble-q, .ps-close-form button, .ps-switch button[aria-pressed="true"]) {
+  background-image: linear-gradient(180deg, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0) 58%) !important;
+  box-shadow:
+    inset 0 1px 0 rgb(255 255 255 / 0.36),
+    inset 0 -1px 1px rgb(0 0 0 / 0.24),
+    0 1px 2px color-mix(in srgb, var(--th-ink) 30%, transparent),
+    0 8px 14px -10px color-mix(in srgb, var(--th-ink) 55%, transparent);
+}
+
+/* The close, on ink: the email field is a slab of clear glass on the dark. */
+.th-glassy .ps-close-form input {
+  border-color: transparent;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.17), rgb(255 255 255 / 0.05));
+  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.5), inset 0 -8px 10px -8px rgb(255 255 255 / 0.14);
+  transition: box-shadow 0.15s;
+}
+.th-glassy .ps-close-form input:is(:hover, :focus) {
+  border-color: transparent;
+  box-shadow: 0 0 0 1px var(--th-close-ink), inset 0 1px 0 rgb(255 255 255 / 0.6), inset 0 -8px 10px -8px rgb(255 255 255 / 0.18);
+}
+
+/* Where transparency is turned down, or nothing can be blurred, the frost is the plain surface again. */
+@media (prefers-reduced-transparency: reduce) {
+  .th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet) { background: var(--th-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .th-glassy .ps-card { background: var(--ps-ground); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .th-glassy header.th-landing[data-solid] { background: var(--th-ground) !important; -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet) { background: var(--th-surface); }
+  .th-glassy .ps-card { background: var(--ps-ground); }
+  .th-glassy header.th-landing[data-solid] { background: var(--th-ground) !important; }
+}
+@media (forced-colors: active) {
+  .th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet, .ps-card, .ps-close-form input) { border-color: CanvasText; }
+}

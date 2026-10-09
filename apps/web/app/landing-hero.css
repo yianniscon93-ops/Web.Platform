@@ -11,40 +11,104 @@
 /* The name, picked out of the headline's own letters ("Prop…sights") in the mark's colour. */
 .lh-name { color: var(--th-mark); }
 
-/* The way in: one field and its button, and the list of places that opens under it. */
+/* The way in: one field and its button, and the list of places that opens under it. The field was the page's
+   first piece of glass (owner, 2026-10-09: "a nice liquid glass search thing. crystalized"), and the clearest: a
+   slab lying on the paper, where the rest of the page's glass (landing-glass.css) is frosted. The paper shows through it, lighter where the light falls on its top and on its lower lip, with the
+   green a slab of glass has in its thickness along its foot; round it a fine cut edge with a polished rim
+   inside; under it a soft shadow and, in the middle of that shadow, the light the glass gathers. Where the rim
+   catches the light follows the pointer (--gx, set by PlaceSearch) and crosses the field once when it takes the
+   focus. The slab is the form's ::before, not the form, so the list under it can blur what it lies over too. */
+@property --gx {
+  syntax: "<percentage>";
+  inherits: true;
+  initial-value: 24%;
+}
 .lh-find { width: 100%; max-width: 540px; margin-top: 24px; }
 .lh-box {
+  --gx: 24%;
   position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
   height: 60px;
   padding: 0 5px 0 18px;
-  border: 1.5px solid var(--th-ink);
   border-radius: 9999px;
-  background: var(--th-surface);
-  box-shadow: 0 12px 26px -16px var(--th-shadow);
+  transition: --gx 0.7s var(--th-ease);
 }
-.lh-box:focus-within { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+.lh-box::before {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border: 1.5px solid transparent;
+  border-radius: inherit;
+  background:
+    /* the light on its top face, under the pointer */
+    radial-gradient(260px 36px at var(--gx) 0%, rgb(255 255 255 / 0.98), rgb(255 255 255 / 0) 70%) padding-box,
+    /* the slab: lit along its top, clear from there down */
+    linear-gradient(180deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.2) 24%, rgb(255 255 255 / 0) 54%) padding-box,
+    /* the glass itself: the faintest smoke, so the light on it can be lighter than the paper */
+    linear-gradient(color-mix(in srgb, var(--th-ink) 5%, transparent), color-mix(in srgb, var(--th-ink) 5%, transparent)) padding-box,
+    /* the polished rim: bright where it catches the light, above and, across from that, below */
+    radial-gradient(150px 44px at var(--gx) 0%, #fff, rgb(255 255 255 / 0) 100%) border-box,
+    radial-gradient(190px 44px at calc(100% - var(--gx)) 100%, #fff, rgb(255 255 255 / 0) 100%) border-box,
+    linear-gradient(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.5)) border-box;
+  -webkit-backdrop-filter: blur(14px) saturate(1.6);
+  backdrop-filter: blur(14px) saturate(1.6);
+  box-shadow:
+    /* the cut edge */
+    0 0 0 1px color-mix(in srgb, var(--th-ink) 56%, transparent),
+    /* its edges bend the light: a little brighter all round, a bright line along the lower lip */
+    inset 0 0 9px 1px rgb(255 255 255 / 0.5),
+    inset 0 -1px 0 rgb(255 255 255 / 0.85),
+    /* the green of its thickness, above that lip */
+    inset 0 -9px 10px -8px color-mix(in srgb, var(--th-a) 32%, transparent),
+    /* on the paper */
+    0 2px 3px -1px color-mix(in srgb, var(--th-ink) 24%, transparent),
+    0 20px 32px -18px color-mix(in srgb, var(--th-ink) 50%, transparent);
+  content: "";
+}
+/* The light the glass gathers, in the middle of its shadow. */
+.lh-box::after {
+  position: absolute;
+  top: calc(100% + 2px);
+  right: 16%;
+  left: 16%;
+  z-index: -1;
+  height: 11px;
+  border-radius: 50%;
+  background: radial-gradient(50% 100% at 50% 0%, #fff, rgb(255 255 255 / 0));
+  filter: blur(2.5px);
+  pointer-events: none;
+  content: "";
+}
+/* In use: the page's focus ring round it, and the light crosses to the button's side. */
+.lh-box:focus-within { --gx: 76%; outline: 2px solid var(--th-focus); outline-offset: 3px; }
 .lh-box > svg { flex: none; color: var(--th-muted); }
 .lh-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: var(--th-ink); font: inherit; font-size: 17px; }
 .th-landing .lh-box input:focus-visible { outline: none; }
 .lh-box input::placeholder { color: var(--th-muted); opacity: 1; }
-.lh-box .th-go { flex: none; min-height: 48px; padding: 0 20px; }
+/* The button is set in the glass: the light from above runs along its top edge. */
+.lh-box .th-go { flex: none; min-height: 48px; padding: 0 20px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.32), inset 0 -1px 1px rgb(0 0 0 / 0.22), 0 1px 2px color-mix(in srgb, var(--th-ink) 28%, transparent); }
+/* The list is a sheet of the same glass, frosted so its words can be read over whatever it opens on. */
 .lh-list {
   position: absolute;
-  top: calc(100% + 8px);
+  top: calc(100% + 10px);
   right: 0;
   left: 0;
   z-index: 5;
   padding: 6px;
-  border: 1px solid var(--th-line);
-  border-radius: 16px;
-  background: var(--th-surface);
-  box-shadow: 0 20px 40px -20px var(--th-shadow);
+  border-radius: 18px;
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.64));
+  -webkit-backdrop-filter: blur(22px) saturate(1.7);
+  backdrop-filter: blur(22px) saturate(1.7);
+  box-shadow:
+    0 0 0 1px color-mix(in srgb, var(--th-ink) 34%, transparent),
+    inset 0 0 0 1px rgb(255 255 255 / 0.7),
+    inset 0 1.5px 0 rgb(255 255 255),
+    0 26px 44px -22px color-mix(in srgb, var(--th-ink) 50%, transparent);
 }
 .lh-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 10px; font-size: 15px; line-height: 21px; cursor: pointer; }
-.lh-list li[aria-selected="true"] { background: var(--th-tint); }
+.lh-list li[aria-selected="true"] { background: color-mix(in srgb, var(--th-a) 14%, transparent); }
 .lh-list li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--th-muted); }
 /* A row with nothing under its name: the name takes both lines, so it sits level with the count. */
 .lh-list li:not(:has(small)) > span { grid-row: 1 / span 2; }
@@ -128,21 +192,26 @@
 .lh-pointer { position: absolute; top: 0; left: 0; margin: -3px 0 0 -4px; opacity: 0; }
 .lh-pointer svg { display: block; }
 .lh-pointer path { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.6px; stroke-linejoin: round; }
-/* An area's figures: a small white card with an ink edge. Its name and how many short-lets it holds, then how
-   full they are and what a night costs, and along its foot how full again, as a bar in the shade the area's
-   listings wear on the map. From 1024px each card is pinned beside its own area; below that there is room for
-   one, docked in the band's corner, which is the area drawn last. */
+/* An area's figures: a small white card with an ink edge, set as a table. Its name, then a line to each market
+   inside the area: what it is, how many listings, and what they come to (a short-let's night and how full, a
+   long-let's month, a home's asking price). The short-lets are the dots on the map, so their line carries the
+   dots' mark, and along the card's foot how full they are again, as a bar in that shade. From 1024px each card
+   is pinned beside its own area; below that there is room for one, docked in the band's corner, which is the
+   area drawn last. */
 .lh-pin {
   display: grid;
-  grid-template-columns: auto auto;
-  column-gap: 16px;
+  grid-template-columns: auto auto auto;
+  justify-content: start;
+  column-gap: 10px;
   overflow: hidden;
-  min-width: 148px;
   padding: 8px 12px 0;
   border: 1px solid var(--th-ink);
   border-radius: 8px;
   background: var(--th-surface);
   box-shadow: 0 8px 16px -10px var(--th-shadow);
+  color: var(--th-muted);
+  font-size: 13px;
+  line-height: 20px;
   white-space: nowrap;
   opacity: 0;
   translate: 0 6px;
@@ -150,11 +219,20 @@
 }
 .lh-pin[data-drawn] { opacity: 1; translate: 0 0; }
 .lh-pin[data-side="right"] { transform: translateX(-100%); }
-.lh-pin b { display: flex; grid-column: 1 / -1; align-items: baseline; justify-content: space-between; gap: 14px; font-size: 13px; font-weight: 600; line-height: 18px; }
-.lh-pin small { color: var(--th-muted); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
-.lh-pin span { display: grid; margin-top: 5px; color: var(--th-muted); font-size: 13px; line-height: 16px; }
-.lh-pin em { color: var(--th-ink); font-size: 18px; font-style: normal; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; }
-.lh-pin i { grid-column: 1 / -1; height: 6px; margin: 8px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); }
+.lh-pin b { grid-column: 1 / -1; margin-bottom: 2px; color: var(--th-ink); font-weight: 600; line-height: 18px; }
+/* The market's name. The one drawn on the map has the mark its listings wear there; the others keep clear of it. */
+.lh-of { position: relative; padding-left: 13px; }
+.lh-of[data-step]::before { position: absolute; top: 6px; left: 0; width: 8px; height: 8px; border: 1px solid var(--th-occ-ring); border-radius: 9999px; content: ""; }
+.lh-of[data-step="1"]::before { background: var(--th-occ-1); }
+.lh-of[data-step="2"]::before { background: var(--th-occ-2); }
+.lh-of[data-step="3"]::before { background: var(--th-occ-3); }
+.lh-of[data-step="4"]::before { background: var(--th-occ-4); }
+.lh-n, .lh-fig em { color: var(--th-ink); font-style: normal; font-weight: 600; font-variant-numeric: tabular-nums; }
+.lh-n { text-align: right; }
+.lh-fig small { font-size: inherit; }
+/* How full, after the price. */
+.lh-fig small + em { margin-left: 10px; }
+.lh-pin i { grid-column: 1 / -1; height: 6px; margin: 7px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); }
 .lh-pin i::before { display: block; width: var(--full); height: 100%; border-right: 1px solid var(--th-occ-ring); content: ""; }
 .lh-pin i[data-step="1"]::before { background: var(--th-occ-1); }
 .lh-pin i[data-step="2"]::before { background: var(--th-occ-2); }
@@ -216,19 +294,20 @@
   .lh-stopper { pointer-events: auto; }
 }
 /* Just above 1024px the credit row has one line's room beside the cards: the key waits for a wider picture,
-   and what it is a key to ("Short-lets this season") for a wider one still. */
+   and the season it speaks of for a wider one still. A card's short-let line says which listings the dots are
+   at every width. */
 @media (min-width: 1024px) and (max-width: 1279px) {
   .lh-key { display: none; }
 }
+/* Up to 1440px three cards share a small map: a price goes without its "a night" or "a month", which the
+   market's name beside it already says. */
 @media (min-width: 1024px) and (max-width: 1439px) {
-  .lh-key-of { display: none; }
+  .lh-key-when, .lh-stop .lh-fig small { display: none; }
 }
-/* A big picture takes bigger words on its cards. */
+/* A big picture takes a bigger name on its cards, and a little more room. */
 @media (min-width: 1440px) {
-  .lh-stop .lh-pin { column-gap: 20px; min-width: 172px; padding: 10px 14px 0; }
-  .lh-stop .lh-pin b { font-size: 15px; line-height: 20px; }
-  .lh-stop .lh-pin small { font-size: 13px; }
-  .lh-stop .lh-pin span { font-size: 13px; line-height: 16px; }
+  .lh-stop .lh-pin { column-gap: 12px; padding: 10px 14px 0; }
+  .lh-stop .lh-pin b { margin-bottom: 3px; font-size: 15px; line-height: 20px; }
   .lh-stop .lh-pin i { margin: 9px -14px 0; }
 }
 /* The tour's moment, at each town: the pointer goes round an area's corners (TownTour moves it), each corner
@@ -247,7 +326,24 @@
   .lh-stop[data-arrived] :is(.lh-where, .lh-node, .lh-area) { animation: none; }
   .lh-over[data-waiting] .lh-stop * { animation-play-state: paused; }
 }
+/* The glass, where it cannot or should not be glass: with transparency turned down, or no way to blur what is
+   behind, the field and its list are the plain white surface; with forced colours the cut edge is a real border. */
+@media (prefers-reduced-transparency: reduce) {
+  .lh-box::before { background: var(--th-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+  .lh-box::after { display: none; }
+  .lh-list { background: var(--th-surface); -webkit-backdrop-filter: none; backdrop-filter: none; }
+}
+@supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+  .lh-list { background: var(--th-surface); }
+}
+@media (forced-colors: active) {
+  .lh-box::before { border-color: CanvasText; }
+  .lh-box::after { display: none; }
+  .lh-list { border: 1px solid CanvasText; }
+}
 @media (prefers-reduced-motion: reduce) {
+  /* The rim's light stays where it is. */
+  .lh-box, .lh-box:focus-within { --gx: 24% !important; transition: none; }
   .lh-stopper, .lh-sheet .lh-map, .lh-over .lh-map, .lh-stop, .lh-dots, .lh-pin, .lh-named, .lh-area-fill, .lh-lead { transition: none; }
   .lh-sheet .lh-map { translate: 0 0; }
 }

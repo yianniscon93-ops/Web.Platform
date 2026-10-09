@@ -43,6 +43,32 @@ sights the same"). The `h1` carries the plain sentence as its
 of large text; it is the owner's choice of colour and the letters are 40px
 or more and bold.
 
+The field is glass, the one piece of it on the page (owner, 2026-10-09:
+"a nice liquid glass search thing. crystalized"): a clear slab on the
+paper, drawn in `landing-hero.css` as the form's `::before` (the slab, its
+cut edge, rim and shadow) and `::after` (the light under it). The slab is
+a pseudo-element and the form has no `isolation`, on purpose: in Chromium
+a `backdrop-filter` or `isolation: isolate` on the form would stop the
+list inside it from blurring the page behind. The point where the rim
+catches the light is the custom property `--gx`, which `PlaceSearch` sets
+from a mouse's position and CSS moves on focus. The list is a frosted sheet
+of the same glass. `prefers-reduced-transparency`, no `backdrop-filter`,
+forced colours and reduced motion each have their own rules there.
+
+**Glass everywhere (2026-10-09).** The owner then asked to "try glass
+everywhere to see how it shows", and of the result said "great I prefer
+it". It is one sheet, `app/landing-glass.css`, laid over the components'
+own flat styles, every rule of it under the class `th-glassy` on the
+page's outer element (`app/page.tsx`): the nav once the page has moved
+under it (`data-solid` on the header), the cards on the first screen's
+map, the stage map's frame and controls, the three product cards, the
+report sheets, the switch, the answer bubbles, the example listing and the
+close's email field are frosted glass, and every filled button takes a
+line of light. Taking the class off gives the flat page back, with the
+search field still glass. Known: three large blurred cards cost more to
+draw while scrolling (not measured), and the nav's blur could not be
+confirmed at 2x pixel density in the test browser, which draws it at 1x.
+
 `PlaceSearch` is a combobox over `GET /api/dashboard/areas` (the
 Playground's own list of places). Focused, it lists the six places with the
 most listings; typed into, it matches English and Greek names with accents
@@ -95,11 +121,23 @@ tour does not leave a town until the next map has arrived.
 What the tour draws is set by hand in `LandingHero.tsx` (`DRAWN`), in
 each map's view units: three areas a few streets wide per town, on built
 streets, each with the corner its card is pinned at. On the server each
-area's polygon is asked of `getStats`: how full its short-lets have been
-this season (`effOccTodate`), their median nightly rate and how many
-there are. An area with fewer than five listings, or one that cannot be
+area's polygon is asked three questions, the ones the stage's table asks,
+so a card and the table agree for the same corners: `getStats` (how full
+its short-lets have been this season, `effOccTodate`, their median nightly
+rate and how many there are), `getRentals` (how many long-lets, and the
+median monthly rent) and `getInvest` (how many homes for sale, and the
+median asking price). The last two are asked with `{ headline: true }`,
+which runs their one aggregate query and leaves out the per-bedroom rows
+and the deal lists: the first screen asks about eighteen areas at once.
+The owner asked for all three (2026-10-09: "we get only how many
+short-term listings are there. we have more data right? dont mislead the
+customer"). An area with fewer than five short-lets, or one that cannot be
 asked, is drawn without figures; on demo data one listing is enough and the
-picture carries the "Demo data" mark. The page sets `revalidate = 3600`.
+picture carries the "Demo data" mark. A long-let or for-sale line with
+fewer than five listings gives its count and "too few" in place of a
+median. Demo data answers those two for the whole island, which is not the
+area's answer, so there the card has its short-let line only. The page
+sets `revalidate = 3600`.
 The shape handed to the client is `TourStop` (`src/lib/landing/tour.ts`).
 
 The tour runs by itself (owner, 2026-10-09). The town the page arrives on is
@@ -127,15 +165,23 @@ the areas a sample of up to 600 is drawn small and grey, with any that fall
 on the drawing's sea left off. This was checked with the demo listings
 multiplied fourteen times, not yet on the live database.
 
-A card says the area's name and how many short-lets it holds, how full
-they are and what a night costs (their words at 13px), and along its foot
-the occupancy again as a bar in the shade the area's listings wear on the
-map. From 1440px the card's name and count are a size larger. The town's
-name is the largest word on the map (17px). The credit row under the
-picture carries the pause control, the key to the shades ("Short-lets this
-season: emptier", four dots, "fuller"; its first three words are left out
-below 1440px and the whole key between 1024 and 1279px, where the row has
-one line's room) and the map credit. The key is where the picture says its
+A card is a small table: the area's name, then a line to each market
+inside it. "Short-let", how many, a night's median price and how full
+("58% full"); "Long-let", how many, a month's median rent; "For sale", how
+many, the median asking price. Everything is 13px; counts and figures are
+ink at weight 600, tabular, the counts ranged right. The dots on the map
+are the short-lets only, so the short-let line starts with the mark those
+dots wear, in the shade of the area's occupancy, and along the card's foot
+the occupancy is drawn again as a bar in that shade. From 1440px the name
+is a size larger; between 1024 and 1439px, where three cards share a small
+map, the prices go without "a night" and "a month", which the market's name
+already says. A card is about 255px by 110px from 1440px and 210px by 103px
+below it, and every card's place in `DRAWN` was set for that size. The
+town's name is the largest word on the map (17px). The credit row under
+the picture carries the pause control, the key ("Short-lets this season:
+emptier", four dots, "fuller"; "this season" is left out below 1440px and
+the whole key between 1024 and 1279px, where the row has one line's room)
+and the map credit. The key says which listings the dots are and that the
 figures are this season's.
 
 Below 1024px the picture is a band under the words, 860px or more of map

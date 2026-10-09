@@ -2,6 +2,8 @@ import { preload } from "react-dom";
 import "./landing-sections.css";
 import "./landing-hero.css";
 import "./landing-how.css";
+// The page's glass: every surface that lies on something, and every filled button. On for the element with the class `th-glassy` below.
+import "./landing-glass.css";
 import Nav from "@/components/Nav";
 import DrawHero from "@/components/landing/DrawHero";
 import LandingHero from "@/components/landing/LandingHero";
@@ -25,7 +27,7 @@ export default function Home() {
   return (
     // The hero publishes the area the visitor has drawn; the product sections under it read it.
     <HeroAreaProvider>
-      <div className="min-h-screen overflow-x-clip" style={{ background: "#0C100A" }}>
+      <div className="th-glassy min-h-screen overflow-x-clip" style={{ background: "#0C100A" }}>
         <Nav />
         <LandingHero />
         <DrawHero basemaps={basemaps} />
