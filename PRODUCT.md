@@ -80,6 +80,9 @@ Open decisions:
   The owner asked for "something with property data and insights"
   (2026-10-09) and said of the page built with this wording "its good"; it
   replaced "The whole Cyprus property market, down to the street."
+  In it "Prop" (of "Property") and "sights" (of "insights") are set in the
+  light orange, so the name is read out of the headline (owner,
+  2026-10-09).
 - The landing page opens by asking the visitor for their own place (a search
   box), as most sites in this field do. The ground stays beige on every
   screen; a dark first screen was tried and rejected (2026-10-09).
