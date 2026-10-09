@@ -1,0 +1,784 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-08T11:04:27Z",
+  "title": "Design System: PropSights landing (The Thread)",
+  "extensions": {
+    "colorMeta": {
+      "action": {
+        "role": "primary",
+        "displayName": "Action (Tangerine)",
+        "canonical": "oklch(70.4% 0.161 47)",
+        "cssVar": "--th-action",
+        "tonalRamp": [
+          "oklch(15% 0.161 47)",
+          "oklch(26% 0.161 47)",
+          "oklch(38% 0.161 47)",
+          "oklch(50% 0.161 47)",
+          "oklch(62% 0.161 47)",
+          "oklch(74% 0.161 47)",
+          "oklch(85% 0.097 47)",
+          "oklch(95% 0.048 47)"
+        ]
+      },
+      "action-ink": {
+        "role": "primary",
+        "displayName": "Action Ink",
+        "canonical": "oklch(21.6% 0.023 131)",
+        "cssVar": "--th-action-ink",
+        "tonalRamp": [
+          "oklch(15% 0.023 131)",
+          "oklch(26% 0.023 131)",
+          "oklch(38% 0.023 131)",
+          "oklch(50% 0.023 131)",
+          "oklch(62% 0.023 131)",
+          "oklch(74% 0.023 131)",
+          "oklch(85% 0.014 131)",
+          "oklch(95% 0.007 131)"
+        ]
+      },
+      "action-hover": {
+        "role": "primary",
+        "displayName": "Action Hover",
+        "canonical": "oklch(66.0% 0.163 46)",
+        "cssVar": "--th-action-hover",
+        "tonalRamp": [
+          "oklch(15% 0.163 46)",
+          "oklch(26% 0.163 46)",
+          "oklch(38% 0.163 46)",
+          "oklch(50% 0.163 46)",
+          "oklch(62% 0.163 46)",
+          "oklch(74% 0.163 46)",
+          "oklch(85% 0.098 46)",
+          "oklch(95% 0.049 46)"
+        ]
+      },
+      "a": {
+        "role": "primary",
+        "displayName": "Area A",
+        "canonical": "oklch(70.4% 0.161 47)",
+        "cssVar": "--th-a",
+        "tonalRamp": [
+          "oklch(15% 0.161 47)",
+          "oklch(26% 0.161 47)",
+          "oklch(38% 0.161 47)",
+          "oklch(50% 0.161 47)",
+          "oklch(62% 0.161 47)",
+          "oklch(74% 0.161 47)",
+          "oklch(85% 0.097 47)",
+          "oklch(95% 0.048 47)"
+        ]
+      },
+      "a-ink": {
+        "role": "primary",
+        "displayName": "Area A Ink",
+        "canonical": "oklch(21.6% 0.023 131)",
+        "cssVar": "--th-a-ink",
+        "tonalRamp": [
+          "oklch(15% 0.023 131)",
+          "oklch(26% 0.023 131)",
+          "oklch(38% 0.023 131)",
+          "oklch(50% 0.023 131)",
+          "oklch(62% 0.023 131)",
+          "oklch(74% 0.023 131)",
+          "oklch(85% 0.014 131)",
+          "oklch(95% 0.007 131)"
+        ]
+      },
+      "visitor": {
+        "role": "secondary",
+        "displayName": "Visitor (Olive)",
+        "canonical": "oklch(45.5% 0.061 132)",
+        "cssVar": "--th-visitor",
+        "tonalRamp": [
+          "oklch(15% 0.061 132)",
+          "oklch(26% 0.061 132)",
+          "oklch(38% 0.061 132)",
+          "oklch(50% 0.061 132)",
+          "oklch(62% 0.061 132)",
+          "oklch(74% 0.061 132)",
+          "oklch(85% 0.037 132)",
+          "oklch(95% 0.018 132)"
+        ]
+      },
+      "visitor-ink": {
+        "role": "secondary",
+        "displayName": "Visitor Ink",
+        "canonical": "oklch(97.0% 0.01 94)",
+        "cssVar": "--th-visitor-ink",
+        "tonalRamp": [
+          "oklch(15% 0.01 94)",
+          "oklch(26% 0.01 94)",
+          "oklch(38% 0.01 94)",
+          "oklch(50% 0.01 94)",
+          "oklch(62% 0.01 94)",
+          "oklch(74% 0.01 94)",
+          "oklch(85% 0.006 94)",
+          "oklch(95% 0.003 94)"
+        ]
+      },
+      "b": {
+        "role": "secondary",
+        "displayName": "Area B",
+        "canonical": "oklch(45.5% 0.061 132)",
+        "cssVar": "--th-b",
+        "tonalRamp": [
+          "oklch(15% 0.061 132)",
+          "oklch(26% 0.061 132)",
+          "oklch(38% 0.061 132)",
+          "oklch(50% 0.061 132)",
+          "oklch(62% 0.061 132)",
+          "oklch(74% 0.061 132)",
+          "oklch(85% 0.037 132)",
+          "oklch(95% 0.018 132)"
+        ]
+      },
+      "b-ink": {
+        "role": "secondary",
+        "displayName": "Area B Ink",
+        "canonical": "oklch(100.0% 0.0 0)",
+        "cssVar": "--th-b-ink",
+        "tonalRamp": [
+          "oklch(15% 0.0 0)",
+          "oklch(26% 0.0 0)",
+          "oklch(38% 0.0 0)",
+          "oklch(50% 0.0 0)",
+          "oklch(62% 0.0 0)",
+          "oklch(74% 0.0 0)",
+          "oklch(85% 0.0 0)",
+          "oklch(95% 0.0 0)"
+        ]
+      },
+      "solid-hover": {
+        "role": "secondary",
+        "displayName": "Solid Hover",
+        "canonical": "oklch(30.2% 0.043 132)",
+        "cssVar": "--th-solid-hover",
+        "tonalRamp": [
+          "oklch(15% 0.043 132)",
+          "oklch(26% 0.043 132)",
+          "oklch(38% 0.043 132)",
+          "oklch(50% 0.043 132)",
+          "oklch(62% 0.043 132)",
+          "oklch(74% 0.043 132)",
+          "oklch(85% 0.026 132)",
+          "oklch(95% 0.013 132)"
+        ]
+      },
+      "ground": {
+        "role": "neutral",
+        "displayName": "Ground",
+        "canonical": "oklch(95.8% 0.012 92)",
+        "cssVar": "--th-ground",
+        "tonalRamp": [
+          "oklch(15% 0.012 92)",
+          "oklch(26% 0.012 92)",
+          "oklch(38% 0.012 92)",
+          "oklch(50% 0.012 92)",
+          "oklch(62% 0.012 92)",
+          "oklch(74% 0.012 92)",
+          "oklch(85% 0.007 92)",
+          "oklch(95% 0.004 92)"
+        ]
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "Ink",
+        "canonical": "oklch(21.6% 0.023 131)",
+        "cssVar": "--th-ink",
+        "tonalRamp": [
+          "oklch(15% 0.023 131)",
+          "oklch(26% 0.023 131)",
+          "oklch(38% 0.023 131)",
+          "oklch(50% 0.023 131)",
+          "oklch(62% 0.023 131)",
+          "oklch(74% 0.023 131)",
+          "oklch(85% 0.014 131)",
+          "oklch(95% 0.007 131)"
+        ]
+      },
+      "solid": {
+        "role": "neutral",
+        "displayName": "Solid",
+        "canonical": "oklch(21.6% 0.023 131)",
+        "cssVar": "--th-solid",
+        "tonalRamp": [
+          "oklch(15% 0.023 131)",
+          "oklch(26% 0.023 131)",
+          "oklch(38% 0.023 131)",
+          "oklch(50% 0.023 131)",
+          "oklch(62% 0.023 131)",
+          "oklch(74% 0.023 131)",
+          "oklch(85% 0.014 131)",
+          "oklch(95% 0.007 131)"
+        ]
+      },
+      "solid-ink": {
+        "role": "neutral",
+        "displayName": "Solid Ink",
+        "canonical": "oklch(100.0% 0.0 0)",
+        "cssVar": "--th-solid-ink",
+        "tonalRamp": [
+          "oklch(15% 0.0 0)",
+          "oklch(26% 0.0 0)",
+          "oklch(38% 0.0 0)",
+          "oklch(50% 0.0 0)",
+          "oklch(62% 0.0 0)",
+          "oklch(74% 0.0 0)",
+          "oklch(85% 0.0 0)",
+          "oklch(95% 0.0 0)"
+        ]
+      },
+      "muted": {
+        "role": "neutral",
+        "displayName": "Muted",
+        "canonical": "oklch(39.3% 0.037 130)",
+        "cssVar": "--th-muted",
+        "tonalRamp": [
+          "oklch(15% 0.037 130)",
+          "oklch(26% 0.037 130)",
+          "oklch(38% 0.037 130)",
+          "oklch(50% 0.037 130)",
+          "oklch(62% 0.037 130)",
+          "oklch(74% 0.037 130)",
+          "oklch(85% 0.022 130)",
+          "oklch(95% 0.011 130)"
+        ]
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "Surface",
+        "canonical": "oklch(100.0% 0.0 0)",
+        "cssVar": "--th-surface",
+        "tonalRamp": [
+          "oklch(15% 0.0 0)",
+          "oklch(26% 0.0 0)",
+          "oklch(38% 0.0 0)",
+          "oklch(50% 0.0 0)",
+          "oklch(62% 0.0 0)",
+          "oklch(74% 0.0 0)",
+          "oklch(85% 0.0 0)",
+          "oklch(95% 0.0 0)"
+        ]
+      },
+      "tint": {
+        "role": "neutral",
+        "displayName": "Tint",
+        "canonical": "oklch(93.2% 0.023 120)",
+        "cssVar": "--th-tint",
+        "tonalRamp": [
+          "oklch(15% 0.023 120)",
+          "oklch(26% 0.023 120)",
+          "oklch(38% 0.023 120)",
+          "oklch(50% 0.023 120)",
+          "oklch(62% 0.023 120)",
+          "oklch(74% 0.023 120)",
+          "oklch(85% 0.014 120)",
+          "oklch(95% 0.007 120)"
+        ]
+      },
+      "tint-hover": {
+        "role": "neutral",
+        "displayName": "Tint Hover",
+        "canonical": "oklch(89.5% 0.032 121)",
+        "cssVar": "--th-tint-hover",
+        "tonalRamp": [
+          "oklch(15% 0.032 121)",
+          "oklch(26% 0.032 121)",
+          "oklch(38% 0.032 121)",
+          "oklch(50% 0.032 121)",
+          "oklch(62% 0.032 121)",
+          "oklch(74% 0.032 121)",
+          "oklch(85% 0.019 121)",
+          "oklch(95% 0.01 121)"
+        ]
+      },
+      "line": {
+        "role": "neutral",
+        "displayName": "Line",
+        "canonical": "oklch(87.9% 0.024 91)",
+        "cssVar": "--th-line",
+        "tonalRamp": [
+          "oklch(15% 0.024 91)",
+          "oklch(26% 0.024 91)",
+          "oklch(38% 0.024 91)",
+          "oklch(50% 0.024 91)",
+          "oklch(62% 0.024 91)",
+          "oklch(74% 0.024 91)",
+          "oklch(85% 0.014 91)",
+          "oklch(95% 0.007 91)"
+        ]
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "Rule",
+        "canonical": "oklch(92.8% 0.014 89)",
+        "cssVar": "--th-rule",
+        "tonalRamp": [
+          "oklch(15% 0.014 89)",
+          "oklch(26% 0.014 89)",
+          "oklch(38% 0.014 89)",
+          "oklch(50% 0.014 89)",
+          "oklch(62% 0.014 89)",
+          "oklch(74% 0.014 89)",
+          "oklch(85% 0.008 89)",
+          "oklch(95% 0.004 89)"
+        ]
+      },
+      "placeholder": {
+        "role": "neutral",
+        "displayName": "Placeholder",
+        "canonical": "oklch(51.5% 0.03 129)",
+        "cssVar": "--th-placeholder",
+        "tonalRamp": [
+          "oklch(15% 0.03 129)",
+          "oklch(26% 0.03 129)",
+          "oklch(38% 0.03 129)",
+          "oklch(50% 0.03 129)",
+          "oklch(62% 0.03 129)",
+          "oklch(74% 0.03 129)",
+          "oklch(85% 0.018 129)",
+          "oklch(95% 0.009 129)"
+        ]
+      },
+      "pending": {
+        "role": "neutral",
+        "displayName": "Pending",
+        "canonical": "oklch(65.1% 0.019 129)",
+        "cssVar": "--th-pending",
+        "tonalRamp": [
+          "oklch(15% 0.019 129)",
+          "oklch(26% 0.019 129)",
+          "oklch(38% 0.019 129)",
+          "oklch(50% 0.019 129)",
+          "oklch(62% 0.019 129)",
+          "oklch(74% 0.019 129)",
+          "oklch(85% 0.011 129)",
+          "oklch(95% 0.006 129)"
+        ]
+      },
+      "map-sea": {
+        "role": "neutral",
+        "displayName": "Map Sea",
+        "canonical": "oklch(87.2% 0.027 212)",
+        "cssVar": "--th-map-sea",
+        "tonalRamp": [
+          "oklch(15% 0.027 212)",
+          "oklch(26% 0.027 212)",
+          "oklch(38% 0.027 212)",
+          "oklch(50% 0.027 212)",
+          "oklch(62% 0.027 212)",
+          "oklch(74% 0.027 212)",
+          "oklch(85% 0.016 212)",
+          "oklch(95% 0.008 212)"
+        ]
+      },
+      "map-shore": {
+        "role": "neutral",
+        "displayName": "Map Shore",
+        "canonical": "oklch(63.7% 0.041 215)",
+        "cssVar": "--th-map-shore",
+        "tonalRamp": [
+          "oklch(15% 0.041 215)",
+          "oklch(26% 0.041 215)",
+          "oklch(38% 0.041 215)",
+          "oklch(50% 0.041 215)",
+          "oklch(62% 0.041 215)",
+          "oklch(74% 0.041 215)",
+          "oklch(85% 0.025 215)",
+          "oklch(95% 0.012 215)"
+        ]
+      },
+      "map-land": {
+        "role": "neutral",
+        "displayName": "Map Land",
+        "canonical": "oklch(98.4% 0.008 99)",
+        "cssVar": "--th-map-land",
+        "tonalRamp": [
+          "oklch(15% 0.008 99)",
+          "oklch(26% 0.008 99)",
+          "oklch(38% 0.008 99)",
+          "oklch(50% 0.008 99)",
+          "oklch(62% 0.008 99)",
+          "oklch(74% 0.008 99)",
+          "oklch(85% 0.005 99)",
+          "oklch(95% 0.002 99)"
+        ]
+      },
+      "map-road": {
+        "role": "neutral",
+        "displayName": "Map Road",
+        "canonical": "oklch(78.2% 0.024 93)",
+        "cssVar": "--th-map-road",
+        "tonalRamp": [
+          "oklch(15% 0.024 93)",
+          "oklch(26% 0.024 93)",
+          "oklch(38% 0.024 93)",
+          "oklch(50% 0.024 93)",
+          "oklch(62% 0.024 93)",
+          "oklch(74% 0.024 93)",
+          "oklch(85% 0.014 93)",
+          "oklch(95% 0.007 93)"
+        ]
+      },
+      "map-road-major": {
+        "role": "neutral",
+        "displayName": "Map Major Road",
+        "canonical": "oklch(65.0% 0.03 93)",
+        "cssVar": "--th-map-road-major",
+        "tonalRamp": [
+          "oklch(15% 0.03 93)",
+          "oklch(26% 0.03 93)",
+          "oklch(38% 0.03 93)",
+          "oklch(50% 0.03 93)",
+          "oklch(62% 0.03 93)",
+          "oklch(74% 0.03 93)",
+          "oklch(85% 0.018 93)",
+          "oklch(95% 0.009 93)"
+        ]
+      },
+      "dot": {
+        "role": "neutral",
+        "displayName": "Listing Dot",
+        "canonical": "oklch(21.6% 0.023 131)",
+        "cssVar": "--th-dot",
+        "tonalRamp": [
+          "oklch(15% 0.023 131)",
+          "oklch(26% 0.023 131)",
+          "oklch(38% 0.023 131)",
+          "oklch(50% 0.023 131)",
+          "oklch(62% 0.023 131)",
+          "oklch(74% 0.023 131)",
+          "oklch(85% 0.014 131)",
+          "oklch(95% 0.007 131)"
+        ]
+      },
+      "dot-out": {
+        "role": "neutral",
+        "displayName": "Listing Dot (outside)",
+        "canonical": "oklch(69.6% 0.027 122)",
+        "cssVar": "--th-dot-out",
+        "tonalRamp": [
+          "oklch(15% 0.027 122)",
+          "oklch(26% 0.027 122)",
+          "oklch(38% 0.027 122)",
+          "oklch(50% 0.027 122)",
+          "oklch(62% 0.027 122)",
+          "oklch(74% 0.027 122)",
+          "oklch(85% 0.016 122)",
+          "oklch(95% 0.008 122)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "The hero headline only. Weight and tracking come from --th-display-weight and --th-display-tracking."
+      },
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "The product name beside the brand mark in the navigation."
+      },
+      "question": {
+        "displayName": "Question",
+        "purpose": "The visitor's messages. 17px on phones."
+      },
+      "lead": {
+        "displayName": "Lead",
+        "purpose": "The team's introduction under the headline, in muted. 17px on phones."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "Everything the team says, and text typed into the message field."
+      },
+      "figure": {
+        "displayName": "Figure",
+        "purpose": "Compared numbers, tabular numerals: 600 ink for the leader, 400 muted for the figure it beats."
+      },
+      "action": {
+        "displayName": "Action",
+        "purpose": "Buttons and chips; navigation links at 15.5px medium."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "The team's name and the area names heading the comparison."
+      },
+      "note": {
+        "displayName": "Note",
+        "purpose": "The centred line that opens the thread."
+      },
+      "tag": {
+        "displayName": "Tag",
+        "purpose": "The state tag inside a reply."
+      },
+      "place": {
+        "displayName": "Place",
+        "purpose": "A place name on a map, with a halo in the colour beneath it."
+      },
+      "credit": {
+        "displayName": "Credit",
+        "purpose": "The map credit at the foot of the data reply."
+      }
+    },
+    "shadows": [
+      {
+        "name": "docked-field",
+        "value": "0 10px 24px -12px color-mix(in srgb, #161C11 35%, transparent)",
+        "purpose": "The message field below 1024px, where it floats over the thread. Removed on desktop. The colour is --th-shadow."
+      },
+      {
+        "name": "place-name-halo",
+        "value": "text-shadow: eight 1px offsets plus 0 0 2px and 0 0 3px, all in --th-halo (map land; the area's 18% tint over land inside an area)",
+        "purpose": "Legibility halo behind a place name on a map. Not elevation."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-out-expo",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The one easing curve: message arrival, press, underline shift, typing dots."
+      },
+      {
+        "name": "message-arrival",
+        "value": "0.5s; from opacity 0, translateY(14px) scale(0.98); transform-origin left bottom",
+        "purpose": "Each message as it enters the thread."
+      },
+      {
+        "name": "overlay-fade",
+        "value": "0.4s ease-out; from opacity 0",
+        "purpose": "The listing dots appearing over a street map once the listings arrive. The area, its handles and the basemap are present from first paint."
+      },
+      {
+        "name": "typing-dots",
+        "value": "1.2s infinite, 0.15s stagger; translateY(-5px), opacity 0.45 to 1",
+        "purpose": "Three olive dots while the team has not answered."
+      },
+      {
+        "name": "press",
+        "value": "transform scale(0.97) over 0.15s; background-color 0.15s",
+        "purpose": "Buttons and chips on hover and press."
+      },
+      {
+        "name": "link-underline",
+        "value": "text-underline-offset 4px to 7px over 0.2s; nav and credit underline colour fades in over 0.2s",
+        "purpose": "Text link, navigation link and map credit hover."
+      },
+      {
+        "name": "reply-pacing",
+        "value": "1500ms before the answer, 900ms before the verdict",
+        "purpose": "Time to read the question before the example reply lands. Zero with reduced motion."
+      },
+      {
+        "name": "nav-enter",
+        "value": "0.45s ease-out; from y -12px, opacity 0; state change 0.3s",
+        "purpose": "Navigation on load and when its ground changes on scroll."
+      },
+      {
+        "name": "reduced-motion",
+        "value": "prefers-reduced-motion: reduce removes arrival, overlay fade, typing and transition motion",
+        "purpose": "Messages are visible by default; nothing animates."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "sm",
+        "value": "640px"
+      },
+      {
+        "name": "md",
+        "value": "768px"
+      },
+      {
+        "name": "lg",
+        "value": "1024px"
+      },
+      {
+        "name": "map-names",
+        "value": "@container (min-width: 260px) on the map frame"
+      },
+      {
+        "name": "compact-desktop",
+        "value": "(min-width: 1024px) and (max-height: 960px)"
+      },
+      {
+        "name": "short-desktop",
+        "value": "(min-width: 1024px) and (max-height: 860px)"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "Send Button",
+      "kind": "button",
+      "refersTo": "button-send",
+      "description": "The primary action, docked inside the message field. Action colour with dark text; one per view.",
+      "html": "<button class=\"ds-send\">Ask the team <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-send { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; gap: 8px; height: 46px; padding: 0 20px; border: 0; border-radius: 9999px; background: var(--th-action, #EE7B3C); color: var(--th-action-ink, #161C11); font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-send:hover { background: var(--th-action-hover, #E06C2C); } .ds-send:active { transform: scale(0.97); } .ds-send:focus-visible { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; }"
+    },
+    {
+      "name": "Solid Button",
+      "kind": "button",
+      "refersTo": "button-solid",
+      "description": "Green-black pill with white text. The navigation's Ask the team.",
+      "html": "<a class=\"ds-solid\" href=\"#\">Ask the team</a>",
+      "css": ".ds-solid { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 9999px; background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); font-size: 15px; font-weight: 600; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-solid:hover { background: var(--th-solid-hover, #26331C); } .ds-solid:active { transform: scale(0.97); } .ds-solid:focus-visible { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; }"
+    },
+    {
+      "name": "Action Chip",
+      "kind": "chip",
+      "refersTo": "chip-action",
+      "description": "The follow-on action inside a team reply, and the only tint fill. Ink text, trailing arrow.",
+      "html": "<a class=\"ds-chip\" href=\"#\">Draw your own in the Playground <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-chip { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 15px; border-radius: 12px; background: var(--th-tint, #E6EBDA); color: var(--th-ink, #161C11); font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-chip:hover { background: var(--th-tint-hover, #D9E0C9); } .ds-chip:active { transform: scale(0.97); } .ds-chip:focus-visible { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; }"
+    },
+    {
+      "name": "Visitor Bubble",
+      "kind": "card",
+      "refersTo": "bubble-visitor",
+      "description": "The visitor's message: olive, right-aligned, tight corner bottom-right.",
+      "html": "<div class=\"ds-thread-right\"><p class=\"ds-bubble-visitor\">Protaras or Kato Paphos for a short‑let?</p></div>",
+      "css": ".ds-thread-right { display: flex; justify-content: flex-end; } .ds-bubble-visitor { font-family: var(--th-font, 'Google Sans', sans-serif); margin: 0; max-width: 85%; padding: 14px 22px; border-radius: 26px 26px 6px 26px; background: var(--th-visitor, #4A5E3A); color: var(--th-visitor-ink, #F7F5EE); font-size: 18px; font-weight: 500; text-wrap: balance; }"
+    },
+    {
+      "name": "Team Bubble",
+      "kind": "card",
+      "refersTo": "bubble-team",
+      "description": "The team's reply: white with a hairline border, tight corner bottom-left, beside the solid avatar holding the brand mark. Shown with the name, the state tag and the team's sentence on its own line.",
+      "html": "<div class=\"ds-team\"><span class=\"ds-team-avatar\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 34 34\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 9.5 22.5 6l6.5 13-10 9L7 22z\" fill=\"var(--th-mark, #EE7B3C)\" stroke=\"var(--th-ground, #F4F1E8)\" stroke-width=\"2.4\" stroke-linejoin=\"round\"/></svg></span><div class=\"ds-bubble-team\"><p class=\"ds-team-head\"><b>PropSights team</b><span class=\"ds-tag\">Demo data</span></p><p class=\"ds-team-body\">We drew both. Here are the listings inside each line.</p></div></div>",
+      "css": ".ds-team { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; align-items: flex-end; gap: 12px; } .ds-team-avatar { display: flex; flex-shrink: 0; align-items: center; justify-content: center; width: 42px; height: 42px; border-radius: 9999px; background: var(--th-solid, #161C11); } .ds-bubble-team { max-width: 640px; padding: 16px 18px 18px; border: 1px solid var(--th-line, #DDD7C6); border-radius: 26px 26px 26px 6px; background: var(--th-surface, #FFFFFF); color: var(--th-ink, #161C11); } .ds-team-head { display: flex; align-items: center; gap: 8px; min-height: 22px; margin: 0; font-size: 15px; } .ds-team-head b { font-weight: 600; } .ds-team-body { margin: 4px 0 0; font-size: 17px; line-height: 1.45; } .ds-tag { display: inline-flex; align-items: center; height: 20px; padding: 0 8px; border-radius: 6px; background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); font-size: 11px; font-weight: 600; letter-spacing: 0.02em; }"
+    },
+    {
+      "name": "Message Field",
+      "kind": "input",
+      "refersTo": "composer",
+      "description": "The primary action of the page: a white pill with an ink border and the send button docked inside.",
+      "html": "<form class=\"ds-composer\" onsubmit=\"return false\"><input class=\"ds-composer-input\" placeholder=\"Ask about a place…\" aria-label=\"Ask the team about a place\"><button class=\"ds-composer-send\" type=\"submit\">Ask the team <svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></form>",
+      "css": ".ds-composer { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; align-items: center; gap: 12px; height: 64px; padding: 0 9px 0 26px; border: 1.5px solid var(--th-ink, #161C11); border-radius: 9999px; background: var(--th-surface, #FFFFFF); } .ds-composer:focus-within { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; } .ds-composer-input { flex: 1; min-width: 0; border: 0; background: transparent; font: inherit; font-size: 17px; color: var(--th-ink, #161C11); caret-color: var(--th-action, #EE7B3C); outline: none; } .ds-composer-input::placeholder { color: var(--th-placeholder, #626B59); } .ds-composer-send { display: inline-flex; flex-shrink: 0; align-items: center; gap: 8px; height: 46px; padding: 0 20px; border: 0; border-radius: 9999px; background: var(--th-action, #EE7B3C); color: var(--th-action-ink, #161C11); font: inherit; font-size: 15px; font-weight: 600; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-composer-send:hover { background: var(--th-action-hover, #E06C2C); } .ds-composer-send:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Navigation",
+      "kind": "nav",
+      "refersTo": "nav",
+      "description": "Fixed 72px bar: brand mark and wordmark left, text links and the solid button right. Shown in its scrolled state (opaque ground with a bottom hairline).",
+      "html": "<header class=\"ds-nav\"><a class=\"ds-nav-brand\" href=\"#\"><svg width=\"32\" height=\"32\" viewBox=\"0 0 34 34\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 9.5 22.5 6l6.5 13-10 9L7 22z\" fill=\"var(--th-mark, #EE7B3C)\" stroke=\"var(--th-ink, #161C11)\" stroke-width=\"2.2\" stroke-linejoin=\"round\"/><g fill=\"var(--th-ground, #F4F1E8)\" stroke=\"var(--th-ink, #161C11)\" stroke-width=\"1.8\"><rect x=\"4.5\" y=\"7\" width=\"5\" height=\"5\"/><rect x=\"20\" y=\"3.5\" width=\"5\" height=\"5\"/><rect x=\"26.5\" y=\"16.5\" width=\"5\" height=\"5\"/><rect x=\"16.5\" y=\"25.5\" width=\"5\" height=\"5\"/><rect x=\"4.5\" y=\"19.5\" width=\"5\" height=\"5\"/></g></svg><span>PropSights</span></a><nav class=\"ds-nav-links\"><a class=\"ds-nav-link\" href=\"#\">Services</a><a class=\"ds-nav-link\" href=\"#\">Playground</a><a class=\"ds-nav-link\" href=\"#\">Data</a><a class=\"ds-nav-cta\" href=\"#\">Ask the team</a></nav></header>",
+      "css": ".ds-nav { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 32px; background: var(--th-ground, #F4F1E8); border-bottom: 1px solid var(--th-ground-line, #DDD7C6); color: var(--th-ink, #161C11); } .ds-nav-brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-size: 22px; font-weight: 700; letter-spacing: -0.035em; } .ds-nav-links { display: flex; align-items: center; gap: 36px; } .ds-nav-link { color: var(--th-ink, #161C11); font-size: 15.5px; font-weight: 500; text-decoration: underline transparent 1.5px; text-underline-offset: 6px; transition: text-decoration-color 0.2s; } .ds-nav-link:hover { text-decoration-color: currentColor; } .ds-nav-link:focus-visible, .ds-nav-cta:focus-visible { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; } .ds-nav-cta { display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 9999px; background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); font-size: 15px; font-weight: 600; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-cta:hover { background: var(--th-solid-hover, #26331C); } .ds-nav-cta:active { transform: scale(0.97); }"
+    },
+    {
+      "name": "Text Link",
+      "kind": "custom",
+      "description": "The quieter route beside the primary action, from 640px up: always underlined, the underline drops on hover.",
+      "html": "<a class=\"ds-link\" href=\"#\">Or explore it yourself in the Playground</a>",
+      "css": ".ds-link { font-family: var(--th-font, 'Google Sans', sans-serif); color: var(--th-ink, #161C11); font-size: 16px; font-weight: 600; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; transition: text-underline-offset 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-link:hover { text-underline-offset: 7px; } .ds-link:focus-visible { outline: 2px solid var(--th-focus, #161C11); outline-offset: 3px; }"
+    },
+    {
+      "name": "Area Map",
+      "kind": "custom",
+      "refersTo": "area-map",
+      "description": "One area's street map at desktop size, with its place name and the island locator. The sea, shore and road geometry here is a schematic stand-in for the committed path data; layer order, colours, strokes, dots, handles, halo and plate follow the build.",
+      "html": "<div class=\"ds-areamap\"><svg viewBox=\"0 0 800 600\" aria-hidden=\"true\"><path d=\"M250 150L430 120L640 330L470 470L300 430Z\" fill=\"var(--th-a, #EE7B3C)\" fill-opacity=\"0.18\"/><path d=\"M610 0C560 120 640 240 600 360C570 450 660 520 640 600H800V0Z\" fill=\"var(--th-map-sea, #C2DADF)\"/><path class=\"ds-shore\" d=\"M610 0C560 120 640 240 600 360C570 450 660 520 640 600\"/><path class=\"ds-road\" d=\"M0 140H570M0 300H600M0 470H610M150 0V600M330 0V600M500 0V600M60 60L540 560\"/><path class=\"ds-road-major\" d=\"M0 220C200 200 420 260 600 250M240 0C260 220 220 420 280 600\"/><path class=\"ds-outline\" d=\"M250 150L430 120L640 330L470 470L300 430Z\"/><g fill=\"var(--th-dot-out, #9AA08E)\"><circle cx=\"120\" cy=\"200\" r=\"3.9\"/><circle cx=\"160\" cy=\"320\" r=\"3.9\"/><circle cx=\"90\" cy=\"420\" r=\"3.9\"/><circle cx=\"200\" cy=\"500\" r=\"3.9\"/><circle cx=\"230\" cy=\"90\" r=\"3.9\"/><circle cx=\"140\" cy=\"110\" r=\"3.9\"/><circle cx=\"560\" cy=\"560\" r=\"3.9\"/><circle cx=\"180\" cy=\"400\" r=\"3.9\"/></g><g fill=\"var(--th-dot, #161C11)\" stroke=\"var(--th-map-land, #FBFAF4)\" stroke-width=\"2\"><circle cx=\"320\" cy=\"210\" r=\"7\"/><circle cx=\"360\" cy=\"260\" r=\"7\"/><circle cx=\"410\" cy=\"230\" r=\"7\"/><circle cx=\"390\" cy=\"310\" r=\"7\"/><circle cx=\"450\" cy=\"330\" r=\"7\"/><circle cx=\"340\" cy=\"340\" r=\"7\"/><circle cx=\"480\" cy=\"400\" r=\"7\"/><circle cx=\"370\" cy=\"400\" r=\"7\"/><circle cx=\"330\" cy=\"280\" r=\"7\"/><circle cx=\"520\" cy=\"300\" r=\"7\"/></g></svg><i class=\"ds-vertex\" style=\"left:31.25%;top:25.00%\"></i><i class=\"ds-vertex\" style=\"left:53.75%;top:20.00%\"></i><i class=\"ds-vertex\" style=\"left:80.00%;top:55.00%\"></i><i class=\"ds-vertex\" style=\"left:58.75%;top:78.33%\"></i><i class=\"ds-vertex\" style=\"left:37.50%;top:71.67%\"></i><span class=\"ds-place\" style=\"left:52%;top:62%\">Protaras</span><span class=\"ds-locator\"><svg viewBox=\"0 0 44 22\" aria-hidden=\"true\"><path d=\"M2 14 8 9l10-2 9-3 15-3-9 6-4 6-9 5-9 2-6-3z\" fill=\"var(--th-muted, #3F4A35)\" fill-opacity=\"0.5\"/><circle cx=\"33\" cy=\"9\" r=\"3\" fill=\"var(--th-a, #EE7B3C)\" stroke=\"var(--th-ground, #F4F1E8)\" stroke-width=\"1.2\"/></svg></span></div>",
+      "css": ".ds-areamap { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; overflow: hidden; width: 300px; aspect-ratio: 4 / 3; border: 1px solid var(--th-line, #DDD7C6); border-radius: 14px; background: var(--th-map-land, #FBFAF4); } .ds-areamap > svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-shore, .ds-road, .ds-road-major, .ds-outline { fill: none; stroke-linecap: round; stroke-linejoin: round; vector-effect: non-scaling-stroke; } .ds-shore { stroke: var(--th-map-shore, #6F929B); stroke-width: 1px; } .ds-road { stroke: var(--th-map-road, #BDB8A7); stroke-width: 0.7px; } .ds-road-major { stroke: var(--th-map-road-major, #958F7B); stroke-width: 1.6px; } .ds-outline { stroke: var(--th-a, #EE7B3C); stroke-width: 2px; } .ds-vertex { position: absolute; z-index: 1; box-sizing: border-box; width: 7px; height: 7px; border: 1.5px solid var(--th-a, #EE7B3C); background: var(--th-surface, #FFFFFF); transform: translate(-50%, -50%); } .ds-place { --ds-halo: color-mix(in srgb, var(--th-a, #EE7B3C) 18%, var(--th-map-land, #FBFAF4)); position: absolute; z-index: 2; transform: translate(-50%, -50%); color: var(--th-ink, #161C11); font-size: 11px; font-weight: 600; line-height: 1; white-space: nowrap; text-shadow: 1px 0 0 var(--ds-halo), -1px 0 0 var(--ds-halo), 0 1px 0 var(--ds-halo), 0 -1px 0 var(--ds-halo), 1px 1px 0 var(--ds-halo), -1px -1px 0 var(--ds-halo), 1px -1px 0 var(--ds-halo), -1px 1px 0 var(--ds-halo), 0 0 2px var(--ds-halo), 0 0 3px var(--ds-halo); } .ds-locator { position: absolute; bottom: 6px; left: 6px; z-index: 1; padding: 4px 5px; border: 1px solid var(--th-line, #DDD7C6); border-radius: 7px; background: var(--th-ground, #F4F1E8); } .ds-locator svg { display: block; width: 44px; height: auto; overflow: visible; }"
+    },
+    {
+      "name": "Comparison Table",
+      "kind": "custom",
+      "description": "The face-off under the maps: area A flush left, the metric centred, area B flush right. The leader is semibold ink, the figure it beats regular muted; no hue or fill marks it.",
+      "html": "<table class=\"ds-cmp\"><thead><tr><th class=\"ds-cmp-l\"><span class=\"ds-cmp-head\"><span class=\"ds-cmp-key ds-cmp-a\">A</span>Protaras</span></th><th></th><th class=\"ds-cmp-r\"><span class=\"ds-cmp-head ds-cmp-end\">Kato Paphos<span class=\"ds-cmp-key ds-cmp-b\">B</span></span></th></tr></thead><tbody><tr><td class=\"ds-cmp-l\">33</td><th scope=\"row\">Listings</th><td class=\"ds-cmp-r\">129</td></tr><tr><td class=\"ds-cmp-l\">80%</td><th scope=\"row\">Occupied</th><td class=\"ds-cmp-r ds-cmp-trail\">69%</td></tr><tr><td class=\"ds-cmp-l\">€194</td><th scope=\"row\">A night</th><td class=\"ds-cmp-r ds-cmp-trail\">€135</td></tr></tbody></table>",
+      "css": ".ds-cmp { font-family: var(--th-font, 'Google Sans', sans-serif); width: 100%; max-width: 600px; border-collapse: collapse; table-layout: fixed; font-size: 15px; font-variant-numeric: tabular-nums; color: var(--th-ink, #161C11); } .ds-cmp thead th { padding: 0 0 6px; font-weight: 600; white-space: nowrap; } .ds-cmp thead th:first-child, .ds-cmp thead th:last-child { width: 36%; } .ds-cmp-head { display: flex; align-items: center; gap: 6px; } .ds-cmp-end { justify-content: flex-end; } .ds-cmp-l { text-align: left; } .ds-cmp-r { text-align: right; } .ds-cmp-key { display: inline-flex; flex-shrink: 0; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 9999px; font-size: 11px; font-weight: 700; } .ds-cmp-a { background: var(--th-a, #EE7B3C); color: var(--th-a-ink, #161C11); } .ds-cmp-b { background: var(--th-b, #4A5E3A); color: var(--th-b-ink, #FFFFFF); } .ds-cmp tbody th { padding: 4px 0; border-top: 1px solid var(--th-rule, #EBE7DD); text-align: center; font-weight: 400; color: var(--th-muted, #3F4A35); } .ds-cmp tbody td { padding: 4px 0; border-top: 1px solid var(--th-rule, #EBE7DD); font-size: 16px; font-weight: 600; } .ds-cmp tbody td.ds-cmp-trail { font-weight: 400; color: var(--th-muted, #3F4A35); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Thread",
+    "overview": "The page is one conversation. A visitor asks about a place and a small data team answers with a street map of each of two hand-drawn areas and the numbers facing off beneath them. Everything visual follows from that: messages have a speaker and a corner that points at them, the team's reply carries real data inside the bubble, and the primary action is the message field, not a button under a headline. The ground is a warm off-white, the type is one clear, UI-friendly sans, and the only bright colour is the tangerine action colour.\n\nThe mood is serious about the numbers and light about everything else. Figures are exact and set in tabular numerals; shapes are round, soft and a little playful; the brand mark is a drawn area with square handles, the same object the team draws on each map and a visitor drags in the Playground. Motion is conversational: replies rise in from the speaker's corner, the team types before it answers.\n\n**Scope of this record.** This world is implemented for the landing page's first viewport (the hero) and the top navigation only. The landing sections below the hero (data strip, product tabs, access form, footer) are still in the previous dark design and are due to be rebuilt in this world; the dashboard (\"Playground\") has its own dark system. Neither is described here, and neither should be used as a source for new landing work.\n\n**Decisions.** The palette and the typeface were confirmed by the owner on 2026-10-08: the palette was kept after comparison with seven alternatives, and Google Sans was chosen over Inter, Commissioner and Geologica. The product name is still undecided; PropSights is in use and appears in the wordmark and the team's signature.",
+    "keyCharacteristics": [
+      "One conversation on a warm off-white ground: visitor on the right in olive, team on the left in white.",
+      "One face (Google Sans; Latin, Latin Extended and Greek) at four weights and six sizes under the headline; tabular figures wherever numbers are compared.",
+      "One accent (the tangerine action colour) for area A, the send action and the brand mark.",
+      "Data inside the message: a street map per area with the drawn outline and its listings, and a face-off comparison under the pair.",
+      "Every colour is a role, defined once as a `--th-*` custom property; nothing in this world names a colour directly.",
+      "Hue belongs to identity (an area, the visitor, the action); which figure leads is said with weight.",
+      "Flat surfaces separated by hairlines and tone; a shadow only where something floats over content.",
+      "Round forms throughout, with square vertex handles as the single hard-cornered motif."
+    ],
+    "rules": [
+      {
+        "name": "The Roles Rule",
+        "body": "A colour is named for what it does (ground, visitor, action, area A), never for its hue, and is defined once. A new element takes an existing role; a look is changed by changing the role's value, not by writing a hex into a component.",
+        "section": "colors"
+      },
+      {
+        "name": "The Two Areas Rule",
+        "body": "Area A is the tangerine and area B is the olive in every representation: outline, handles, locator dot, key badge. The colour is the area's identity, so it never swaps and never decorates anything unrelated to that area.",
+        "section": "colors"
+      },
+      {
+        "name": "The Dark On Action Rule",
+        "body": "Text and icons on the action colour are ink (about 6.2:1). White on it is about 2.8:1 and is never used. On the olive, text is white or near-white.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Loud Voice Rule",
+        "body": "The tangerine appears on area A, the send action, the brand mark and the caret, and nowhere else. Secondary actions are solid or tint.",
+        "section": "colors"
+      },
+      {
+        "name": "The Inside The Line Rule",
+        "body": "On a map, a listing inside the drawn area is a solid ink dot ringed in the land colour; a listing outside is smaller, faint and unringed. The listings inside the line are the content; the rest is context, and on a phone-sized map the context is left out.",
+        "section": "colors"
+      },
+      {
+        "name": "The One Face Rule",
+        "body": "Everything in this world is Google Sans. The previous design's Inter and Barlow Condensed are still loaded for the sections not yet rebuilt and must not appear inside it.",
+        "section": "typography"
+      },
+      {
+        "name": "The Six Sizes Rule",
+        "body": "Under the headline, text in the hero is 11, 13, 15, 16, 17 or 18px and nothing between. A new piece of text takes the size of the role it plays.",
+        "section": "typography"
+      },
+      {
+        "name": "The Weight Leads Rule",
+        "body": "In a compared pair the leader is semibold ink and the figure it beats is regular muted; a pair with no leader stays semibold on both sides. Leading is never shown with a hue, a fill or a badge, so it cannot be mistaken for either area's colour.",
+        "section": "typography"
+      },
+      {
+        "name": "The Tabular Figures Rule",
+        "body": "Any set of numbers a reader compares is set with tabular numerals so figures align digit for digit. A missing figure is an em dash, never a zero.",
+        "section": "typography"
+      },
+      {
+        "name": "The Floats-Only Rule",
+        "body": "A shadow means the element is sitting over other content, and the docked field on small screens is the only case. Bubbles, chips, buttons, maps, the locator plate and the navigation never carry one. The scrolled navigation separates itself with an opaque ground and a bottom hairline instead. The halo behind a place name is a legibility device in the colour of the map beneath it, not elevation.",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "Do set everything in this world in Google Sans, with tabular numerals for compared figures.",
+      "Do take every colour from a `--th-*` role, and give a new element an existing role before adding one.",
+      "Do keep text under the headline to 11, 13, 15, 16, 17 or 18px.",
+      "Do keep area A in the tangerine and area B in the olive in every representation of that area.",
+      "Do mark the leading figure with weight and ink, and step the trailing one back to regular muted.",
+      "Do put dark text on the action colour and white or near-white text on the olive.",
+      "Do point each bubble's one tight corner (6px against 26px) at its speaker: bottom-right for the visitor, bottom-left for the team.",
+      "Do show a place with its own street map, the drawn outline with square handles, and solid dots for the listings inside the line.",
+      "Do draw the map and the area before any data arrives, and let only the listings and figures come in later.",
+      "Do simplify a phone-sized map (square, major roads, inside dots only) rather than shrinking the desktop one.",
+      "Do credit the map's sources wherever a map is shown.",
+      "Do hold a reply's final shape while its data loads, and show a missing figure as an em dash.",
+      "Do give a run of team messages one avatar, on its last message.",
+      "Do give everything pressable a visible hover, a 0.97 press, and a 2px ink focus outline offset 3px.",
+      "Do honour reduced motion: messages are visible by default and nothing animates.",
+      "Do keep pressable elements at least 44px tall on touch layouts."
+    ],
+    "donts": [
+      "Don't use white text on the action colour.",
+      "Don't use the tangerine for anything except area A, the send action, the brand mark and the field's caret.",
+      "Don't use a hue or a fill to say which figure leads; the tint belongs to the action chip.",
+      "Don't write a hex value into a component in this world; name the role.",
+      "Don't add shadows to bubbles, chips, buttons, maps or the navigation; only an element floating over content carries one.",
+      "Don't put a place name in a box, or draw a listing dot under one.",
+      "Don't use Inter or Barlow Condensed inside this world; they belong to the sections not yet rebuilt.",
+      "Don't round the vertex handles; the square handle is the one hard-cornered form.",
+      "Don't take colours, type or components from the dark sections below the hero or from the Playground when extending this world.",
+      "Don't use the state tag as a section label or decoration; it reports a condition of the answer."
+    ]
+  }
+}
