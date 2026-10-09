@@ -3,7 +3,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeroArea } from "@/lib/landing/areaContext";
 import { countLine } from "@/lib/landing/areaLines";
-import type { DrawnArea } from "@/lib/landing/compare";
 import AreaMark from "./AreaMark";
 import ConnectorSection from "./ConnectorSection";
 import PlaygroundSection from "./PlaygroundSection";
@@ -39,9 +38,7 @@ function toMap(e: React.MouseEvent) {
  * The three products under the hero, as a stack of cards: Playground,
  * Reports, Connector, then the page's close (`close`, the ink band), which
  * comes up over the stack as its last sheet. All three cards are about the
- * area on the hero's map, which they read from HeroAreaProvider; `basemaps`
- * are the server-rendered street maps the hero also takes, for the
- * connector's "show me on the map".
+ * area on the hero's map, which they read from HeroAreaProvider.
  *
  * Stacking. Where the window is at least 1024px wide and every card's own
  * content fits the room a pinned card has, each card is `position: sticky`
@@ -53,13 +50,7 @@ function toMap(e: React.MouseEvent) {
  * stylesheet does the rest, and nothing here runs on scroll. Otherwise the
  * cards simply follow one another.
  */
-export default function ProductSections({
-  basemaps,
-  close,
-}: {
-  basemaps?: Partial<Record<DrawnArea["key"], React.ReactNode>>;
-  close?: React.ReactNode;
-}) {
+export default function ProductSections({ close }: { close?: React.ReactNode }) {
   const area = useHeroArea();
   const stack = useRef<HTMLDivElement>(null);
   const [mode, setMode] = useState({ pin: false, tabs: false });
@@ -229,7 +220,7 @@ export default function ProductSections({
       <div ref={stack} className="ps-stack" data-pin={mode.pin ? "" : undefined} data-tabs={mode.tabs ? "" : undefined}>
         <PlaygroundSection area={area} index={0} />
         <ReportsSection area={area} index={1} />
-        <ConnectorSection area={area} index={2} basemaps={basemaps} />
+        <ConnectorSection area={area} index={2} />
         {close}
       </div>
     </div>

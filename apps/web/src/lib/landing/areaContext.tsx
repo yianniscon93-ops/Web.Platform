@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { InvestStats, PolygonCoords, RentalStats, SelectionStats } from "@/lib/dashboard/types";
 import { areaName } from "./areaLines";
-import { HERO_AREAS, type DrawnArea } from "./compare";
+import { ISLAND_AREA, type DrawnArea } from "./compare";
 
 /** What the three endpoints the hero asks returned for the area. Any of them may be missing. */
 interface HeroFigures {
@@ -48,12 +48,12 @@ export interface HeroArea {
   playgroundHref: string;
 }
 
-/** What the sections show before the hero has published anything: the first place, as first drawn, still loading. */
+/** What the sections show before the stage has published anything: the map it opens on, as first drawn, still loading. */
 const DEFAULT_HERO_AREA: HeroArea = {
-  place: HERO_AREAS[0],
-  polygon: HERO_AREAS[0].polygon,
+  place: ISLAND_AREA,
+  polygon: ISLAND_AREA.polygon,
   changed: false,
-  name: areaName(HERO_AREAS[0].name, false),
+  name: areaName(ISLAND_AREA.name, false),
   count: null,
   own: {},
   countsFailed: false,

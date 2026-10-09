@@ -1,0 +1,242 @@
+/* ── Landing: the first screen ─────────────────────────────── */
+/* The headline, one sentence and a box that asks the visitor for their own place; beside them one picture that
+   moves by itself, a tour of drawn town maps that come out of the paper, each with three areas a few streets
+   wide and what the short-lets inside them come to. The stage (the map and the three products at work, in
+   globals.css) is the second screen. */
+.lh { position: relative; overflow: hidden; background: var(--th-ground); color: var(--th-ink); }
+.lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
+.lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
+.lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
+.lh .th-lede { align-self: auto; margin: 14px 0 0; }
+
+/* The way in: one field and its button, and the list of places that opens under it. */
+.lh-find { width: 100%; max-width: 540px; margin-top: 24px; }
+.lh-box {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 60px;
+  padding: 0 5px 0 18px;
+  border: 1.5px solid var(--th-ink);
+  border-radius: 9999px;
+  background: var(--th-surface);
+  box-shadow: 0 12px 26px -16px var(--th-shadow);
+}
+.lh-box:focus-within { outline: 2px solid var(--th-focus); outline-offset: 3px; }
+.lh-box > svg { flex: none; color: var(--th-muted); }
+.lh-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: var(--th-ink); font: inherit; font-size: 17px; }
+.th-landing .lh-box input:focus-visible { outline: none; }
+.lh-box input::placeholder { color: var(--th-muted); opacity: 1; }
+.lh-box .th-go { flex: none; min-height: 48px; padding: 0 20px; }
+.lh-list {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  left: 0;
+  z-index: 5;
+  padding: 6px;
+  border: 1px solid var(--th-line);
+  border-radius: 16px;
+  background: var(--th-surface);
+  box-shadow: 0 20px 40px -20px var(--th-shadow);
+}
+.lh-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 10px; font-size: 15px; line-height: 21px; cursor: pointer; }
+.lh-list li[aria-selected="true"] { background: var(--th-tint); }
+.lh-list li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--th-muted); }
+/* A row with nothing under its name: the name takes both lines, so it sits level with the count. */
+.lh-list li:not(:has(small)) > span { grid-row: 1 / span 2; }
+.lh-list b { color: var(--th-ink); font-weight: 600; }
+.lh-list small { grid-column: 1; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.lh-list em { grid-column: 2; grid-row: 1 / span 2; color: var(--th-ink); font-size: 13px; font-style: normal; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lh-list li.lh-none { display: block; color: var(--th-muted); cursor: default; }
+.lh-try { margin-top: 12px; padding-left: 4px; color: var(--th-muted); font-size: 15px; line-height: 22px; }
+/* Where the field is narrow (a phone, and the words' column just above 1024px) the button is its arrow alone,
+   so the field keeps room for its own words. */
+@media (max-width: 479px), (min-width: 1024px) and (max-width: 1179px) {
+  .lh-box .th-go { width: 48px; padding: 0; }
+  .lh-box .th-go span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
+
+/* The picture: a tour of drawn town maps (TownTour). `.lh-frame` is the window onto it. In it are two sheets
+   the same size: `.lh-sheet`, which holds the drawings and fades them into the paper, and `.lh-over`, which
+   holds what is drawn over the town now showing (its listings, three areas and their corners, the town's name,
+   each area's figures, the pointer that draws) and does not fade. On each, `.lh-map` is the whole square
+   drawing. Below 1024px the window is a band under the words, centred on one point of the map (--fx, --fy: the
+   area in hand), though never so far over that the map's own edge shows. `--u` is how many of the map's units
+   one screen pixel is: the drawn lines are in those units and so keep one width at any size of map. */
+.lh-town { position: relative; }
+.lh-frame { position: relative; height: 364px; container-type: size; }
+.lh-sheet, .lh-over { position: absolute; inset: 0; overflow: hidden; }
+.lh-sheet { mask-image: linear-gradient(180deg, transparent 0, #000 16%); }
+.lh-over { pointer-events: none; }
+.lh-map {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+  /* Wide enough that a few streets fill the band, and an area near the map's edge can still be brought to its middle. */
+  width: max(118%, 860px);
+  max-width: none;
+  height: auto;
+  aspect-ratio: 1;
+  /* The point sits a little above the band's middle, clear of the figures docked in its corner. */
+  transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 42cqh - var(--fy, 67%), 0px));
+}
+/* One town shows at a time. The next arrives from the east as the last leaves to the west. */
+.lh-sheet .lh-map { opacity: 0; translate: 3% 0; transition: opacity 0.9s ease, translate 1.2s var(--th-ease); }
+.lh-sheet .lh-map[data-on] { opacity: 1; translate: 0 0; }
+.lh-sheet .lh-map[data-was] { translate: -3% 0; }
+/* In the band the map goes from one area to the next with the pointer. */
+.lh-over .lh-map[data-pan] { transition: transform 0.7s var(--th-ease); }
+.lh-sheet .lh-map[data-pan] { transition: opacity 0.9s ease, translate 1.2s var(--th-ease), transform 0.7s var(--th-ease); }
+.lh-dots, .lh-stop, .lh-stop > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
+.lh-stop, .lh-dots[data-leaving] { transition: opacity 0.4s ease; }
+.lh-stop[data-leaving], .lh-dots[data-leaving] { opacity: 0; }
+/* An area: a hard-cornered line, drawn corner to corner. When it closes it sets: the tint comes in with a thin
+   white edge under the line, which lifts the line off the streets, and the line to its figures follows. */
+.lh-area { fill: none; stroke: var(--th-a); stroke-width: calc(2px * var(--u, 2)); stroke-linejoin: miter; }
+.lh-area-fill {
+  fill: var(--th-a);
+  fill-opacity: var(--th-area-tint);
+  stroke: var(--th-surface);
+  stroke-width: calc(5px * var(--u, 2));
+  stroke-linejoin: miter;
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+}
+.lh-lead { fill: none; stroke: var(--th-ink); stroke-width: calc(1px * var(--u, 2)); opacity: 0; transition: opacity 0.25s ease-out 0.1s; }
+.lh-stop g[data-drawn] :is(.lh-area-fill, .lh-lead) { opacity: 1; }
+/* In the band only one area's figures show at a time: that area alone is tinted, and the others keep their
+   line and their listings. */
+.lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 0; }
+.lh-node, .lh-where, .lh-pin { position: absolute; top: var(--y); left: var(--x); }
+.lh-node { width: 8px; height: 8px; margin: -4px 0 0 -4px; border: 1.5px solid var(--th-ink); background: var(--th-surface); }
+.lh-where {
+  color: var(--th-ink);
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1;
+  transform: translate(-50%, -50%);
+  text-shadow: 0 0 2px var(--th-map-land), 0 0 3px var(--th-map-land), 1px 1px 0 var(--th-map-land), -1px -1px 0 var(--th-map-land), 1px -1px 0 var(--th-map-land), -1px 1px 0 var(--th-map-land);
+}
+/* The pointer that draws the areas. It is placed, and shown, by the tour itself. */
+.lh-pointer { position: absolute; top: 0; left: 0; margin: -3px 0 0 -4px; opacity: 0; }
+.lh-pointer svg { display: block; }
+.lh-pointer path { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.6px; stroke-linejoin: round; }
+/* An area's figures: a small white card with an ink edge. Its name and how many short-lets it holds, then how
+   full they are and what a night costs, and along its foot how full again, as a bar in the shade the area's
+   listings wear on the map. From 1024px each card is pinned beside its own area; below that there is room for
+   one, docked in the band's corner, which is the area drawn last. */
+.lh-pin {
+  display: grid;
+  grid-template-columns: auto auto;
+  column-gap: 16px;
+  overflow: hidden;
+  min-width: 148px;
+  padding: 8px 12px 0;
+  border: 1px solid var(--th-ink);
+  border-radius: 8px;
+  background: var(--th-surface);
+  box-shadow: 0 8px 16px -10px var(--th-shadow);
+  white-space: nowrap;
+  opacity: 0;
+  translate: 0 6px;
+  transition: opacity 0.3s ease-out 0.15s, translate 0.4s var(--th-ease) 0.15s;
+}
+.lh-pin[data-drawn] { opacity: 1; translate: 0 0; }
+.lh-pin[data-side="right"] { transform: translateX(-100%); }
+.lh-pin b { display: flex; grid-column: 1 / -1; align-items: baseline; justify-content: space-between; gap: 14px; font-size: 13px; font-weight: 600; line-height: 18px; }
+.lh-pin small { color: var(--th-muted); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
+.lh-pin span { display: grid; margin-top: 5px; color: var(--th-muted); font-size: 11px; line-height: 14px; }
+.lh-pin em { color: var(--th-ink); font-size: 18px; font-style: normal; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; }
+.lh-pin i { grid-column: 1 / -1; height: 6px; margin: 8px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); }
+.lh-pin i::before { display: block; width: var(--full); height: 100%; border-right: 1px solid var(--th-occ-ring); content: ""; }
+.lh-pin i[data-step="1"]::before { background: var(--th-occ-1); }
+.lh-pin i[data-step="2"]::before { background: var(--th-occ-2); }
+.lh-pin i[data-step="3"]::before { background: var(--th-occ-3); }
+.lh-pin i[data-step="4"]::before { background: var(--th-occ-4); }
+/* Hidden with `visibility`, not `display`, so crossing 1024px does not start anything again. */
+.lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: hidden; }
+/* The town's name in the band: in its corner, since the band shows only part of the town. */
+.lh-named { top: 72px; left: 16px; font-size: 15px; transform: none; transition: opacity 0.4s ease; }
+.lh-named[data-leaving] { opacity: 0; }
+.lh-dock { position: absolute; top: auto; bottom: 14px; left: 16px; }
+.lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
+.lh-credit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: 11px; line-height: 16px; }
+/* The way to stop the tour: words, as the page's other small links are. */
+.lh-stopper { position: relative; display: inline-flex; align-items: center; gap: 5px; min-height: 24px; color: var(--th-ink); font-weight: 600; cursor: pointer; text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+.lh-stopper:hover { text-decoration-color: currentColor; }
+.lh-stopper::after { position: absolute; inset: -10px -6px; content: ""; }
+/* What the shades mean: four dots between two words, as under the stage's map. */
+.lh-key { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.lh-credit a { text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
+.lh-credit a:hover, .lh-credit a:focus-visible { text-decoration-color: currentColor; }
+/* The stage's own heading, now the page's second: the section-heading size. */
+.th-stage-h { font-size: var(--th-heading); }
+
+@media (min-width: 640px) {
+  .lh-in { padding: 120px 32px 36px; }
+  .lh .th-lede { margin-top: 16px; }
+  .lh-find { margin-top: 26px; }
+  /* On a tablet the band is taller. */
+  .lh-frame { height: 520px; }
+  .lh-dock { bottom: 20px; left: 32px; }
+  .lh-named { top: 96px; left: 32px; }
+  .lh-credit { padding-right: 32px; padding-left: 32px; }
+}
+/* From 1024px the words are on the left and the picture fills the right of the screen, top to bottom. */
+@media (min-width: 1024px) {
+  .lh { display: grid; min-height: max(100svh, 720px); }
+  .lh-in { display: flex; align-items: center; width: 100%; padding: 112px 64px 72px; pointer-events: none; }
+  .lh-copy { width: 42%; max-width: 580px; pointer-events: auto; }
+  .lh .th-h1 { font-size: clamp(2.75rem, 4vw, 3.75rem); line-height: 1.04; }
+  .lh .th-lede { max-width: 30em; margin-top: 22px; font-size: 18px; }
+  .lh-find { margin-top: 32px; }
+  .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
+  .lh-frame { position: absolute; inset: 0; height: auto; }
+  .lh-sheet {
+    mask-image: linear-gradient(90deg, transparent 0, #000 24%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 6%);
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
+  .lh-map { top: 50%; right: 0; left: auto; width: max(100%, 100svh, 720px); transform: translateY(-50%); }
+  .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: visible; }
+  .lh-dock, .lh-named { visibility: hidden; }
+  .lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 1; }
+  .lh-key { pointer-events: none; }
+  .lh-credit { position: absolute; right: 16px; bottom: 10px; justify-content: flex-end; padding: 0; }
+  .lh-stopper { pointer-events: auto; }
+}
+/* Just above 1024px the credit row has one line's room beside the cards: the key waits for a wider picture. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .lh-key { display: none; }
+}
+/* A big picture takes bigger words on its cards. */
+@media (min-width: 1440px) {
+  .lh-stop .lh-pin { column-gap: 20px; min-width: 172px; padding: 10px 14px 0; }
+  .lh-stop .lh-pin b { font-size: 15px; line-height: 20px; }
+  .lh-stop .lh-pin small { font-size: 13px; }
+  .lh-stop .lh-pin span { font-size: 13px; line-height: 16px; }
+  .lh-stop .lh-pin i { margin: 9px -14px 0; }
+}
+/* The tour's moment, at each town: the pointer goes round an area's corners (TownTour moves it), each corner
+   lands as it is reached (`--at`) and the line follows (`--draw`, for `--drawing`); when the line closes the
+   tour marks the area drawn and it sets, its listings light and its figures are pinned; then the next area. The
+   line can be traced because its width is in the map's units. The town the page arrives on is complete at once.
+   While the tour waits (out of view, the visitor typing, or paused) everything holds where it is. */
+@keyframes lh-pin {
+  from { opacity: 0; translate: 0 6px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  .lh-where { animation: th-fade 0.5s ease-out 0.3s both; }
+  .lh-node { animation: th-drop 0.35s var(--th-ease) var(--at) both; }
+  .lh-area { stroke-dasharray: 1; animation: th-trace var(--drawing) linear var(--draw) both; }
+  .lh-dock { animation: lh-pin 0.4s var(--th-ease) both; }
+  .lh-stop[data-arrived] :is(.lh-where, .lh-node, .lh-area) { animation: none; }
+  .lh-over[data-waiting] .lh-stop * { animation-play-state: paused; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lh-stopper, .lh-sheet .lh-map, .lh-over .lh-map, .lh-stop, .lh-dots, .lh-pin, .lh-named, .lh-area-fill, .lh-lead { transition: none; }
+  .lh-sheet .lh-map { translate: 0 0; }
+}

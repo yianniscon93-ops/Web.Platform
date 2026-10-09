@@ -2,6 +2,7 @@ import { AREA_BASEMAPS } from "@/lib/landing/areaBasemaps";
 import { VIEW_H, VIEW_W } from "@/lib/landing/areaView";
 import type { DrawnArea } from "@/lib/landing/compare";
 import { CYPRUS_OUTLINE } from "@/lib/landing/cyprusOutline";
+import IslandBasemap from "./IslandBasemap";
 import { LANDING as C } from "./tokens";
 
 // The whole island, for the locator. Units are thousandths of a degree of latitude.
@@ -23,6 +24,8 @@ const ISLAND = "M" + CYPRUS_OUTLINE.map(([lng, lat]) => island(lat, lng).map((v)
  * at first paint; the drawn area, its handles and the listings are AreaMap's.
  */
 export default function AreaBasemap({ area }: { area: DrawnArea }) {
+  // A map with no streets (the island, a picked place) is the coast alone.
+  if (area.key === "CY" || area.key === "PICK") return <IslandBasemap area={area} />;
   const map = AREA_BASEMAPS[area.key];
   const lat = area.polygon.reduce((sum, p) => sum + p[0], 0) / area.polygon.length;
   const lng = area.polygon.reduce((sum, p) => sum + p[1], 0) / area.polygon.length;

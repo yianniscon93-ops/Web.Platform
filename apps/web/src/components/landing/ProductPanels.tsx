@@ -45,6 +45,8 @@ export const scoped = (r: { source: "live" | "demo" } | null) => r?.source === "
 export interface ProductPanelsProps {
   place: string;
   changed: boolean;
+  /** The area can have been taken anywhere on its map (the island's), so once changed it is not "near" the place. */
+  roams?: boolean;
   /** Listings inside the area as it stands, when known: the same figure the map shows. */
   count: number | null;
   figures: AreaFigures | null;
@@ -287,6 +289,7 @@ function MarketsTable({
 export default function ProductPanels({
   place,
   changed,
+  roams,
   count,
   figures,
   status,
@@ -298,10 +301,10 @@ export default function ProductPanels({
   iconRef,
 }: ProductPanelsProps) {
   const stats = figures?.stats ?? null;
-  const area = areaName(place, changed);
+  const area = areaName(place, changed, roams);
   const loading = status === "loading";
   const late = loading || pending;
-  const asked = question(place, changed);
+  const asked = question(place, changed, roams);
   // Until the count and the figures are both in, a sentence says what is happening instead.
   const say = (make: (n: number, s: SelectionStats) => string) =>
     count != null && stats ? make(count, stats) : loading || count == null ? READING : UNREACHABLE;

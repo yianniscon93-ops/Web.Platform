@@ -6,7 +6,6 @@ import type { SelectionStats } from "@/lib/dashboard/types";
 import { BRAND } from "@/lib/brand";
 import type { HeroArea } from "@/lib/landing/areaContext";
 import { question } from "@/lib/landing/areaLines";
-import type { DrawnArea } from "@/lib/landing/compare";
 import {
   GREEK_UNREACHABLE,
   REVIEWS_REPLY,
@@ -42,7 +41,7 @@ const langOf = (id: QuestionId) => (id === "greek" ? "el" : undefined);
 
 /** The questions in the visitor's own voice. The first is the one the hero's Connector panel asks, in its words. */
 function ask(id: QuestionId, area: HeroArea): string {
-  if (id === "summary") return question(area.place.name, area.changed);
+  if (id === "summary") return question(area.place.name, area.changed, area.place.frame != null);
   if (id === "trend") return "How has it moved over the year?";
   if (id === "bedrooms") return "What do places with two or more bedrooms take here?";
   if (id === "cuts") return "Are sellers cutting prices here?";
@@ -94,16 +93,7 @@ function Firmness({ line, lang }: { line: string; lang?: string }) {
  * composer only displays the chosen question: the list of questions is the
  * control.
  */
-export default function ConnectorSection({
-  area,
-  index,
-  basemaps,
-}: {
-  area: HeroArea;
-  index: number;
-  /** The server-rendered street maps (AreaBasemap), one per place, for "show me on the map". */
-  basemaps?: Partial<Record<DrawnArea["key"], React.ReactNode>>;
-}) {
+export default function ConnectorSection({ area, index }: { area: HeroArea; index: number }) {
   // The questions asked so far, oldest first, and the one last chosen.
   const [thread, setThread] = useState<QuestionId[]>([FIRST]);
   const [chosen, setChosen] = useState<QuestionId>(FIRST);
@@ -480,7 +470,6 @@ export default function ConnectorSection({
                         polygon={area.polygon}
                         name={area.name}
                         dots={area.dots}
-                        basemap={basemaps?.[area.place.key]}
                         lively={lively != null}
                       />
                     )}

@@ -7,10 +7,10 @@
 :root {
   /* A product's name: the section-heading size. */
   --th-heading: clamp(2.125rem, 2.78vw, 2.5rem);
-  /* The three cards' grounds: the plain surface, the olive tint, and a light tint of the accent on the map's land. */
+  /* The three cards' grounds: the plain surface, the olive tint, and a light tint of the light orange on the map's land. */
   --th-card-playground: var(--th-surface);
   --th-card-reports: var(--th-tint);
-  --th-card-connector: color-mix(in srgb, var(--th-a) 12%, var(--th-map-land));
+  --th-card-connector: color-mix(in srgb, var(--th-mark) 18%, var(--th-map-land));
   /* The stack's measures (ProductSections.tsx has the same): where a pinned card's top rests under the 72px
      nav, the ground left under it, and the height of a card's header row. */
   --ps-pin-top: 80px;
@@ -455,7 +455,7 @@
 
 /* ── Reports: a report to leaf through ── */
 .ps-report-nav { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 14px; }
-/* For a property, or for an area: the hero's place switch, here choosing the kind of report. */
+/* For a property, or for an area: a two-way switch choosing the kind of report. */
 .ps-switch {
   display: inline-grid;
   grid-auto-flow: column;

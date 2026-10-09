@@ -178,7 +178,9 @@
 }
 
 /* ── Landing (nav and hero) ─────────────────────────────────── */
-/* The landing palette by role: beige ground, olive, and one accent (teal). */
+/* The landing palette by role: beige ground, ink, olive and a light orange. Olive does the working jobs (the
+   drawn area, the filled action); the light orange marks what is counted and what is ours (the listings inside
+   the line, the brand mark, the product icons). */
 :root {
   --th-ground: #F4F1E8;
   --th-ink: #161C11;
@@ -187,18 +189,19 @@
   --th-surface: #FFFFFF;
   --th-visitor: #4A5E3A;
   --th-visitor-ink: #F7F5EE;
-  /* The filled action: the accent, with white on it (4.8:1). */
-  --th-action: #0E7F7A;
+  /* The filled action: olive, with white on it (7.1:1). */
+  --th-action: #4A5E3A;
   --th-action-ink: #FFFFFF;
-  --th-action-hover: #0A6C68;
+  --th-action-hover: #3C4E2E;
   --th-tint: #E6EBDA;
   --th-tint-hover: #D9E0C9;
   --th-solid: #161C11;
   --th-solid-ink: #FFFFFF;
   --th-solid-hover: #26331C;
   /* The drawn area: its outline and fill, and the line to the open panel. */
-  --th-a: #0E7F7A;
-  --th-mark: var(--th-a);
+  --th-a: #4A5E3A;
+  /* The brand mark, the product icons and the listing the "how" section follows: the light orange. */
+  --th-mark: #F2A154;
   --th-map-sea: #C2DADF;
   --th-map-shore: #6F929B;
   --th-map-land: #FBFAF4;
@@ -207,15 +210,15 @@
   /* Listings inside and outside the drawn line. AreaMap reads these for its canvas. */
   --th-dot: #161C11;
   --th-dot-out: #9AA08E;
-  /* How full a listing inside the line has been this season, in four steps of the accent, emptier to fuller:
-     from nearly white to the accent darkened with ink. A pale fill would vanish on the tinted land, so
-     every inside dot wears a thin ring of the darkest step (--th-occ-ring), which carries the mark: it is 8.1:1 on
-     plain land, 5.3:1 on the tinted land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
-  --th-occ-1: color-mix(in srgb, var(--th-a) 10%, white);
-  --th-occ-2: color-mix(in srgb, var(--th-a) 48%, white);
-  --th-occ-3: var(--th-a);
-  --th-occ-4: color-mix(in srgb, var(--th-a) 60%, var(--th-ink));
-  --th-occ-ring: var(--th-occ-4);
+  /* How full a listing inside the line has been this season, in four steps of the light orange, emptier to
+     fuller: from nearly white to a burnt orange. A pale fill would vanish on the tinted land, so every inside
+     dot wears a thin ring darker than the last step (--th-occ-ring), which carries the mark: it is 8.0:1 on plain
+     land, 5.8:1 on the tinted land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
+  --th-occ-1: #FDEBD3;
+  --th-occ-2: #F7C48B;
+  --th-occ-3: #EE9740;
+  --th-occ-4: #B85F14;
+  --th-occ-ring: #7A3D0A;
   --th-focus: var(--th-ink);
   /* Hairline where the ground itself is divided (the scrolled nav, the phone menu). */
   --th-ground-line: var(--th-line);
@@ -225,10 +228,9 @@
   --th-shadow: color-mix(in srgb, var(--th-ink) 35%, transparent);
   /* The lines from the area to the panels that are not open. */
   --th-wire: color-mix(in srgb, var(--th-muted) 45%, var(--th-ground));
-  /* How strongly the drawn area tints the land inside it. At 30% the land reads as the accent and sits just under
-     the sea's lightness (1.08:1; at about 24% the two match exactly). The shoreline, drawn darker than both, and
-     the difference in hue keep land and sea apart inside the area. */
-  --th-area-tint: 0.3;
+  /* How strongly the drawn area tints the land inside it. At 22% the olive reads as the area without muddying
+     the streets; the shoreline, drawn darker than both, and the difference in hue keep land and sea apart. */
+  --th-area-tint: 0.22;
   /* Land inside the drawn area: the halo of a place name the area covers. */
   --th-area-land: color-mix(in srgb, var(--th-a) calc(var(--th-area-tint) * 100%), var(--th-map-land));
 
@@ -300,7 +302,7 @@
 .th-more:hover > span { text-underline-offset: 7px; }
 .th-more svg { transition: transform 0.2s var(--th-ease); }
 .th-more:hover svg { transform: translateY(3px); }
-/* The page's one filled action. */
+/* The page's filled action: "Show me" in the first screen's search field, "Open the Playground, it's free" below it. */
 .th-go {
   display: inline-flex;
   align-items: center;
@@ -363,40 +365,69 @@
 }
 .th-lede { max-width: 34em; margin-top: -6px; color: var(--th-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
 
-/* The map column: the place switch, the map, the count bar, the credit. */
+/* The map column: the zoom control, the map, the count bar, the credit. */
 .th-map { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
 .th-map-frame { position: relative; display: flex; flex: 1; flex-direction: column; min-height: 0; }
-/* The place switch floats on the map's top-right corner at every size; on phones it is smaller. */
-.th-switch {
+/* The zoom control floats on the map's top-right corner at every size: plus over minus on one white surface
+   and, once the map is zoomed in, the way back to the whole island under them. Only the controls take the pointer. */
+.th-zoom {
   position: absolute;
   top: 10px;
   right: 10px;
   z-index: 4;
-  display: grid;
-  grid-template-columns: auto auto;
-  gap: 2px;
-  padding: 3px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+  pointer-events: none;
+}
+.th-zoom-steps, .th-zoom-whole, .th-draw-here {
   border: 1px solid var(--th-line);
   border-radius: 12px;
   background: var(--th-surface);
   box-shadow: 0 8px 18px -10px var(--th-shadow);
+  pointer-events: auto;
 }
-.th-switch button {
+.th-zoom-steps { display: flex; flex-direction: column; }
+.th-zoom-steps button {
   position: relative;
-  min-height: 36px;
-  padding: 0 12px;
-  border-radius: 6px;
+  display: grid;
+  place-items: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 11px 11px 0 0;
   color: var(--th-ink);
-  font-size: 13px;
+  cursor: pointer;
+  transition: background-color 0.15s;
+}
+.th-zoom-steps button + button { border-top: 1px solid var(--th-line); border-radius: 0 0 11px 11px; }
+.th-zoom-steps button:active, .th-zoom-whole:active, .th-draw-here:active { background: var(--th-tint); }
+/* Only where a pointer hovers: after a tap a touch screen would leave the tint on. */
+@media (hover: hover) {
+  .th-zoom-steps button:hover, .th-zoom-whole:hover, .th-draw-here:hover { background: var(--th-tint); }
+}
+/* The focus ring of one step is not cut by the other. */
+.th-zoom-steps button:focus-visible { z-index: 1; }
+/* A step that cannot be taken (the whole island, or the closest window) stays in place and steps back. */
+.th-zoom-steps button[aria-disabled="true"] {
+  background: none;
+  color: color-mix(in srgb, var(--th-muted) 35%, var(--th-surface));
+  cursor: default;
+}
+.th-zoom-whole, .th-draw-here {
+  position: relative;
+  color: var(--th-ink);
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
   transition: background-color 0.15s;
 }
-/* The option is 36px tall to stay small on the map; its target reaches 44px. */
-.th-switch button::after { content: ""; position: absolute; inset: -4px 0; }
-.th-switch button:hover { background: var(--th-tint); }
-.th-switch button[aria-pressed="true"] { background: var(--th-solid); color: var(--th-solid-ink); cursor: default; }
+.th-zoom-whole { min-height: 36px; padding: 0 12px; font-size: 13px; }
+/* It is 36px tall to stay small on the map; its target reaches 44px. */
+.th-zoom-whole::after { content: ""; position: absolute; inset: -4px 0; }
+/* "Draw an area here", on the frame's bottom-left corner: offered whenever the map is zoomed in, and when the
+   window shows nothing of the area to take hold of. */
+.th-draw-here { position: absolute; bottom: 10px; left: 10px; z-index: 4; min-height: 44px; padding: 0 16px; font-size: 15px; }
 /* The frame crops; the view inside it always keeps the basemap's 4:3 and covers the frame. */
 .th-map-port {
   position: relative;
@@ -419,8 +450,23 @@
   width: max(100cqw, 100cqh * 4 / 3);
   aspect-ratio: 4 / 3;
   transform: translate(-50%, -50%);
+  /* A double click zooms; it must not also select the names. */
+  -webkit-user-select: none;
+  user-select: none;
+}
+/* Zoomed in, the map can be taken by its ground and moved, by a mouse or by one finger (AreaMap shifts the view
+   with `translate` while it is in the hand). So there, and only there, a finger's drag over the map is the map's
+   and does not scroll the page; two fingers still pinch the page. On the whole island a swipe scrolls the page. */
+.th-map[data-zoomed] .th-map-view { touch-action: pinch-zoom; }
+@media (hover: hover) and (pointer: fine) {
+  .th-map[data-zoomed] .th-map-view { cursor: grab; }
+  .th-map[data-panning] .th-map-view { cursor: grabbing; }
 }
 .th-map-view > svg, .th-map-dots { position: absolute; inset: 0; width: 100%; height: 100%; }
+/* The area is not cut at the view's edge: while the map is in the hand and shifted, what lay past it shows. */
+.th-map-view > .th-area-svg { overflow: visible; }
+/* The drawn island (IslandBasemap): one picture, placed and sized inline for the window the map shows. */
+.th-island { position: absolute; max-width: none; pointer-events: none; user-select: none; }
 /* Nothing drawn on the map takes the pointer except the inside of the area and its corners. */
 .th-map-view > svg, .th-map-dots { pointer-events: none; }
 .th-shore, .th-road, .th-road-major { fill: none; stroke-linecap: round; stroke-linejoin: round; }
@@ -431,7 +477,8 @@
 .th-area-fill { fill: var(--th-a); fill-opacity: var(--th-area-tint); }
 .th-area-line { fill: none; stroke: var(--th-a); stroke-width: calc(2px * var(--th-u)); stroke-linejoin: round; }
 /* The inside of the area: a press here moves the whole of it. On a touch screen it takes a held finger
-   (AreaMap), so a swipe across the area still scrolls the page; the browser's own long-press menu stays out of it. */
+   (AreaMap), so a swipe across the area still scrolls the page or, zoomed in, moves the map; the browser's own
+   long-press menu stays out of it. */
 .th-area-hit {
   fill: none;
   stroke: none;
@@ -496,11 +543,12 @@
 }
 .th-place[data-in] { --th-halo: var(--th-area-land); }
 .th-place[data-kind="water"] { --th-halo: var(--th-map-sea); color: var(--th-muted); font-weight: 500; letter-spacing: 0.08em; }
+/* A town named in the sea beside it, on the island's map. */
+.th-place[data-kind="offshore"] { --th-halo: var(--th-map-sea); }
 /* The invitation, set like a place name beside the corner that invites the first drag: "Drag a corner, or the
    whole area", or on a touch screen "Drag a corner, or hold the area to move it". Both are in the markup and the
-   pointer picks one. Both places put it over water. Where it goes is worked out here, from the corner's place in
-   the view (--fx, --fy, set by AreaMap), so it keeps clear of the outline, the place switch and the locator in
-   every frame the map is shown in. */
+   pointer picks one. Where it goes is worked out here, from the corner's place in the view (--fx, --fy, set by
+   AreaMap), so it keeps clear of the outline in every frame the map is shown in. */
 .th-cue-label {
   --th-halo: var(--th-map-sea);
   /* The view's width (as .th-map-view has it) and the corner's place in the view, as lengths. */
@@ -509,8 +557,6 @@
   --cy: calc(var(--fy) * var(--vw) * 3 / 4);
   /* How many lines the words take. The frame's width decides (below), with a width that makes exactly that many. */
   --n: 1;
-  /* The foot of the place switch, with a little air under it, from the frame's top. */
-  --foot: 60px;
   width: max-content;
   font-size: 13px;
   line-height: 16px;
@@ -523,13 +569,11 @@
   .th-cue-fine { display: none; }
   .th-cue-coarse { display: inline; }
 }
-/* To the corner's right, level with it; under the place switch where the frame crops the view so far that the two
-   would meet. The area's edge runs down and to the right from this corner (--run to the right for each unit down),
-   so the lower the words end, the further right they start. */
+/* To the corner's right, level with it. The area's edge runs down and to the right from this corner (--run to
+   the right for each unit down), so the lower the words end, the further right they start. */
 .th-cue-label[data-side="right"] {
-  --top: max(calc(var(--cy) - var(--n) * 8px), calc(var(--th-crop-y) + var(--foot)));
-  --dx: max(15px, calc(7px + var(--run) * (var(--top) + var(--n) * 16px - var(--cy))));
-  top: var(--top);
+  --dx: max(15px, calc(7px + var(--run) * var(--n) * 8px));
+  top: calc(var(--cy) - var(--n) * 8px);
   left: calc(var(--cx) + var(--dx));
   max-width: var(--cue-w, none);
 }
@@ -702,7 +746,8 @@
   line-height: 22px;
   vertical-align: top;
 }
-/* A cell breaks only between its figure and its unit. */
+/* A cell breaks only between its figure and its unit, and keeps clear of the next column. */
+.th-markets td:not(:last-child), .th-markets thead th:not(:last-child) { padding-right: 16px; }
 .th-markets td b, .th-markets td span { white-space: nowrap; }
 .th-markets td b { color: var(--th-ink); font-size: 16px; font-weight: 600; }
 .th-markets td[data-pending] b { color: var(--th-pending); }
@@ -829,14 +874,12 @@
   .th-go-panel { display: inline-flex; }
   .th-hero-in { row-gap: 24px; padding: 100px 32px 48px; }
   .th-lede { margin-top: -8px; font-size: 18px; }
-  /* From here the switch and the count bar sit on the map's own frame. */
+  /* From here the zoom control and the count bar sit on the map's own frame. */
   .th-map-frame { overflow: hidden; border: 1px solid var(--th-line); border-radius: 14px; background: var(--th-surface); }
   .th-map-port { aspect-ratio: 4 / 3; border: 0; border-radius: 0; }
   .th-map-view { --th-u: 1.15; }
-  .th-switch { top: 12px; right: 12px; }
-  .th-cue-label { --foot: 64px; }
-  .th-switch button { min-height: 44px; padding: 0 16px; font-size: 15px; }
-  .th-switch button::after { content: none; }
+  .th-zoom { top: 12px; right: 12px; }
+  .th-draw-here { bottom: 12px; left: 12px; }
   /* On the frame the bar is one row: the count and its tag; at the right the key, then Reset once the area has changed. */
   .th-map-bar { display: flex; align-items: center; column-gap: 20px; min-height: 48px; padding: 0 16px; border-top: 1px solid var(--th-line); }
   .th-key { margin: 0 0 0 auto; }
@@ -858,7 +901,6 @@
   .th-lede { margin: 0 0 4px; }
   .th-map-port { flex: 1; min-height: 0; aspect-ratio: auto; }
   .th-map-view { --th-u: 1.08; }
-  .th-switch button { min-height: 38px; }
   .th-trunk { display: inline; }
   .th-wires { display: block; }
   /* Beside the filled button the link is "Find out more": the panel is the Playground's and the button has just
@@ -903,6 +945,12 @@
   .th-markets td { padding-top: 5px; padding-bottom: 5px; }
   .th-markets thead th { padding-bottom: 5px; }
   .th-go { min-height: 42px; }
+}
+
+/* Beside the map the panel column is narrow up to 1280px: the one unit longer than its cell ("occupied this
+   season", in the short-let column) takes a second line there and does not run into the next column. */
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .th-markets td:first-of-type span { white-space: normal; }
 }
 
 /* The one authored moment, on first load: the handles drop in, the outline closes, the fill and the
@@ -953,5 +1001,5 @@
   /* No ring without motion: the inviting corner is filled instead, until a corner is first moved. */
   .th-map[data-cue] .th-handle[data-cue] i { background: var(--th-a); }
   .th-link, .th-more > span, .th-more svg, .th-go, .th-go svg, .th-solid, .th-navlink, .th-credit a, .th-reset,
-  .th-handle i, .th-switch button, .th-panel-body, .th-panel-chevron, .th-area-fill { transition: none; }
+  .th-handle i, .th-zoom button, .th-draw-here, .th-panel-body, .th-panel-chevron, .th-area-fill { transition: none; }
 }

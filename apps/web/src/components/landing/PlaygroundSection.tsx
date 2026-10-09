@@ -116,14 +116,17 @@ function HeadToHead({ area, near }: { area: HeroArea; near: boolean }) {
       failed: !got && asked.failed,
     };
   });
-  if (area.changed) {
+  // The area on the map joins the two as the third: once the visitor has changed it, or from the start when the
+  // map is the island's, whose own area is neither of them.
+  const third = area.changed || (here !== a.key && here !== b.key);
+  if (third) {
     slots.push({
       key: "mine",
-      name: "Your area",
-      near: `near ${area.place.name}`,
+      name: area.changed ? "Your area" : area.place.name,
+      near: area.changed && !area.place.frame ? `near ${area.place.name}` : undefined,
       count,
       stats,
-      mine: true,
+      mine: area.changed,
       pending: area.pending,
       loading: !stats && area.status === "loading",
       failed: !stats && area.status === "error",
@@ -190,7 +193,7 @@ function HeadToHead({ area, near }: { area: HeroArea; near: boolean }) {
       </table>
       <Covers demo={demo}>
         <span>
-          {area.changed
+          {third
             ? "Three areas side by side, the most the Playground compares."
             : "Move a corner on the map and your area joins as the third."}
         </span>

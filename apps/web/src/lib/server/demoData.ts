@@ -98,6 +98,13 @@ interface DemoStore {
 
 let store: DemoStore | null = null;
 
+/** Where a listing sits from its place's centre, in degrees [lat, lng]: gathered there, thinning out to about 4 km. Two draws. */
+function scatter(rand: () => number): [number, number] {
+  const bearing = rand() * 2 * Math.PI;
+  const reach = rand() ** 0.8;
+  return [Math.sin(bearing) * reach * 0.0375, Math.cos(bearing) * reach * 0.0475];
+}
+
 function build(): DemoStore {
   const listings: ListingDetail[] = [];
   const weekly = new Map<string, WeeklyPoint[]>();
@@ -108,6 +115,7 @@ function build(): DemoStore {
   const summerBoost = SEASON[now.getUTCMonth()];
 
   let idCounter = 100000;
+  let at: [number, number];
 
   for (const [areaName, base] of Object.entries(AREA_DATA)) {
     const slug = slugify(areaName);
@@ -136,8 +144,8 @@ function build(): DemoStore {
         id: String(idCounter++),
         name: `${NAME_A[Math.floor(rand() * NAME_A.length)]} ${NAME_B[Math.floor(rand() * NAME_B.length)]}`,
         areaSlug: slug,
-        lat: base.lat + (rand() - 0.5) * 0.075,
-        lng: base.lng + (rand() - 0.5) * 0.095,
+        lat: base.lat + (at = scatter(rand))[0],
+        lng: base.lng + at[1],
         propertyType: t.type,
         roomType: rand() < 0.94 ? "Entire place" : "Private room",
         bedrooms: beds,

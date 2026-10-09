@@ -297,7 +297,7 @@ const staysEl = (n: number) => `${intEl(n)} ${n === 1 ? "κατάλυμα" : "κ
 
 /** "Πώς πάνε οι βραχυχρόνιες μισθώσεις στον Πρωταρά;" */
 export function greekQuestion(place: DrawnArea, changed: boolean): string {
-  return `Πώς πάνε οι βραχυχρόνιες μισθώσεις ${changed ? `στην περιοχή μου κοντά ${place.inGreek}` : place.inGreek};`;
+  return `Πώς πάνε οι βραχυχρόνιες μισθώσεις ${changed || !place.inGreek ? (place.frame ? "στην περιοχή μου" : `στην περιοχή μου κοντά ${place.inGreek}`) : place.inGreek};`;
 }
 
 /** The summary answer in Greek: the same figures as `summaryReply`, the same three parts. */

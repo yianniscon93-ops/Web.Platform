@@ -1,44 +1,202 @@
 # Landing page
 
-The landing hero says what the three products are and lets the visitor try
-the mechanism behind them. Under it, one card per product explains each with
-a working object, all three about the area the visitor has on the hero's
-map; the cards stack as the visitor scrolls. Product facts live in
-`/PRODUCT.md`; the page's direction ("Draw it, get it three ways") is
-recorded in `apps/web/.impeccable/surfaces/app-page-tsx.md`.
+The first screen says what PropSights is and asks the visitor for their own
+place: a headline, one sentence, a search box, and a picture that moves by
+itself, a tour of four drawn town maps with areas drawn on them and what the
+short-lets inside come to. The second screen, the stage,
+lets the visitor try the mechanism: a map with a hand-drawn area, joined by
+thin lines to three product panels made from it. Under it, one card per
+product explains each with a working object, all three about the area the
+visitor has on the stage's map; the cards stack as the visitor scrolls.
+Then "How the numbers are made", and the close. Product facts live in
+`/PRODUCT.md`; the page's direction ("Start with your place") is recorded
+in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
+the stage: its component is still `DrawHero`.
 
-Page order (`apps/web/app/page.tsx`): `Nav`, `DrawHero`, `ProductSections`
+Page order (`apps/web/app/page.tsx`): `Nav`, `LandingHero` (the first
+screen), `DrawHero` (the stage, `#draw`), `ProductSections`
 (the stack: `#playground`, `#reports`, `#connector`, and `CTASection`,
-`#access`, handed in as its last sheet), `Footer`.
+`#access`, handed in as its last sheet, with `HowSection`, `#how`, before
+it), `Footer`.
 
-## Hero (`apps/web/src/components/landing/`)
+## The first screen (`LandingHero.tsx`, `PlaceSearch.tsx`, `TownTour.tsx`, styles in `app/landing-hero.css`)
 
-One viewport: a band (headline, one sentence), then the stage. Left, a street
-map of one place with a hand-drawn area whose corners the visitor can move.
+How it got here: five first screens were built and dropped on 2026-10-09
+(the last, a flow diagram, with "the hero page is very bad. Research how
+others are doing it"). The first screens of 36 sites were then captured, 13
+of them in short-let and property data. In that field most headlines
+promise a result, about half open on a search box for the customer's own
+place, most show real figures or the product, and none shows a diagram. The
+owner chose: open on the search box; a headline with "property data and
+insights" in it; the calm, warm feel of felt.com with one rich drawn map; a
+real town drawn from open data; and a picked place going down to our own
+map, not out to the Playground.
+
+Left, from 1024px: the `h1` ("Property data and insights for every street
+in Cyprus."), one sentence
+saying who the team is and what it does, and `PlaceSearch`.
+
+`PlaceSearch` is a combobox over `GET /api/dashboard/areas` (the
+Playground's own list of places). Focused, it lists the six places with the
+most listings; typed into, it matches English and Greek names with accents
+ignored and ranks a name that starts with what was typed first. Arrow keys
+move, Enter or a press picks. Picking sends `PICK_EVENT` (`compare.ts`)
+with the place's id, name, centre and reach, and moves the page to the
+stage, which shows that place (see "The stage"). If the list cannot be
+fetched the button opens the Playground and the box says so. There are no
+example places under the box (owner, 2026-10-09: "remove them from there
+and let the map hover ... by itself").
+
+Right, from 1024px, filling 58% of the screen and fading into the paper on
+its left and under the nav: the tour (`TownTour.tsx`). Its maps are four
+drawings, `public/landing/town-{limassol,paphos,larnaca,protaras}.svg`,
+made by `scripts/build-hero-town.mjs` from OpenFreeMap z14 vector tiles
+(OpenStreetMap data): land, green, sand, sea, piers, buildings and streets
+in the page's map colours, with no labels, each 1600 units square.
+`src/lib/landing/heroTowns.ts`, written by the same script, holds each
+one's projection. The credit is on the page. Rerun the script (from
+`apps/web`, Node 23.6+, network) to redraw them.
+
+What the tour draws is set by hand in `LandingHero.tsx` (`DRAWN`), in
+each map's view units: three areas a few streets wide per town, on built
+streets, each with the corner its card is pinned at. On the server each
+area's polygon is asked of `getStats`: how full its short-lets have been
+this season (`effOccTodate`), their median nightly rate and how many
+there are. An area with fewer than five listings, or one that cannot be
+asked, is drawn without figures; on demo data one listing is enough and the
+picture carries the "Demo data" mark. The page sets `revalidate = 3600`.
+The shape handed to the client is `TourStop` (`src/lib/landing/tour.ts`).
+
+The tour runs by itself (owner, 2026-10-09). The town the page arrives on is
+complete. Then, for each town in turn: its map slides in, its listings
+appear as dots west to east, a pointer draws the first area corner by
+corner, and when the line closes the area sets: its tint and a thin white
+edge under the line come in, the listings inside take their occupancy
+shades, and its card is pinned and joined to it by a hairline. It stays
+about a second to be read, then the pointer goes on to the next area. After
+the third everything holds, then leaves. One clock drives it (a
+`requestAnimationFrame` loop in `TownTour`); the canvas dots and the
+pointer are placed from it, the corners and the traced line are CSS
+animations started with it. The clock waits while the picture is out of
+view, the tab is hidden or the visitor is typing in the search box; "Pause
+the tour" stops it where it is. With reduced motion the first town stays,
+complete, and there is no pause control.
+
+The dots are `/api/dashboard/points` (one fetch, shared with the stage).
+Inside an area every listing is a dot while they can be told apart (up to
+60, sea or not, since the card counts them); a fuller area is thinned to one
+dot per 22-unit cell of the map and at most 160, so it reads as a stipple
+and the shades stay visible, while its card still counts them all. Outside
+the areas a sample of up to 600 is drawn small and grey, with any that fall
+on the drawing's sea left off. This was checked with the demo listings
+multiplied fourteen times, not yet on the live database.
+
+A card says the area's name and how many short-lets it holds, how full
+they are and what a night costs, and along its foot the occupancy again as
+a bar in the shade the area's listings wear on the map. From 1440px the
+card's words are a size larger. The credit row under the picture carries
+the pause control, the key to the shades ("emptier", four dots, "fuller";
+left out between 1024 and 1279px, where the row has one line's room) and
+the map credit.
+
+Below 1024px the picture is a band under the words, 860px or more of map
+behind a window, so it shows a few streets at a time: it is centred on the
+area being drawn and moves on with the pointer (never so far that the
+map's own edge shows), and the town's name is in its corner. Cards are not
+pinned on the map there. One card is docked at the band's foot, for the
+area the band is on: it comes when that area closes and goes when the band
+moves on, so it never speaks for an area out of sight, and that area alone
+is tinted (the others keep their line and their listings). An area stays
+longer there before the band moves (1.7s against 1.1s), since its card is
+only up while it does.
+
+Between 1024 and 1179px, as on a narrow phone, the search button is its
+arrow alone, so the field has room for its placeholder.
+
+## The stage (`DrawHero.tsx`, the second screen)
+
+One viewport: a band (an `h2`, "Draw an area. Get it three ways.", and one
+sentence), then the stage. Left, a map with a hand-drawn area whose corners
+the visitor can move.
 Right, three product panels made from that area, one open at a time:
 Playground, Reports, Connector. From 1024px thin lines run from the area to
 each panel's icon.
 
-- `DrawHero.tsx` holds the state: which place (`HERO_AREAS` in
-  `src/lib/landing/compare.ts`), the area's corners, the figures, which panel
-  is open. It fetches `GET /api/dashboard/points` and
-  `GET /api/dashboard/areas` once, and `POST /api/dashboard/stats`,
-  `/rentals` and `/invest` for the area. The first ask after load or a place
-  switch goes at once; every later one waits 300ms after the release. Only
+The stage has one map, the island, which the visitor can zoom and move
+(owner, 2026-10-09: "why not use the full map on the second page?", then
+"let customer zoom and draw a region and remove the protaras kato pafos on
+the upper part"). There is no place switch. `AreaMap` draws it.
+
+- **The ground** is one picture, `public/landing/island.svg`
+  (`IslandBasemap.tsx`): the coast, forest, towns, lakes and main roads,
+  drawn by `scripts/build-island-map.mjs` from OpenFreeMap z10 tiles in the
+  island's own view units, with no boundary lines. It is placed for whatever
+  window is shown, and the area's tint goes over it. It has main roads only,
+  so at the closest zoom it is coarse.
+- **The window** (`StageWindow`, `stageWindow()` in `compare.ts`): how
+  far in it is (`ZOOM_LEVELS`: 1, 2, 4, 8; 1 is the whole island) and the
+  [lat, lng] at its middle, held to the island. `zoomedView()` in
+  `areaView.ts` makes the view the map draws with, which `viewOf` returns
+  (`DrawnArea.view`). Plus and minus at the map's top right step it, and
+  "Whole island" appears once it is zoomed. Plus keeps the area in sight (it
+  centres on the area while the area's middle is in the window); a double
+  click or double tap on the ground goes in on that point, which on a touch
+  screen is one way to other ground. A drag on the ground moves the map:
+  the view is only translated while the drag lasts, and the window is set
+  on release. The mouse does this at any zoom. A finger does it once the
+  map is zoomed in (`touch-action` is set on the view only then), and so
+  does a quick swipe that starts inside the area; at zoom 1 a swipe on the
+  map scrolls the page, and the wheel always does. Zooming and moving ask
+  the server nothing: the area is kept as [lat, lng] and does not depend on
+  the window.
+- **The area** opens round Limassol (`ISLAND_AREA`). Whenever the map is
+  zoomed in, and whenever the area is out of sight, a button at the map's
+  bottom left offers "Draw an area here": a fresh five-cornered area in the
+  middle of the window, in place of the one there was. Once moved or redrawn the area is "your area".
+  Reset goes back to the map's own area, and to its window when that area
+  is out of sight.
+- **A picked place**, when the visitor chose one in the first screen's
+  search box. `pickedArea()` gives its window (the ground round the place)
+  and an area round the place itself: a rough five-cornered ring of the
+  place's reach (never under 4 km, so its corners can be held), not its
+  boundary. It is named as the place until a corner moves. Until then the
+  count says both figures ("499 short-lets inside, of 545 in Paphos"),
+  since the list of places counts by the place and the map by the line.
+  "Open the Playground" opens that place by its id. Every pick remounts the
+  map.
+- **Names**: five towns, set offshore, on the whole island; zoomed in, the
+  towns in the window at their centres, and a picked place at its own.
+- **Sea**: a listing is on land or not by the island's outline, in the whole
+  island's units whatever the window, and by a simpler outline than the one
+  drawn, so one within about 1.5 km of the coast counts as on land.
+
+In the Playground card's head-to-head, Protaras and Kato Paphos
+(`HERO_AREAS`, two areas a few streets wide) are always compared, and the
+area on the map joins as the third. Their counts come from their own street
+maps (`AreaBasemap`, rendered on the server in `page.tsx`), which
+`PlaceCount` mounts out of sight; those maps are no longer shown.
+
+- `DrawHero.tsx` holds the state: the map's own area (Limassol's, or a
+  picked place's), the window, the area's corners as [lat, lng], the
+  figures, which panel is open. It takes the listings from
+  `listingPoints()` (one fetch of `GET /api/dashboard/points`, shared with
+  the first screen's tour), fetches `GET /api/dashboard/areas` once, and `POST /api/dashboard/stats`,
+  `/rentals` and `/invest` for the area. The first ask after load or a pick
+  goes at once; every later one waits 300ms after the release. Only
   the newest ask is ever shown or kept: an overtaken one is aborted and its
   answer dropped. The old figures stay on show, marked pending, until the
-  new ones land. Whole answers are kept per polygon, so Reset and switching
-  place ask nothing twice; an answer with a failed part is shown (that
+  new ones land. Whole answers are kept per polygon, so Reset asks
+  nothing twice; an answer with a failed part is shown (that
   column is empty) but not kept, so the shape is asked again next time.
 - **One count.** Every count the page quotes (under the map, beside a moving
   corner, the Playground line, the table's short-let cell, the report page,
   the connector's answers, the head to head, the announcement to assistive
   tech) is the listings from `/points` that are on land and inside the
-  line: what the map shows as inside, before the grid dedupe and the draw
-  cap thin what is painted. The hero keeps that count for each place's own
-  area whichever place is on the map (`own` in the context): for the place
-  not on show, `PlaceCount` mounts its street map out of sight once and
-  counts the same way. Occupancy, nightly rate and the weekly series come
+  line, wherever the window is: dots are drawn for the window only, and
+  thinned by the grid dedupe and the draw cap, but the count is of all of
+  them. For the head to head's two places (`own` in the context),
+  `PlaceCount` mounts each one's street map out of sight once and counts the
+  same way. Occupancy, nightly rate and the weekly series come
   from `/stats`. In demo data `/stats` also counts listings that fall in the
   sea, so its `listingCount` can be higher than the count shown; it is used
   only if `/points` failed.
@@ -92,22 +250,26 @@ each panel's icon.
   (with a brief ring on the way in); only those dots are drawn one by one,
   and the canvas loop stops when none is left. No pops under reduced
   motion.
-- Dots: one per 2-unit grid cell, none in the sea, none under a place name.
-  The set is chosen once per place against the area as first drawn (up to
-  600 inside it, an even sample of up to 700 outside) and then only changes
-  sides, so nothing appears or vanishes under the visitor's hand. With dense
-  live data, ground the visitor newly encloses shows the sampled density.
-- Until a corner (or the area) is first touched, one corner per place
-  (`cue` in `HERO_AREAS`) pulses and carries the invitation: "Drag a corner,
-  or the whole area", or on a touch screen "Drag a corner, or hold the area
-  to move it". Both wordings are in the markup and a `pointer: coarse` media
-  query shows one, so server and browser render the same thing. With reduced
-  motion the corner is filled instead of pulsing. Where the words go is
-  worked out in CSS from the corner's place in the view (`.th-cue-label` in
-  `globals.css`): to the right of Protaras's top corner, level with it and
-  dropped under the place switch where a short window crops the view that
-  far; under Kato Paphos's bottom corner, running left and stopping short of
-  the locator. They wrap to two or three lines in a narrow frame. That label
+- Dots are thinned by what the screen can show (`spaced` in `AreaMap.tsx`),
+  none in the sea, none under a place name, in two sets chosen once per
+  window and size of map. The first is spaced by an inside dot's width
+  (`DOT_SPACING`, 0.9 of it), so inside the line a dense town reads as beads
+  side by side, each with its ring and its shade, and not as a blot; these
+  only change sides while the area is redrawn. The second fills in between
+  them, spaced by an outside dot's smaller width (`FINE_SPACING`), and shows
+  outside the line only, so a town the area does not hold still reads as a
+  town. The count is never thinned, and the line under the map says why the
+  two differ ("Where listings crowd together, one dot stands for several.").
+  The Connector's small map is sent the
+  first set, and thins it again when it shows the area in a wider window.
+- Until a corner (or the area) is first touched, one corner (the area's
+  `cue`) pulses and carries the invitation: "Drag a corner, or the whole
+  area", or on a touch screen "Drag a corner, or hold the area to move it".
+  Both wordings are in the markup and a `pointer: coarse` media query shows
+  one, so server and browser render the same thing. With reduced motion the
+  corner is filled instead of pulsing. Where the words go is worked out in
+  CSS from the corner's place in the view (`.th-cue-label` in
+  `globals.css`). They wrap to two or three lines in a narrow frame. That label
   is the only invitation: the bar under the map carries the count, the key
   and, once the area has changed, Reset.
 - `ProductPanels.tsx` builds every line from what the page has
@@ -149,15 +311,16 @@ each panel's icon.
 - Until the visitor moves a corner the area is named for its place; after
   that it is "your area near <place>" wherever it is named ("my area near
   <place>" inside the visitor's own question).
-- The basemap (sea, shoreline, roads, up to three place names per place) is
-  committed data in `src/lib/landing/areaBasemaps.ts`, generated from
-  OpenFreeMap vector tiles (OpenMapTiles schema, OpenStreetMap data) by
+- **The two street maps.** Protaras and Kato Paphos were the stage's maps
+  before the island and are now only mounted out of sight, for the head to
+  head's counts; the next two points are about them. Each (sea, shoreline,
+  roads, up to three place names) is committed data in
+  `src/lib/landing/areaBasemaps.ts`, generated from OpenFreeMap vector
+  tiles (OpenMapTiles schema, OpenStreetMap data) by
   `node scripts/build-landing-maps.mjs` (run from `apps/web`). The page
   requests no tiles and loads no map library. `AreaBasemap.tsx` is a server
   component passed into `DrawHero` from `app/page.tsx`, so the path data is
-  in the HTML and not in the client bundle, and the map is there before any
-  API answers. The drawn area's fill sits under the basemap's sea, which
-  keeps it to the land.
+  in the HTML and not in the client bundle.
 - Place names are never invented: the generator takes the locality the area
   is named for, a name from the tiles' `water_name` layer where the whole
   word fits over water, then the biggest other places, and records each
@@ -386,6 +549,33 @@ plays under reduced motion. `data-arrived` stays on the card;
   exchange into view, and "Ask another question" under the conversation
   goes back up to the list.
 
+## How the numbers are made (`HowSection.tsx`, styles in `app/landing-how.css`)
+
+After the product cards and before the close, coming up over the cards as
+the close does (`#how`). The owner's idea for the flow diagram that was
+tried as a first screen: "a better more techy diagram for how we do it and
+what we do". One listing is followed along a line with five stops, each
+showing the listing as it is at that point:
+
+1. *It is published*: an example listing as its site shows it (marked as an
+   example), and what the two sources hold today (`getStats`, `getRentals`,
+   `getInvest` with no area).
+2. *We read it, every day*: a month of its calendar, a square a night,
+   booked, blocked by the owner, or free; and the time of the last sync
+   (`getSummary().lastRunAt`; left out on demo data).
+3. *We put it on the map*: its dot inside three nested areas.
+4. *We measure it*: what its calendar shows taken against what was really
+   booked (the two bars and the nights printed beside them are worked out
+   from the month in stop 2), and the matching of homes for sale with nearby
+   short-lets.
+5. *It reaches you, three ways*: the line turns down and forks to the three
+   products, as the stage's line does; each is linked to its card.
+
+The calendar and the listing are illustrations; the sentences describe what
+the data layer does (effective against raw occupancy, the area columns, the
+comp-matched yields; see `docs/POSTGRES.md`). Change them only with the
+data team. From 1100px the stops run left to right; below it, down a rail.
+
 ## The close (`CTASection.tsx`, `Footer.tsx`)
 
 "Ask the team." on ink, with the footer, in the same face and sizes. Over
@@ -405,15 +595,26 @@ roles are defined once in the "Landing (nav and hero)" block of
 no job for: `--th-heading` (the section-heading size, the one addition to
 the hero's six type sizes), the three card grounds, `--th-edge` (a control's
 outline, a slider's empty track) and the close's `--th-close-*` (the palette
-turned over: paper on ink). The palette is beige, olive and one accent,
-teal (`--th-a`, `--th-action`, with white on it for the filled button). The
-accent is the drawn area, the brand mark and the two "Open the Playground"
-buttons (hero and Playground card); the four shades of "how full" and the
-Connector card's ground are mixed from it. The land inside the area is
-tinted at 30% (`--th-area-tint`).
+turned over: paper on ink). The palette is beige, ink, olive and a light
+orange. Olive (`--th-a`, `--th-action`, with white on it for the filled
+button) is the drawn area, its line to the open panel and the page's filled
+action: "Show me" in the first screen's search field, and "Open the
+Playground, it's free" (stage panel, Playground card). The nav's "Open the Playground", "Ask for a report" and
+"Ask for access" are ink. The light orange is what is counted and what is ours:
+the brand mark and the product icons (`--th-mark`), the
+four shades of "how full" (`--th-occ-1` to `--th-occ-4`, with a darker ring;
+the "how the numbers are made" calendar uses the third) and, as a light tint, the Connector card's ground. The land inside the area is
+tinted at 22% (`--th-area-tint`).
 
 ## Open
 
+- **Not yet seen on live data.** Nothing here adds a query (the first
+  screen and the picked place use the stage's own three endpoints with a
+  polygon), but none of today's screens has been run against the live
+  database.
+- The demo listings now gather round each place's centre instead of
+  filling a rectangle (`scatter` in `demoData.ts`), so demo counts differ
+  from earlier screenshots.
 - **No inbox.** The two requests on the page ("Ask for a report", "Ask for
   access") only carry a line to the form, and that form still only
   simulates sending, though it now says "Thanks. We will write back."

@@ -62,9 +62,9 @@ export function countChip(n: number): string {
   return `${int(n)} inside`;
 }
 
-/** The area's name: its place until the visitor reshapes it. */
-export function areaName(place: string, changed: boolean): string {
-  return changed ? `your area near ${place}` : place;
+/** The area's name: its place until the visitor reshapes it. `roams`: it can have been taken anywhere, so it is not "near". */
+export function areaName(place: string, changed: boolean, roams = false): string {
+  return changed ? (roams ? "your area" : `your area near ${place}`) : place;
 }
 
 type Rates = Pick<SelectionStats, "effOccTodate" | "medianRate">;
@@ -235,8 +235,8 @@ export function reading(count: number, s: (Rates & Pick<SelectionStats, "weekly"
 }
 
 /** The question a visitor would put to the connector, in their own voice. */
-export function question(place: string, changed: boolean): string {
-  return `How are short\u2011lets doing in ${changed ? `my area near ${place}` : place}?`;
+export function question(place: string, changed: boolean, roams = false): string {
+  return `How are short\u2011lets doing in ${changed ? (roams ? "my area" : `my area near ${place}`) : place}?`;
 }
 
 /** The connector's answer to it, from the same figures. */
