@@ -1,398 +1,530 @@
 ---
-name: PropSights landing (The Thread)
-description: A messaging thread on a warm off-white ground where a visitor asks about a place and the data team answers with a street map of each area and the numbers.
+name: PropSights landing
+description: A beige page that asks for your place, shows drawn towns one after another with areas and their figures pinned to them, then answers on a map of the island where an olive area does the work and a light orange marks what is counted.
 colors:
   ground: "#F4F1E8"
   ink: "#161C11"
   muted: "#3F4A35"
   line: "#DDD7C6"
   surface: "#FFFFFF"
+  a: "#4A5E3A"
+  action: "#4A5E3A"
+  action-ink: "#FFFFFF"
+  action-hover: "#3C4E2E"
   visitor: "#4A5E3A"
   visitor-ink: "#F7F5EE"
-  action: "#EE7B3C"
-  action-ink: "#161C11"
-  action-hover: "#E06C2C"
-  tint: "#E6EBDA"
-  tint-hover: "#D9E0C9"
+  mark: "#F2A154"
+  occ-1: "#FDEBD3"
+  occ-2: "#F7C48B"
+  occ-3: "#EE9740"
+  occ-4: "#B85F14"
+  occ-ring: "#7A3D0A"
   solid: "#161C11"
   solid-ink: "#FFFFFF"
   solid-hover: "#26331C"
-  a: "#EE7B3C"
-  a-ink: "#161C11"
-  b: "#4A5E3A"
-  b-ink: "#FFFFFF"
+  tint: "#E6EBDA"
+  map-land: "#FBFAF4"
   map-sea: "#C2DADF"
   map-shore: "#6F929B"
-  map-land: "#FBFAF4"
   map-road: "#BDB8A7"
   map-road-major: "#958F7B"
+  picture-green: "#DFE7CF"
+  picture-sand: "#F3EAD3"
+  picture-building: "#E9E3D3"
+  picture-built: "#E3DCCB"
+  picture-road-minor: "#D2CCBB"
+  picture-road-secondary: "#CBC5B3"
+  picture-road: "#B7B09C"
+  picture-motorway: "#A69F8A"
   dot: "#161C11"
   dot-out: "#9AA08E"
-  rule: "color-mix(in srgb, #DDD7C6 60%, #FFFFFF)"
-  placeholder: "color-mix(in srgb, #3F4A35 82%, #FFFFFF)"
-  pending: "color-mix(in srgb, #3F4A35 60%, #FFFFFF)"
+  pending: "color-mix(in srgb, #3F4A35 80%, #F4F1E8)"
+  wire: "color-mix(in srgb, #3F4A35 45%, #F4F1E8)"
+  rail: "color-mix(in srgb, #4A5E3A 70%, #F4F1E8)"
+  edge: "color-mix(in srgb, #3F4A35 70%, #FFFFFF)"
+  area-land: "color-mix(in srgb, #4A5E3A 22%, #FBFAF4)"
+  card-playground: "#FFFFFF"
+  card-reports: "#E6EBDA"
+  card-connector: "color-mix(in srgb, #F2A154 18%, #FBFAF4)"
+  close: "#161C11"
+  close-ink: "#F4F1E8"
+  close-muted: "color-mix(in srgb, #F4F1E8 74%, #161C11)"
+  close-edge: "color-mix(in srgb, #F4F1E8 46%, #161C11)"
+  close-line: "color-mix(in srgb, #F4F1E8 20%, #161C11)"
 typography:
   display:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "clamp(2.5rem, 4.1vw, 3.6rem)"
+    fontSize: "clamp(2.75rem, 4vw, 3.75rem)"
     fontWeight: 700
-    lineHeight: 1.02
+    lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  headline:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "clamp(2.125rem, 2.78vw, 2.5rem)"
+    fontWeight: 700
+    lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  card-name:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "calc(clamp(2.125rem, 2.78vw, 2.5rem) * 0.7)"
+    fontWeight: 700
+    lineHeight: 1
     letterSpacing: "-0.025em"
   wordmark:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "22px"
     fontWeight: 700
+    lineHeight: 1
     letterSpacing: "-0.035em"
-  question:
+  title:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "18px"
-    fontWeight: 500
-  lead:
+    fontWeight: 600
+    lineHeight: "24px"
+  lede:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "18px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.5
   body:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "17px"
+    fontSize: "16px"
+    fontWeight: 400
+    lineHeight: 1.45
+  body-small:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "15px"
     fontWeight: 400
     lineHeight: 1.45
   figure:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "16px"
     fontWeight: 600
+    lineHeight: "22px"
     fontFeature: "tnum"
   action:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "15px"
     fontWeight: 600
-  label:
-    fontFamily: "Google Sans, sans-serif"
-    fontSize: "15px"
-    fontWeight: 600
-  note:
+    lineHeight: 1
+  caption:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "13px"
     fontWeight: 400
-  tag:
-    fontFamily: "Google Sans, sans-serif"
-    fontSize: "11px"
-    fontWeight: 600
-    letterSpacing: "0.02em"
-  place:
+    lineHeight: "18px"
+  micro:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "11px"
     fontWeight: 600
     lineHeight: 1
-  credit:
-    fontFamily: "Google Sans, sans-serif"
-    fontSize: "11px"
-    fontWeight: 400
 rounded:
-  tail: "6px"
-  plate: "7px"
-  action: "12px"
+  none: "0"
+  sm: "6px"
+  pin: "8px"
+  row: "10px"
+  md: "12px"
   map: "14px"
-  bubble: "26px"
-  pill: "9999px"
+  list: "16px"
+  card: "26px"
+  full: "9999px"
 spacing:
-  thread-gap: "12px"
-  map-gap: "12px"
-  bubble-pad: "18px"
-  gutter-phone: "20px"
+  gutter-phone: "16px"
   gutter-tablet: "32px"
   gutter-desktop: "64px"
-  column-gap: "56px"
-  touch: "44px"
-  nav-height: "72px"
-  composer-height: "64px"
+  column-gap: "40px"
+  column-gap-wide: "56px"
+  card-gap: "16px"
+  card-head: "56px"
+  nav: "72px"
+  pin-top: "80px"
+  target: "44px"
+  field: "60px"
+  page-max: "1440px"
+  card-max: "1312px"
 components:
-  button-send:
+  button-action:
     backgroundColor: "{colors.action}"
     textColor: "{colors.action-ink}"
     typography: "{typography.action}"
-    rounded: "{rounded.pill}"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
     height: "46px"
-    padding: "0 20px"
-  button-send-hover:
+  button-action-hover:
     backgroundColor: "{colors.action-hover}"
   button-solid:
     backgroundColor: "{colors.solid}"
     textColor: "{colors.solid-ink}"
     typography: "{typography.action}"
-    rounded: "{rounded.pill}"
-    height: "{spacing.touch}"
-    padding: "0 20px"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
+    height: "46px"
   button-solid-hover:
     backgroundColor: "{colors.solid-hover}"
-  chip-action:
-    backgroundColor: "{colors.tint}"
+  button-paper:
+    backgroundColor: "{colors.close-ink}"
+    textColor: "{colors.close}"
+    typography: "{typography.action}"
+    rounded: "{rounded.full}"
+    padding: "0 22px"
+    height: "48px"
+  button-paper-hover:
+    backgroundColor: "{colors.surface}"
+  link-text:
     textColor: "{colors.ink}"
     typography: "{typography.action}"
-    rounded: "{rounded.action}"
-    height: "{spacing.touch}"
-    padding: "0 15px"
-  chip-action-hover:
-    backgroundColor: "{colors.tint-hover}"
+    height: "44px"
+  field-search:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    typography: "{typography.lede}"
+    rounded: "{rounded.full}"
+    padding: "0 5px 0 18px"
+    height: "60px"
+  field-search-button:
+    backgroundColor: "{colors.action}"
+    textColor: "{colors.action-ink}"
+    typography: "{typography.action}"
+    rounded: "{rounded.full}"
+    padding: "0 20px"
+    height: "48px"
+  list-places:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.list}"
+    padding: "6px"
+  list-places-row-selected:
+    backgroundColor: "{colors.tint}"
+    typography: "{typography.body-small}"
+    rounded: "{rounded.row}"
+    padding: "8px 12px"
+    height: "44px"
+  pin-card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    typography: "{typography.figure}"
+    rounded: "{rounded.pin}"
+    padding: "8px 12px 0"
+  switch:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.md}"
+    padding: "3px"
+  switch-option-selected:
+    backgroundColor: "{colors.solid}"
+    textColor: "{colors.solid-ink}"
+    rounded: "{rounded.sm}"
+    padding: "0 16px"
+    height: "44px"
+  switch-option-hover:
+    backgroundColor: "{colors.tint}"
+  map-control:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    typography: "{typography.action}"
+    rounded: "{rounded.md}"
+    padding: "0 16px"
+    height: "44px"
+  map-control-hover:
+    backgroundColor: "{colors.tint}"
+  handle:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.none}"
+    size: "12px"
+  handle-hover:
+    backgroundColor: "{colors.a}"
+  node:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.none}"
+    size: "9px"
+  node-picture:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.none}"
+    size: "8px"
+  node-counted:
+    backgroundColor: "{colors.mark}"
+    rounded: "{rounded.none}"
+    size: "11.5px"
+  map-frame:
+    backgroundColor: "{colors.surface}"
+    rounded: "{rounded.map}"
+  card-playground:
+    backgroundColor: "{colors.card-playground}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.card}"
+  card-reports:
+    backgroundColor: "{colors.card-reports}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.card}"
+  card-connector:
+    backgroundColor: "{colors.card-connector}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.card}"
+  sheet:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.ink}"
+    rounded: "{rounded.sm}"
+    padding: "22px 26px 16px"
+  listing-card:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.muted}"
+    rounded: "{rounded.row}"
+    padding: "10px 16px 11px 10px"
   bubble-visitor:
     backgroundColor: "{colors.visitor}"
     textColor: "{colors.visitor-ink}"
-    typography: "{typography.question}"
-    rounded: "{rounded.bubble}"
-    padding: "14px 22px"
-  bubble-team:
+    typography: "{typography.body}"
+    padding: "10px 18px"
+  bubble-answer:
     backgroundColor: "{colors.surface}"
     textColor: "{colors.ink}"
     typography: "{typography.body}"
-    rounded: "{rounded.bubble}"
-    padding: "16px 18px 18px"
-  composer:
-    backgroundColor: "{colors.surface}"
-    textColor: "{colors.ink}"
+    padding: "13px 18px 14px"
+  field-close:
+    textColor: "{colors.close-ink}"
     typography: "{typography.body}"
-    rounded: "{rounded.pill}"
-    height: "{spacing.composer-height}"
-    padding: "0 9px 0 26px"
-  tag-state:
-    backgroundColor: "{colors.solid}"
-    textColor: "{colors.solid-ink}"
-    typography: "{typography.tag}"
-    rounded: "{rounded.tail}"
-    height: "20px"
-    padding: "0 8px"
-  badge-area-a:
-    backgroundColor: "{colors.a}"
-    textColor: "{colors.a-ink}"
-    rounded: "{rounded.pill}"
-    size: "18px"
-  badge-area-b:
-    backgroundColor: "{colors.b}"
-    textColor: "{colors.b-ink}"
-    rounded: "{rounded.pill}"
-    size: "18px"
-  area-map:
-    backgroundColor: "{colors.map-land}"
-    rounded: "{rounded.map}"
-  vertex-handle:
-    backgroundColor: "{colors.surface}"
-    size: "7px"
-  place-name:
-    textColor: "{colors.ink}"
-    typography: "{typography.place}"
-  locator:
-    backgroundColor: "{colors.ground}"
-    rounded: "{rounded.plate}"
-    padding: "4px 5px"
+    rounded: "{rounded.md}"
+    padding: "0 16px"
+    height: "48px"
   nav:
     backgroundColor: "{colors.ground}"
     textColor: "{colors.ink}"
-    height: "{spacing.nav-height}"
+    height: "72px"
 ---
 
-# Design System: PropSights landing (The Thread)
+# Design System: PropSights landing
+
+Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (four towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is a separate, dark surface and is not described here.
 
 ## Overview
 
-**Creative North Star: "The Thread"**
+**Creative North Star: "The Drawn Area"**
 
-The page is one conversation. A visitor asks about a place and a small data team answers with a street map of each of two hand-drawn areas and the numbers facing off beneath them. Everything visual follows from that: messages have a speaker and a corner that points at them, the team's reply carries real data inside the bubble, and the primary action is the message field, not a button under a headline. The ground is a warm off-white, the type is one clear, UI-friendly sans, and the only bright colour is the tangerine action colour.
+The whole page is drawn with the tool the product hands the visitor: an area with an olive outline and square white corners you can pick up. The brand mark is that area with five square handles. The first screen shows them being drawn: a tour of four drawn town maps that runs by itself, three areas a few streets wide on each, every one answered on a small white card with how full its short-lets are and what a night costs, next to a search field that asks the visitor for their own place. The second screen, the stage, is one map of the island that zooms, with one such area on it whose corners drag, joined by thin lines to three product panels. The product icons, the chart ends, the report's contents rail, the chosen question, the slider's handle and the five stops of "How the numbers are made" are all the same square corner. Nothing on the page is illustrated in another hand.
 
-The mood is serious about the numbers and light about everything else. Figures are exact and set in tabular numerals; shapes are round, soft and a little playful; the brand mark is a drawn area with square handles, the same object the team draws on each map and a visitor drags in the Playground. Motion is conversational: replies rise in from the speaker's corner, the team types before it answers.
+The ground is a warm beige on every screen and nearly everything on it is ink. Two colours carry meaning and they do not trade jobs: olive works (every drawn area, its outline and its lines, the one filled action, the visitor's own words) and a light orange marks (the brand mark, the three product icons, the listing that is being counted, a booked night, and in four steps how full each listing has been). The map pictures (four towns and the island) are generated from OpenStreetMap data in the page's own quiet map colours; they carry no labels of their own and no boundary lines, they are credited on the page, and what names appear on them are set by the page in its own type. The page ends by turning the palette over: paper on ink, for the close and the footer only.
 
-**Scope of this record.** This world is implemented for the landing page's first viewport (the hero) and the top navigation only. The landing sections below the hero (data strip, product tabs, access form, footer) are still in the previous dark design and are due to be rebuilt in this world; the dashboard ("Playground") has its own dark system. Neither is described here, and neither should be used as a source for new landing work.
+Density rises as the visitor goes down. The first screen holds a headline, one sentence, one field and one picture. The stage and the cards are working instruments set in small, exact type with tabular figures. The system is flat: hairlines divide, and a shadow appears only under something that lies on top of something else.
 
-**Decisions.** The palette and the typeface were confirmed by the owner on 2026-10-08: the palette was kept after comparison with seven alternatives, and Google Sans was chosen over Inter, Commissioner and Geologica. The product name is still undecided; PropSights is in use and appears in the wordmark and the team's signature.
+Confirmed rejections: teal and tangerine are both out of the palette; a dark first screen was built and rejected by the owner, and the ground stays beige; the page must not read as AI-generated (no pill or badge labels, no monospace labels, no logo tiles) and must not read as a research publication. Google Sans is pinned by the owner.
 
 **Key Characteristics:**
-- One conversation on a warm off-white ground: visitor on the right in olive, team on the left in white.
-- One face (Google Sans; Latin, Latin Extended and Greek) at four weights and six sizes under the headline; tabular figures wherever numbers are compared.
-- One accent (the tangerine action colour) for area A, the send action and the brand mark.
-- Data inside the message: a street map per area with the drawn outline and its listings, and a face-off comparison under the pair.
-- Every colour is a role, defined once as a `--th-*` custom property; nothing in this world names a colour directly.
-- Hue belongs to identity (an area, the visitor, the action); which figure leads is said with weight.
-- Flat surfaces separated by hairlines and tone; a shadow only where something floats over content.
-- Round forms throughout, with square vertex handles as the single hard-cornered motif.
+- One drawing vocabulary: an olive area outlined at 2px, and square white corners with an ink border.
+- Olive works, light orange marks. Ink does everything else.
+- Beige ground on every screen; the close alone is ink.
+- Maps are drawn from open data in the page's own colours, unlabelled, and fade into the paper or sit in a hairline frame.
+- One typeface, Google Sans; hierarchy by weight and size, never by case or a second face.
+- Flat surfaces divided by 1px hairlines; one soft ink shadow, kept for things that lie on top.
+- Every figure is tabular and exact; a stale figure steps back in colour, it never disappears.
+- Motion is one authored moment per surface, drawn the way the thing would be drawn; the first screen's picture alone runs on by itself, and can be paused. Under reduced motion everything is simply there.
 
 ## Colors
 
-Warm off-white, green-black ink and olive carry almost everything; tangerine is the one loud voice, and the maps add one cool note for the sea and its shoreline. Every value lives once, as a role-named `--th-*` custom property in the "Landing thread" block of the global stylesheet, and components read the role, never the hex. Token keys here are those role names without the `--th-` prefix.
+A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 
 ### Primary
-- **Action** (`action`, tangerine): the send button in the message field and the text caret in the field. Text on it is `action-ink`. Darkens to `action-hover` on hover.
-- **Area A** (`a`, the same tangerine): area A wherever it appears: outline and fill on its map, the border of its handles, its dot on the island locator, its key badge. Text on it is `a-ink`. The brand mark's fill follows this role.
+- **Working Olive** (`a`, `action`, `visitor`): every drawn area's outline and its tint over the land (22% as a role, `area-land` where a name's halo sits on it), the line from the stage's area to the open product panel, the filled action with white on it (7.1:1), the visitor's bubble in the conversation, the text selection, and the fill a square handle takes when it is hovered or held. Hover on the button deepens to `action-hover`.
+- **Rail** (`rail`): the olive at 70% over the ground. The line of "How the numbers are made", its fork to the three products, and the middle ring of that section's small map. It is a local property of that section, not yet a `--th-*` role.
 
 ### Secondary
-- **Visitor** (`visitor`, olive): the visitor's message bubbles, the typing dots and text selection. Text on it is `visitor-ink`, a near-white.
-- **Area B** (`b`, the same olive): area B wherever it appears, as for area A. Text on it is `b-ink`, white.
-- **Solid Hover** (`solid-hover`, deep olive): the hover state of solid buttons.
+- **Marking Orange** (`mark`): the fill of the brand mark, the one filled element in each product icon, and the listing being followed in "How the numbers are made" (its picture on the listing card, its square on the small map, the first stop of the line). It always sits inside an ink line; it is never text and never a button (1.9:1 on the ground).
+- **Fullness steps** (`occ-1` to `occ-4`, with `occ-ring`): how full a listing inside the line has been this season, from nearly white to burnt orange. Every such dot wears a thin ring of `occ-ring`, which is what makes the palest step visible on the land (8.0:1 on plain land). The same four dots, ringed, are the key under the map. The third step with the ring is also a booked night and the "really booked" bar. On the first screen the bar along the foot of an area's card is filled in the step that area's occupancy falls in and ended by a line of `occ-ring`.
+
+### Tertiary
+- **Map water and shore** (`map-sea`, `map-shore`): the only blue on the page, and only inside a map. Every map on the page uses the same two.
+- **Picture colours** (`picture-green`, `picture-sand`, `picture-building`, `picture-built`, `picture-road-minor`, `picture-road-secondary`, `picture-road`, `picture-motorway`): what the generated pictures add over `map-land`. A town has parks and forest, beach, single buildings and two weights of street; the island has forest, built-up ground and three weights of road. They are constants in the two build scripts and are baked into the SVGs, so they are not `--th-*` roles.
 
 ### Neutral
-- **Ground** (`ground`): the page ground of the hero and the scrolled navigation bar; the fill of the brand mark's handles and of the island locator plate.
-- **Ink** (`ink`): headline, body text, leading figures, place names on the maps, the message field's border and every focus ring.
-- **Solid** (`solid`, the same green-black): the navigation's button, the team avatar disc and the state tag. Text on it is `solid-ink`, white.
-- **Muted** (`muted`): secondary text: the introduction, the metric names and the trailing figure in a comparison row, the thread note, the map credit; also the island silhouette in the locator at half strength.
-- **Surface** (`surface`): team message bubbles, the message field and the fill of the handles on the maps, so replies sit one step brighter than the ground.
-- **Tint** (`tint`): the action chip inside a reply, and nothing else. Darkens to `tint-hover` on hover.
-- **Line** (`line`): hairline borders on team bubbles, the maps and the locator plate; the navigation's bottom rule once scrolled and the dividers in the phone menu.
-- **Rule / Placeholder / Pending** (`rule`, `placeholder`, `pending`): derived by mixing line or muted into surface: the fainter hairline between comparison rows, the field's placeholder text, and the dashes that hold a figure's place while it loads.
-- **Map Sea / Shore / Land** (`map-sea`, `map-shore`, `map-land`): the street maps only: a pale blue-grey sea, a darker blue-grey 1px shoreline where it meets the land, and a warm near-white land.
-- **Map Road / Major Road** (`map-road`, `map-road-major`): the two road weights, both warm greys, the major roads clearly darker.
-- **Dot / Dot Out** (`dot`, `dot-out`): listings on the maps: solid ink inside the drawn line, a faint olive-grey outside it.
+- **Beige Ground** (`ground`): the page on every screen, the nav once scrolled, and the text colour of the close.
+- **Ink** (`ink`, `solid`, `dot`, `close`): text, the border of every square corner and of the search field, chart lines and bars, the solid button, the selected option of a switch, a listing with no figure, a blocked night's hatching, the one-pixel edge of a card pinned on the first screen's picture and the hairline from it to its area, and the ground of the close.
+- **Muted Olive-Grey** (`muted`): secondary text, units beside figures, captions, a placeholder, the search glyph (8.3:1 on the ground, 7.7:1 on the olive tint).
+- **Hairline** (`line`): every 1px divider and surface outline. On the two tinted cards it is remixed from that card's ground (24% `muted`) so it still holds.
+- **White Surface** (`surface`): the search field and its list, a pinned figure's card, the thin edge under a drawn area's line on the first screen, the map frame's bar, the controls that float on the stage's map, the switch, the report sheet, the listing card, the answer bubble, the Playground card, the inside of an empty square corner, a free night.
+- **Olive Tint** (`tint`, `card-reports`): the Reports card's ground, the hover of an unselected switch option and of a control on the map, and the current row of the place list.
+- **Orange Wash** (`card-connector`): the Connector card's ground, 18% of the marking orange over the map's land.
+- **Map land and streets** (`map-land`, `map-road`, `map-road-major`): the land in every map and the frame's ground while a map loads; the halo behind a name set on land. The two street weights now colour only the two street maps the page mounts out of sight for the head-to-head's counts; nothing on screen uses them.
+- **Pending** (`pending`): a figure whose area has moved and whose new value has not arrived (4.9:1 on the ground).
+- **Edge** (`edge`): the outline of a control drawn on a surface and a slider's empty track (3:1 or better on white, the ground and the tint).
+- **Wire** (`wire`): the lines from the area to the product panels that are not open, and the outer ring of the How section's small map.
+- **Outside dot** (`dot-out`): a listing outside the drawn line; deliberately recessive.
+- **The close** (`close-ink`, `close-muted`, `close-edge`, `close-line`): the same paper and ink turned over, with a quieter paper for secondary lines and two weights of rule.
 
 ### Named Rules
-**The Roles Rule.** A colour is named for what it does (ground, visitor, action, area A), never for its hue, and is defined once. A new element takes an existing role; a look is changed by changing the role's value, not by writing a hex into a component.
+**The Olive Works, Orange Marks Rule.** Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.
 
-**The Two Areas Rule.** Area A is the tangerine and area B is the olive in every representation: outline, handles, locator dot, key badge. The colour is the area's identity, so it never swaps and never decorates anything unrelated to that area.
+**The Beige Ground Rule.** Every screen the visitor works on is the beige ground. A screen does not open on ink, on a tinted wash or on a picture with a frame of its own colour.
 
-**The Dark On Action Rule.** Text and icons on the action colour are ink (about 6.2:1). White on it is about 2.8:1 and is never used. On the olive, text is white or near-white.
+**The Ring Rule.** A pale orange never stands alone on a pale ground. A listing dot and a booked night wear the `occ-ring`; the mark sits inside an ink line.
 
-**The One Loud Voice Rule.** The tangerine appears on area A, the send action, the brand mark and the caret, and nowhere else. Secondary actions are solid or tint.
+**The Step Back Rule.** A figure that no longer describes the area on screen goes to `pending` until the new one arrives. It is never hidden, blurred or replaced by a spinner.
 
-**The Inside The Line Rule.** On a map, a listing inside the drawn area is a solid ink dot ringed in the land colour; a listing outside is smaller, faint and unringed. The listings inside the line are the content; the rest is context, and on a phone-sized map the context is left out.
+**The Turned Over Rule.** The close is the same palette inverted (`close` and `close-*`), not a second palette. The focus ring inverts with it.
 
 ## Typography
 
-**Display Font:** Google Sans (with sans-serif fallback)
-**Body Font:** Google Sans (with sans-serif fallback)
+**Display Font:** Google Sans (with sans-serif), self-hosted variable 400 to 700, Latin, Latin Extended and Greek. Pinned by the owner.
+**Body Font:** Google Sans. There is no second face.
 
-**Character:** One sans for everything, chosen by the owner as crystal clear and UI friendly. It is self-hosted (OFL) as three files covering Latin, Latin Extended and Greek, because place names appear in both scripts, and spans weights 400 to 700. Bold and slightly tightened for the headline, regular and open for conversation, semibold for anything you can press and for the figure that leads. The family is set through one custom property, and the headline's weight and tracking through two more, so the display voice can be retuned in one place.
+**Character:** One friendly geometric sans doing every job, from a 60px headline to an 11px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
 
 ### Hierarchy
-- **Display** (700, `clamp(2.5rem, 4.1vw, 3.6rem)`, 1.02, -0.025em): the hero headline only, balanced across about four lines on desktop and capped at 9.4em wide.
-- **Wordmark** (700, 22px, -0.035em): the product name beside the mark in the navigation.
-- **Question** (500, 18px; 17px on phones): the visitor's messages, balanced, with each area's name kept on one line.
-- **Lead** (400, 18px, 1.5; 17px on phones): the team's introduction under the headline, in muted, capped at 26em.
-- **Body** (400, 17px, 1.45): everything the team says, including the first sentence of the data reply on its own line in ink, and the text typed into the message field.
-- **Figure** (16px, tabular numerals): the numbers in the comparison: 600 in ink for the leader, 400 in muted for the figure it beats. The metric names between them are 400 at 15px in muted.
-- **Action** (600, 15px): buttons and chips. Navigation links are 500 at 15.5px; the text link is 600 at 16px.
-- **Label** (600, 15px): the team's name at the head of a reply and the area names heading each side of the comparison.
-- **Note** (400, 13px, muted): the centred line that opens the thread and says what kind of data answered it.
-- **Tag** (600, 11px, 0.02em): the state tag inside a reply.
-- **Place** (600, 11px, line-height 1): a place name on a map.
-- **Credit** (400, 11px, muted): the map credit at the foot of the reply.
+- **Display** (700, `clamp(2.75rem, 4vw, 3.75rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, in three lines.
+- **Headline** (700, `clamp(2.125rem, 2.78vw, 2.5rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
+- **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
+- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
+- **Title** (600, 18px/24px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
+- **Lede** (400, 17px on phones, 18px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the first screen and the close): the one sentence under a heading. The search field's own text is set at this size in ink.
+- **Body** (400, 16px, line-height 1.45): the report page, the conversation, form input. 15px for notes, panel text, a row of the place list and what a stop on the How line says.
+- **Figure** (600, 16px/22px, tabular): a number, always followed by its unit at 13px in `muted`. On a pinned card the figures are the card: two side by side at 18px/22px, each over its word at 11px in `muted` ("occupied", "a night"), with the area's name above at 13px weight 600 and its count of short-lets beside the name at 11px in `muted`.
+- **Action** (600, 15px): buttons, text links, switch options, tabs (500 until selected).
+- **Caption** (400, 13px/18px, `muted`): what a figure block covers, chart captions, notes under controls, what kind of place a row is.
+- **Micro** (600, 11px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
 
 ### Named Rules
-**The One Face Rule.** Everything in this world is Google Sans. The previous design's Inter and Barlow Condensed are still loaded for the sections not yet rebuilt and must not appear inside it.
+**The Seven Sizes Rule.** Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them.
 
-**The Six Sizes Rule.** Under the headline, text in the hero is 11, 13, 15, 16, 17 or 18px and nothing between. A new piece of text takes the size of the role it plays.
+**The Weight Not Case Rule.** A label is a sentence-case word at weight 600. There is no uppercase and no monospace anywhere, and tracking is never what makes something a label; the name of a body of water on a map is spaced out (0.08em) as maps do.
 
-**The Weight Leads Rule.** In a compared pair the leader is semibold ink and the figure it beats is regular muted; a pair with no leader stays semibold on both sides. Leading is never shown with a hue, a fill or a badge, so it cannot be mistaken for either area's colour.
+**The Tabular Rule.** Every surface that shows figures sets `tabular-nums`, and a figure's unit is smaller and muted beside it, never in a separate column.
 
-**The Tabular Figures Rule.** Any set of numbers a reader compares is set with tabular numerals so figures align digit for digit. A missing figure is an em dash, never a zero.
+**The Bold Twin Rule.** Where choosing an item makes it bolder (a tab, a contents entry), its bold setting is laid out invisibly under the regular one, so selecting moves nothing.
 
 ## Layout
 
-A single container up to 1440px wide with gutters of 20px on phones, 32px from 640px and 64px from 1024px.
+One centred column up to 1440px wide with gutters of 16px on phones, 32px from 640px and 64px from 1024px. Breakpoints are 640, 1024 and 1280px (the nav alone switches at 768px, the How line at 1100px, the search button's words at 480px), and the working surfaces also answer to window height (stage: 860 and 760px; cards: 880, 779 and 699px) so that an instrument and its action stay inside one screen on a laptop.
 
-From 1024px the hero is two columns in a 5:8 ratio with a 56px gap: headline, introduction and a text link on the left (starting 80px below the top of the thread); the thread on the right. The thread column is one viewport tall (`calc(100svh - 116px)`, never under 540px or over 840px): messages stack with 12px between them, older messages scroll inside the column with a thin scrollbar, and the message field stays at the bottom. The section starts 96px down to clear the fixed 72px navigation.
+- **First screen.** From 1024px one screen tall (at least 720px). The words sit in the left 42% of the column, at most 580px wide and vertically centred: headline, sentence, then the search field (up to 540px wide) with nothing under it. The picture is not in the column: it fills the right 58% of the screen from top to bottom, runs off the right edge, and fades into the paper on its left (over 24% of its width), under the nav (15%) and at its foot (6%). It has no frame. Below 1024px one column in reading order, and the picture becomes a band under the words, 364px tall (520px from 640px), the full width of the screen, fading in from its top. The band is a window onto a larger map (at least 860px wide), centred on the area in hand and never so far over that the map's own edge shows; the cards pinned beside their areas on the whole picture give way there to one card docked in the band's corner.
+- **The stage.** From 1024px a 7:5 grid, 40px apart (56px from 1280px), one viewport tall between 700 and 860px: the framed map on the left, three product panels on the right as one list divided by hairlines with one open at a time. The heading and its sentence share the row above, their bottoms aligned. Thin lines join the area to the panels on desktop only.
+- **The stack.** Three product cards up to 1312px wide, 16px apart, each a 56px header row (icon, name, the card's one action) over a body. From 1024px the body is a 3:9 grid (sentence and plain statements left, the working object right; Reports and Connector add a middle column for what drives the object) and each card pins 80px from the top, one header row lower than the last, so covered cards remain as working tabs.
+- **How the numbers are made.** Comes up over the cards, on the ground. The heading and its sentence share a 7:5 row as on the stage. Under them one line with five stops: from 1100px it runs left to right across five columns of slightly unequal width, each stop a square on the line with its name, its exhibit in a 164px row, a sentence and a fact beneath; at the fifth the line turns down and forks to the three products. Below 1100px the line is a rail down the left with the stops stacked beside it.
+- **The close.** A 7:5 grid on ink: heading and sentence left, the form right, aligned to their bottoms.
 
-Inside the thread the visitor's bubbles align right and take at most 85% of the width; the team's bubbles align left beside a 42px avatar column (30px on phones) and take at most 640px (560px for a short follow-up). The data reply is a fixed stack: the team's name, its sentence, the two area maps side by side in equal columns (12px apart, 10px on phones), the comparison, the credit. Each side of the comparison sits flush with the outer edge of its own map. A reply that will receive data holds its final shape while loading, so nothing moves when the figures land.
+Rhythm is small and even: 4 to 8px inside a row, 12 to 20px between parts of a block, 24 to 32px between blocks, and 64 to 104px only above and below a full section. Every pressable thing reaches a 44px target even when what shows is 12px.
 
-Below 1024px the hero is one column: headline, introduction, link, then the thread at full width. The message field is pinned to the bottom of the screen on a fade from transparent to the ground colour, so the thread passes under it cleanly. Below 768px the navigation links collapse into a menu. Below 640px the page tightens to reach the thread sooner: the section starts 76px down, 16px separates the introduction from the thread, the text link under the introduction is left out (the menu and the verdict's action lead to the Playground), and the maps become square.
-
-Desktop windows compact in two steps so the whole exchange and the field stay in view. At 960px tall or less the gap between messages drops to 8px, team bubbles take 12px of vertical padding, comparison rows tighten and the action chip drops from 44px to 36px. At 860px or less each map's frame also crops from 4:3 to 2:1 around its centre. Everywhere else, anything pressable is at least 44px tall.
+**The Card Is The Surface Rule.** Charts, tables, tabs and lists sit directly on their card, divided by hairlines. They do not get boxes of their own; the things that are boxed are objects in their own right (a sheet of paper, a message, a switch, a listing, a figure pinned to a map).
 
 ## Elevation & Depth
 
-Flat. Depth comes from tone and hairlines: white bubbles with a 1px line border on the ground, the tint chip inside white, the sea against the land. At rest on desktop no surface casts a shadow.
+Flat. Depth is said with hairlines and with tone: the ground, white, the olive tint, the orange wash. There is one shadow family, a soft ink shadow at 35% (`color-mix(in srgb, ink 35%, transparent)`) pulled in tight under the object, and it is used only where something lies on top of something else: paper on a card, a card or a control over a map, the field and its list over the first screen. A card pinned on the first screen's picture also has a one-pixel ink edge, because it sits on a busy drawing and not on a plain ground; that edge belongs to the card, not to the shadow family.
 
 ### Shadow Vocabulary
-- **Docked field** (`box-shadow: 0 10px 24px -12px` in ink at 35%): the message field on phones and tablets only, where it floats over the thread. Removed from 1024px, where the field sits in the layout.
+- **Sheet on a card** (`box-shadow: 0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow)`): the report sheet lying on the Reports card. It shortens in short windows so it stays inside the card.
+- **Sheet in a panel** (`box-shadow: 0 10px 20px -12px var(--th-shadow)`): the sample report page in the stage's Reports panel.
+- **Pinned to a map** (`box-shadow: 0 8px 16px -10px var(--th-shadow)`): an area's card on the first screen's picture, pinned beside its area or docked in the band's corner.
+- **Floating control** (`box-shadow: 0 8px 18px -10px var(--th-shadow)`): the zoom control on the stage map's top-right corner and the "Draw an area here" button on its bottom-left. The example listing's card takes nearly the same (`0 8px 18px -12px`).
+- **The way in** (`box-shadow: 0 12px 26px -16px var(--th-shadow)`): the search field. Its open list drops further (`0 20px 40px -20px`).
+- **Knock-out ring** (`box-shadow: 0 0 0 2px var(--th-surface)`): around a chart's hover dot, so it reads off the line. Not a shadow in effect.
 
 ### Named Rules
-**The Floats-Only Rule.** A shadow means the element is sitting over other content, and the docked field on small screens is the only case. Bubbles, chips, buttons, maps, the locator plate and the navigation never carry one. The scrolled navigation separates itself with an opaque ground and a bottom hairline instead. The halo behind a place name is a legibility device in the colour of the map beneath it, not elevation.
+**The Lying On Top Rule.** A shadow means "this is a separate thing resting on what is under it": a sheet, a pinned card, a floating control, the field. Product cards, stage panels, filled buttons and bubbles are flat at rest and stay flat on hover.
+
+**The Faded Edge Rule.** A map with no frame meets the paper by fading into it, with a mask on the drawing alone. What is drawn over the map (areas, corners, names, pinned cards) is on a sheet of its own and never fades.
+
+**The Covered Card Rule.** A card under another recedes by scaling its body to 0.97 and taking a 6% veil of ink, driven by scroll. Its header row does neither, because it is still a working link.
 
 ## Shapes
 
-Round and soft, with one deliberate exception. Message bubbles have a generous radius (26px) with a single tight corner (6px) at the bottom on the speaker's side: bottom-right for the visitor, bottom-left for the team. Buttons, the message field, avatars and key badges are full pills or circles. Actions that live inside a reply are softer rectangles (12px), each map is a rounded panel (14px), and the smallest pieces (the state tag at 6px, the locator plate at 7px) stay small.
+Three kinds of corner, each with a meaning. **Square** (0 radius, ink border, 9 to 17px): anything that marks a point, can be picked up, or is one counted unit, such as an area's corners (12px with a 2px border on the stage, 8px with a 1.5px border on the first screen's picture), a stop on the How line (11.5px), a chart's last value, the contents rail, the chosen question, the slider's thumb, the typing indicator, a night on a calendar (17px, 1.5px border). **Round** (full radius): a listing among many on a map being read (map dots, the key, a chart's hover dot), a button, and the search field. **Softly rounded**: surfaces, in a ladder of 6px (sheet, switch options, focus on inner controls), 8px (a card pinned on the first screen's picture), 10px (a row of the place list, the listing card), 12px (the switch, the select, the email field, the controls that float on the stage's map), 14px (the map frame), 16px (the place list, whose 10px rows sit 6px inside it) and 26px (the product cards).
 
-The exception is the vertex handle: a small unrounded square at each corner of a drawn area. On a map it is 7px (6px on phones), filled with the surface colour and bordered (1.5px) in the area's colour, the same size on screen whatever the map's width; on the brand mark it is filled with the ground colour and stroked in ink. It is the only hard-cornered form in the world. Area outlines themselves are straight-edged polygons with rounded joins and a 2px stroke in the area's colour; the 18% fill sits beneath the sea, so it tints the land only and stays one colour.
+Message shapes take the card's 26px on three corners and 6px on the corner nearest the speaker (bottom-right for the visitor, bottom-left for the answer and for a map sent as a message).
 
-Borders are hairlines (1px, line) on bubbles, maps and the locator plate; the message field is the one element with a heavier ink border (1.5px), which marks it as the thing to use.
+Lines: 2px for anything drawn as a shape (an area's outline in olive, chart lines and icons in ink, the selected tab's underline), 1.5px for a line that leads somewhere on the ground (the How line and its fork, underlines on links, the search field's ink outline), 1px for a hairline that ties one thing to another (in ink from an area to its pinned card, in olive from the stage's area to a panel), for a pinned card's ink edge and for every `line` divider and outline. Joins are round on the stage, in charts and in icons; the areas on the first screen's picture are drawn hard-cornered (mitred), over a thin white edge (5px, of which about 1.5px shows each side of the line) that lifts the line off the streets. Node corners are mitred. Hatching (ink on white at 135 degrees, 1.5px in 4px) means "taken but not counted": a night the owner blocked, the calendar's raw share. Dashed rules appear once, for a report finding the team has not written yet.
+
+**The Square Corner Rule.** If it can be dragged, chosen, or stands for a point on a map, a line or a chart, it is a square with an ink border: white when empty, olive when hovered or held, ink when chosen, light orange when it is the thing being counted.
 
 ## Components
 
 ### Buttons
-- **Shape:** full pill (9999px).
-- **Send (primary):** the action colour with dark text and a right arrow, 46px tall inside the message field, 20px side padding. On phones the label is hidden and only the arrow shows (14px side padding). One per view.
-- **Solid:** green-black with white text, 44px tall, 20px side padding. The navigation's "Ask the team"; 48px tall and full width in the phone menu.
-- **Hover / Focus:** background darkens over 0.15s (send to action-hover, solid to solid-hover); pressing scales to 0.97. Focus is a 2px ink outline offset 3px.
+Calm and exact: one shape, three fills, and each fill means something.
+- **Shape:** fully rounded (9999px), 46px tall with 22px side padding, 15px at weight 600, an arrow (18px, 2.4 stroke) after the words. 48px with 20px padding inside the search field; 40px in a card's header row; 42px on the stage in windows under 760px tall.
+- **Action (olive, white text):** the page's filled action, the next step with the visitor's place: "Show me" in the search field, and "Open the Playground, it's free" on the stage (under the sentence on phones, in the Playground panel from 640px) and in the Playground card.
+- **Solid (ink, white text):** the nav's "Open the Playground" and a request to the team ("Ask for a report", "Ask for access").
+- **Paper (beige, ink text):** the submit on the ink close; hover goes to white.
+- **Hover / Active:** the fill deepens over 0.15s and the arrow moves 3px in its direction over 0.2s; pressed scales to 0.97. Focus is a 2px ink outline offset 3px (paper on the close).
 
-### Chips
-- **Action chip:** a tint rectangle (12px radius) with ink text at 15px semibold and a trailing right arrow, 44px tall, 15px side padding. The follow-on action inside a team reply, and the only tint fill in the world. Its label shortens on phones. Hover darkens to tint-hover; press scales to 0.97.
-- **State tag:** a small solid tag with white text (20px tall, 6px radius, 11px semibold) beside the team's name, stating a condition of the answer such as "Demo data". Used for status, never as a section label.
-- **Key badge:** an 18px circle in the area's colour holding its letter (11px bold; dark on area A, white on area B). It sits on the outer side of the area's name: before it for area A, after it for area B.
-
-### Cards / Containers
-- **Visitor bubble:** olive, near-white text, 26px radius with the bottom-right corner at 6px, 14px by 22px padding (10px by 22px on phones), right-aligned, no border.
-- **Team bubble:** white, ink text, 1px line border, 26px radius with the bottom-left corner at 6px, 16 to 18px padding (14px on phones).
-- **Team avatar:** a solid disc holding the brand mark without handles, set at the bubble's bottom edge. A run of consecutive team messages carries one avatar, on its last message; the earlier ones keep the empty column so the bubbles stay aligned.
-- **Arrival:** each message fades and rises 14px from slightly smaller (0.98) over 0.5s on an ease-out-expo curve, scaling from its bottom-left. The example reply waits 1.5s so the question can be read, and the verdict follows 0.9s later. With reduced motion everything is present immediately and nothing animates.
-- **Loading:** the data reply is whole from first paint except for what the team has not said yet. Both maps show their roads, sea and drawn area; three olive dots bounce beside the team's name; the team's sentence is withheld with its line reserved; the comparison shows its rows with em dashes in the pending tone. Listings fade onto the maps and figures replace the dashes without anything moving.
-
-### Inputs / Fields
-- **Message field:** a white pill 64px tall with a 1.5px ink border, 17px text, a caret in the action colour, placeholder in the derived placeholder tone, and the send button docked inside its right end.
-- **Focus:** the whole field takes a 2px ink outline offset 3px; the input inside shows no separate ring.
-- **Empty submit:** returns focus to the field rather than showing an error.
+### Text links
+Ink at weight 600 with a 1.5px underline 4px below the baseline; on hover the underline drops to 7px over 0.2s. A link that goes down the page carries a down arrow that moves 3px on hover. Nav, footer and credit links are not underlined until hovered. A link inside a line of text keeps a 44px target with negative margins so the line does not move.
 
 ### Navigation
-- Fixed bar 72px tall, transparent over the hero; after 60px of scroll (or with the menu open) it takes the opaque ground colour with a bottom hairline.
-- Left: the brand mark (32px) and the wordmark. Right: text links at 15.5px medium in ink, whose underline (1.5px, offset 6px) fades in on hover, then the solid "Ask the team" button.
-- Below 768px the links collapse behind a 44px menu button; the open menu lists them as 48px rows divided by hairlines, with the solid button full width beneath.
+A fixed 72px bar: brand mark (32px) and wordmark left; three text links at 15px weight 500 and the solid button right. Transparent over the first screen, so the picture runs up under it; after 60px of scroll it takes the ground and a hairline. Below 768px the links fold into a menu of 48px rows divided by hairlines, each product with its icon at 24px, then a full-width solid button.
 
-### Text link
-Ink, semibold, always underlined (1.5px, offset 4px); on hover the underline drops to 7px. Used from 640px up for the quieter route to the Playground beside the primary action.
+### Place search
+The first screen's way in, and the largest control on the page.
+- **Field:** white, fully rounded, 60px tall, a 1.5px ink outline and the "way in" shadow; a 20px search glyph in `muted`, the text at 17px, a muted placeholder that says what to type, and the action button ("Show me" and an arrow) inside its right end. Below 480px, and between 1024 and 1179px where the words' column is narrow, the button is its arrow alone, a 48px circle.
+- **Focus:** the 2px ink ring goes round the whole field, offset 3px; the input itself shows none.
+- **List:** opens 8px under the field at its full width: white, hairline, 16px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is the olive tint. No match is one muted sentence in the list, never an empty box.
+- **Picking** a row or pressing the button hands the place to the stage and moves the page down to it. If the list of places cannot be fetched, the sentence under the field says so and the button opens the Playground.
 
-### Brand mark
-A five-point drawn area filled with area A's colour, with an ink outline and a ground-filled square handle at each vertex. Inside the team avatar it is drawn with a ground-coloured outline and no handles.
+### The picture and its pinned figures
+A tour of four drawn street maps of real towns (Limassol, Paphos, Larnaca, Protaras), each generated from OpenStreetMap data: land, sea and shore, parks, beach, single buildings and two weights of street, with no labels and no boundary lines of its own. One town shows at a time, and the picture runs by itself (see Motion). On it:
+- **Listings:** the town's short-lets as small round dots, `dot-out` until an area closes round them, then their fullness step inside its ring. A crowded area is thinned to dots that stand apart, so the shades stay readable.
+- **Areas:** three, a few streets wide, each a 2px olive line with hard corners over the olive tint, with a thin white edge under the line, and an 8px white square with a 1.5px ink border at every corner.
+- **Lead:** a 1px ink hairline from one corner of an area to its card.
+- **Pinned card:** white, a 1px ink edge, 8px radius, the "pinned" shadow, at least 148px wide. The area's name at 13px weight 600 with its count of short-lets beside it at 11px in `muted`; under them two figures side by side at 18px/22px weight 600 tabular, how full and what a night costs, each over its word at 11px in `muted` (from 1440px the name is 15px and the count and the words 13px, on a card at least 172px wide); and along the card's foot, under a 1px ink rule, a 6px bar filled to the occupancy in the fullness step the area falls in, ended by a 1px line of `occ-ring`. Cards are set over open water where they can be. An area with too few listings to quote is drawn without its card and its lead.
+- **Pointer:** a small drawn arrow, white with a 1.6px ink line, that goes round each area's corners as it is drawn.
+- **Name:** the town's name once, at 13px weight 600 with a halo in the land colour.
+- **Below 1024px:** the picture is a band that shows a few streets and follows the area in hand. Cards are not pinned on the map there: one card is docked in the band's bottom-left corner for the area the band is on, coming when that area closes and going when the band moves on; the town's name sits in its top-left corner at 15px; and only the area in hand is tinted, the others keeping their line and their listings.
+- **Credit line:** one 11px muted line at the picture's bottom-right (under the band below 1024px): the control that stops the tour, as ink words at weight 600 with a 12px glyph ("Pause the tour", "Play the tour") and a 44px target, then the key to the shades ("emptier", four ringed dots, "fuller"; left out between 1024 and 1279px), then the credit naming OpenStreetMap contributors and OpenMapTiles.
 
-### Area map
-One static street map per area, in a 4:3 panel (14px radius, hairline border, land-coloured ground). It is drawn, not tiled, and everything that needs no data is there at first paint, in this order from the bottom: the area's fill, the sea, a 1px shoreline, minor roads (0.7px), major roads (1.6px), the area's 2px outline, then its square handles. Strokes keep their width at any size. The view is framed so the area spans a little over half of the panel's tighter side, which leaves the surrounding streets and coast in view.
+### Switch
+Options in a white tray (12px radius, 3px padding, hairline), flat on its card. The chosen option is solid ink with white text on a 6px radius; an unchosen one tints olive on hover. Options are 44px tall at 15px weight 600. It is used once, for the kind of report ("For a property", "For an area") at the head of the Reports card's contents; from 1024px it spans the contents rail in two equal halves at 13px, and 15px again from 1280px. The stage's map no longer carries a switch: there is one map, and the visitor zooms it.
 
-When the listings arrive they fade in over 0.4s as dots that hold their size on screen: 2 to 2.6px in radius, three-quarters of that when an area holds more than 250, and about half for the faint dots outside the line. Listings that fall in the sea are not drawn, and no dot is drawn under a place name.
+### Cards / Containers
+- **Product card:** 26px radius, 1px hairline, flat, in its own ground: white for the Playground, the olive tint for Reports, the orange wash for the Connector. A 56px header row holds the icon (40px), the name and the card's one action, under a hairline. Body padding 16px on phones, 24px from 640px, 20 to 28px from 1024px.
+- **Stage panel:** not a card. A row in a hairline-divided list: icon, name, one muted sentence, one live line, a chevron; it opens by growing its row over 0.32s.
+- **Map frame:** 14px radius, hairline, the map above a 48px white bar that holds the count, the key and Reset. On phones the frame is the map alone and the count, key and credit sit under it on the ground.
+- **Report sheet:** white, 6px radius, no outline, the sheet shadow; a running head and a pager divided by hairlines.
+- **Listing card:** the example listing as its site shows it: white, hairline, 10px radius, a 44px light-orange square with a 1.5px ink border standing for its picture, then its kind at weight 600, its place and its price in `muted`. Always followed by the note "An example listing".
+- **Messages:** the visitor's in olive with `visitor-ink` text at weight 500, the answer on white with a hairline; 16px (17px from 640px), up to 35em wide.
 
-A phone-sized map (below 640px) is a different drawing, not a smaller one: a square frame that crops the sides, major roads only (1.2px), no dots outside the line, no place name and no locator.
+### Inputs / Fields
+- **Email field (on ink):** transparent, 1.5px `close-edge` outline, 12px radius, 48px tall; the outline goes to paper on hover and focus.
+- **Select (phones, report contents):** white, 1px `edge` outline, 12px radius, 48px tall, a drawn 2px ink chevron.
+- **Slider:** a 2px track filled in ink up to a 16px square white thumb with a 2px ink border; the thumb fills olive and grows to 1.2 on hover; the focus ring goes on the thumb.
+- **Tabs:** text at 15px, muted until hovered, ink at weight 600 when selected with a 2px ink underline on the row's own rule; an overflowing row fades at the hidden side and shows an arrow.
+- **Choice list (questions, contents):** rows divided by hairlines, each behind a 12px square corner that is ink when chosen.
 
-### Place name
-One real place name per map, as text over the drawing: 11px semibold ink on a single line, centred on its point, with a tight halo in the colour of whatever lies beneath it (the land colour, or the area's tinted land when the name sits inside the area), so it reads over roads without a box. It appears only when the map itself is at least 260px wide, so narrow desktop columns and phones carry none.
+### Brand mark and product icons
+The mark is a five-sided drawn area filled light orange, stroked in ink (2.2), with five square handles in the ground colour. The three product icons are drawn on a 32px grid in the same hand: a 2px ink line with round joins, small square white nodes, and exactly one shape filled with the marking orange. Each has one part that makes one small move when its product is opened (the pointer reaches its corner, the chart line draws, the cable seats). At the last stop of the How line they appear at 40px beside the product's name and one muted line.
 
-### Island locator
-A small plate (ground fill, hairline border, 7px radius, 4px by 5px padding) in the bottom-left corner of each map from 640px up: the whole island as a 44px-wide muted silhouette with one dot in the area's colour, ringed in the ground colour, where the area lies.
+### The area on the stage's map
+The stage has one map in one frame: the island, a single generated picture (sea, coast, forest, built-up ground, lakes and three weights of road, unlabelled), shown whole at first, enlarged in steps (2, 4 and 8 times) and, for a place picked in the search, opened on the ground round that place. On the whole island five towns are named by the page, each set in the sea beside it with a halo in the sea's colour (Nicosia on land); closer in, the towns in the window are named at their centres, and a picked place at its own. The area is a 2px olive outline with round joins and a 22% olive fill laid over the picture, with a 12px white square handle at each corner; held, the fill deepens and the outline thickens to 3px. Listings are dots: fullness steps with their ring inside the line, `dot-out` outside, drawn smaller on the whole island where a town is a few dots wide. Inside the line they are thinned until they stand side by side, never one on another, so a dense town is beads with readable shades and not a blot; outside it a finer grey stipple fills in between, so a town the area does not hold still reads as a town. A 1px olive line runs from the area to the open product panel; the lines to the others are `wire`. One corner sends out a slow ring, with the invitation "Drag a corner, or the whole area" set beside it like a place name, until a corner is first moved. The bar under the map counts what is inside the line and, for a picked place, says both counts ("421 short-lets inside, of 545 in Paphos").
+- **Zoom control:** floats on the frame's top-right corner, 10px in (12px from 640px): plus over minus, two 44px squares on one white surface with a hairline, a 12px radius and the floating shadow, divided by a hairline, each an 18px ink glyph. Hover and press tint olive; a step that cannot be taken stays in place and steps back in colour. Once the map is zoomed, "Whole island" appears under it on the same surface, smaller (36px tall, 13px weight 600, reaching a 44px target).
+- **Moving the map:** a mouse takes the map by its ground (a grab cursor) and a double click or double tap goes in on that point. Once the map is zoomed in a finger takes it by its ground too, or by a quick swipe across the area; on the whole island a finger's swipe scrolls the page.
+- **Draw an area here:** the same white surface as a 44px button at 15px weight 600 on the frame's bottom-left corner, offered whenever the map is zoomed in, and whenever nothing of the area is in the window to take hold of.
 
-### Comparison table
-A face-off under the pair of maps: area A's figures flush left under its map, the metric name centred between them, area B's figures flush right under its map, in columns of 36%, 28% and 36%. Each side is headed by the area's name and key badge. Rows are separated by the faint rule; metric names are muted and regular; figures are tabular, with the leader in semibold ink and the figure it beats in regular muted. Until the figures arrive every cell holds an em dash in the pending tone. A row with nothing to compare is not shown, during loading or after, and its height is held beneath the table so the bubble does not resize if it appears.
+### The How line
+One listing followed along a 1.5px `rail` line with five stops. Each stop is an 11.5px white square with a 2px ink border; the first, where the listing is published, is filled light orange. Each stop shows the listing as it is at that point, small and in the page's own marks: the listing card; a month of its calendar as thirty 17px squares (booked in the third fullness step with its ring, blocked in ink hatching, free in white with a hairline) over a key of the same three marks at 9px; a small map of three nested outlines (`wire`, `rail`, then an olive area with square corners) holding the listing as a light-orange square, with its place as a muted trail beneath; two bars 13px tall, the hatched one for what the calendar shows and the orange one for what is counted, each with its figure at 16px weight 600 and the nights it stands for; and the three products. Real counts and the time of the last read appear under their stops at weight 600 when they can be had and are left out when they cannot.
 
-### Map credit
-One right-aligned, balanced line at 11px in muted at the foot of the data reply, naming the map's sources as links whose underline appears on hover and on focus.
+### Charts and tables
+One 2px ink line between two hairlines, ending in a 9px square node; ink bars with their value above and name beneath; the value axis shows only its two ends and the time axis up to three ticks, at 11px. Tables are hairline rows; the leading figure of a row is ink at 600 and the others step back to muted.
+
+### Motion
+One easing, `cubic-bezier(0.16, 1, 0.3, 1)`. State changes take 0.15 to 0.2s; a panel opening takes 0.32s. Below the first screen each surface has one authored moment and plays it once: on the stage the handles drop, the outline closes, the fill and the listings arrive and the lines reach the panels; in the cards lines are traced, bars grow from the baseline, a sheet is dealt on from the right, a message comes up from the composer. The first screen's picture is the one thing that runs on. It arrives complete on the first town and holds (3.6s). Then, for each town in turn: the map slides in from the east as the last leaves to the west (3% of its width over 1.2s, fading over 0.9s), the listings appear west to east, and a pointer draws each area corner by corner (0.17s a corner), each corner dropping in as it is reached and the line traced behind it; when the line closes the tint and its white edge come in (0.3s), the listings inside take their colours and the card rises 6px into place (0.4s), and the area stays to be read (1.1s; 1.7s in the band) before the pointer goes on; after the third area everything holds for 2.2s more and leaves (0.45s). In the band the map moves from one area to the next over 0.7s, and the docked card goes as it moves. The tour waits while the picture is out of view, the tab is hidden or the visitor is typing in the search field, and its pause control stops it where it is. "How the numbers are made" has no motion of its own. No figure counts up in a card. Everything is in its final state before and without the motion, and `prefers-reduced-motion` removes all of it (the first town stays, complete, with no pause control; the typing squares become words; the pulsing corner is filled instead).
 
 ## Do's and Don'ts
 
 ### Do:
-- **Do** set everything in this world in Google Sans, with tabular numerals for compared figures.
-- **Do** take every colour from a `--th-*` role, and give a new element an existing role before adding one.
-- **Do** keep text under the headline to 11, 13, 15, 16, 17 or 18px.
-- **Do** keep area A in the tangerine and area B in the olive in every representation of that area.
-- **Do** mark the leading figure with weight and ink, and step the trailing one back to regular muted.
-- **Do** put dark text on the action colour and white or near-white text on the olive.
-- **Do** point each bubble's one tight corner (6px against 26px) at its speaker: bottom-right for the visitor, bottom-left for the team.
-- **Do** show a place with its own street map, the drawn outline with square handles, and solid dots for the listings inside the line.
-- **Do** draw the map and the area before any data arrives, and let only the listings and figures come in later.
-- **Do** simplify a phone-sized map (square, major roads, inside dots only) rather than shrinking the desktop one.
-- **Do** credit the map's sources wherever a map is shown.
-- **Do** hold a reply's final shape while its data loads, and show a missing figure as an em dash.
-- **Do** give a run of team messages one avatar, on its last message.
-- **Do** give everything pressable a visible hover, a 0.97 press, and a 2px ink focus outline offset 3px.
-- **Do** honour reduced motion: messages are visible by default and nothing animates.
-- **Do** keep pressable elements at least 44px tall on touch layouts.
+- **Do** draw anything new in the page's own hand: a 2px olive outline for an area, square nodes with an ink border, a 2px ink line for a chart or an icon, and at most one shape filled with the marking orange.
+- **Do** keep olive for what the visitor does or has drawn and light orange for what is counted or is the brand's.
+- **Do** keep the ground beige on every screen, and let a frameless map fade into it.
+- **Do** take every colour from a `--th-*` role, and mix a hairline from the card's own ground when the ground is tinted.
+- **Do** make a new map picture from open map data in the map colours recorded here, with no labels and no boundary lines of its own, and credit it on the page.
+- **Do** pin a figure to the place it describes: a white card with a one-pixel ink edge and the pinned shadow, joined to its area by an ink hairline, and say on the card what each figure is of.
+- **Do** set figures in tabular numerals at weight 600 with the unit beside them at 13px in muted, and say under each block what it covers.
+- **Do** send a stale figure to `pending` rather than hiding it, and leave out a figure that cannot be had rather than standing something in for it.
+- **Do** give every pressable thing a 44px target and a visible 2px focus ring, placed on the square itself for handles and sliders and round the whole field for the search.
+- **Do** put charts, tables and lists straight on the card, divided by hairlines.
+- **Do** make a new surface's one moment of motion the way the thing would be drawn, and leave everything in place under reduced motion.
 
 ### Don't:
-- **Don't** use white text on the action colour.
-- **Don't** use the tangerine for anything except area A, the send action, the brand mark and the field's caret.
-- **Don't** use a hue or a fill to say which figure leads; the tint belongs to the action chip.
-- **Don't** write a hex value into a component in this world; name the role.
-- **Don't** add shadows to bubbles, chips, buttons, maps or the navigation; only an element floating over content carries one.
-- **Don't** put a place name in a box, or draw a listing dot under one.
-- **Don't** use Inter or Barlow Condensed inside this world; they belong to the sections not yet rebuilt.
-- **Don't** round the vertex handles; the square handle is the one hard-cornered form.
-- **Don't** take colours, type or components from the dark sections below the hero or from the Playground when extending this world.
-- **Don't** use the state tag as a section label or decoration; it reports a condition of the answer.
+- **Don't** use teal or tangerine; both were tried on this page and dropped by the owner.
+- **Don't** open a screen on a dark ground; a dark first screen was built and rejected. The close is the one ink surface, and it is the palette turned over.
+- **Don't** use the marking orange for text, for a button, or without an ink line or ring around it.
+- **Don't** add pill or badge labels, eyebrow lines above headings, monospace labels, uppercase or letter-spaced labels, or logo tiles.
+- **Don't** add a second typeface or a type size outside the seven.
+- **Don't** put a shadow on a product card, a stage panel, a filled button or a hover state; a shadow is for something lying on top of something else, as a control floating on a map is.
+- **Don't** round a handle or a node, and don't square a listing dot on a map of many listings.
+- **Don't** put a frame, a label layer or administrative boundaries on a generated map picture.
+- **Don't** use a gradient as decoration; the only gradients are the fade at the edge of something that scrolls or of a frameless map, the slider's two-colour track, and the ink hatching that means "blocked".
+- **Don't** let a figure count up, flash or animate on the cards; it shows its true value throughout.
+- **Don't** invent testimonials, client names, prices or plan contents.

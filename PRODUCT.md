@@ -76,13 +76,24 @@ Open decisions:
   good UI. The site has to sell that.
 - It must not read as AI-generated, and it must not read as a research
   publication.
-- Headline in use: "The whole Cyprus property market, down to the street."
+- Headline in use: "Property data and insights for every street in Cyprus."
+  The owner asked for "something with property data and insights"
+  (2026-10-09) and said of the page built with this wording "its good"; it
+  replaced "The whole Cyprus property market, down to the street."
+- The landing page opens by asking the visitor for their own place (a search
+  box), as most sites in this field do. The ground stays beige on every
+  screen; a dark first screen was tried and rejected (2026-10-09).
 - The dashboard is called the Playground.
-- Palette: off-white (beige), olive and ink, with **teal** (#0E7F7A) as the
-  one accent. The owner kept the beige and olive after comparing seven
-  alternatives (2026-10-08), then replaced the earlier tangerine accent with
-  teal the same day, chosen from five accents rendered on the built page
-  ("I dont like the orange colour"; "teal is the way").
+- Palette: off-white (beige), ink, **olive** (#4A5E3A) and a **light orange**
+  (#F2A154). Olive does the working jobs (the drawn area, the filled
+  action); the light orange marks the listings, the product icons and the
+  brand mark. The owner kept the beige and olive after comparing seven
+  alternatives (2026-10-08). The accent has changed twice: tangerine was
+  replaced by teal on 2026-10-08 ("I dont like the orange colour"), and teal
+  was dropped on 2026-10-09 ("It does not look good and professional. We
+  could try a light orange with olive kind of thing"); of three
+  orange-and-olive renderings of the built page the owner chose the one where
+  olive leads.
 - Typeface: Google Sans, chosen 2026-10-08 for being clear and UI-friendly.
 
 ## Evidence on Hand
