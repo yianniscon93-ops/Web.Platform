@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
-import { euro, int, pct } from "@/lib/landing/areaLines";
+import { euro, int, lets, pct } from "@/lib/landing/areaLines";
 import { listingPoints } from "@/lib/landing/listingPoints";
 import { inPolygon } from "@/lib/landing/polygon";
 import type { TourArea, TourStop, TownPt } from "@/lib/landing/tour";
@@ -87,7 +87,7 @@ function Figures({ area }: { area: TourArea }) {
     <>
       <b>
         {area.name}
-        <small>{int(area.count)} short&#8209;lets</small>
+        <small>{lets(area.count)}</small>
       </b>
       <span>
         <em>{pct(area.occupied)}</em>
@@ -123,7 +123,10 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   const [stopped, setStopped] = useState(false);
   // True once the tour has moved: from then a stop plays its whole sequence. The first is complete on arrival.
   const [toured, setToured] = useState(false);
-  const [dots, setDots] = useState<Dots[] | null>(null);
+  // Each town's listings as dots, by its place in the tour: made when the town is next, not before.
+  const [dots, setDots] = useState<Record<number, Dots>>({});
+  // True once the page has settled and the tour is going to move: only then is the next town's map fetched.
+  const [ahead, setAhead] = useState(false);
   // True where the map is shown whole, with every area's figures pinned on it (from 1024px).
   const [wide, setWide] = useState(true);
   // True for a visitor who has asked for no motion: the first town stays, and there is no tour to pause.
@@ -135,9 +138,12 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   const canvas = useRef<HTMLCanvasElement>(null);
   const pointer = useRef<HTMLSpanElement>(null);
   const drawing = useRef<Animation | null>(null);
+  const maps = useRef<Record<number, HTMLImageElement | null>>({});
+  const asked = useRef(new Set<number>());
   const clock = useRef(0);
   const seen = useRef(true);
   const stop = stops[stopAt];
+  const next = (stopAt + 1) % stops.length;
 
   // When each of the stop's areas starts being drawn and is closed, and when the stop ends.
   const times = useMemo(() => {
@@ -152,48 +158,52 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     return { areas, set, end: t - MOVE_MS + HOLD_MS };
   }, [stop, wide]);
 
-  // The listings on each town's map, once: where each is, how full, and which of the town's areas it is inside.
+  // The listings on a town's map: where each is, how full, and which of the town's areas it is inside. They are
+  // made for the town showing and, once the tour is going to move, for the next one, so a visitor is not sent
+  // every town's map before they have seen the first.
   useEffect(() => {
-    let live = true;
-    Promise.all([listingPoints(), Promise.all(stops.map((s) => waterOf(s.src)))])
-      .then(([points, water]) => {
-        if (!live) return;
-        setDots(
-          stops.map((s, i) => {
-            const found: Found[] = [];
-            for (const p of points) {
-              const x = (p.lng - s.west) * s.perLng;
-              const y = (s.north - p.lat) * s.perLat;
-              if (x <= 0 || x >= s.size || y <= 0 || y >= s.size) continue;
-              const k = s.areas.findIndex((a) => inPolygon(x, y, a.ring));
-              if (k >= 0 || !water[i](x, y, s.size)) found.push([x, y, stepOf(p.effOccTodate), k < 0 ? OUT : k]);
-            }
-            const kept = [
-              ...s.areas.flatMap((_, k) => {
-                const own = found.filter((d) => d[3] === k);
-                return own.length <= SPARSE ? own : thin(spread(own, CELL), MOST_IN);
-              }),
-              ...thin(spread(found.filter((d) => d[3] === OUT), CELL / 2), MOST_OUT),
-            ];
-            return {
-              x: Float32Array.from(kept, (d) => d[0]),
-              y: Float32Array.from(kept, (d) => d[1]),
-              step: Uint8Array.from(kept, (d) => d[2]),
-              area: Uint8Array.from(kept, (d) => d[3]),
-              // Each arrives a moment after its neighbour to the west, with a little unevenness.
-              late: Float32Array.from(kept, (d, k) => (d[0] / s.size) * 700 + ((k * 37) % 11) * 12),
-              n: kept.length,
-            };
-          }),
-        );
-      })
-      .catch(() => {}); // Without the listings the maps, areas and figures are still there.
-    return () => {
-      live = false;
-    };
-  }, [stops]);
+    for (const i of ahead ? [stopAt, next] : [stopAt]) {
+      if (asked.current.has(i)) continue;
+      asked.current.add(i);
+      const s = stops[i];
+      Promise.all([listingPoints(), waterOf(s.src)])
+        .then(([points, water]) => {
+          const found: Found[] = [];
+          for (const p of points) {
+            const x = (p.lng - s.west) * s.perLng;
+            const y = (s.north - p.lat) * s.perLat;
+            if (x <= 0 || x >= s.size || y <= 0 || y >= s.size) continue;
+            const k = s.areas.findIndex((a) => inPolygon(x, y, a.ring));
+            if (k >= 0 || !water(x, y, s.size)) found.push([x, y, stepOf(p.effOccTodate), k < 0 ? OUT : k]);
+          }
+          const kept = [
+            ...s.areas.flatMap((_, k) => {
+              const own = found.filter((d) => d[3] === k);
+              return own.length <= SPARSE ? own : thin(spread(own, CELL), MOST_IN);
+            }),
+            ...thin(spread(found.filter((d) => d[3] === OUT), CELL / 2), MOST_OUT),
+          ];
+          const made: Dots = {
+            x: Float32Array.from(kept, (d) => d[0]),
+            y: Float32Array.from(kept, (d) => d[1]),
+            step: Uint8Array.from(kept, (d) => d[2]),
+            area: Uint8Array.from(kept, (d) => d[3]),
+            // Each arrives a moment after its neighbour to the west, with a little unevenness.
+            late: Float32Array.from(kept, (d, k) => (d[0] / s.size) * 700 + ((k * 37) % 11) * 12),
+            n: kept.length,
+          };
+          setDots((all) => ({ ...all, [i]: made }));
+        })
+        // Without the listings the map, its areas and their figures are still there. Asked again next time round.
+        .catch(() => asked.current.delete(i));
+    }
+  }, [stops, stopAt, next, ahead]);
 
-  useEffect(() => setStill(window.matchMedia("(prefers-reduced-motion: reduce)").matches), []);
+  useEffect(() => {
+    const none = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    setStill(none);
+    setAhead(!none);
+  }, []);
 
   useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
@@ -211,8 +221,11 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
 
   // The stop's clock, the dots, and the move to the next town. The clock only runs while the picture is in view,
   // the page is showing, and the visitor is neither typing in the search box nor has stopped the tour.
+  const mine = dots[stopAt] ?? null;
   useEffect(() => {
-    const d = dots?.[stopAt] ?? null;
+    const d = mine;
+    // The tour does not leave a town until the next one's map has come: it never shows areas on bare paper.
+    const ready = () => maps.current[next]?.complete ?? false;
     const paint = (t: number) => {
       const cv = canvas.current;
       const ctx = cv?.getContext("2d");
@@ -273,6 +286,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const hold = window.setInterval(() => {
         const typing = document.activeElement?.matches(".lh-box input") ?? false;
         if (!seen.current || document.hidden || typing) return;
+        if (clock.current >= FIRST_MS && !ready()) return;
         clock.current += 100;
         if (clock.current >= FIRST_MS) setLeaving(true);
         if (clock.current >= FIRST_MS + OUT_MS) go();
@@ -290,7 +304,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     const tick = (now: number) => {
       const typing = document.activeElement?.matches(".lh-box input") ?? false;
       const waiting = !seen.current || document.hidden || typing;
-      if (!waiting) clock.current += Math.min(64, now - last);
+      if (!waiting && !(clock.current >= times.end && !ready())) clock.current += Math.min(64, now - last);
       last = now;
       over.current?.toggleAttribute("data-waiting", waiting);
       const t = clock.current;
@@ -311,7 +325,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     return () => cancelAnimationFrame(raf);
     // `go` and `paint` are the stop's own: the effect is the stop's.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stopAt, dots, stopped, toured, still, times]);
+  }, [stopAt, mine, stopped, toured, still, times]);
 
   function go() {
     setWas(stopAt);
@@ -383,10 +397,17 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         {/* The drawings alone fade into the paper. What is drawn over them is on a sheet of its own, in the same
             square, so no corner or card fades with them. */}
         <div className="lh-sheet">
-          {stops.map((s, i) => (
+          {/* Three maps at most are in the page: the town showing, the one it took over from, which is still
+              leaving, and the next, which is fetched while this one plays. */}
+          {stops.map(
+            (s, i) =>
+              (i === stopAt || i === was || (ahead && i === next)) && (
             // eslint-disable-next-line @next/next/no-img-element -- static vector drawings, sized by the stylesheet
             <img
               key={s.key}
+              ref={(el) => {
+                maps.current[i] = el;
+              }}
               className="lh-map"
               src={s.src}
               alt=""
@@ -398,7 +419,8 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               style={focus(s, i)}
               decoding="async"
             />
-          ))}
+              ),
+          )}
         </div>
         <div ref={over} className="lh-over" aria-hidden="true">
           <div ref={sheet} className="lh-map" data-pan={pan} style={focus(stop, stopAt)}>
@@ -478,6 +500,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         )}
         {/* What the shades of the listings inside an area mean, as on the stage's map. */}
         <span className="lh-key">
+          <span className="lh-key-of">Short&#8209;lets this season:</span>
           emptier
           <span className="th-key-dots" aria-hidden="true">
             <i />
@@ -486,7 +509,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             <i />
           </span>
           fuller
-          <span className="sr-only">: listings inside an area are shaded by how full they have been this season</span>
+          <span className="sr-only">: the short&#8209;lets inside an area are shaded by how full they have been this season</span>
         </span>
         {demo && <span className="th-tag">Demo data</span>}
         <span>

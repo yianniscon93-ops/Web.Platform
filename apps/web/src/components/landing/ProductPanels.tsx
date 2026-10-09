@@ -54,10 +54,12 @@ export interface ProductPanelsProps {
   /** The area moved and its figures have not arrived yet; the old ones stay, marked. */
   pending: boolean;
   playgroundHref: string;
-  open: ProductId;
+  /** The open panel, or null when the visitor has closed them all. */
+  open: ProductId | null;
   /** True once the visitor has opened a panel: an opening panel's icon then makes its one small move. */
   lively: boolean;
-  onOpen: (id: ProductId) => void;
+  /** A header was pressed: its panel opens, or closes if it was the open one. */
+  onToggle: (id: ProductId) => void;
   /** Each panel's icon, for the lines that run to them. */
   iconRef: (id: ProductId) => (el: HTMLSpanElement | null) => void;
 }
@@ -74,7 +76,7 @@ function Panel({
   icon,
   open,
   lively,
-  onOpen,
+  onToggle,
   iconRef,
   children,
 }: {
@@ -89,7 +91,7 @@ function Panel({
   open: boolean;
   /** True when the visitor opened this panel: its icon then makes its one small move. */
   lively: boolean;
-  onOpen: (id: ProductId) => void;
+  onToggle: (id: ProductId) => void;
   iconRef: (el: HTMLSpanElement | null) => void;
   children: React.ReactNode;
 }) {
@@ -108,9 +110,7 @@ function Panel({
                 id={`th-${id}-head`}
                 aria-expanded={open}
                 aria-controls={`th-${id}-body`}
-                // One panel is always open, so the open one cannot be collapsed.
-                aria-disabled={open || undefined}
-                onClick={() => onOpen(id)}
+                onClick={() => onToggle(id)}
               >
                 {name}
               </button>
@@ -282,9 +282,10 @@ function MarketsTable({
 }
 
 /**
- * The three products, each made from the area on the map. One panel is open
- * at a time; a header opens its panel on click, Enter or Space, never on focus
- * alone, and nothing advances on its own.
+ * The three products, each made from the area on the map. At most one panel
+ * is open at a time: a header opens its panel, closing the one that was open,
+ * and pressed again closes its own, so all three can be shut. It answers to a
+ * click, Enter or Space, never to focus alone, and nothing advances on its own.
  */
 export default function ProductPanels({
   place,
@@ -297,7 +298,7 @@ export default function ProductPanels({
   playgroundHref,
   open,
   lively,
-  onOpen,
+  onToggle,
   iconRef,
 }: ProductPanelsProps) {
   const stats = figures?.stats ?? null;
@@ -330,7 +331,7 @@ export default function ProductPanels({
         icon={<PlaygroundIcon />}
         open={open === "playground"}
         lively={lively}
-        onOpen={onOpen}
+        onToggle={onToggle}
         iconRef={iconRef("playground")}
       >
         {status === "error" ? (
@@ -360,7 +361,7 @@ export default function ProductPanels({
         icon={<ReportsIcon />}
         open={open === "reports"}
         lively={lively}
-        onOpen={onOpen}
+        onToggle={onToggle}
         iconRef={iconRef("reports")}
       >
         <article className="th-sheet" aria-busy={late || undefined}>
@@ -404,7 +405,7 @@ export default function ProductPanels({
         icon={<ConnectorIcon />}
         open={open === "connector"}
         lively={lively}
-        onOpen={onOpen}
+        onToggle={onToggle}
         iconRef={iconRef("connector")}
       >
         <div className="th-exchange" aria-busy={late || undefined}>

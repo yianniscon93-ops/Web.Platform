@@ -8,6 +8,8 @@
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
 .lh .th-lede { align-self: auto; margin: 14px 0 0; }
+/* The name, picked out of the headline's own letters ("Prop…sights") in the mark's colour. */
+.lh-name { color: var(--th-mark); }
 
 /* The way in: one field and its button, and the list of places that opens under it. */
 .lh-find { width: 100%; max-width: 540px; margin-top: 24px; }
@@ -93,12 +95,14 @@
 .lh-dots, .lh-stop, .lh-stop > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .lh-stop, .lh-dots[data-leaving] { transition: opacity 0.4s ease; }
 .lh-stop[data-leaving], .lh-dots[data-leaving] { opacity: 0; }
-/* An area: a hard-cornered line, drawn corner to corner. When it closes it sets: the tint comes in with a thin
-   white edge under the line, which lifts the line off the streets, and the line to its figures follows. */
-.lh-area { fill: none; stroke: var(--th-a); stroke-width: calc(2px * var(--u, 2)); stroke-linejoin: miter; }
+/* An area: a firm, hard-cornered line, drawn corner to corner. When it closes it sets: a light tint comes in,
+   clear enough to read the streets through, with a thin white edge under the line, which lifts the line off
+   the streets, and the line to its figures follows. */
+.lh-area { fill: none; stroke: var(--th-a); stroke-width: calc(2.5px * var(--u, 2)); stroke-linejoin: miter; }
 .lh-area-fill {
   fill: var(--th-a);
-  fill-opacity: var(--th-area-tint);
+  /* Lighter than the stage's area: a street map is under it, and its streets and listings are to be read through it. */
+  fill-opacity: 0.12;
   stroke: var(--th-surface);
   stroke-width: calc(5px * var(--u, 2));
   stroke-linejoin: miter;
@@ -148,7 +152,7 @@
 .lh-pin[data-side="right"] { transform: translateX(-100%); }
 .lh-pin b { display: flex; grid-column: 1 / -1; align-items: baseline; justify-content: space-between; gap: 14px; font-size: 13px; font-weight: 600; line-height: 18px; }
 .lh-pin small { color: var(--th-muted); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; }
-.lh-pin span { display: grid; margin-top: 5px; color: var(--th-muted); font-size: 11px; line-height: 14px; }
+.lh-pin span { display: grid; margin-top: 5px; color: var(--th-muted); font-size: 13px; line-height: 16px; }
 .lh-pin em { color: var(--th-ink); font-size: 18px; font-style: normal; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; }
 .lh-pin i { grid-column: 1 / -1; height: 6px; margin: 8px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); }
 .lh-pin i::before { display: block; width: var(--full); height: 100%; border-right: 1px solid var(--th-occ-ring); content: ""; }
@@ -170,6 +174,7 @@
 .lh-stopper::after { position: absolute; inset: -10px -6px; content: ""; }
 /* What the shades mean: four dots between two words, as under the stage's map. */
 .lh-key { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
+.lh-key-of { margin-right: 2px; }
 .lh-credit a { text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
 .lh-credit a:hover, .lh-credit a:focus-visible { text-decoration-color: currentColor; }
 /* The stage's own heading, now the page's second: the section-heading size. */
@@ -202,15 +207,21 @@
   }
   .lh-map { top: 50%; right: 0; left: auto; width: max(100%, 100svh, 720px); transform: translateY(-50%); }
   .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: visible; }
+  /* The town's name is the picture's title: the largest words on the map. */
+  .lh-stop .lh-where { font-size: 17px; }
   .lh-dock, .lh-named { visibility: hidden; }
   .lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 1; }
   .lh-key { pointer-events: none; }
   .lh-credit { position: absolute; right: 16px; bottom: 10px; justify-content: flex-end; padding: 0; }
   .lh-stopper { pointer-events: auto; }
 }
-/* Just above 1024px the credit row has one line's room beside the cards: the key waits for a wider picture. */
+/* Just above 1024px the credit row has one line's room beside the cards: the key waits for a wider picture,
+   and what it is a key to ("Short-lets this season") for a wider one still. */
 @media (min-width: 1024px) and (max-width: 1279px) {
   .lh-key { display: none; }
+}
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .lh-key-of { display: none; }
 }
 /* A big picture takes bigger words on its cards. */
 @media (min-width: 1440px) {

@@ -19,10 +19,19 @@ const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> = {
   limassol: {
     areas: [
       { name: "Old town", ring: [[730, 990], [1010, 940], [1070, 1160], [900, 1250], [720, 1190]], at: [770, 720], side: "right", from: 0 },
-      { name: "Marina", ring: [[580, 1330], [810, 1290], [860, 1450], [720, 1510], [580, 1450]], at: [1030, 1300], side: "left", from: 2 },
+      { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1560, 400], side: "right", from: 1 },
       { name: "Seafront", ring: [[1100, 740], [1350, 680], [1440, 860], [1260, 1010], [1090, 940]], at: [1545, 1085], side: "right", from: 3 },
     ],
-    where: [1010, 470],
+    where: [900, 420],
+  },
+  // Inland, so its cards lie on streets. The old town is the part of the walled city this side of the line.
+  nicosia: {
+    areas: [
+      { name: "Old town", ring: [[560, 560], [1040, 550], [1080, 660], [900, 790], [690, 780]], at: [1160, 500], side: "left", from: 1 },
+      { name: "Makarios Avenue", ring: [[600, 850], [880, 840], [990, 1050], [820, 1180], [600, 1080]], at: [1575, 880], side: "right", from: 2 },
+      { name: "Agioi Omologites", ring: [[630, 1250], [960, 1180], [1020, 1290], [900, 1380], [680, 1380]], at: [1575, 1200], side: "right", from: 2 },
+    ],
+    where: [1340, 330],
   },
   paphos: {
     areas: [
@@ -31,6 +40,14 @@ const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> = {
       { name: "Poseidonos Avenue", ring: [[850, 1120], [990, 1000], [1110, 1180], [1080, 1400], [960, 1330]], at: [1575, 1040], side: "right", from: 2 },
     ],
     where: [1180, 620],
+  },
+  ayianapa: {
+    areas: [
+      { name: "Agias Mavris", ring: [[600, 650], [720, 570], [875, 585], [878, 765], [640, 775]], at: [870, 830], side: "right", from: 4 },
+      { name: "Town centre", ring: [[900, 540], [1130, 530], [1230, 690], [1100, 820], [900, 780]], at: [1575, 300], side: "right", from: 1 },
+      { name: "Harbour", ring: [[990, 880], [1170, 870], [1250, 1000], [1160, 1120], [1010, 1050]], at: [940, 1180], side: "right", from: 4 },
+    ],
+    where: [700, 440],
   },
   larnaca: {
     areas: [
@@ -42,11 +59,11 @@ const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> = {
   },
   protaras: {
     areas: [
-      { name: "Sunrise Beach", ring: [[900, 480], [1010, 400], [1110, 560], [1040, 660], [890, 600]], at: [1180, 290], side: "left", from: 2 },
+      { name: "Pernera", ring: [[700, 230], [790, 170], [880, 250], [870, 490], [730, 500]], at: [1180, 290], side: "left", from: 2 },
       { name: "Protaras centre", ring: [[900, 665], [1040, 715], [1120, 810], [1100, 940], [900, 900]], at: [870, 760], side: "right", from: 4 },
       { name: "Fig Tree Bay", ring: [[1170, 700], [1260, 740], [1390, 870], [1280, 960], [1150, 840]], at: [1575, 520], side: "right", from: 2 },
     ],
-    where: [640, 470],
+    where: [600, 600],
   },
 };
 
@@ -77,7 +94,7 @@ async function measured(town: HeroTown, area: Drawn): Promise<{ area: TourArea; 
 
 /**
  * The landing's first screen: the headline, one sentence, and a box that asks the visitor for their own place
- * (PlaceSearch, which hands it to the stage below). Beside them a picture that moves by itself: a tour of four
+ * (PlaceSearch, which hands it to the stage below). Beside them a picture that moves by itself: a tour of six
  * towns, each a drawn map made from open map data (scripts/build-hero-town.mjs), on which the listings appear
  * and three areas a few streets wide are drawn one after another, each with how full its short-lets are and
  * what a night in them costs pinned beside it (TownTour). The figures are asked for here, on the server.
@@ -101,10 +118,13 @@ export default async function LandingHero() {
     <section className="th-landing lh">
       <div className="lh-in">
         <div className="lh-copy">
-          <h1 className="th-h1 m-0">Property data and insights for every street in Cyprus.</h1>
+          {/* The name is in the headline: "Prop" and "sights" wear the mark's colour. It is read out as plain words. */}
+          <h1 className="th-h1 m-0" aria-label="Property data and insights for every street in Cyprus.">
+            <span className="lh-name">Prop</span>erty data and in<span className="lh-name">sights</span> for every street in Cyprus.
+          </h1>
           <p className="th-lede m-0">
-            We are a small data team in Cyprus. Every day we read every short&#8209;let, long&#8209;let and
-            for&#8209;sale listing on the island and turn them into numbers you can act on.
+            We are a small data team in Cyprus. Each day we read every short&#8209;let, long&#8209;let and
+            for&#8209;sale listing on the island and turn them all into numbers you can act on.
           </p>
           <PlaceSearch />
         </div>

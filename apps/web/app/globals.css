@@ -706,12 +706,14 @@
 .th-panel-title { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
 .th-panel-title h2 { font-size: 18px; font-weight: 600; line-height: 24px; }
 .th-panel-title button { cursor: pointer; }
-.th-panel-title button[aria-disabled] { cursor: default; }
-/* The heading's button covers the whole header. */
-.th-panel-title button::after { content: ""; position: absolute; inset: 0; border-radius: 6px; }
+/* The heading's button covers the whole header, and lies over everything in it: the chevron is turned when its
+   panel is open and the icon moves as it opens, and a transformed thing would otherwise come out on top and
+   take the press for itself. */
+.th-panel-title button::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: 6px; }
 .th-landing .th-panel-title button:focus-visible { outline: none; }
 .th-panel-title button:focus-visible::after { outline: 2px solid var(--th-focus); outline-offset: 1px; }
-.th-panel:not([data-open]) .th-panel-head:hover h2 { text-decoration: underline 1.5px; text-underline-offset: 4px; }
+/* Every header can be pressed, the open one to shut it: each says so the same way. */
+.th-panel-head:hover h2 { text-decoration: underline 1.5px; text-underline-offset: 4px; }
 .th-panel-about { color: var(--th-muted); font-size: 15px; line-height: 22px; }
 .th-panel-live { font-size: 15px; font-weight: 500; line-height: 22px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
 .th-panel-chevron { margin-top: 3px; transition: transform 0.32s var(--th-ease); }
@@ -866,8 +868,9 @@
   /* Three columns in a phone's width: each figure stands over its unit, so no cell runs into the next. */
   .th-markets td { line-height: 18px; vertical-align: top; }
   .th-markets td b { display: block; line-height: 22px; }
-  /* A unit longer than its column ("occupied this season") takes a second line there, not the next column's room. */
-  .th-markets td span { white-space: normal; }
+  /* A unit longer than its column ("occupied this season") takes a second line there, not the next column's room,
+     and so does a figure that is a range ("€1,600 to €3,300"). */
+  .th-markets td b, .th-markets td span { white-space: normal; }
 }
 @media (min-width: 640px) {
   .th-go-top { display: none; }

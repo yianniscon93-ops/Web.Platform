@@ -19,6 +19,11 @@ lib/db          Drizzle ORM schema + Postgres client (schema source of truth
 - **Dev DB access:** SSH tunnel —
   `ssh -N -L 5433:localhost:5432 root@<server>` then
   `DATABASE_URL=postgresql://bnb:bnb@localhost:5433/bnb`.
+  `apps/web/.env.local` holds that URL, so with the tunnel open `next dev`
+  is on live data (an API answer's `source` says `"live"`). With the tunnel
+  closed every query waits out its connect timeout and then falls back to
+  demo data, so either open the tunnel or start with `DATABASE_URL=` empty
+  for demo data straight away.
 
 ## Related repos
 

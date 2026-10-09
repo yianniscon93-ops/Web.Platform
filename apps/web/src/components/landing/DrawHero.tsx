@@ -170,7 +170,8 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
   const [figures, setFigures] = useState<AreaFigures | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [pending, setPending] = useState(false);
-  const [open, setOpen] = useState<ProductId>("playground");
+  // The open panel: the Playground's to begin with, and none once the visitor has closed the open one.
+  const [open, setOpen] = useState<ProductId | null>("playground");
   // True once the visitor has opened a panel: from then an opening panel's icon makes its small move.
   const [lively, setLively] = useState(false);
   const [intro, setIntro] = useState(true);
@@ -322,7 +323,7 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
       if (!icon) return;
       const x1 = icon.left - o.left - 7;
       const d = wire(x0, y0, Math.round((x0 + x1) / 2), x1, Math.round(icon.top + icon.height / 2 - o.top) + 0.5);
-      // The open panel's line is drawn once, on top, in the area's colour.
+      // The open panel's line is drawn once, on top, in the area's colour. With every panel shut, none is.
       if (id === openRef.current) lead = d;
       paths[i].setAttribute("d", id === openRef.current ? "" : d);
     });
@@ -411,8 +412,8 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
     []
   );
 
-  const onOpen = useCallback((id: ProductId) => {
-    setOpen(id);
+  const onToggle = useCallback((id: ProductId) => {
+    setOpen((was) => (was === id ? null : id));
     setLively(true);
   }, []);
 
@@ -509,7 +510,7 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
           playgroundHref={playgroundHref}
           open={open}
           lively={lively}
-          onOpen={onOpen}
+          onToggle={onToggle}
           iconRef={iconRef}
         />
 

@@ -24,10 +24,6 @@
 // The colours are the page's tokens, baked in: an SVG shown as an image cannot
 // read CSS variables. If a token changes, change it here and rerun.
 //
-// This script first drew Limassol alone, as public/landing/hero-town.svg with
-// src/lib/landing/heroTown.ts. It no longer writes those two: town-limassol.svg
-// is the same drawing, and they can go once nothing imports heroTown.ts.
-
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -39,17 +35,25 @@ const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const OUT_DIR = join(ROOT, "public/landing"); // town-<key>.svg, one for each town
 const OUT_TS = join(ROOT, "src/lib/landing/heroTowns.ts");
 const CACHE = process.env.LANDING_MAPS_CACHE;
+// NAMES=1 also lists each view's named places and streets with where they fall, for siting the areas drawn on it.
+const NAMES = !!process.env.NAMES;
 
 // The towns and the ground shown of each: the latitudes `south` to `north`, and
 // as far west and east of the longitude `lng` as makes that ground square (see
 // the projection below). `sea` and `land` are [lat, lng] of a point in the open
 // sea and of one in the built-up town, for the check that the water is the
-// right way round. The order here is the order in heroTowns.ts.
+// right way round; a town with no sea in its view has no `sea`. The order here
+// is the order in heroTowns.ts, which is the order the first screen's tour
+// visits them in.
 const TOWNS = [
   // The old port and castle are near 34.672 N 33.042 E, the marina just west of them; the seafront runs north-east from there.
   { key: "limassol", name: "Limassol", south: 34.665, north: 34.695, lng: 33.04, sea: [34.667, 33.052], land: [34.69, 33.03] },
+  // The walled old town is a circle about 1.6 km across round 35.174 N 33.364 E; the modern centre runs south from it. Inland.
+  { key: "nicosia", name: "Nicosia", south: 35.154, north: 35.184, lng: 33.364, land: [35.165, 33.362] },
   // Kato Paphos: the harbour and castle are near 34.7545 N 32.4075 E, the hotel seafront runs east from there.
   { key: "paphos", name: "Paphos", south: 34.745, north: 34.775, lng: 32.418, sea: [34.748, 32.405], land: [34.77, 32.425] },
+  // The harbour is near 34.982 N 34.003 E, the monastery and the square just north of it; Nissi Avenue runs west along the coast.
+  { key: "ayianapa", name: "Ayia Napa", south: 34.972, north: 35.002, lng: 33.995, sea: [34.975, 33.995], land: [34.992, 33.998] },
   // The Finikoudes promenade and the marina are near 34.915 N 33.6385 E; the sea is to the east.
   { key: "larnaca", name: "Larnaca", south: 34.898, north: 34.928, lng: 33.628, sea: [34.91, 33.644], land: [34.915, 33.625] },
   // Fig Tree Bay is near 35.0122 N 34.0585 E; the sea is to the north-east (a headland closes the bay on its east, so the sea point is off the long beach north of it).
@@ -555,16 +559,29 @@ async function build(town) {
   // `waterExact` and `pierExact` the rings, to tell which side of an edge is sea.
   const raw = { green: [], sand: [], water: [], building: [], pierArea: [], pier: [], minor: [], major: [], coast: [], waterExact: [], pierExact: [] };
   const minArea = { green: MIN_AREA, sand: MIN_AREA, water: MIN_WATER_AREA, building: MIN_BUILDING_AREA, pierArea: MIN_PIECE };
+  const named = new Set(); // with NAMES=1: "kind, name, x,y" of the named places and streets in the view
   const found = {}; // "layer class kind" → features in the tiles, for the log
   const used = {}; // the same → where they were drawn and how many
   let tiles = 0;
 
   for (let tx = x0; tx <= x1; tx++) {
     for (let ty = y0; ty <= y1; ty++) {
-      const layers = readTile(await fetchTile(template, tx, ty), ["water", "landcover", "landuse", "park", "building", "transportation"]);
+      const layers = readTile(await fetchTile(template, tx, ty), ["water", "landcover", "landuse", "park", "building", "transportation", ...(NAMES ? ["place", "transportation_name", "water_name"] : [])]);
       tiles++;
       for (const [name, layer] of Object.entries(layers)) {
         const toView = ([px, py]) => project(tileToLat(ty + py / layer.extent), tileToLng(tx + px / layer.extent));
+        if (name === "place" || name === "transportation_name" || name === "water_name") {
+          // For siting the areas the page draws on this map (NAMES=1): where each named place and street falls.
+          for (const f of layer.features) {
+            const pts = f.geometry.flat().map(toView);
+            const said = f.props["name:en"] ?? f.props["name:latin"] ?? f.props.name;
+            if (!said || !pts.length) continue;
+            const [x, y] = pts[Math.floor(pts.length / 2)];
+            if (x < 0 || x > VIEW || y < 0 || y > VIEW) continue;
+            named.add(`${name === "place" ? "place " + (f.props.class ?? "") : name === "water_name" ? "water" : "street"}\t${said}\t${Math.round(x / 20) * 20},${Math.round(y / 20) * 20}`);
+          }
+          continue;
+        }
         // The tile's own ground and `pad` tile units round it, no further than the view: [lo, hi] in view units.
         const box = (pad) => {
           const lo = toView([-pad, -pad]);
@@ -634,12 +651,12 @@ async function build(town) {
   };
 
   // Sea and land the right way round: the town's point in the open sea is water, its point in the town is not.
-  const sea = project(...town.sea);
+  const sea = town.sea ? project(...town.sea) : null;
   const land = project(...town.land);
-  for (const v of [...sea, ...land]) {
+  for (const v of [...(sea ?? []), ...land]) {
     if (v < 0 || v > VIEW) throw new Error(`${town.name}: a sea or land check point is outside the view`);
   }
-  if (!wet(sea) || wet(land)) throw new Error(`${town.name}: the water layer has sea and land swapped`);
+  if ((sea && !wet(sea)) || wet(land)) throw new Error(`${town.name}: the water layer has sea and land swapped`);
   // No shape but the sea may cover a large part of the view (a protected area drawn as a park would).
   for (const key of ["green", "sand", "building"]) {
     for (const ring of layersOut[key]) {
@@ -674,6 +691,7 @@ async function build(town) {
   for (const [key, parts] of Object.entries(layersOut)) {
     console.log(`  ${key}: ${parts.length} ${["shore", "pier", "minor", "major"].includes(key) ? "lines" : "rings"}, ${parts.reduce((n, p) => n + p.length, 0)} points`);
   }
+  if (NAMES) console.log(`named in the view (x,y in view units):\n${[...named].sort().map((n) => "  " + n).join("\n")}`);
   const bytes = Buffer.byteLength(svg);
   console.log(`svg: ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
   if (bytes > MAX_BYTES) throw new Error(`${town.name}: the map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise BUILDING_TOLERANCE or MIN_BUILDING_AREA`);

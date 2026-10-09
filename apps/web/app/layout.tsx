@@ -16,19 +16,19 @@ const barlowCondensed = Barlow_Condensed({
 });
 
 export const metadata: Metadata = {
-  title: "PropSights — Cyprus STR Market Intelligence",
+  title: "PropSights: property data and insights for every street in Cyprus",
   description:
-    "Live market intelligence for every short-term rental in Cyprus. Know what every area actually earns.",
+    "Short-let, long-let and for-sale listings across Cyprus, read every day by a small data team. Search a place or draw an area and get its numbers.",
   robots: { index: true, follow: true },
   openGraph: {
-    title: "PropSights — Cyprus STR Market Intelligence",
-    description: "Turn Cyprus property data into confident decisions.",
+    title: "PropSights: property data and insights for every street in Cyprus",
+    description: "Search a place in Cyprus or draw an area, and get its short-let, long-let and for-sale numbers.",
     type: "website",
   },
   twitter: {
     card: "summary_large_image",
-    title: "PropSights — Cyprus STR Market Intelligence",
-    description: "Turn Cyprus property data into confident decisions.",
+    title: "PropSights: property data and insights for every street in Cyprus",
+    description: "Search a place in Cyprus or draw an area, and get its short-let, long-let and for-sale numbers.",
   },
 };
 

@@ -2,7 +2,7 @@
 
 The first screen says what PropSights is and asks the visitor for their own
 place: a headline, one sentence, a search box, and a picture that moves by
-itself, a tour of four drawn town maps with areas drawn on them and what the
+itself, a tour of six drawn town maps with areas drawn on them and what the
 short-lets inside come to. The second screen, the stage,
 lets the visitor try the mechanism: a map with a hand-drawn area, joined by
 thin lines to three product panels made from it. Under it, one card per
@@ -34,7 +34,14 @@ map, not out to the Playground.
 
 Left, from 1024px: the `h1` ("Property data and insights for every street
 in Cyprus."), one sentence
-saying who the team is and what it does, and `PlaceSearch`.
+saying who the team is and what it does, and `PlaceSearch`. In the
+headline the letters "Prop" of "Property" and "sights" of "insights" wear
+the mark's light orange (`.lh-name`), so the name is read out of the
+sentence (owner, 2026-10-09: "make Prop with the light orange colour and
+sights the same"). The `h1` carries the plain sentence as its
+`aria-label`. The light orange is 1.9:1 on the ground, below the 3:1 asked
+of large text; it is the owner's choice of colour and the letters are 40px
+or more and bold.
 
 `PlaceSearch` is a combobox over `GET /api/dashboard/areas` (the
 Playground's own list of places). Focused, it lists the six places with the
@@ -48,14 +55,42 @@ example places under the box (owner, 2026-10-09: "remove them from there
 and let the map hover ... by itself").
 
 Right, from 1024px, filling 58% of the screen and fading into the paper on
-its left and under the nav: the tour (`TownTour.tsx`). Its maps are four
-drawings, `public/landing/town-{limassol,paphos,larnaca,protaras}.svg`,
-made by `scripts/build-hero-town.mjs` from OpenFreeMap z14 vector tiles
+its left and under the nav: the tour (`TownTour.tsx`). Its maps are six
+drawings, `public/landing/town-<key>.svg` for Limassol, Nicosia, Paphos,
+Ayia Napa, Larnaca and Protaras, in the order the tour visits them (Nicosia
+and Ayia Napa were added on 2026-10-09: "also add other towns and areas in
+the interaction like nicosia"). They are made by
+`scripts/build-hero-town.mjs` from OpenFreeMap z14 vector tiles
 (OpenStreetMap data): land, green, sand, sea, piers, buildings and streets
 in the page's map colours, with no labels, each 1600 units square.
 `src/lib/landing/heroTowns.ts`, written by the same script, holds each
 one's projection. The credit is on the page. Rerun the script (from
-`apps/web`, Node 23.6+, network) to redraw them.
+`apps/web`, Node 23.6+, network) to redraw them; with `NAMES=1` it also
+lists each view's named places and streets and where they fall, which is
+what the areas below were sited by.
+
+To add a town: add it to `TOWNS` in the script (an inland one has no
+`sea` point), rerun it, and give the new key its three areas in `DRAWN`.
+The left third of a map fades into the paper and, at 1024px, is cut off,
+so areas and cards are kept right of about x 540.
+
+The areas are sited on the live data, where the short-lets are (2026-10-09,
+the first run of the page on the live database): each holds at least 36
+listings and so has figures to give. Four first drawn on demo data were
+replaced that day because the real listings were elsewhere (Limassol's
+marina held 2). An area is named after what the product's own list of
+places calls its ground (`/api/dashboard/areas`) or, where that list has
+nothing so fine, after the OpenStreetMap street or place it covers. On
+demo data some of these areas hold nothing and are drawn without a card;
+demo mode is a development fallback and is not sited for. Coral Bay was
+built and left out when the page still ran on demo data only; it can be
+added.
+
+The maps are fetched one stop ahead. The page holds three `<img>`s at
+most: the town showing, the one it took over from and the next, which is
+fetched (with its listings' dots) while this one plays; the next is not
+asked for until the page has hydrated, and never with reduced motion. The
+tour does not leave a town until the next map has arrived.
 
 What the tour draws is set by hand in `LandingHero.tsx` (`DRAWN`), in
 each map's view units: three areas a few streets wide per town, on built
@@ -70,8 +105,9 @@ The shape handed to the client is `TourStop` (`src/lib/landing/tour.ts`).
 The tour runs by itself (owner, 2026-10-09). The town the page arrives on is
 complete. Then, for each town in turn: its map slides in, its listings
 appear as dots west to east, a pointer draws the first area corner by
-corner, and when the line closes the area sets: its tint and a thin white
-edge under the line come in, the listings inside take their occupancy
+corner, and when the line closes the area sets: a light tint (12%, lighter
+than the stage's, so the streets read through it) and a thin white edge
+under the firm 2.5px line come in, the listings inside take their occupancy
 shades, and its card is pinned and joined to it by a hairline. It stays
 about a second to be read, then the pointer goes on to the next area. After
 the third everything holds, then leaves. One clock drives it (a
@@ -92,12 +128,15 @@ on the drawing's sea left off. This was checked with the demo listings
 multiplied fourteen times, not yet on the live database.
 
 A card says the area's name and how many short-lets it holds, how full
-they are and what a night costs, and along its foot the occupancy again as
-a bar in the shade the area's listings wear on the map. From 1440px the
-card's words are a size larger. The credit row under the picture carries
-the pause control, the key to the shades ("emptier", four dots, "fuller";
-left out between 1024 and 1279px, where the row has one line's room) and
-the map credit.
+they are and what a night costs (their words at 13px), and along its foot
+the occupancy again as a bar in the shade the area's listings wear on the
+map. From 1440px the card's name and count are a size larger. The town's
+name is the largest word on the map (17px). The credit row under the
+picture carries the pause control, the key to the shades ("Short-lets this
+season: emptier", four dots, "fuller"; its first three words are left out
+below 1440px and the whole key between 1024 and 1279px, where the row has
+one line's room) and the map credit. The key is where the picture says its
+figures are this season's.
 
 Below 1024px the picture is a band under the words, 860px or more of map
 behind a window, so it shows a few streets at a time: it is centred on the
@@ -118,7 +157,7 @@ arrow alone, so the field has room for its placeholder.
 One viewport: a band (an `h2`, "Draw an area. Get it three ways.", and one
 sentence), then the stage. Left, a map with a hand-drawn area whose corners
 the visitor can move.
-Right, three product panels made from that area, one open at a time:
+Right, three product panels made from that area, at most one open at a time:
 Playground, Reports, Connector. From 1024px thin lines run from the area to
 each panel's icon.
 
@@ -286,7 +325,12 @@ maps (`AreaBasemap`, rendered on the server in `page.tsx`), which
   up to a month; quoted to the nearest €10) and a two-sentence reading of the
   highest and the lowest month. Where the weekly figures carry no rate it
   falls back to occupancy by week (`OccupancyChart.tsx`) and says so. A
-  header opens its panel on click, Enter or Space, not on focus.
+  header opens its panel on click, Enter or Space, not on focus, and closes
+  the one that was open. Pressed again it closes its own, so all three can
+  be shut (owner, 2026-10-09: "the arrows of the 3 product do not close and
+  open as expected"; an open panel could not be closed before). The
+  header's button covers the whole header row and lies over the chevron,
+  which is turned when its panel is open and would otherwise take the press.
 - **What each column covers.** `/stats` is filtered by the polygon in live
   and in demo mode. `/rentals` and `/invest` are filtered by the polygon in
   live mode only: their demo fallbacks (`demoRentals`, `demoInvest` in
