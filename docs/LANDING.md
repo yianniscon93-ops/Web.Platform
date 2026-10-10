@@ -1,6 +1,6 @@
 # Landing page
 
-The first screen says what PropSights is and asks the visitor for their own
+The first screen says what Plotsights is and asks the visitor for their own
 place: a headline, one sentence, a search box, and a picture that moves by
 itself, a tour of six drawn town maps with areas drawn on them and what the
 short-lets inside come to. The second screen, the stage,
@@ -32,8 +32,8 @@ insights" in it; the calm, warm feel of felt.com with one rich drawn map; a
 real town drawn from open data; and a picked place going down to our own
 map, not out to the Playground.
 
-Left, from 1024px: the `h1` ("Property data and insights for every street
-in Cyprus."), one sentence, and `PlaceSearch`. The sentence says what is
+Left, from 1024px: the `h1` ("Plot by plot, data and insights for every
+street in Cyprus."), one sentence, and `PlaceSearch`. The sentence says what is
 tracked, how often and what is done with it: "We analyse prices, bookings, ratings and
 locations across the island every day. You see what any street earns,
 rents for and sells for." Two beats, what we do and then what the visitor
@@ -49,10 +49,19 @@ shorter one ("I like this more"). It says "ratings", not "reviews":
 review scores and counts are tracked, the reviews' words are not
 (docs/POSTGRES.md), and the Connector card says as much. It is set a size
 up from the page's other ledes (18px on phones, 20px from 1024px). In the
-headline the letters "Prop" of "Property" and "sights" of "insights" wear
-the mark's light orange (`.lh-name`), so the name is read out of the
-sentence (owner, 2026-10-09: "make Prop with the light orange colour and
-sights the same"). The `h1` carries the plain sentence as its
+headline the opening "Plot" and the "sights" of "insights" wear the mark's
+light orange (`.lh-name`), so the name is read out of the sentence. The
+device was the owner's for the old name (2026-10-09: "make Prop with the
+light orange colour and sights the same", when "Prop" came out of
+"Property"); the sentence gained its opening "Plot by plot" on 2026-10-10 so
+the new name reads in the same order, and the phrase says the product's
+grain. **The name.** PropSights became Plotsights on 2026-10-10: a web
+search found Propsight (a French property-analytics SaaS), PropertyInsights
+(UK) and LexisNexis Property Insights already in the family, and RealSights
+(the September brief's name) is a live US real-estate data company. After
+a long search the owner chose Plotsights, a plot being the land, the shape
+drawn on the map and the chart, and the word Cypriots use for land for
+sale; plotsights.com, .io, .cy, .com.cy and .gr were bought the same day. The `h1` carries the plain sentence as its
 `aria-label`. The light orange is 1.9:1 on the ground, below the 3:1 asked
 of large text; it is the owner's choice of colour and the letters are 40px
 or more and bold.

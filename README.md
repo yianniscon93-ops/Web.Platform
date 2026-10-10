@@ -1,6 +1,6 @@
 # Web.Platform
 
-PropSights web app — Next.js frontend + backend for the Cyprus property
+Plotsights web app — Next.js frontend + backend for the Cyprus property
 analytics product.
 
 ```

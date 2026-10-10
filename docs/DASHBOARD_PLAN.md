@@ -1,4 +1,4 @@
-# PropSights Live Dashboard — Build Plan
+# Plotsights Live Dashboard — Build Plan
 
 ## Overview
 
@@ -422,7 +422,7 @@ artifacts/landing/src/
 5. Add API routes and test with `curl`
 6. Build the Dashboard page with hardcoded `areaId` first, verify map + chart
 7. Add filters and wire them to the API
-8. Style to match PropSights brand (olive `#4A5E3A`, cream `#F2F5EE`)
+8. Style to match Plotsights brand (olive `#4A5E3A`, cream `#F2F5EE`)
 
 ---
 

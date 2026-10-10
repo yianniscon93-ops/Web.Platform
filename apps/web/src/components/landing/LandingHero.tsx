@@ -141,9 +141,9 @@ export default async function LandingHero() {
     <section className="th-landing lh">
       <div className="lh-in">
         <div className="lh-copy">
-          {/* The name is in the headline: "Prop" and "sights" wear the mark's colour. It is read out as plain words. */}
-          <h1 className="th-h1 m-0" aria-label="Property data and insights for every street in Cyprus.">
-            <span className="lh-name">Prop</span>erty data and in<span className="lh-name">sights</span> for every street in Cyprus.
+          {/* The name is in the headline: "Plot" and "sights" wear the mark's colour. It is read out as plain words. */}
+          <h1 className="th-h1 m-0" aria-label="Plot by plot, data and insights for every street in Cyprus.">
+            <span className="lh-name">Plot</span> by plot, data and in<span className="lh-name">sights</span> for every street in Cyprus.
           </h1>
           {/* Two beats: what we do, then what the visitor sees. "Ratings", not "reviews": the review scores and
               counts are tracked; the words of the reviews are not (docs/POSTGRES.md). */}

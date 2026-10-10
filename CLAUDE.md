@@ -1,6 +1,6 @@
 # CLAUDE.md
 
-PropSights web app — Next.js 15 (App Router) frontend + backend.
+Plotsights web app — Next.js 15 (App Router) frontend + backend.
 
 - The real app is `apps/web`; `lib/db` holds the Drizzle schema for the
   Postgres serving layer. pnpm workspace (`pnpm install`, `pnpm typecheck`,

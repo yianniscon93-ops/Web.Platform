@@ -876,7 +876,7 @@ export default function HeroSequence({
               className="text-[10px] font-medium px-3 py-0.5 rounded-md"
               style={{ background: "rgba(255,255,255,0.07)", color: "#ADB8A0", border: "1px solid rgba(255,255,255,0.09)" }}
             >
-              propsights.app/dashboard/{slug}
+              plotsights.com/dashboard/{slug}
             </span>
           </div>
           <span className="w-10" />

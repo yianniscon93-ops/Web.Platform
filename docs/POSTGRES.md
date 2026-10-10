@@ -8,7 +8,7 @@ hold regardless.
 This doc answers two questions:
 
 1. **What does DuckDB hold that Postgres is missing (or getting wrong)?**
-2. **What analytics should the PropSights dashboard actually serve?**
+2. **What analytics should the Plotsights dashboard actually serve?**
 
 Architecture recap: the data pipelines (Core.Noesis + Data.* repos) scrape → DuckDB gold → `noesis.storage.postgres` sync → Postgres.py`
 publishes pre-aggregated tables to Postgres. The product repo reads those

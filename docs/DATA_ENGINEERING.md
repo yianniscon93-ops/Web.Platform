@@ -1,9 +1,9 @@
-# PostgreSQL Serving Layer (PropSights)
+# PostgreSQL Serving Layer (Plotsights)
 
-The serving layer that the PropSights product repo reads from. The data-engineering side (the Core.Noesis package, run by the Data.STR and Data.Property job repos) scrapes, computes the gold layer in DuckDB, and publishes pre-aggregated, query-ready tables to PostgreSQL. The product repo (frontend + API) consumes from these tables.
+The serving layer that the Plotsights product repo reads from. The data-engineering side (the Core.Noesis package, run by the Data.STR and Data.Property job repos) scrapes, computes the gold layer in DuckDB, and publishes pre-aggregated, query-ready tables to PostgreSQL. The product repo (frontend + API) consumes from these tables.
 
 ```
-Core.Noesis + Data.* repos                          PropSights repo
+Core.Noesis + Data.* repos                          Plotsights repo
 ┌─────────────────────────────────┐             ┌──────────────────┐
 │ scrape → DuckDB → gold           │             │ API + dashboard  │
 │        → noesis.storage.postgres ────┼──► Postgres ─┼──► reads tables  │
@@ -237,7 +237,7 @@ Domains: `str`, `weekly`, `area`, `meta`, `pricing`, `ltr`, `sale`. Each runs in
 
 These are consumer-side (product repo) — data engineering's job ends at "Postgres is populated".
 
-1. **Build the PropSights API + dashboard** in the product repo. Read from these tables; endpoint shapes follow the screens. Tier gating in API middleware (free = 1 polygon, current-state from `str_listings`; paid = date ranges, comparison, `*_weekly` / `pricing_calendar` / `ltr` / `sale`). Gate by a live `SELECT tier FROM users` per request, not a JWT claim.
+1. **Build the Plotsights API + dashboard** in the product repo. Read from these tables; endpoint shapes follow the screens. Tier gating in API middleware (free = 1 polygon, current-state from `str_listings`; paid = date ranges, comparison, `*_weekly` / `pricing_calendar` / `ltr` / `sale`). Gate by a live `SELECT tier FROM users` per request, not a JWT claim.
 
 2. **Decide where the product API runs** → resolves the remote-access question.
    - On this Hetzner server → localhost Postgres works as-is.

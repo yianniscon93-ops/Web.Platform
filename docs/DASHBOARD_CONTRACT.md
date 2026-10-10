@@ -1,8 +1,8 @@
-# PropSights Dashboard — Data Contract & Query Guide
+# Plotsights Dashboard — Data Contract & Query Guide
 
-**Audience: the PropSights repo (frontend + API).** Written 2026-07-11 by
+**Audience: the Plotsights repo (frontend + API).** Written 2026-07-11 by
 Core.Noesis (then Data.Noesis), which owns the PostgreSQL schema and the DuckDB→Postgres sync.
-The database is the contract: PropSights reads these tables and never
+The database is the contract: Plotsights reads these tables and never
 aggregates raw calendar data at request time — every widget below resolves to
 a single indexed SELECT (verified: area trend queries run in ~0.05 ms).
 
@@ -366,5 +366,5 @@ Upstream work order in this repo (per `db/POSTGRES.md` §4): sale expiry fix +
 Bazaraki named areas + enrichment columns → 6.4/6.5 complete; `area_fwd_daily`
 if the 6.2 forward curve needs pre-aggregation at scale. Schema changes land
 in Core.Noesis first — its `docs/serving.md` and `docs/storage.md` are the
-source of truth; if a query in the PropSights repo disagrees with this
+source of truth; if a query in the Plotsights repo disagrees with this
 contract, this repo wins.

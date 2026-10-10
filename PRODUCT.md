@@ -64,8 +64,6 @@ hand-drawn area can.
 
 Open decisions:
 
-- Name: PropSights (app and mockups) or RealSights (September brief). Use
-  PropSights until decided.
 - Pricing and tiers. The September brief describes free and Pro tiers; this
   is unconfirmed, so no surface may state prices or plan contents.
 - Whether drawing and comparing sit behind a free account.
@@ -76,13 +74,21 @@ Open decisions:
   good UI. The site has to sell that.
 - It must not read as AI-generated, and it must not read as a research
   publication.
-- Headline in use: "Property data and insights for every street in Cyprus."
-  The owner asked for "something with property data and insights"
-  (2026-10-09) and said of the page built with this wording "its good"; it
-  replaced "The whole Cyprus property market, down to the street."
-  In it "Prop" (of "Property") and "sights" (of "insights") are set in the
-  light orange, so the name is read out of the headline (owner,
-  2026-10-09).
+- Name: Plotsights, decided 2026-10-10. PropSights clashed with Propsight
+  (FR), PropertyInsights (UK) and LexisNexis Property Insights; RealSights
+  (the September brief) is a live US real-estate data company. A plot is the
+  land, the shape drawn on the map and the chart, and the word Cypriots use
+  for land for sale; it works in Athens too. plotsights.com, .io, .cy,
+  .com.cy and .gr are owned. Written as one word, one capital.
+- Headline in use: "Plot by plot, data and insights for every street in
+  Cyprus." The owner asked for "something with property data and insights"
+  (2026-10-09) and said of the page built with the earlier wording ("Property
+  data and insights for every street in Cyprus.") "its good"; it replaced
+  "The whole Cyprus property market, down to the street." The opening "Plot
+  by plot" came with the new name (2026-10-10). In it "Plot" and "sights" (of
+  "insights") are set in the light orange, so the name is read out of the
+  headline in order, a device the owner asked for with the old name
+  (2026-10-09).
 - The landing page opens by asking the visitor for their own place (a search
   box), as most sites in this field do. The ground stays beige on every
   screen; a dark first screen was tried and rejected (2026-10-09).

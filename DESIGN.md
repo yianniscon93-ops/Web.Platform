@@ -1,5 +1,5 @@
 ---
-name: PropSights landing
+name: Plotsights landing
 description: A beige page that asks for your place, shows drawn towns one after another with areas and their figures pinned to them, then answers on a map of the island where an olive area does the work and a light orange marks what is counted.
 colors:
   ground: "#F4F1E8"
@@ -291,7 +291,7 @@ components:
     height: "72px"
 ---
 
-# Design System: PropSights landing
+# Design System: Plotsights landing
 
 Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (six towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is a separate, dark surface and is not described here.
 

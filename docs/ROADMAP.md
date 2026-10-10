@@ -1,4 +1,4 @@
-# PropSights — Launch Roadmap
+# Plotsights — Launch Roadmap
 
 What needs to be done before this is a live, public website.
 
@@ -30,7 +30,7 @@ The CTA form currently fakes a submission with a `setTimeout`. No emails are col
 
 ## 3. Custom domain
 
-- Buy a domain (e.g. `propsights.com` or `propsights.io`)
+- Buy a domain (e.g. `plotsights.com` (bought 2026-10-10, with .io, .cy, .com.cy and .gr))
 - Add it in Vercel → Domains
 - Vercel handles SSL automatically
 
