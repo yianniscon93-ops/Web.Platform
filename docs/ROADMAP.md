@@ -18,7 +18,7 @@ The CTA form currently fakes a submission with a `setTimeout`. No emails are col
 ## 2. Vercel deployment
 
 - Create a Vercel project, connect it to the GitHub repo
-- Set the **Root Directory** to `artifacts/landing-next`
+- Set the **Root Directory** to `apps/web`
 - Set the **Framework** to Next.js (Vercel auto-detects this)
 - Confirm the first deploy succeeds and the preview URL is live
 - Every push to `main` will auto-deploy from this point on
@@ -31,7 +31,11 @@ The CTA form currently fakes a submission with a `setTimeout`. No emails are col
 ## 3. Custom domain
 
 - Buy a domain (e.g. `plotsights.com` (bought 2026-10-10, with .io, .cy, .com.cy and .gr))
-- Add it in Vercel → Domains
+- Add plotsights.com and www.plotsights.com in Vercel → Domains
+- In GoDaddy DNS replace the parking records with what Vercel shows: an A
+  record for the apex and a CNAME for www. Do not use GoDaddy "publish" or
+  its website builder; the domain only needs DNS
+- Forward plotsights.io, .cy, .com.cy and .gr to plotsights.com
 - Vercel handles SSL automatically
 
 ---
