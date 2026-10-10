@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="th-landing ps-foot">
       <div className="ps-foot-in">
         <div className="ps-foot-brand">
-          <AreaMark size={24} stroke="var(--th-close-ink)" />
+          <AreaMark size={24} line="var(--th-close-ink)" dots="var(--th-close-ink)" />
           <span>
             {BRAND.namePart1}
             {BRAND.namePart2}

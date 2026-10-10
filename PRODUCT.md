@@ -108,7 +108,10 @@ Open decisions:
 - Palette: off-white (beige), ink, **olive** (#4A5E3A) and a **light orange**
   (#F2A154). Olive does the working jobs (the drawn area, the filled
   action); the light orange marks the listings, the product icons and the
-  brand mark. The owner kept the beige and olive after comparing seven
+  brand mark (the mark itself: the plot snapped to the map's dots, olive
+  line and corners, orange wash, chosen 2026-10-10 as "techy and
+  professional", "crystalized", with the olive brought in as the drawn
+  line). The owner kept the beige and olive after comparing seven
   alternatives (2026-10-08). The accent has changed twice: tangerine was
   replaced by teal on 2026-10-08 ("I dont like the orange colour"), and teal
   was dropped on 2026-10-09 ("It does not look good and professional. We
