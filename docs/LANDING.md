@@ -32,12 +32,15 @@ insights" in it; the calm, warm feel of felt.com with one rich drawn map; a
 real town drawn from open data; and a picked place going down to our own
 map, not out to the Playground.
 
-Left, from 1024px: the `h1` ("Plot by plot, data and insights for every
-street in Cyprus."), one sentence, and `PlaceSearch`. The sentence says what is
-tracked, how often and what is done with it: "We analyse prices, bookings, ratings and
-locations across the island every day. You see what any street earns,
-rents for and sells for." Two beats, what we do and then what the visitor
-sees (the owner's brief for it: "analyzing data daily to give you the
+Left, from 1024px: the `h1` ("Plot your area. Data and insights for every
+street in Cyprus."), one sentence, and `PlaceSearch`. The sentence (2026-10-10,
+written with the new name) says how to start and what comes back: "Search a
+town or draw a line round a few streets. We read every short-let, long-let
+and sale on the island, every day, and show what the streets inside your
+line earn, rent for and sell for." It replaced "We analyse prices, bookings,
+ratings and locations across the island every day. You see what any street
+earns, rents for and sells for." Two beats, how to start and then what the
+visitor sees (the owner's brief for it: "analyzing data daily to give you the
 analytics outcome"; of this wording, chosen over a one-sentence version
 that named "our models": "I think I prefer thus"). Its last clause, what
 the visitor sees, is set in ink at weight 500; the rest is the muted
@@ -53,9 +56,9 @@ headline the opening "Plot" and the "sights" of "insights" wear the mark's
 light orange (`.lh-name`), so the name is read out of the sentence. The
 device was the owner's for the old name (2026-10-09: "make Prop with the
 light orange colour and sights the same", when "Prop" came out of
-"Property"); the sentence gained its opening "Plot by plot" on 2026-10-10 so
-the new name reads in the same order, and the phrase says the product's
-grain. **The name.** PropSights became Plotsights on 2026-10-10: a web
+"Property"); with the new name the sentence opens on "Plot your area"
+(2026-10-10), so the name reads in the same order and its first word is the
+verb for what the visitor does on the map. **The name.** PropSights became Plotsights on 2026-10-10: a web
 search found Propsight (a French property-analytics SaaS), PropertyInsights
 (UK) and LexisNexis Property Insights already in the family, and RealSights
 (the September brief's name) is a live US real-estate data company. After

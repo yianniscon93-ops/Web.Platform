@@ -80,15 +80,20 @@ Open decisions:
   land, the shape drawn on the map and the chart, and the word Cypriots use
   for land for sale; it works in Athens too. plotsights.com, .io, .cy,
   .com.cy and .gr are owned. Written as one word, one capital.
-- Headline in use: "Plot by plot, data and insights for every street in
-  Cyprus." The owner asked for "something with property data and insights"
-  (2026-10-09) and said of the page built with the earlier wording ("Property
-  data and insights for every street in Cyprus.") "its good"; it replaced
-  "The whole Cyprus property market, down to the street." The opening "Plot
-  by plot" came with the new name (2026-10-10). In it "Plot" and "sights" (of
-  "insights") are set in the light orange, so the name is read out of the
-  headline in order, a device the owner asked for with the old name
-  (2026-10-09).
+- Headline in use: "Plot your area. Data and insights for every street in
+  Cyprus." (2026-10-10, written with the new name; the owner asked for "a
+  different thing to write in hero"). "Plot" is the verb, what the visitor
+  does on the map, so the name is also the product's gesture. It keeps "data
+  and insights" and "every street in Cyprus" from the wording the owner
+  approved on 2026-10-09 ("Property data and insights for every street in
+  Cyprus.", "its good"), which had replaced "The whole Cyprus property market,
+  down to the street." In it "Plot" and "sights" (of "insights") are set in
+  the light orange, so the name is read out of the headline in order, a device
+  the owner asked for with the old name (2026-10-09). The lede under it says
+  how to start (search or draw) and what comes back: "Search a town or draw a
+  line round a few streets. We read every short-let, long-let and sale on the
+  island, every day, and show what the streets inside your line earn, rent
+  for and sell for."
 - The landing page opens by asking the visitor for their own place (a search
   box), as most sites in this field do. The ground stays beige on every
   screen; a dark first screen was tried and rejected (2026-10-09).
