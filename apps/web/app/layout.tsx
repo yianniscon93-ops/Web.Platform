@@ -1,19 +1,10 @@
 import type { Metadata } from "next";
-import { Inter, Barlow_Condensed, Newsreader } from "next/font/google";
+import { Inter, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
 
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-inter",
-  display: "swap",
-});
-
-/* The first screen's sentence is set in a serif beside the Google Sans headline (owner, 2026-10-10: "different
-   fonts for this part? your call"): Newsreader, an optical-size serif made for reading on screens. */
-const newsreader = Newsreader({
-  weight: ["400", "500"],
-  subsets: ["latin", "latin-ext"],
-  variable: "--font-newsreader",
   display: "swap",
 });
 
@@ -49,7 +40,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${inter.variable} ${barlowCondensed.variable} ${newsreader.variable}`}
+      className={`${inter.variable} ${barlowCondensed.variable}`}
     >
       <body className="antialiased">{children}</body>
     </html>

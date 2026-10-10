@@ -149,7 +149,7 @@ export default async function LandingHero() {
           {/* Two beats: the daily update and the three markets as a fact (owner, 2026-10-10: "show that our database is
               updated daily"), then the gesture (which is what the picture beside it is doing) and the promise in bold. */}
           <p className="th-lede m-0">
-            Updated every day: every short&#8209;let, long&#8209;let and sale in Cyprus. Draw a line round any streets and see{" "}
+            <b>Updated every day:</b> every short&#8209;let, long&#8209;let and sale in Cyprus. Draw a line round any streets and see{" "}
             <b>what they earn, rent for and sell for.</b>
           </p>
           <PlaceSearch />

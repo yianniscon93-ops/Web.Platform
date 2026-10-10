@@ -41,10 +41,12 @@ daily habit and the three markets first ("emphasis that we daily get short,
 long and sales data"), then the gesture and the promise: "Updated every day: every
 short-let, long-let and sale in Cyprus. Draw a line round any streets and see
 what they earn, rent for and sell for." (2026-10-10: "show that our database
-is updated daily"; chosen over three other wordings). It is set in Newsreader,
-a serif loaded through `next/font` in `app/layout.tsx`, at 20px (23px from
-1024px), against the Google Sans headline: the owner asked for "different
-fonts for this part" and left the face to the designer. Cyprus is named once, in the
+is updated daily"; chosen over three other wordings). The owner asked for
+"different fonts for this part" and left the face to the designer; Newsreader,
+a serif, was tried and dropped within the hour ("I hate these fonts"). The
+sentence stays in Google Sans, the page's one voice, at 19px (22px from
+1024px), and gets its difference from weight and ink: "Updated every day" and
+the promise are set in ink at weight 500, the rest in the muted tone. Cyprus is named once, in the
 sentence, so the headline stays place-neutral for Athens. It replaced "We analyse prices, bookings,
 ratings and locations across the island every day. You see what any street
 earns, rents for and sells for." Two beats, how to start and then what the

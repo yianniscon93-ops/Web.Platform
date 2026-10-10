@@ -95,10 +95,11 @@ Open decisions:
   the habit, then the gesture and the promise: "Updated every day: every short-let,
   long-let and sale in Cyprus. Draw a line round any streets and see what they
   earn, rent for and sell for." (the owner asked, 2026-10-10, to "show that our
-  database is updated daily", and chose this over three other wordings). It
-  is set in Newsreader, a serif, against the Google Sans headline, the owner
-  having asked for "different fonts for this part" and left the face to the
-  designer. Cyprus is named once, in the lede, so the
+  database is updated daily", and chose this over three other wordings). The
+  owner asked for "different fonts for this part" and left the face to the
+  designer; a serif (Newsreader) was tried and dropped within the hour ("I
+  hate these fonts"), so the sentence stays in Google Sans, a size up, with
+  "Updated every day" and the promise picked out in ink. Cyprus is named once, in the lede, so the
   headline stays place-neutral for Athens.
 - The landing page opens by asking the visitor for their own place (a search
   box), as most sites in this field do. The ground stays beige on every
