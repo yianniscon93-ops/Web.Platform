@@ -42,7 +42,7 @@ The CTA form currently fakes a submission with a `setTimeout`. No emails are col
 
 ## 4. Favicon & OG image
 
-- Add a `favicon.ico` or SVG favicon to `artifacts/landing-next/app/`
+- Add a `favicon.ico` or SVG favicon to `apps/web/app/`
 - Design a 1200×630 OG image (used when the link is shared on WhatsApp, Twitter, LinkedIn)
 - Add it to `public/og.png` and wire it into the `metadata` in `app/layout.tsx`
 - Without this, social shares look broken
