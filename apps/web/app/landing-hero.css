@@ -7,9 +7,10 @@
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
-/* The first screen's sentence is read beside the page's largest words: a size up from the page's other ledes,
-   its lines kept even so the last is never two stray words. */
-.lh .th-lede { align-self: auto; margin: 14px 0 0; font-size: 18px; text-wrap: balance; }
+/* The first screen's sentence is read beside the page's largest words: set in Newsreader, a serif, against the
+   headline's Google Sans (owner, 2026-10-10: "different fonts for this part? your call"), a size up from the
+   page's other ledes, its lines kept even so the last is never two stray words. */
+.lh .th-lede { align-self: auto; margin: 16px 0 0; font-family: var(--font-newsreader), Georgia, "Times New Roman", serif; font-size: 20px; line-height: 1.45; letter-spacing: 0.002em; text-wrap: balance; }
 /* What the visitor gets, picked out of the sentence in ink: the rest of it is how. */
 .lh .th-lede b { color: var(--th-ink); font-weight: 500; }
 /* The name, picked out of the headline's own letters ("Prop…sights") in the mark's colour. */
@@ -210,7 +211,7 @@
   overflow: hidden;
   padding: 8px 12px 0;
   border: 1px solid var(--th-ink);
-  border-radius: 8px;
+  border-radius: 14px;
   background: var(--th-surface);
   box-shadow: 0 8px 16px -10px var(--th-shadow);
   color: var(--th-muted);
@@ -234,20 +235,23 @@
 .lh-n, .lh-fig em { color: var(--th-ink); font-style: normal; font-weight: 600; font-variant-numeric: tabular-nums; }
 .lh-n { text-align: right; }
 .lh-fig small { font-size: inherit; }
-/* How full, after the price. */
-.lh-fig small + em { margin-left: 10px; }
-.lh-pin i { grid-column: 1 / -1; height: 6px; margin: 7px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); }
-.lh-pin i::before { display: block; width: var(--full); height: 100%; border-right: 1px solid var(--th-occ-ring); content: ""; }
-.lh-pin i[data-step="1"]::before { background: var(--th-occ-1); }
-.lh-pin i[data-step="2"]::before { background: var(--th-occ-2); }
-.lh-pin i[data-step="3"]::before { background: var(--th-occ-3); }
-.lh-pin i[data-step="4"]::before { background: var(--th-occ-4); }
+/* The card's foot is the occupancy meter: its label ("43% occupancy", owner 2026-10-10: "instead of x% full lets say
+   occupancy") on a line of its own, then the bar filled to that share in the short-lets' shade. It left the
+   short-let row because the longer word made neighbouring cards overlap. */
+.lh-pin i { display: block; grid-column: 1 / -1; margin: 7px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); font-style: normal; }
+.lh-pin i::before { display: block; padding: 3px 12px 2px; color: var(--th-muted); font-size: 11px; font-weight: 600; line-height: 14px; letter-spacing: 0.01em; content: attr(data-occ); }
+.lh-pin i::after { display: block; width: var(--full); height: 6px; border-right: 1px solid var(--th-occ-ring); content: ""; }
+.lh-pin i[data-step="1"]::after { background: var(--th-occ-1); }
+.lh-pin i[data-step="2"]::after { background: var(--th-occ-2); }
+.lh-pin i[data-step="3"]::after { background: var(--th-occ-3); }
+.lh-pin i[data-step="4"]::after { background: var(--th-occ-4); }
 /* Hidden with `visibility`, not `display`, so crossing 1024px does not start anything again. */
 .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: hidden; }
 /* The town's name in the band: in its corner, since the band shows only part of the town. */
 .lh-named { top: 72px; left: 16px; font-size: 15px; transform: none; transition: opacity 0.4s ease; }
 .lh-named[data-leaving] { opacity: 0; }
-.lh-dock { position: absolute; top: auto; bottom: 14px; left: 16px; }
+/* Docked at the band's lower right, clear of the connector's round button in the page's lower left corner. */
+.lh-dock { position: absolute; top: auto; right: 16px; bottom: 14px; left: auto; transform: none; }
 .lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
 .lh-credit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: 11px; line-height: 16px; }
 /* The way to stop the tour: words, as the page's other small links are. */
@@ -268,7 +272,7 @@
   .lh-find { margin-top: 26px; }
   /* On a tablet the band is taller. */
   .lh-frame { height: 520px; }
-  .lh-dock { bottom: 20px; left: 32px; }
+  .lh-dock { right: 32px; bottom: 20px; }
   .lh-named { top: 96px; left: 32px; }
   .lh-credit { padding-right: 32px; padding-left: 32px; }
 }
@@ -278,7 +282,7 @@
   .lh-in { display: flex; align-items: center; width: 100%; padding: 112px 64px 72px; pointer-events: none; }
   .lh-copy { width: 42%; max-width: 580px; pointer-events: auto; }
   .lh .th-h1 { font-size: clamp(2.75rem, 4vw, 3.75rem); line-height: 1.04; }
-  .lh .th-lede { max-width: 28em; margin-top: 22px; font-size: 20px; }
+  .lh .th-lede { max-width: 27em; margin-top: 24px; font-size: 23px; }
   .lh-find { margin-top: 32px; }
   .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
   .lh-frame { position: absolute; inset: 0; height: auto; }
@@ -313,6 +317,7 @@
   .lh-stop .lh-pin { column-gap: 12px; padding: 10px 14px 0; }
   .lh-stop .lh-pin b { margin-bottom: 3px; font-size: 15px; line-height: 20px; }
   .lh-stop .lh-pin i { margin: 9px -14px 0; }
+  .lh-stop .lh-pin i::before { padding-left: 14px; padding-right: 14px; }
 }
 /* The tour's moment, at each town: the pointer goes round an area's corners (TownTour moves it), each corner
    lands as it is reached (`--at`) and the line follows (`--draw`, for `--drawing`); when the line closes the

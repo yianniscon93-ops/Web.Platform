@@ -143,14 +143,14 @@ export default async function LandingHero() {
         <div className="lh-copy">
           {/* The name is in the headline: "Plot" (the verb, what the visitor does on the map) and "sights" wear the
               mark's colour, so Plotsights is read out of the sentence in order. It is read out as plain words. */}
-          <h1 className="th-h1 m-0" aria-label="Plot your area. Data and insights for every street in Cyprus.">
-            <span className="lh-name">Plot</span> your area. Data and in<span className="lh-name">sights</span> for every street in Cyprus.
+          <h1 className="th-h1 m-0" aria-label="Plot an area on the map. Get the insights.">
+            <span className="lh-name">Plot</span> an area on the map. Get the in<span className="lh-name">sights</span>.
           </h1>
-          {/* Two beats: how to start (search or draw, which is what the picture beside it is doing), then what the
-              visitor gets. The bold clause is the promise; the three markets are named in the product's own words. */}
+          {/* Two beats: the daily update and the three markets as a fact (owner, 2026-10-10: "show that our database is
+              updated daily"), then the gesture (which is what the picture beside it is doing) and the promise in bold. */}
           <p className="th-lede m-0">
-            Search a town or draw a line round a few streets. We read every short&#8209;let, long&#8209;let and sale on the
-            island, every day, and show <b>what the streets inside your line earn, rent for and sell for.</b>
+            Updated every day: every short&#8209;let, long&#8209;let and sale in Cyprus. Draw a line round any streets and see{" "}
+            <b>what they earn, rent for and sell for.</b>
           </p>
           <PlaceSearch />
         </div>

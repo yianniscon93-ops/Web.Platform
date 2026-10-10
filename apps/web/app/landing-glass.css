@@ -26,9 +26,17 @@
     inset 0 1.5px 0 #fff,
     var(--glass-drop);
 }
-/* A card on the first screen's map sits on a busy drawing: a firmer edge, and its bar's track lets the glass through. */
-.th-glassy .lh-pin { --glass-edge: color-mix(in srgb, var(--th-ink) 58%, transparent); }
-.th-glassy .lh-pin i { background: rgb(255 255 255 / 0.3); }
+/* A card on the first screen's map is the roundest frost on the page (owner, 2026-10-10: "glassomorphism with
+   smooth edges"): the map shows through it, its edge is a soft line of ink with the white rim inside, and its
+   shade falls away from it. The bar's track and its hairline let the glass through too. */
+.th-glassy .lh-pin {
+  --glass-edge: color-mix(in srgb, var(--th-ink) 30%, transparent);
+  --glass-drop: 0 14px 28px -14px color-mix(in srgb, var(--th-ink) 42%, transparent);
+  background: linear-gradient(170deg, rgb(255 255 255 / 0.66), rgb(255 255 255 / 0.42));
+  -webkit-backdrop-filter: blur(22px) saturate(1.9);
+  backdrop-filter: blur(22px) saturate(1.9);
+}
+.th-glassy .lh-pin i { border-top-color: color-mix(in srgb, var(--th-ink) 28%, transparent); background: rgb(255 255 255 / 0.26); }
 /* The sheets of a report lie deeper on their cards. */
 .th-glassy :is(.th-sheet, .ps-sheet) { --glass-drop: 0 1px 2px -1px color-mix(in srgb, var(--th-ink) 30%, transparent), 0 22px 34px -22px color-mix(in srgb, var(--th-ink) 50%, transparent); }
 /* A pressed control on the stage's map still answers. */

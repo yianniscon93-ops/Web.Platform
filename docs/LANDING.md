@@ -32,12 +32,20 @@ insights" in it; the calm, warm feel of felt.com with one rich drawn map; a
 real town drawn from open data; and a picked place going down to our own
 map, not out to the Playground.
 
-Left, from 1024px: the `h1` ("Plot your area. Data and insights for every
-street in Cyprus."), one sentence, and `PlaceSearch`. The sentence (2026-10-10,
-written with the new name) says how to start and what comes back: "Search a
-town or draw a line round a few streets. We read every short-let, long-let
-and sale on the island, every day, and show what the streets inside your
-line earn, rent for and sell for." It replaced "We analyse prices, bookings,
+Left, from 1024px: the `h1` ("Plot an area on the map. Get the insights."),
+one sentence, and `PlaceSearch`. The headline names the gesture and the
+promise in eight words (owner, 2026-10-10: plot "as plotting something on a
+map", "insights shoud always be in and sights highlighted"); a longer one that
+named the three markets was rejected the same day. The sentence states the
+daily habit and the three markets first ("emphasis that we daily get short,
+long and sales data"), then the gesture and the promise: "Updated every day: every
+short-let, long-let and sale in Cyprus. Draw a line round any streets and see
+what they earn, rent for and sell for." (2026-10-10: "show that our database
+is updated daily"; chosen over three other wordings). It is set in Newsreader,
+a serif loaded through `next/font` in `app/layout.tsx`, at 20px (23px from
+1024px), against the Google Sans headline: the owner asked for "different
+fonts for this part" and left the face to the designer. Cyprus is named once, in the
+sentence, so the headline stays place-neutral for Athens. It replaced "We analyse prices, bookings,
 ratings and locations across the island every day. You see what any street
 earns, rents for and sells for." Two beats, how to start and then what the
 visitor sees (the owner's brief for it: "analyzing data daily to give you the
@@ -56,7 +64,7 @@ headline the opening "Plot" and the "sights" of "insights" wear the mark's
 light orange (`.lh-name`), so the name is read out of the sentence. The
 device was the owner's for the old name (2026-10-09: "make Prop with the
 light orange colour and sights the same", when "Prop" came out of
-"Property"); with the new name the sentence opens on "Plot your area"
+"Property"); with the new name the sentence opens on "Plot an area"
 (2026-10-10), so the name reads in the same order and its first word is the
 verb for what the visitor does on the map. **The name.** PropSights became Plotsights on 2026-10-10: a web
 search found Propsight (a French property-analytics SaaS), PropertyInsights
@@ -173,7 +181,31 @@ corner, and when the line closes the area sets: a light tint (12%, lighter
 than the stage's, so the streets read through it) and a thin white edge
 under the firm 2.5px line come in, the listings inside take their occupancy
 shades, and its card is pinned and joined to it by a hairline. It stays
-about a second to be read, then the pointer goes on to the next area. After
+about a second to be read, then the pointer goes on to the next area.
+
+**The capture (2026-10-10).** The listings had always taken their shades, but
+in a quiet 220ms fade that never registered, so the owner asked to "make the
+listings appear orange when plotted". Now the close is an event: the dots
+light in a wave from the corner where the line closes, each one swelling to
+1.7 times its size and back over 360ms with a ring that widens and fades,
+the wave crossing its area in 600ms so the last dot settles 140ms inside the
+area's hold; the card follows at 260ms. From the first close the rest of the
+town steps back to 45% grey, dots of the areas not yet drawn included, so
+nothing hints at the next area before the pen gets there, and the wave lifts
+each listing from the receded town into colour. Every value is a pure
+function of the clock, so pause holds a frame; the first town still arrives
+complete and reduced motion still paints once. Built by a builder agent and
+reviewed line by line the same day.
+
+**The cards (2026-10-10).** Each area's card is the roundest frost on the
+page (14px, the map token; owner: "glassomorphism with smooth edges"): the
+map shows through a 66-to-42% white, the edge is ink at 30% with the white
+rim inside, and the shade falls away from it. Its foot is the occupancy
+meter, labelled "43% occupancy" on a line of its own above the bar (owner:
+"instead of x% full lets say occupancy"); the figure left the short-let row
+because the longer word made neighbouring cards overlap in Limassol. In the
+band the docked card sits at the lower right, clear of the connector's round
+button in the page's lower left. After
 the third everything holds, then leaves. One clock drives it (a
 `requestAnimationFrame` loop in `TownTour`); the canvas dots and the
 pointer are placed from it, the corners and the traced line are CSS

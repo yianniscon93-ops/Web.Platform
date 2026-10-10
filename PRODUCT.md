@@ -80,20 +80,26 @@ Open decisions:
   land, the shape drawn on the map and the chart, and the word Cypriots use
   for land for sale; it works in Athens too. plotsights.com, .io, .cy,
   .com.cy and .gr are owned. Written as one word, one capital.
-- Headline in use: "Plot your area. Data and insights for every street in
-  Cyprus." (2026-10-10, written with the new name; the owner asked for "a
-  different thing to write in hero"). "Plot" is the verb, what the visitor
-  does on the map, so the name is also the product's gesture. It keeps "data
-  and insights" and "every street in Cyprus" from the wording the owner
+- Headline in use: "Plot an area on the map. Get the insights." (2026-10-10,
+  written with the new name; the owner asked for plot "as plotting something
+  on a map", for "insights" always in with "sights" highlighted, and for
+  "emphasis that we daily get short, long and sales data", which the lede
+  carries; a longer headline that named the three markets was rejected the
+  same day). "Plot" is the verb, what the visitor does on the map, so the
+  name is also the product's gesture. It descends from the wording the owner
   approved on 2026-10-09 ("Property data and insights for every street in
   Cyprus.", "its good"), which had replaced "The whole Cyprus property market,
   down to the street." In it "Plot" and "sights" (of "insights") are set in
   the light orange, so the name is read out of the headline in order, a device
-  the owner asked for with the old name (2026-10-09). The lede under it says
-  how to start (search or draw) and what comes back: "Search a town or draw a
-  line round a few streets. We read every short-let, long-let and sale on the
-  island, every day, and show what the streets inside your line earn, rent
-  for and sell for."
+  the owner asked for with the old name (2026-10-09). The lede under it states
+  the habit, then the gesture and the promise: "Updated every day: every short-let,
+  long-let and sale in Cyprus. Draw a line round any streets and see what they
+  earn, rent for and sell for." (the owner asked, 2026-10-10, to "show that our
+  database is updated daily", and chose this over three other wordings). It
+  is set in Newsreader, a serif, against the Google Sans headline, the owner
+  having asked for "different fonts for this part" and left the face to the
+  designer. Cyprus is named once, in the lede, so the
+  headline stays place-neutral for Athens.
 - The landing page opens by asking the visitor for their own place (a search
   box), as most sites in this field do. The ground stays beige on every
   screen; a dark first screen was tried and rejected (2026-10-09).

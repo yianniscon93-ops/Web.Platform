@@ -12,7 +12,8 @@ const DOTS_AT = 400; // the listings start to appear, west to east
 const DRAW_AT = 1100; // the pointer starts on the first area's first corner
 const CORNER_MS = 170; // from one corner to the next
 // After an area closes it sets (its listings light, its figures are pinned) and stays to be read. Below 1024px
-// the figures are only up while the band is on their area, so there the stay is longer.
+// the figures are only up while the band is on their area, so there the stay is longer. The lighting has to be
+// over well inside the shorter stay: WAVE_MS + POP_MS is 960ms of the 1100.
 const SET_MS = 1100;
 const SET_BAND_MS = 1700;
 const MOVE_MS = 500; // the pointer goes on to the next area's first corner, and below 1024px the map follows it
@@ -20,6 +21,20 @@ const HOLD_MS = 2200; // everything stays once the last figures have been read
 const OUT_MS = 450; // the areas, their figures and the listings leave
 const FIRST_MS = 3600; // how long the town the page arrives on, already complete, stays
 const POINTER_IN = 250; // the pointer shows on the first corner this long before it moves
+// The moment an area closes is the event of the tour: its listings light one after another, in a wave that starts
+// where the line closed (its first corner, where the pointer rests) and reaches its farthest corner in WAVE_MS,
+// whatever the area's size. Each listing the wave reaches swells past its size and settles, and a ring widens
+// from it and fades, over POP_MS. Its figures are pinned as the wave is under way, so the card lands with it.
+const WAVE_MS = 600;
+const POP_MS = 360;
+const PIN_AT = 260;
+// Once a stop's first area has closed, the listings outside every area step back to this much of their strength
+// over RECEDE_MS, so the listings caught read as the figure and the rest of the town as ground.
+const RECEDE_TO = 0.45;
+const RECEDE_MS = 400;
+// An exponential ease-out that runs from exactly 0 to exactly 1, for the pop: quick at first, then settling.
+const SETTLE = 1 - 2 ** -6;
+const outExpo = (p: number) => (1 - 2 ** (-6 * p)) / SETTLE;
 // Which listings become dots. In an area every one of them, while they can be told apart (up to SPARSE). A
 // fuller area is thinned to what the screen can show, one dot to a cell of the map about a dot and a half
 // across and no more than MOST_IN, so it reads as a stipple and the shades stay visible; its card still counts
@@ -70,8 +85,11 @@ async function waterOf(src: string): Promise<(x: number, y: number, size: number
   }
 }
 
-/** The dots of one map. `area` is the area a listing is inside (its index), or 255 for none. */
-type Dots = { x: Float32Array; y: Float32Array; step: Uint8Array; area: Uint8Array; late: Float32Array; n: number };
+/**
+ * The dots of one map. `area` is the area a listing is inside (its index), or 255 for none; `late` is how long
+ * after DOTS_AT it appears; `wave` is how long after its area closes it lights (0 for a listing in none).
+ */
+type Dots = { x: Float32Array; y: Float32Array; step: Uint8Array; area: Uint8Array; late: Float32Array; wave: Float32Array; n: number };
 const pc = (v: number, of: number) => `${((v / of) * 100).toFixed(2)}%`;
 const at = ([x, y]: TownPt, size: number) => ({ "--x": pc(x, size), "--y": pc(y, size) }) as React.CSSProperties;
 const path = (ring: TownPt[]) => "M" + ring.map((p) => p.join(" ")).join("L") + "Z";
@@ -119,7 +137,6 @@ function Figures({ area }: { area: TourArea }) {
       <Line of={"Short\u2011let"} n={area.count} mark={step}>
         <em>{euro(area.rate)}</em>
         <small> a night</small>
-        <em>{pct(area.occupied)}</em> full
       </Line>
       {area.rent && (
         <Line of={"Long\u2011let"} n={area.rent.count}>
@@ -131,7 +148,7 @@ function Figures({ area }: { area: TourArea }) {
           {median(area.sale)}
         </Line>
       )}
-      <i data-step={step} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties} />
+      <i data-step={step} data-occ={`${pct(area.occupied)} occupancy`} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties} />
     </>
   );
 }
@@ -139,7 +156,7 @@ function Figures({ area }: { area: TourArea }) {
 /** The same, said in a sentence for a reader who cannot see the card. */
 const spoken = (a: TourArea & { occupied: number; rate: number }) =>
   [
-    `${int(a.count)} short\u2011lets, ${pct(a.occupied)} full this season, ${euro(a.rate)} a night`,
+    `${int(a.count)} short\u2011lets, ${pct(a.occupied)} occupancy this season, ${euro(a.rate)} a night`,
     a.rent && `${int(a.rent.count)} long\u2011lets${a.rent.median != null ? `, ${euro(a.rent.median)} a month` : ""}`,
     a.sale && `${int(a.sale.count)} homes for sale${a.sale.median != null ? `, ${euro(a.sale.median)} asked` : ""}`,
   ]
@@ -148,13 +165,13 @@ const spoken = (a: TourArea & { occupied: number; rate: number }) =>
 
 /**
  * The first screen's picture: a tour of drawn town maps that runs by itself. On each, the short-lets there appear
- * as dots; then a pointer draws one area after another round a few streets, the listings inside each take their
- * colours, and how full and how dear they are is pinned beside it; then the map moves on to the next town. The
- * first town is complete when the page arrives. Below 1024px the map is a band that shows part of a town: it is
- * centred on the area being drawn and moves on with the pointer, and the figures of the area drawn last are
- * docked in its corner. The tour waits while the visitor is typing in the search box or the picture is out of
- * view, stops at the Pause control until it is pressed again, and does not run with reduced motion. Its styles
- * are in app/landing-hero.css.
+ * as dots; then a pointer draws one area after another round a few streets, the listings inside each light in a
+ * wave from where its line closed while the rest of the town steps back, and how full and how dear they are is
+ * pinned beside it; then the map moves on to the next town. The first town is complete when the page arrives.
+ * Below 1024px the map is a band that shows part of a town: it is centred on the area being drawn and moves on
+ * with the pointer, and the figures of the area drawn last are docked in its corner. The tour waits while the
+ * visitor is typing in the search box or the picture is out of view, stops at the Pause control until it is
+ * pressed again, and does not run with reduced motion. Its styles are in app/landing-hero.css.
  */
 export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boolean }) {
   const [stopAt, setStopAt] = useState(0);
@@ -228,6 +245,9 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             }),
             ...thin(spread(found.filter((d) => d[3] === OUT), CELL / 2), MOST_OUT),
           ];
+          // The wave crosses each area from its first corner, where the line closes, at the pace that takes it to
+          // the area's farthest corner in WAVE_MS: a listing lights after its share of that reach.
+          const reach = s.areas.map(({ ring: [[x0, y0], ...rest] }) => Math.max(1, ...rest.map(([x, y]) => Math.hypot(x - x0, y - y0))));
           const made: Dots = {
             x: Float32Array.from(kept, (d) => d[0]),
             y: Float32Array.from(kept, (d) => d[1]),
@@ -235,6 +255,11 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             area: Uint8Array.from(kept, (d) => d[3]),
             // Each arrives a moment after its neighbour to the west, with a little unevenness.
             late: Float32Array.from(kept, (d, k) => (d[0] / s.size) * 700 + ((k * 37) % 11) * 12),
+            wave: Float32Array.from(kept, ([x, y, , k]) => {
+              if (k === OUT) return 0;
+              const [x0, y0] = s.areas[k].ring[0];
+              return Math.min(1, Math.hypot(x - x0, y - y0) / reach[k]) * WAVE_MS;
+            }),
             n: kept.length,
           };
           setDots((all) => ({ ...all, [i]: made }));
@@ -285,33 +310,61 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const steps = [tone("--th-dot"), tone("--th-occ-1"), tone("--th-occ-2"), tone("--th-occ-3"), tone("--th-occ-4")];
       const k = (side / stop.size) * dpr;
       const gone = t > times.end ? Math.max(0, 1 - (t - times.end) / OUT_MS) : 1;
-      // On arrival the first town is complete: its listings are simply there, in their colours.
+      // The town steps back once the first area has closed, and comes forward again as the stop leaves.
+      const first = times.areas[0]?.closed ?? Infinity;
+      const back = t > times.end ? Math.max(0, 1 - (t - times.end) / OUT_MS) : Math.min(1, Math.max(0, (t - first) / RECEDE_MS));
+      // On arrival the first town is complete: its listings are simply there, in their colours (it is painted at
+      // the end of its stop, past every listing's moment).
       const shown = (i: number) => (toured ? Math.min(1, Math.max(0, (t - DOTS_AT - d.late[i]) / 240)) : 1);
-      const lit = (i: number) => {
-        if (d.area[i] === OUT) return 0;
-        if (!toured) return 1;
-        return Math.min(1, Math.max(0, (t - times.areas[d.area[i]].closed - (i % 7) * 28) / 220));
-      };
-      ctx.globalAlpha = gone;
-      ctx.fillStyle = tone("--th-dot-out");
-      ctx.beginPath();
-      for (let i = 0; i < d.n; i++) {
-        const a = shown(i);
-        if (a <= 0 || lit(i) >= 1) continue;
-        const r = 1.75 * dpr * a;
-        ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
-        ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
-      }
-      ctx.fill();
-      // Inside an area: the dark ring first, then each shade of "how full" over it.
-      for (let pass = -1; pass < steps.length; pass++) {
-        ctx.fillStyle = pass < 0 ? tone("--th-occ-ring") : steps[pass];
+      // How far into its pop a listing inside an area is: below 0 the wave has not reached it, from 1 it is settled.
+      const into = (i: number) => (t - times.areas[d.area[i]].closed - d.wave[i]) / POP_MS;
+      const grey = tone("--th-dot-out");
+      const edge = tone("--th-occ-ring");
+      // Grey: the listings outside every area and those inside one the wave has not reached yet, all stepped
+      // back once the first area is closed, so the wave lifts each listing from the receded town into colour and
+      // nothing hints at where the next area will be before the pen gets there.
+      ctx.fillStyle = grey;
+      for (let pass = 0; pass < 2; pass++) {
+        const inside = pass === 1;
+        ctx.globalAlpha = gone * (1 - (1 - RECEDE_TO) * back);
         ctx.beginPath();
         for (let i = 0; i < d.n; i++) {
-          if (pass >= 0 && d.step[i] !== pass) continue;
-          const b = lit(i) * shown(i);
-          if (b <= 0) continue;
-          const r = (pass < 0 ? 3.8 : 2.8) * dpr * b;
+          if ((d.area[i] !== OUT) !== inside || (inside && into(i) >= 0)) continue;
+          const a = shown(i);
+          if (a <= 0) continue;
+          const r = 1.75 * dpr * a;
+          ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
+          ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
+        }
+        ctx.fill();
+      }
+      // The ring each listing sends out as the wave reaches it: it widens quickly from the dot's edge and fades.
+      // Each has its own strength, so each is a stroke of its own; only the listings mid-pop draw one.
+      ctx.strokeStyle = edge;
+      ctx.lineWidth = 1.2 * dpr;
+      for (let i = 0; i < d.n; i++) {
+        if (d.area[i] === OUT) continue;
+        const p = into(i);
+        if (p < 0 || p >= 1) continue;
+        const r = (3.8 + 5.2 * outExpo(p)) * dpr;
+        ctx.globalAlpha = gone * (1 - p);
+        ctx.beginPath();
+        ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
+        ctx.stroke();
+      }
+      ctx.globalAlpha = gone;
+      // Inside an area, once lit: the dark ring first, then each shade of "how full" over it. A listing mid-pop
+      // swells to 1.7 times its size and settles back, its dark edge going with it.
+      for (let pass = -1; pass < steps.length; pass++) {
+        ctx.fillStyle = pass < 0 ? edge : steps[pass];
+        ctx.beginPath();
+        for (let i = 0; i < d.n; i++) {
+          if (d.area[i] === OUT || (pass >= 0 && d.step[i] !== pass)) continue;
+          const p = into(i);
+          if (p < 0) continue;
+          const swell = p >= 1 ? 1 : 1 + 0.7 * Math.sin(Math.PI * outExpo(p));
+          const r = (2.8 * swell + (pass < 0 ? 1 : 0)) * dpr * shown(i);
+          if (r <= 0) continue;
           ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
           ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
         }
@@ -355,7 +408,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const t = clock.current;
       paint(t);
       if (drawing.current) drawing.current.currentTime = t;
-      const n = times.areas.filter((a) => t >= a.closed + 120).length;
+      const n = times.areas.filter((a) => t >= a.closed + PIN_AT).length;
       if (n !== done) setDrawn((done = n));
       const going = times.areas.filter((a, k) => k === 0 || t >= times.areas[k - 1].closed + times.set).length - 1;
       if (going !== aimed) setAim((aimed = going));
