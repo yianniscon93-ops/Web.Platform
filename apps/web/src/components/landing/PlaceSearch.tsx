@@ -158,7 +158,12 @@ export default function PlaceSearch() {
             setAt(0);
             setOpen(true);
           }}
-          onFocus={() => setOpen(true)}
+          // The field may hold a place already picked (typed, or asked for by the picture above): focus selects it, so
+          // what is typed next replaces it rather than running on from it.
+          onFocus={(e) => {
+            e.currentTarget.select();
+            setOpen(true);
+          }}
           // A tap on a row lands after the blur: the list stays long enough to take it.
           onBlur={() => window.setTimeout(() => setOpen(false), 120)}
           onKeyDown={key}

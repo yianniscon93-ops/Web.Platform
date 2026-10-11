@@ -360,7 +360,8 @@
 .ps-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
 .ps-bar i { flex: none; width: min(24px, 50%); height: calc(var(--ps-bar) * 100%); min-height: 2px; background: var(--th-ink); }
 .ps-bars:not([data-axis]) .ps-bar i { height: calc(var(--ps-bar) * (100% - 18px)); }
-.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: 15px; font-weight: 600; line-height: 15px; white-space: nowrap; }
+/* A bar's value is a chart label, at the micro size: at 15px six of them run into one another on a phone. */
+.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: 13px; font-weight: 600; line-height: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ps-bars-x {
   display: grid;
   grid-column: 2;

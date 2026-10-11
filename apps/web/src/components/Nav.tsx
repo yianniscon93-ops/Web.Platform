@@ -31,6 +31,8 @@ export default function Nav() {
       className="th-landing fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
       // The bar has a ground of its own once the page has moved under it, or its menu is open.
       data-solid={scrolled || open ? "" : undefined}
+      // The open menu is solid paper: the page must not read through the links laid over it.
+      data-menu={open ? "" : undefined}
       style={{
         color: C.ink,
         ...(scrolled || open

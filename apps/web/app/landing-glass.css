@@ -55,6 +55,13 @@
   box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.55), 0 16px 28px -22px color-mix(in srgb, var(--th-ink) 45%, transparent);
 }
 
+/* The open menu (phones) is the paper itself, not frost: the headline under it would smear through the links. */
+.th-glassy header.th-landing[data-solid][data-menu] {
+  background: var(--th-ground) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
 /* The three product cards: sheets of tinted glass that slide over one another. The glass is nearly solid: at 86%
    the words of the card beneath read through a covering card's header as ghost text (critique, 2026-10-11), so
    what shows through now is the colour of the card beneath, never its words. */
@@ -69,6 +76,9 @@
     inset 0 2px 0 rgb(255 255 255 / 0.85),
     0 -20px 40px -32px color-mix(in srgb, var(--th-ink) 50%, transparent);
 }
+/* A card's header row is all that shows of it once others are over it, and it lies on the card before it: it is
+   the card's own ground, solid, so no word of the card beneath reaches it in any window. */
+.th-glassy .ps-card-head { border-radius: 25px 25px 0 0; background: var(--ps-ground); box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.85), inset 0 1px 0 1px rgb(255 255 255 / 0.5); }
 
 /* The stage's map, under a plate of glass: a cut edge round its frame, a lit rim over the map itself. */
 @media (min-width: 640px) {
