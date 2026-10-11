@@ -165,7 +165,7 @@ export function bedroomsReply(s: SelectionStats, inside: number | null): Reply {
   const quote = inside == null || n <= inside;
   if (n === 0) {
     return {
-      text: "No short\u2011lets with two or more bedrooms sit inside this area.",
+      text: "No short-\u2060lets with two or more bedrooms sit inside this area.",
       firm: firmness(0, { figure: false }),
       asOf: null,
     };
@@ -173,8 +173,8 @@ export function bedroomsReply(s: SelectionStats, inside: number | null): Reply {
   if (n < MIN_LISTINGS) {
     return {
       text: quote
-        ? `Only ${int(n)} short\u2011let${n === 1 ? "" : "s"} with two or more bedrooms ${n === 1 ? "sits" : "sit"} inside this area, too few to quote a figure.`
-        : "Too few short\u2011lets with two or more bedrooms sit inside this area to quote a figure.",
+        ? `Only ${int(n)} short-\u2060let${n === 1 ? "" : "s"} with two or more bedrooms ${n === 1 ? "sits" : "sit"} inside this area, too few to quote a figure.`
+        : "Too few short-\u2060lets with two or more bedrooms sit inside this area to quote a figure.",
       firm: quote ? firmness(n, { figure: false }) : "Thin: too few listings to rest a figure on.",
       asOf: null,
     };
@@ -212,7 +212,7 @@ export function bedroomsReply(s: SelectionStats, inside: number | null): Reply {
  */
 export function cutsReply(invest: InvestStats, inside: boolean): Reply {
   const where = inside ? "Inside this area" : "Across all of Cyprus";
-  const noun = "for\u2011sale listing";
+  const noun = "for-\u2060sale listing";
   if (invest.supply === 0) {
     return {
       text: inside

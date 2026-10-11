@@ -665,7 +665,7 @@ plays under reduced motion. `data-arrived` stays on the card;
   otherwise drawn empty ("Key finding: written by the team for your
   property"). No placeholder chart or invented number. The pager's buttons
   are `aria-disabled` at either end, not `disabled`, so focus is never
-  dropped. "Ask for a report" carries `A report on <name>` to the form.
+  dropped. "Ask for a report" carries `A report on <name>` to the close.
 - **Connector** (`ConnectorSection.tsx`). Seven questions and the
   conversation they build: each one chosen is added under the earlier ones
   (the log scrolls to it; one already asked goes back to its exchange;
@@ -694,7 +694,7 @@ plays under reduced motion. `data-arrived` stays on the card;
   `role="status"` line announces the answer, once per choice, and only
   while the card is near the viewport; a change of area is announced by the
   hero alone. "Ask for access" carries `Access to the Claude connector` to
-  the form.
+  the close.
 - On one column, choosing a question brings the composer and then the new
   exchange into view, and "Ask another question" under the conversation
   goes back up to the list.
@@ -729,12 +729,40 @@ data team. From 1100px the stops run left to right; below it, down a rail.
 ## The close (`CTASection.tsx`, `Footer.tsx`)
 
 "Ask the team." on ink, with the footer, in the same face and sizes. Over
-the email field stands the brand's drawn area with its square corners,
-quietly outlined, a line joining it to the field. A carried request ("Your
-request: …", `sessionStorage` key `ps-question`, event `ps:question`, both
-exported from `compare.ts`) is shown beside the area, fills the area in,
-and is named in the heading ("Ask the team for a report on Protaras."). The
-form still only simulates sending.
+the actions stands the brand's drawn area with its square corners, quietly
+outlined, a line joining it to them. The request is an email to
+`info@plotsights.com` (`BRAND.email`), written in the visitor's own mail app
+("Email the team"); beside it, "Or open the Playground, it's free". A
+carried request ("Your request: …", `sessionStorage` key `ps-question`,
+event `ps:question`, both exported from `compare.ts`) is shown beside the
+area, fills the area in, is named in the heading ("Ask the team for a report
+on Protaras.") and becomes the email's subject. The email field that stood
+here only simulated a send and was removed on 2026-10-11. The footer links
+the address; Privacy and Terms return when their pages exist.
+
+## After the critique of 2026-10-11
+
+- The first screen names the three products under the search
+  (`.lh-products`, from `products.ts`, which the How line's last stop
+  shares).
+- The first screen's picture can be plotted on: a button over the frame
+  (`.lh-plot`) with a crosshair and an offer beside the pointer ("Plot an
+  area in Limassol"); a click asks for the town on show by name
+  (`PICK_NAME_EVENT`), and the search box picks it as if it had been typed.
+  The tour waits while a mouse is over it.
+- Below 1024px the stage's three panels start closed (the stage is an
+  overview, the filled action above the map); from 1024px the Playground's
+  is open beside the map as before.
+- The Reports card opens on "Revenue potential across the year" (a chart and
+  its key finding), not on the key figures, which repeated the stage's two
+  numbers on a half-empty sheet. The line under the stage no longer repeats
+  the count the map's bar gives.
+- The product cards' glass is near solid (97% to 93%), so the words of a
+  covered card never read through the card over it, and the How section
+  comes up as a sheet with a rounded, edged top.
+- Words that must not break at a hyphen use a hyphen and a word joiner
+  (U+2060): Google Sans has no non-breaking hyphen.
+- Type is five sizes, 13 to 24px (`DESIGN.md`, Typography).
 
 ## Palette
 
@@ -765,10 +793,11 @@ tinted at 22% (`--th-area-tint`).
 - The demo listings now gather round each place's centre instead of
   filling a rectangle (`scatter` in `demoData.ts`), so demo counts differ
   from earlier screenshots.
-- **No inbox.** The two requests on the page ("Ask for a report", "Ask for
-  access") only carry a line to the form, and that form still only
-  simulates sending, though it now says "Thanks. We will write back."
-  Nothing reaches the team until a real route exists.
+- **Requests are emails.** "Ask for a report" and "Ask for access" end in an
+  email to `info@plotsights.com` from the visitor's mail app; a visitor with
+  no mail app set up has the address on screen to copy. A form posting to a
+  real inbox would replace it.
+- **No Privacy or Terms pages yet**, so the footer does not link them.
 - A hand-drawn shape cannot be passed to the Playground, so "Open it in the
   Playground" in the Connector's map answer opens the named place and says
   so once the visitor has redrawn the area.

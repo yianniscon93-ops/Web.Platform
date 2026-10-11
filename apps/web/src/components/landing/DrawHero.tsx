@@ -170,7 +170,9 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
   const [figures, setFigures] = useState<AreaFigures | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [pending, setPending] = useState(false);
-  // The open panel: the Playground's to begin with, and none once the visitor has closed the open one.
+  // The open panel: the Playground's to begin with beside the map, and none once the visitor has closed the open
+  // one. Below 1024px, where the panels stack under the map and the filled action sits above it, all three start
+  // closed (see the effect below): the stage is an overview, and what each product shows is a tap away.
   const [open, setOpen] = useState<ProductId | null>("playground");
   // True once the visitor has opened a panel: from then an opening panel's icon makes its small move.
   const [lively, setLively] = useState(false);
@@ -196,6 +198,12 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
   const acted = useRef(false);
   const countRef = useRef(count);
   countRef.current = count;
+
+  // Below 1024px the panels start closed. The server cannot know the width, so it renders the Playground's open
+  // and this closes it on arrival; the stage is below the first screen then, so nothing in view moves.
+  useEffect(() => {
+    if (window.matchMedia("(max-width: 1023px)").matches) setOpen((was) => (was === "playground" ? null : was));
+  }, []);
 
   // Every listing, for the dots (the page asks once: the first screen draws from the same answer); and the named
   // areas, so the Playground can open on this place.

@@ -83,7 +83,7 @@ typography:
     lineHeight: "26px"
   lede:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "18px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.5
   body:
@@ -93,7 +93,7 @@ typography:
     lineHeight: 1.45
   body-small:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.45
   figure:
@@ -104,7 +104,7 @@ typography:
     fontFeature: "tnum"
   action:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 600
     lineHeight: 1
   caption:
@@ -366,54 +366,21 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 
 **Character:** One friendly geometric sans doing every job, from a 68px headline to a 13px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
 
-**Scale raised 2026-10-11** (owner: "fonts being bigger readable everywhere"): every text size on the landing went up one step, with its pixel line-height scaled to match: 11 to 13px, 13 to 15px, 15 to 16px, 16 to 17px, 17 to 18px, 18 to 20px, the first screen's lede 19 to 20px and 22 to 24px, the nav links 15 to 16px, and the display and headline clamps as below. Nothing on the page is set under 13px. Text sizes given in the component notes further down predate this and read one step up by the same map; sizes of squares, dots, glyphs and gaps did not change.
+**Scale raised, then settled, 2026-10-11.** The owner asked for "fonts being bigger readable everywhere": every size went up a step, and a critique the same day found eight sizes in use, four within 3px of each other, and an 18px muted card sentence set above 17px ink. The scale is now five steps, 13, 15, 17, 20 and 24px, under the headline and display clamps. Nothing on the page is set under 13px. Text sizes given in the component notes further down predate this: 11px there reads 13, 13 reads 15, 15 to 18 read 17, and 18 or 20 for a title reads 20. Sizes of squares, dots, glyphs and gaps did not change.
 
 ### Hierarchy
 - **Display** (700, `clamp(3rem, 4.4vw, 4.25rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, "Plot an area on the map. Get the insights.", in three lines. In it "Plot" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
 - **Headline** (700, `clamp(2.25rem, 3vw, 2.75rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
 - **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
-- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
-- **Title** (600, 20px/26px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
-- **Lede** (400, 18px on phones, 20px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the close): the one sentence under a heading. The first screen's is a size up, 20px on phones and 24px from 1024px on a 27em measure, because it is read beside the page's largest words, and "Updated every day" and its last clause, what the visitor gets, are picked out in ink. The search field's own text is 18px in ink.
-- **Body** (400, 17px, line-height 1.45): the report page, the conversation, form input. 16px for notes, panel text, a row of the place list and what a stop on the How line says.
-- **Figure** (600, 17px/24px, tabular): a number, always followed by its unit at 15px in `muted`. On a pinned card the figures are set as a small table at 15px: a count and a figure in ink at weight 600, their words in `muted`.
-- **Action** (600, 16px): buttons, text links, switch options, tabs (500 until selected).
-- **Caption** (400, 15px/20px, `muted`): what a figure block covers, chart captions, notes under controls, what kind of place a row is. Captions wrap rather than cut off with an ellipsis.
-- **Micro** (600, 13px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
+- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 20px in the footer. The one size off the scale, because it is the brand's, not the text's.
+- **24px:** the first screen's sentence from 1280px, on a 27em measure, with "Updated every day" and what the visitor gets picked out in ink.
+- **20px, title** (600, 20px/26px): a product's name in a stage panel, a stop's name on the How line, the town's name on the first screen's map; 700 for a report page's title. Also a section's lede from 640px, the tie line from 640px, and the first screen's sentence on phones and between 1024 and 1279px.
+- **17px, text** (400, line-height 1.45 to 1.5, or 24px): everything read as running text, whatever its weight or colour. The lede on phones and a card's opening sentence (`muted`), notes, panel text, the report page, the conversation, form input and the search field's text; a figure at weight 600 in tabular numerals; an action at weight 600 (buttons, text links, switch options, tabs at 500 until selected). A card's opening sentence is never larger than the ink statements under it.
+- **15px, caption** (400, 20 to 22px line-height, `muted`): a figure's unit beside it, what a figure block covers, chart captions, notes under controls, what kind of place a row is, the words on a pinned card. Captions wrap rather than cut off with an ellipsis.
+- **13px, micro** (600): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the "sample" and "an example listing" notes, the "Demo data" tag.
 
 ### Named Rules
-**The Olive Works, Orange Marks Rule.** Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.
-
-**The Beige Ground Rule.** Every screen the visitor works on is the beige ground. A screen does not open on ink, on a tinted wash or on a picture with a frame of its own colour.
-
-**The Ring Rule.** A pale orange never stands alone on a pale ground. A listing dot and a booked night wear the `occ-ring`; the mark sits inside an ink line.
-
-**The Step Back Rule.** A figure that no longer describes the area on screen goes to `pending` until the new one arrives. It is never hidden, blurred or replaced by a spinner.
-
-**The Turned Over Rule.** The close is the same palette inverted (`close` and `close-*`), not a second palette. The focus ring inverts with it.
-
-## Typography
-
-**Display Font:** Google Sans (with sans-serif), self-hosted variable 400 to 700, Latin, Latin Extended and Greek. Pinned by the owner.
-**Body Font:** Google Sans. There is no second face.
-
-**Character:** One friendly geometric sans doing every job, from a 60px headline to an 11px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
-
-### Hierarchy
-- **Display** (700, `clamp(2.75rem, 4vw, 3.75rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, in three lines. In it the letters "Prop" of "Property" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
-- **Headline** (700, `clamp(2.125rem, 2.78vw, 2.5rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
-- **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
-- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
-- **Title** (600, 18px/24px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
-- **Lede** (400, 17px on phones, 18px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the close): the one sentence under a heading. The first screen's is a size up, 18px on phones and 20px from 1024px on a 28em measure, because it is read beside the page's largest words (owner, 2026-10-09: "arent the letters a bit small?"), and its last clause, what the visitor gets, is picked out in ink at weight 500. The search field's own text is 17px in ink.
-- **Body** (400, 16px, line-height 1.45): the report page, the conversation, form input. 15px for notes, panel text, a row of the place list and what a stop on the How line says.
-- **Figure** (600, 16px/22px, tabular): a number, always followed by its unit at 13px in `muted`. On a pinned card the figures are set as a small table at 13px/20px: a count and a figure in ink at weight 600, their words in `muted`.
-- **Action** (600, 15px): buttons, text links, switch options, tabs (500 until selected).
-- **Caption** (400, 13px/18px, `muted`): what a figure block covers, chart captions, notes under controls, what kind of place a row is.
-- **Micro** (600, 11px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
-
-### Named Rules
-**The Seven Sizes Rule.** Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them. The one exception is the first screen's sentence at 20px from 1024px.
+**The Five Sizes Rule.** Running type is 13, 15, 17, 20 or 24px, plus the headline and display clamps. A new element takes one of them; a role that seems to need a size between two steps takes the lower one and is told apart by weight or colour.
 
 **The Weight Not Case Rule.** A label is a sentence-case word at weight 600. There is no uppercase and no monospace anywhere, and tracking is never what makes something a label; the name of a body of water on a map is spaced out (0.08em) as maps do.
 
@@ -448,7 +415,7 @@ Flat. Depth is said with hairlines and with tone: the ground, white, the olive t
 - **Knock-out ring** (`box-shadow: 0 0 0 2px var(--th-surface)`): around a chart's hover dot, so it reads off the line. Not a shadow in effect.
 
 ### Named Rules
-**The Glass Rule.** The page's surfaces are glass (owner, 2026-10-09: first "a nice liquid glass search thing. crystalized" for the search field, then "lets try glass everywhere to see how it shows", then "great I prefer it"). Three forms, in `app/landing-hero.css` (the search field) and `app/landing-glass.css` (the rest). *Clear*: the search field alone, a slab lying on the paper with nothing frosted, said by its edges and its light. *Frost*: anything that lies on something else, namely the nav once the page moves under it (the paper's tone at 80% falling to 56%, a 22px blur), a card pinned on the first screen's map, the stage map's controls, the three product cards (their own ground at 86% falling to 70%, a 30px blur, so each shows the last through it), a report sheet, the switch's tray, an answer bubble, the example listing and the search field's list: white at 80% falling to 58%, an 18px blur with the colour behind raised, a 1px edge of ink at 38% (58% on a busy map), a white rim inside and a line of light along the top. *Bead*: every filled button, the visitor's bubble and the chosen side of the switch keep their colour and take a line of light along the top and a shade at the foot. The stage's map lies under a plate: a cut edge round its frame and a lit rim over the map. On the ink close the email field is clear glass on the dark. Text on glass keeps its contrast: the frost is never thinner than 56%. With transparency turned down, or where nothing can be blurred, every piece goes back to its plain surface. An element that blurs what is behind it must not sit inside a parent with `isolation: isolate` or a `backdrop-filter` of its own, or it will blur only that parent.
+**The Glass Rule.** The page's surfaces are glass (owner, 2026-10-09: first "a nice liquid glass search thing. crystalized" for the search field, then "lets try glass everywhere to see how it shows", then "great I prefer it"). Three forms, in `app/landing-hero.css` (the search field) and `app/landing-glass.css` (the rest). *Clear*: the search field alone, a slab lying on the paper with nothing frosted, said by its edges and its light. *Frost*: anything that lies on something else, namely the nav once the page moves under it (the paper's tone at 80% falling to 56%, a 22px blur), a card pinned on the first screen's map, the stage map's controls, the three product cards (their own ground at 97% falling to 93%, a 30px blur, so each shows the colour of the last through it, never its words), a report sheet, the switch's tray, an answer bubble, the example listing and the search field's list: white at 80% falling to 58%, an 18px blur with the colour behind raised, a 1px edge of ink at 38% (58% on a busy map), a white rim inside and a line of light along the top. *Bead*: every filled button, the visitor's bubble and the chosen side of the switch keep their colour and take a line of light along the top and a shade at the foot. The stage's map lies under a plate: a cut edge round its frame and a lit rim over the map. The product cards' glass is near solid (their ground at 97% falling to 93%, 2026-10-11), so a covered card's words never read through the one over it. Text on glass keeps its contrast: the frost is never thinner than 56%. With transparency turned down, or where nothing can be blurred, every piece goes back to its plain surface. An element that blurs what is behind it must not sit inside a parent with `isolation: isolate` or a `backdrop-filter` of its own, or it will blur only that parent.
 
 **The Lying On Top Rule.** A shadow means "this is a separate thing resting on what is under it": a sheet, a pinned card, a floating control, the field. Product cards, stage panels, filled buttons and bubbles are flat at rest and stay flat on hover.
 
@@ -458,7 +425,7 @@ Flat. Depth is said with hairlines and with tone: the ground, white, the olive t
 
 ## Shapes
 
-Three kinds of corner, each with a meaning. **Square** (0 radius, ink border, 9 to 17px): anything that marks a point, can be picked up, or is one counted unit, such as an area's corners (12px with a 2px border on the stage, 8px with a 1.5px border on the first screen's picture), a stop on the How line (11.5px), a chart's last value, the contents rail, the chosen question, the slider's thumb, the typing indicator, a night on a calendar (17px, 1.5px border). **Round** (full radius): a listing among many on a map being read (map dots, the key, a chart's hover dot), a button, and the search field. **Softly rounded**: surfaces, in a ladder of 6px (sheet, switch options, focus on inner controls), 8px (a card pinned on the first screen's picture), 10px (a row of the place list, the listing card), 12px (the switch, the select, the email field, the controls that float on the stage's map), 14px (the map frame), 16px (the place list, whose 10px rows sit 6px inside it) and 26px (the product cards).
+Three kinds of corner, each with a meaning. **Square** (0 radius, ink border, 9 to 17px): anything that marks a point, can be picked up, or is one counted unit, such as an area's corners (12px with a 2px border on the stage, 8px with a 1.5px border on the first screen's picture), a stop on the How line (11.5px), a chart's last value, the contents rail, the chosen question, the slider's thumb, the typing indicator, a night on a calendar (17px, 1.5px border). **Round** (full radius): a listing among many on a map being read (map dots, the key, a chart's hover dot), a button, and the search field. **Softly rounded**: surfaces, in a ladder of 6px (sheet, switch options, focus on inner controls), 8px (a card pinned on the first screen's picture), 10px (a row of the place list, the listing card), 12px (the switch, the select, the controls that float on the stage's map), 14px (the map frame), 16px (the place list, whose 10px rows sit 6px inside it) and 26px (the product cards).
 
 Message shapes take the card's 26px on three corners and 6px on the corner nearest the speaker (bottom-right for the visitor, bottom-left for the answer and for a map sent as a message).
 
@@ -486,7 +453,7 @@ A fixed 72px bar: brand mark (32px) and wordmark left; three text links at 15px 
 The first screen's way in, and the largest control on the page.
 - **Field:** glass, fully rounded, 60px tall. The slab is nearly clear, with the faintest smoke (ink at 5%) so that the light on it can be lighter than the paper: a white sheen along its top that thins out by the middle, its edges a little brighter all round, a bright line along its lower lip and, above that lip, the green of the glass's thickness (olive at 32%). Round it a 1px cut edge (ink at 56%, 3:1 on the paper) with a 1.5px polished rim inside, which is bright where it catches the light: on top at one point and, across from it, underneath. Under it the "way in" shadow. Whatever is behind it is blurred (14px) and a little more saturated. The point where the light falls (`--gx`, 24% along at rest) follows a mouse along the field and glides to 76% when the field takes the focus; with reduced motion it stays put. Inside: a 20px search glyph in `muted`, the text at 17px, a muted placeholder that says what to type, and the action button ("Show me" and an arrow) inside its right end, with a line of light along its own top edge. With transparency turned down (`prefers-reduced-transparency`) the field and its list are plain white; with forced colours the cut edge is a real border. Below 480px, and between 1024 and 1179px where the words' column is narrow, the button is its arrow alone, a 48px circle.
 - **Focus:** the 2px ink ring goes round the whole field, offset 3px; the input itself shows none.
-- **List:** opens 10px under the field at its full width: a sheet of the same glass, frosted (white at 80% falling to 64%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 18px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
+- **List:** opens 10px under the field at its full width: a sheet of the same glass, frosted (white at 80% falling to 64%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 16px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
 - **Picking** a row or pressing the button hands the place to the stage and moves the page down to it. If the list of places cannot be fetched, the sentence under the field says so and the button opens the Playground.
 
 ### The picture and its pinned figures
@@ -512,7 +479,7 @@ Options in a white tray (12px radius, 3px padding, hairline), flat on its card. 
 - **Messages:** the visitor's in olive with `visitor-ink` text at weight 500, the answer on white with a hairline; 16px (17px from 640px), up to 35em wide.
 
 ### Inputs / Fields
-- **Email field (on ink):** transparent, 1.5px `close-edge` outline, 12px radius, 48px tall; the outline goes to paper on hover and focus.
+- **The close's request** is an email (`mailto:` to `info@plotsights.com`, the carried request as its subject) on a solid paper button, "Email the team", with "Or open the Playground, it's free" beside it as a text link; there is no field on the page (the one that stood here only simulated a send, removed 2026-10-11).
 - **Select (phones, report contents):** white, 1px `edge` outline, 12px radius, 48px tall, a drawn 2px ink chevron.
 - **Slider:** a 2px track filled in ink up to a 16px square white thumb with a 2px ink border; the thumb fills olive and grows to 1.2 on hover; the focus ring goes on the thumb.
 - **Tabs:** text at 15px, muted until hovered, ink at weight 600 when selected with a 2px ink underline on the row's own rule; an overflowing row fades at the hidden side and shows an arrow.

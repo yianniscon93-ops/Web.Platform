@@ -1,4 +1,5 @@
 import PlaceSearch from "./PlaceSearch";
+import { PRODUCTS } from "./products";
 import TownTour from "./TownTour";
 import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
 import type { PolygonCoords } from "@/lib/dashboard/types";
@@ -149,10 +150,23 @@ export default async function LandingHero() {
           {/* Two beats: the daily update and the three markets as a fact (owner, 2026-10-10: "show that our database is
               updated daily"), then the gesture (which is what the picture beside it is doing) and the promise in bold. */}
           <p className="th-lede m-0">
-            <b>Updated every day:</b> every short&#8209;let, long&#8209;let and sale in Cyprus. Draw a line round any streets and see{" "}
+            <b>Updated every day:</b> every short-&#8288;let, long-&#8288;let and sale in Cyprus. Draw a line round any streets and see{" "}
             <b>what they earn, rent for and sell for.</b>
           </p>
           <PlaceSearch />
+          {/* What the visitor gets, named on the first screen (PRODUCT.md: the hero has to say exactly what the three
+              products are): each with its icon and one line, and a link down to its card. */}
+          <ul className="lh-products m-0 list-none p-0" aria-label="Three ways to use it">
+            {PRODUCTS.map(({ id, name, about, Icon }) => (
+              <li key={id}>
+                <a href={`#${id}`}>
+                  <Icon size={32} />
+                  <b>{name}</b>
+                  <span>{about}</span>
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
       </div>
       <TownTour stops={stops} demo={towns.some((areas) => areas.some((m) => m.demo))} />

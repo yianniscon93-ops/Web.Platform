@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowRight, Search } from "lucide-react";
 import type { AreaInfo, AreaType } from "@/lib/dashboard/types";
 import { int } from "@/lib/landing/areaLines";
-import { PICK_EVENT, type PickedPlace } from "@/lib/landing/compare";
+import { PICK_EVENT, PICK_NAME_EVENT, type PickedPlace } from "@/lib/landing/compare";
 
 // What a row says under a place's name, in a visitor's words: what it is where that helps, and its district.
 const KIND: Partial<Record<AreaType, string>> = { district: "District", tourist_area: "Resort", quarter: "Quarter", parish: "Quarter" };
@@ -81,6 +81,28 @@ export default function PlaceSearch() {
     input.current?.blur();
     document.getElementById("draw")?.scrollIntoView();
   };
+
+  // The first screen's picture asks for its town by name (PICK_NAME_EVENT): it is picked as if it had been typed,
+  // the town itself before a district of the same name. Without the list of places the Playground has its own search.
+  const byName = useRef<(name: string) => void>(() => {});
+  byName.current = (name: string) => {
+    if (!places) {
+      if (failed) window.location.assign("/dashboard");
+      else document.getElementById("draw")?.scrollIntoView();
+      return;
+    }
+    const want = plain(name);
+    const match = places
+      .filter((p) => plain(p.nameEn) === want)
+      .sort((a, b) => Number(a.areaType === "district") - Number(b.areaType === "district") || b.listingCount - a.listingCount)[0];
+    if (match) pick(match);
+    else document.getElementById("draw")?.scrollIntoView();
+  };
+  useEffect(() => {
+    const on = (e: Event) => byName.current((e as CustomEvent<string>).detail);
+    window.addEventListener(PICK_NAME_EVENT, on);
+    return () => window.removeEventListener(PICK_NAME_EVENT, on);
+  }, []);
 
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -164,7 +186,7 @@ export default function PlaceSearch() {
                 {p.nameEl && <span lang="el"> {p.nameEl}</span>}
               </span>
               {under(p) && <small>{under(p)}</small>}
-              <em>{int(p.listingCount)} short&#8209;lets</em>
+              <em>{int(p.listingCount)} short-&#8288;lets</em>
             </li>
           ))}
           {shown && found.length === 0 && (

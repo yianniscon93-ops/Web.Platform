@@ -1,13 +1,7 @@
-import { ConnectorIcon, PlaygroundIcon, ReportsIcon } from "./ProductIcons";
+import { PRODUCTS } from "./products";
 import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
 import { int } from "@/lib/landing/areaLines";
 import { getInvest, getRentals, getStats, getSummary } from "@/lib/server/marketData";
-
-const PRODUCTS = [
-  { id: "playground", name: "Playground", about: "Explore every listing yourself. Free.", Icon: PlaygroundIcon },
-  { id: "reports", name: "Reports", about: "We write it up for you.", Icon: ReportsIcon },
-  { id: "connector", name: "Connector", about: "Ask it in Claude.", Icon: ConnectorIcon },
-] as const;
 
 // One month of the example listing's calendar: b a night booked, o a night its owner blocked, f a night free.
 const MONTH = "bbbbbfbbbbbooobbbbbfbbbbfbobff";
@@ -55,16 +49,16 @@ export default async function HowSection() {
             <div className="hw-spec">
               <p className="hw-card m-0">
                 <i aria-hidden="true" />
-                <b>2&#8209;bed apartment</b>
+                <b>2-&#8288;bed apartment</b>
                 <span>Kato Paphos</span>
                 <span>€140 a night</span>
               </p>
               <span className="th-sample">An example listing</span>
             </div>
-            <p className="hw-say m-0">On Airbnb if it is a short&#8209;let, on Bazaraki if it is to rent or for sale.</p>
+            <p className="hw-say m-0">On Airbnb if it is a short-&#8288;let, on Bazaraki if it is to rent or for sale.</p>
             {held && (
               <p className="hw-fact m-0">
-                <b>{int(held.shortLets)}</b> short&#8209;lets, <b>{int(held.longLets)}</b> long&#8209;lets and{" "}
+                <b>{int(held.shortLets)}</b> short-&#8288;lets, <b>{int(held.longLets)}</b> long-&#8288;lets and{" "}
                 <b>{int(held.forSale)}</b> homes for sale today.
                 {demo && <span className="th-tag">Demo data</span>}
               </p>
@@ -139,7 +133,7 @@ export default async function HowSection() {
             </div>
             <p className="hw-say m-0">
               Nights really booked are told apart from nights the owner blocked. A home for sale is matched with
-              short&#8209;lets near it of the same size, to say what it could earn.
+              short-&#8288;lets near it of the same size, to say what it could earn.
             </p>
           </li>
 

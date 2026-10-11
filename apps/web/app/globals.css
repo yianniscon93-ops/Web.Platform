@@ -239,7 +239,9 @@
   --th-display-tracking: -0.025em;
   --th-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
-/* Landing face: Google Sans (OFL), self-hosted from public/fonts/google-sans. Latin, Latin Extended and Greek. */
+/* Landing face: Google Sans (OFL), self-hosted from public/fonts/google-sans. Latin, Latin Extended and Greek.
+   It has no non-breaking hyphen (U+2011), which the browser would draw in another face, so a word that must not
+   break at its hyphen ("short-let") is written as a hyphen and a word joiner (U+2060) instead. */
 @font-face {
   font-family: "Google Sans";
   font-style: normal;
@@ -290,7 +292,7 @@
   gap: 6px;
   min-height: 44px;
   color: var(--th-ink);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
 }
@@ -313,7 +315,7 @@
   border-radius: 9999px;
   background: var(--th-action);
   color: var(--th-action-ink);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
   transition: background-color 0.15s, transform 0.15s var(--th-ease);
@@ -363,7 +365,7 @@
   letter-spacing: var(--th-display-tracking);
   text-wrap: balance;
 }
-.th-lede { max-width: 34em; margin-top: -6px; color: var(--th-muted); font-size: 18px; line-height: 1.5; text-wrap: pretty; }
+.th-lede { max-width: 34em; margin-top: -6px; color: var(--th-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
 
 /* The map column: the zoom control, the map, the count bar, the credit. */
 .th-map { display: flex; flex-direction: column; min-width: 0; min-height: 0; }
@@ -427,7 +429,7 @@
 .th-zoom-whole::after { content: ""; position: absolute; inset: -4px 0; }
 /* "Draw an area here", on the frame's bottom-left corner: offered whenever the map is zoomed in, and when the
    window shows nothing of the area to take hold of. */
-.th-draw-here { position: absolute; bottom: 10px; left: 10px; z-index: 4; min-height: 44px; padding: 0 16px; font-size: 16px; }
+.th-draw-here { position: absolute; bottom: 10px; left: 10px; z-index: 4; min-height: 44px; padding: 0 16px; font-size: 17px; }
 /* The frame crops; the view inside it always keeps the basemap's 4:3 and covers the frame. */
 .th-map-port {
   position: relative;
@@ -575,7 +577,8 @@
   --dx: max(15px, calc(7px + var(--run) * var(--n) * 8px));
   top: calc(var(--cy) - var(--n) * 8px);
   left: calc(var(--cx) + var(--dx));
-  max-width: var(--cue-w, none);
+  /* Never past the frame's right edge, whatever the words' size: the room from the words' start to 12px short of it. */
+  max-width: min(var(--cue-w, 100cqw), calc(var(--th-crop-x) + 100cqw - var(--cx) - var(--dx) - 12px));
 }
 /* Under the corner and running left from just past it, over the water below the area. It stops short of the
    locator in the frame's corner, and wraps where that leaves it little room. */
@@ -588,14 +591,14 @@
 }
 /* A narrow frame: the words beside the corner take two lines, or three on the narrowest touch screens. */
 @container (max-width: 437px) {
-  .th-cue-label[data-side="right"] { --n: 2; --cue-w: 9em; }
+  .th-cue-label[data-side="right"] { --n: 2; --cue-w: 7.8em; }
 }
 @media (pointer: coarse) {
   @container (max-width: 545px) {
-    .th-cue-label[data-side="right"] { --n: 2; --cue-w: 11em; }
+    .th-cue-label[data-side="right"] { --n: 2; --cue-w: 9.5em; }
   }
   @container (max-width: 323px) {
-    .th-cue-label[data-side="right"] { --n: 3; --cue-w: 8em; }
+    .th-cue-label[data-side="right"] { --n: 3; --cue-w: 7em; }
   }
 }
 /* The count beside the corner in hand. AreaMap places and writes it. */
@@ -678,7 +681,7 @@
   min-height: 44px;
   margin-top: -11px;
   color: var(--th-ink);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   text-decoration: underline 1.5px;
   text-underline-offset: 4px;
@@ -714,8 +717,8 @@
 .th-panel-title button:focus-visible::after { outline: 2px solid var(--th-focus); outline-offset: 1px; }
 /* Every header can be pressed, the open one to shut it: each says so the same way. */
 .th-panel-head:hover h2 { text-decoration: underline 1.5px; text-underline-offset: 4px; }
-.th-panel-about { color: var(--th-muted); font-size: 16px; line-height: 24px; }
-.th-panel-live { font-size: 16px; font-weight: 500; line-height: 24px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.th-panel-about { color: var(--th-muted); font-size: 17px; line-height: 24px; }
+.th-panel-live { font-size: 17px; font-weight: 500; line-height: 24px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
 .th-panel-chevron { margin-top: 3px; transition: transform 0.32s var(--th-ease); }
 .th-panel[data-open] .th-panel-chevron { transform: rotate(180deg); }
 .th-panel-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s var(--th-ease); }
@@ -723,14 +726,14 @@
 /* The clip is let out sideways so a focus ring or the sheet's shadow is not cut. */
 .th-panel-in { min-height: 0; margin: 0 -8px; padding: 0 8px; overflow: hidden; }
 .th-panel-pad { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; padding: 2px 0 18px; }
-.th-panel-note { font-size: 16px; line-height: 1.45; }
+.th-panel-note { font-size: 17px; line-height: 1.45; }
 
 /* Playground: the three markets side by side. Each column says what its figures cover. */
 .th-markets {
   width: 100%;
   table-layout: fixed;
   border-collapse: collapse;
-  font-size: 16px;
+  font-size: 17px;
   font-variant-numeric: tabular-nums;
   text-align: left;
 }
@@ -767,7 +770,7 @@
 }
 /* A written page: its title, the chart with its period, a reading of the chart, and a note on what this page is. */
 .th-sheet h3 { font-size: 17px; font-weight: 600; line-height: 24px; }
-.th-sheet > p { margin-top: 10px; font-size: 16px; line-height: 1.45; text-wrap: pretty; }
+.th-sheet > p { margin-top: 10px; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
 .th-sheet > .th-sample { margin-top: 8px; font-size: 13px; line-height: 18px; white-space: normal; }
 .th-chart, .th-chart-hold, .th-sheet .ps-chart { --th-chart-h: 76px; margin-top: 2px; }
 /* The sample page's bars (SeriesChart, styled in landing-sections.css) at the height the hero has for a chart. */
@@ -838,7 +841,7 @@
   border-radius: 26px 26px 6px 26px;
   background: var(--th-visitor);
   color: var(--th-visitor-ink);
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
   line-height: 1.4;
 }
@@ -850,10 +853,11 @@
   border: 1px solid var(--th-line);
   border-radius: 26px 26px 26px 6px;
   background: var(--th-surface);
-  font-size: 16px;
+  font-size: 17px;
   line-height: 1.45;
 }
-.th-answer .th-link { display: inline-block; margin-top: 4px; font-weight: 600; }
+/* A 44px target round the words, without moving them: the extra height is taken back by the margins. */
+.th-answer .th-link { display: inline-flex; align-items: center; min-height: 44px; margin: -7px 0 -11px; font-weight: 600; }
 
 /* A street map mounted out of sight, to count the listings on its land (PlaceCount in DrawHero). */
 .th-measure { position: absolute; width: 0; height: 0; overflow: hidden; visibility: hidden; pointer-events: none; }

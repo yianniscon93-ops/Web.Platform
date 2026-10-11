@@ -2,7 +2,17 @@
 /* One listing followed along a line with five stops: published, read, placed, measured, and out three ways.
    The line and its square stops are the stage's drawing; each stop shows the listing as it is at that point.
    The section comes up over the product cards, as the close after it does. */
-.hw { position: relative; z-index: 1; background: var(--th-ground); color: var(--th-ink); scroll-margin-top: 72px; }
+/* It comes up as a sheet, as the cards do: a rounded top, the cards' fine ink edge and a shade cast up onto the
+   card it covers, so the page under it never looks cut. */
+.hw {
+  position: relative;
+  z-index: 1;
+  border-radius: 26px 26px 0 0;
+  background: var(--th-ground);
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--th-ink) 26%, transparent), 0 -20px 40px -28px color-mix(in srgb, var(--th-ink) 50%, transparent);
+  color: var(--th-ink);
+  scroll-margin-top: 72px;
+}
 .hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 72px 16px 64px; }
 .hw-h { font-size: var(--th-heading); }
 .hw .th-lede { margin-top: 0; }
@@ -26,7 +36,7 @@
 /* What is counted is the light orange: the listing as it is published. */
 .hw-line > li[data-stop="source"]::after { background: var(--th-mark); }
 .hw-line h3 { font-size: 20px; font-weight: 600; line-height: 26px; }
-.hw-say { max-width: 34em; color: var(--th-muted); font-size: 16px; line-height: 24px; text-wrap: pretty; }
+.hw-say { max-width: 34em; color: var(--th-muted); font-size: 17px; line-height: 24px; text-wrap: pretty; }
 .hw-fact { font-size: 15px; line-height: 22px; font-variant-numeric: tabular-nums; }
 .hw-fact b { font-weight: 600; }
 .hw-fact .th-tag { display: flex; width: fit-content; margin-top: 6px; }

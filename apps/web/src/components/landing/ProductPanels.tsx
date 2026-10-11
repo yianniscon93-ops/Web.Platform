@@ -207,8 +207,8 @@ function MarketsTable({
   const inside = "inside the line";
   const cover = (r: { source: "live" | "demo" } | null) => (loading || !r ? "\u00a0" : scoped(r) ? inside : "all of Cyprus");
   const columns = [
-    { id: "str", name: "Short\u2011let", scope: inside },
-    { id: "ltr", name: "Long\u2011let", scope: cover(rentals) },
+    { id: "str", name: "Short-\u2060let", scope: inside },
+    { id: "ltr", name: "Long-\u2060let", scope: cover(rentals) },
     { id: "sale", name: "For sale", scope: cover(invest) },
   ];
   const demo = [stats, rentals, invest].some((r) => r?.source === "demo");
@@ -365,7 +365,7 @@ export default function ProductPanels({
         iconRef={iconRef("reports")}
       >
         <article className="th-sheet" aria-busy={late || undefined}>
-          <h3 className="m-0">Short&#8209;lets in {area}</h3>
+          <h3 className="m-0">Short-&#8288;lets in {area}</h3>
           {revenue && (
             <div data-follows="" data-pending={late ? "" : undefined}>
               <BarChart

@@ -140,6 +140,11 @@ export interface PickedPlace {
 }
 /** How the search box hands a picked place to the stage: the event's detail is a PickedPlace. */
 export const PICK_EVENT = "ps:pick";
+/**
+ * How the first screen's picture asks for its town by name (the event's detail is the name): the search box,
+ * which holds the list of places, picks it as if it had been typed, and hands it on with PICK_EVENT.
+ */
+export const PICK_NAME_EVENT = "ps:pick-name";
 
 const KM_PER_DEG = 111.2;
 /**

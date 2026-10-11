@@ -1,8 +1,9 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
+import { ArrowRight, Pause, Play } from "lucide-react";
 import { euro, int, pct } from "@/lib/landing/areaLines";
+import { PICK_NAME_EVENT } from "@/lib/landing/compare";
 import { listingPoints } from "@/lib/landing/listingPoints";
 import { inPolygon } from "@/lib/landing/polygon";
 import type { TourArea, TourMarket, TourStop, TownPt } from "@/lib/landing/tour";
@@ -134,12 +135,12 @@ function Figures({ area }: { area: TourArea }) {
   return (
     <>
       <b>{area.name}</b>
-      <Line of={"Short\u2011let"} n={area.count} mark={step}>
+      <Line of={"Short-\u2060let"} n={area.count} mark={step}>
         <em>{euro(area.rate)}</em>
         <small> a night</small>
       </Line>
       {area.rent && (
-        <Line of={"Long\u2011let"} n={area.rent.count}>
+        <Line of={"Long-\u2060let"} n={area.rent.count}>
           {median(area.rent, "a month")}
         </Line>
       )}
@@ -156,8 +157,8 @@ function Figures({ area }: { area: TourArea }) {
 /** The same, said in a sentence for a reader who cannot see the card. */
 const spoken = (a: TourArea & { occupied: number; rate: number }) =>
   [
-    `${int(a.count)} short\u2011lets, ${pct(a.occupied)} occupancy this season, ${euro(a.rate)} a night`,
-    a.rent && `${int(a.rent.count)} long\u2011lets${a.rent.median != null ? `, ${euro(a.rent.median)} a month` : ""}`,
+    `${int(a.count)} short-\u2060lets, ${pct(a.occupied)} occupancy this season, ${euro(a.rate)} a night`,
+    a.rent && `${int(a.rent.count)} long-\u2060lets${a.rent.median != null ? `, ${euro(a.rent.median)} a month` : ""}`,
     a.sale && `${int(a.sale.count)} homes for sale${a.sale.median != null ? `, ${euro(a.sale.median)} asked` : ""}`,
   ]
     .filter(Boolean)
@@ -204,6 +205,10 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   const asked = useRef(new Set<number>());
   const clock = useRef(0);
   const seen = useRef(true);
+  // True while a pointer is over the picture, which can be plotted on: the tour waits, so the town under the
+  // pointer is the one a click asks for.
+  const hover = useRef(false);
+  const chip = useRef<HTMLSpanElement>(null);
   const stop = stops[stopAt];
   const next = (stopAt + 1) % stops.length;
 
@@ -382,7 +387,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       if (still || stopped) return () => ro.disconnect();
       // The first town holds as it arrived, then leaves as every other does and the tour sets off.
       const hold = window.setInterval(() => {
-        const typing = document.activeElement?.matches(".lh-box input") ?? false;
+        const typing = (document.activeElement?.matches(".lh-box input, .lh-plot:focus-visible") ?? false) || hover.current;
         if (!seen.current || document.hidden || typing) return;
         if (clock.current >= FIRST_MS && !ready()) return;
         clock.current += 100;
@@ -400,7 +405,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     let done = -1;
     let aimed = -1;
     const tick = (now: number) => {
-      const typing = document.activeElement?.matches(".lh-box input") ?? false;
+      const typing = (document.activeElement?.matches(".lh-box input, .lh-plot:focus-visible") ?? false) || hover.current;
       const waiting = !seen.current || document.hidden || typing;
       if (!waiting && !(clock.current >= times.end && !ready())) clock.current += Math.min(64, now - last);
       last = now;
@@ -578,6 +583,36 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             </p>
           )}
         </div>
+        {/* The headline's verb, on the picture itself: over the map the pointer is a crosshair with an offer beside
+            it, and a click (or a tap, or Enter) plots an area in the town on show, as picking it in the search would. */}
+        <button
+          type="button"
+          className="lh-plot"
+          aria-label={`Plot an area in ${stop.town}`}
+          onClick={() => window.dispatchEvent(new CustomEvent(PICK_NAME_EVENT, { detail: stop.town }))}
+          onPointerEnter={(e) => {
+            if (e.pointerType === "mouse") hover.current = true;
+          }}
+          onPointerLeave={() => {
+            hover.current = false;
+          }}
+          onPointerMove={(e) => {
+            const el = chip.current;
+            if (!el || e.pointerType !== "mouse") return;
+            // The offer sits below and right of the pointer, and flips to its left near the frame's right edge.
+            const box = e.currentTarget.getBoundingClientRect();
+            const x = e.clientX - box.left;
+            const y = e.clientY - box.top;
+            const flip = x + 18 + el.offsetWidth > box.width - 12;
+            el.style.setProperty("--px", `${flip ? x - 14 - el.offsetWidth : x + 18}px`);
+            el.style.setProperty("--py", `${Math.min(y + 18, box.height - el.offsetHeight - 12)}px`);
+          }}
+        >
+          <span ref={chip} className="lh-plot-chip" aria-hidden="true">
+            Plot an area in {stop.town}
+            <ArrowRight size={16} strokeWidth={2.4} />
+          </span>
+        </button>
       </div>
       {/* What the moving picture shows, for a reader who cannot watch it. */}
       <ul className="sr-only">
@@ -599,7 +634,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         {/* Which listings the dots are, and what their shades mean, as on the stage's map. */}
         <span className="lh-key">
           <span className="lh-key-of">
-            Short&#8209;lets<span className="lh-key-when"> this season</span>:
+            Short-&#8288;lets<span className="lh-key-when"> this season</span>:
           </span>
           emptier
           <span className="th-key-dots" aria-hidden="true">
@@ -609,7 +644,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             <i />
           </span>
           fuller
-          <span className="sr-only">: the short&#8209;lets inside an area are shaded by how full they have been this season</span>
+          <span className="sr-only">: the short-&#8288;lets inside an area are shaded by how full they have been this season</span>
         </span>
         {demo && <span className="th-tag">Demo data</span>}
         <span>

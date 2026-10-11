@@ -54,7 +54,7 @@ export default function Nav() {
             <a
               key={l.label}
               href={l.href}
-              className="th-navlink flex min-h-11 items-center text-[16px] font-medium"
+              className="th-navlink flex min-h-11 items-center text-[17px] font-medium"
               style={{ color: C.ink }}
             >
               {l.label}
@@ -62,7 +62,7 @@ export default function Nav() {
           ))}
           <a
             href="/dashboard"
-            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[16px] font-semibold"
+            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[17px] font-semibold"
             style={{ background: C.solid, color: C.solidInk }}
           >
             Open the Playground
@@ -94,7 +94,7 @@ export default function Nav() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center gap-3 text-base font-medium"
+                className="flex min-h-12 items-center gap-3 text-[17px] font-medium"
                 style={{ color: C.ink, borderBottom: `1px solid ${C.groundLine}` }}
               >
                 {/* The icon column is kept on every row, so the labels line up. */}
@@ -105,7 +105,7 @@ export default function Nav() {
             <a
               href="/dashboard"
               onClick={() => setOpen(false)}
-              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-base font-semibold"
+              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-[17px] font-semibold"
               style={{ background: C.solid, color: C.solidInk }}
             >
               Open the Playground
