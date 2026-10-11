@@ -90,7 +90,8 @@ export default function CTASection() {
             </a>
           </div>
           <p className="ps-close-small">
-            We are a small data team in Cyprus. Write to{" "}
+            We are a small data team in Cyprus: we collect every listing on the island, short-&#8288;lets, long-&#8288;lets
+            and sales, and our models turn them into the figures you have seen. Write to{" "}
             <a href={mail} className="th-link">
               {BRAND.email}
             </a>{" "}

@@ -12,16 +12,16 @@ import {
   PICK_EVENT,
   WHOLE_ISLAND,
   pickedArea,
-  stageWindow,
   type DrawnArea,
   type PickedPlace,
   type StageWindow,
 } from "@/lib/landing/compare";
 import { listingPoints } from "@/lib/landing/listingPoints";
+import { STREET_MAX, centreBounds, maxZoomAt, streetArea, streetWindow } from "@/lib/landing/townAreas";
 import { inPolygon, type Pt } from "@/lib/landing/polygon";
 import AreaMap from "./AreaMap";
 import IslandBasemap from "./IslandBasemap";
-import ProductPanels, { PRODUCTS, scoped, type AreaFigures, type ProductId } from "./ProductPanels";
+import StageFigures, { scoped, type AreaFigures } from "./StageFigures";
 
 /** How long after a release the figures are asked for, so a run of key presses asks once. */
 const SETTLE_MS = 300;
@@ -53,7 +53,7 @@ function windowRound(area: DrawnArea): StageWindow {
   // How wide the ring is in the whole island's window, in view units.
   const span = (Math.max(...lngs) - Math.min(...lngs)) * WHOLE.sx;
   const [lat, lng] = area.centre ?? [(Math.min(...lats) + Math.max(...lats)) / 2, (Math.min(...lngs) + Math.max(...lngs)) / 2];
-  return stageWindow((PICK_SHARE * VIEW_W) / span, lat, lng);
+  return streetWindow((PICK_SHARE * VIEW_W) / span, lat, lng);
 }
 
 /** The gutter stretch of a line to a panel: out of the map, along a shared rail, into the icon. */
@@ -170,12 +170,6 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
   const [figures, setFigures] = useState<AreaFigures | null>(null);
   const [status, setStatus] = useState<"loading" | "ready" | "error">("loading");
   const [pending, setPending] = useState(false);
-  // The open panel: the Playground's to begin with beside the map, and none once the visitor has closed the open
-  // one. Below 1024px, where the panels stack under the map and the filled action sits above it, all three start
-  // closed (see the effect below): the stage is an overview, and what each product shows is a tap away.
-  const [open, setOpen] = useState<ProductId | null>("playground");
-  // True once the visitor has opened a panel: from then an opening panel's icon makes its small move.
-  const [lively, setLively] = useState(false);
   const [intro, setIntro] = useState(true);
   const [touched, setTouched] = useState(false);
   // The named area the Playground opens on for the island's own area (Limassol).
@@ -184,9 +178,8 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
 
   const rootRef = useRef<HTMLDivElement>(null);
   const wiresRef = useRef<SVGSVGElement>(null);
-  const icons = useRef<Partial<Record<ProductId, HTMLSpanElement | null>>>({});
-  const openRef = useRef(open);
-  openRef.current = open;
+  // The mark heading the figures beside the map, where the line from the area ends.
+  const mark = useRef<HTMLSpanElement | null>(null);
   // Answers already had, by polygon, so going back to a shape (Reset, a place picked again) asks nothing.
   const cache = useRef(new Map<string, AreaFigures>());
   const latest = useRef<AreaFigures | null>(null);
@@ -198,12 +191,6 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
   const acted = useRef(false);
   const countRef = useRef(count);
   countRef.current = count;
-
-  // Below 1024px the panels start closed. The server cannot know the width, so it renders the Playground's open
-  // and this closes it on arrival; the stage is below the first screen then, so nothing in view moves.
-  useEffect(() => {
-    if (window.matchMedia("(max-width: 1023px)").matches) setOpen((was) => (was === "playground" ? null : was));
-  }, []);
 
   // Every listing, for the dots (the page asks once: the first screen draws from the same answer); and the named
   // areas, so the Playground can open on this place.
@@ -310,7 +297,7 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
     return () => clearTimeout(t);
   }, []);
 
-  /** Runs the lines from the map's edge to each panel's icon. Desktop only; the stylesheet hides them below it. */
+  /** Runs the line from the map's edge to the mark heading the figures. Desktop only; the stylesheet hides it below. */
   const layoutWires = useCallback(() => {
     const root = rootRef.current;
     const svg = wiresRef.current;
@@ -324,32 +311,25 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
     // From the corner's height; from the nearest end of the map's edge when the window has left the corner above or below it.
     const y0 = Math.min(p.bottom - 14, Math.max(p.top + 14, a.top + a.height / 2)) - o.top;
     const x0 = Math.round(p.right - o.left);
-    const paths = svg.querySelectorAll<SVGPathElement>("path");
-    let lead = "";
-    PRODUCTS.forEach((id, i) => {
-      const icon = icons.current[id]?.getBoundingClientRect();
-      if (!icon) return;
-      const x1 = icon.left - o.left - 7;
-      const d = wire(x0, y0, Math.round((x0 + x1) / 2), x1, Math.round(icon.top + icon.height / 2 - o.top) + 0.5);
-      // The open panel's line is drawn once, on top, in the area's colour. With every panel shut, none is.
-      if (id === openRef.current) lead = d;
-      paths[i].setAttribute("d", id === openRef.current ? "" : d);
-    });
-    paths[PRODUCTS.length].setAttribute("d", lead);
+    const icon = mark.current?.getBoundingClientRect();
+    const path = svg.querySelector<SVGPathElement>("path");
+    if (!icon || !path) return;
+    const x1 = icon.left - o.left - 7;
+    path.setAttribute("d", wire(x0, y0, Math.round((x0 + x1) / 2), x1, Math.round(icon.top + icon.height / 2 - o.top) + 0.5));
   }, []);
 
   useEffect(() => {
     const root = rootRef.current;
     if (!root) return;
     layoutWires();
-    // Panels change height as they open, and the window can resize: both move the icons.
+    // The table changes height as its figures land, and the window can resize: both move the mark.
     const ro = new ResizeObserver(layoutWires);
     ro.observe(root);
     root.querySelectorAll(".th-panel").forEach((el) => ro.observe(el));
     return () => ro.disconnect();
   }, [layoutWires]);
 
-  useEffect(layoutWires, [layoutWires, open, verts, placeKey]);
+  useEffect(layoutWires, [layoutWires, verts, placeKey]);
 
   const onOwnCount = useCallback((key: DrawnArea["key"], n: number) => {
     setOwn((o) => (o[key] === n ? o : { ...o, [key]: n }));
@@ -375,7 +355,7 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
 
   // The visitor zooms or moves the map. The area and everything said about it stay as they are.
   const onWindow = useCallback((z: number, lat: number, lng: number) => {
-    setWin(stageWindow(z, lat, lng));
+    setWin(streetWindow(z, lat, lng));
     setIntro(false);
   }, []);
 
@@ -385,8 +365,12 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
     const on = (e: Event) => {
       const place = (e as CustomEvent<PickedPlace>).detail;
       if (!place || typeof place.lat !== "number" || typeof place.lng !== "number") return;
-      const picked = pickedArea(place);
-      const home = windowRound(picked);
+      // One of the six towns with a street map opens at street level on an area a few streets wide; any other
+      // place gets a ring round itself on the island.
+      const street = streetArea(place);
+      const picked = street ?? pickedArea(place);
+      // A street area opens at the closest step, centred on it: a few streets fill the window as they should.
+      const home = street?.centre ? streetWindow(STREET_MAX, street.centre[0], street.centre[1]) : windowRound(picked);
       acted.current = true;
       askNow.current = true;
       setBase((was) => ({ area: picked, areaId: place.areaId, home, pick: was.pick + 1 }));
@@ -413,16 +397,8 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
     if (inside != null) setCount(inside);
   }, []);
 
-  const iconRef = useCallback(
-    (id: ProductId) => (el: HTMLSpanElement | null) => {
-      icons.current[id] = el;
-    },
-    []
-  );
-
-  const onToggle = useCallback((id: ProductId) => {
-    setOpen((was) => (was === id ? null : id));
-    setLively(true);
+  const markRef = useCallback((el: HTMLSpanElement | null) => {
+    mark.current = el;
   }, []);
 
   const stats = figures?.stats ?? null;
@@ -487,6 +463,8 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
           basemap={<IslandBasemap area={area} />}
           zoom={win.z}
           onWindow={onWindow}
+          zoomLimit={maxZoomAt}
+          bounds={centreBounds(win)}
           points={points}
           verts={verts}
           changed={changed}
@@ -507,7 +485,7 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
           onReset={onReset}
         />
 
-        <ProductPanels
+        <StageFigures
           place={area.name}
           changed={changed}
           roams={roams}
@@ -516,17 +494,11 @@ export default function DrawHero({ basemaps }: { basemaps: Partial<Record<DrawnA
           status={status}
           pending={pending}
           playgroundHref={playgroundHref}
-          open={open}
-          lively={lively}
-          onToggle={onToggle}
-          iconRef={iconRef}
+          markRef={markRef}
         />
 
         {/* The lines from the area to the products. Their paths are measured, so they are set by layoutWires. */}
         <svg ref={wiresRef} className="th-wires" data-intro={intro ? "" : undefined} aria-hidden="true">
-          {PRODUCTS.map((id) => (
-            <path key={id} pathLength={1} />
-          ))}
           <path className="th-wire-on" pathLength={1} />
         </svg>
 

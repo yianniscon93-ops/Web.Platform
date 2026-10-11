@@ -16,6 +16,7 @@
 .hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 72px 16px 64px; }
 .hw-h { font-size: var(--th-heading); }
 .hw .th-lede { margin-top: 0; }
+.hw .th-lede b { color: var(--th-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
 
 /* The line, top to bottom on phones and tablets: a rail down the left with a square at each stop. */
 .hw-line { --hw-rail: color-mix(in srgb, var(--th-a) 70%, var(--th-ground)); display: grid; margin-top: 24px; }
@@ -86,11 +87,8 @@
 .hw-bars span[data-ours] i { border-color: var(--th-occ-ring); background: var(--th-occ-3); }
 .hw-bars em { color: var(--th-ink); font-size: 17px; font-style: normal; font-weight: 600; }
 /* Stop 5: the three products. */
-.hw-out { display: grid; row-gap: 14px; }
-.hw-out a { display: grid; grid-template-columns: 40px minmax(0, 1fr); column-gap: 12px; align-items: center; min-height: 48px; }
-.hw-out a > span { display: flex; flex-direction: column; color: var(--th-muted); font-size: 15px; line-height: 22px; }
-.hw-out b { color: var(--th-ink); font-size: 17px; font-weight: 600; line-height: 24px; }
-.hw-out a:hover b { text-decoration: underline 1.5px; text-underline-offset: 4px; }
+/* Stop 5: the products, named in one sentence, each a link to its card. */
+.hw-out a { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
 
 @media (min-width: 640px) {
   .hw-in { padding: 88px 32px 80px; }
@@ -104,11 +102,9 @@
   .hw-line > li::before { top: 5px; right: 0; bottom: auto; left: 6px; width: auto; height: 1.5px; }
   .hw-line > li::after { top: 0; }
   .hw-spec { align-self: center; }
-  /* The line ends as the stage's does: it turns down and forks to the three products. */
+  /* The line ends by turning down to the sentence that names the three products. */
   .hw-line > li[data-stop="out"] { align-self: start; grid-template-rows: auto auto; padding: 34px 0 0 30px; }
   .hw-line > li[data-stop="out"]::after { display: none; }
   .hw-line > li[data-stop="out"]::before { display: block; top: 5px; bottom: 23px; left: 0; width: 1.5px; height: auto; }
-  .hw-out { row-gap: 18px; margin-top: 4px; }
-  .hw-out li { position: relative; }
-  .hw-out li::before { content: ""; position: absolute; top: 50%; left: -30px; width: 23px; height: 1.5px; margin-top: -0.75px; background: var(--hw-rail); }
+  .hw-out { margin-top: 4px; }
 }

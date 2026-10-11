@@ -2,7 +2,8 @@
 
 import type { PolygonCoords } from "@/lib/dashboard/types";
 import { VIEW_H, VIEW_W, viewOf, project, unproject, zoomedView } from "@/lib/landing/areaView";
-import { ISLAND_AREA, ZOOM_LEVELS, type DrawnArea } from "@/lib/landing/compare";
+import { ISLAND_AREA, type DrawnArea } from "@/lib/landing/compare";
+import { maxZoomAt } from "@/lib/landing/townAreas";
 import { ringPath, type Pt } from "@/lib/landing/polygon";
 import IslandBasemap from "./IslandBasemap";
 
@@ -49,7 +50,8 @@ export default function AreaMiniMap({
     const ys = whole.map((p) => p[1]);
     const z = Math.min((FIT * VIEW_W) / (Math.max(...xs) - Math.min(...xs)), (FIT * VIEW_H) / (Math.max(...ys) - Math.min(...ys)));
     const [lat, lng] = unproject(WHOLE, (Math.min(...xs) + Math.max(...xs)) / 2, (Math.min(...ys) + Math.max(...ys)) / 2);
-    view = zoomedView(WHOLE, Math.min(ZOOM_LEVELS[ZOOM_LEVELS.length - 1], Math.max(1, z)), lat, lng);
+    // As close as the stage itself could go there: street level only over a town's street map.
+    view = zoomedView(WHOLE, Math.min(maxZoomAt(lat, lng), Math.max(1, z)), lat, lng);
   }
   const seen: DrawnArea = cut ? { ...place, view } : place;
   const ring: Pt[] = polygon.map(([lat, lng]) => project(view, lat, lng));

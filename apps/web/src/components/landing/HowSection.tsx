@@ -38,9 +38,14 @@ export default async function HowSection() {
     <section id="how" className="th-landing hw" aria-labelledby="how-h">
       <div className="hw-in">
         <h2 id="how-h" className="th-h1 hw-h m-0">How the numbers are made.</h2>
+        {/* What is behind the figures, in the owner's terms (2026-10-11): the listings collected across the island,
+            all three markets, and the models that turn them into insights. The count is the database's, today's. */}
         <p className="th-lede m-0">
-          Every figure on this page starts as a listing someone published. Follow one from the site it was posted
-          on to the three ways it reaches you.
+          We collect{" "}
+          {/* Demo data has no true count to quote: there the sentence says it without one. */}
+          {held && !demo ? <b>{int(held.shortLets + held.longLets + held.forSale)} listings</b> : "the listings"} from across
+          Cyprus, short-&#8288;lets, long-&#8288;lets and homes for sale, and our models turn them into every figure on
+          this page. Follow one from the site it was posted on to the three ways it reaches you.
         </p>
 
         <ol className="hw-line m-0 list-none p-0">
@@ -137,21 +142,20 @@ export default async function HowSection() {
             </p>
           </li>
 
+          {/* The line ends on the products in one sentence: the first screen and their cards have said what each is. */}
           <li data-stop="out">
             <h3>It reaches you, three ways</h3>
-            <ul className="hw-out m-0 list-none p-0">
-              {PRODUCTS.map(({ id, name, about, Icon }) => (
-                <li key={id}>
-                  <a href={`#${id}`}>
-                    <Icon size={40} />
-                    <span>
-                      <b>{name}</b>
-                      <span>{about}</span>
-                    </span>
+            <p className="hw-say hw-out m-0">
+              In the{" "}
+              {PRODUCTS.map(({ id, name }, i) => (
+                <span key={id}>
+                  <a href={`#${id}`} className="th-link">
+                    {name}
                   </a>
-                </li>
+                  {i === 0 ? ", in " : i === 1 ? " and through the " : "."}
+                </span>
               ))}
-            </ul>
+            </p>
           </li>
         </ol>
       </div>
