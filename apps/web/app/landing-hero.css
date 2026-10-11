@@ -3,7 +3,9 @@
    moves by itself, a tour of drawn town maps that come out of the paper, each with three areas a few streets
    wide and what the short-lets inside them come to. The stage (the map and the three products at work, in
    globals.css) is the second screen. */
-.lh { position: relative; overflow: hidden; background: var(--th-ground); color: var(--th-ink); }
+/* Clipped sideways only: the open list of places may run on below the first screen, over the stage, rather than
+   be cut at its foot (it was, in windows under about 900px tall). The picture clips itself. */
+.lh { position: relative; overflow-x: clip; background: var(--th-ground); color: var(--th-ink); }
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
@@ -105,7 +107,8 @@
   padding: 6px;
   /* Its 10px rows sit 6px inside, so the corners run parallel. */
   border-radius: 16px;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.64));
+  /* Nearly solid: it opens over the products' names, which must not read through its rows. */
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.96), rgb(255 255 255 / 0.9));
   -webkit-backdrop-filter: blur(22px) saturate(1.7);
   backdrop-filter: blur(22px) saturate(1.7);
   box-shadow:
@@ -147,7 +150,9 @@
    drawing. Below 1024px the window is a band under the words, centred on one point of the map (--fx, --fy: the
    area in hand), though never so far over that the map's own edge shows. `--u` is how many of the map's units
    one screen pixel is: the drawn lines are in those units and so keep one width at any size of map. */
-.lh-town { position: relative; }
+/* A layer of its own under the words: the plot button inside it (z-index 3) must never lie over the list of
+   places, which opens from the words' layer (z-index 2) down over the picture on phones and tablets. */
+.lh-town { position: relative; z-index: 1; }
 .lh-frame { position: relative; height: 364px; container-type: size; }
 .lh-sheet, .lh-over { position: absolute; inset: 0; overflow: hidden; }
 .lh-sheet { mask-image: linear-gradient(180deg, transparent 0, #000 16%); }

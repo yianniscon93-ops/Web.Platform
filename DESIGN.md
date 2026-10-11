@@ -64,6 +64,17 @@ typography:
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.025em"
+  display-phone:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "clamp(2.5rem, 7vw, 3.5rem)"
+    fontWeight: 700
+    lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  lede-large:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "24px"
+    fontWeight: 400
+    lineHeight: 1.5
   card-name:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "calc(clamp(2.25rem, 3vw, 2.75rem) * 0.7)"
@@ -453,7 +464,7 @@ A fixed 72px bar: brand mark (32px) and wordmark left; three text links at 17px 
 The first screen's way in, and the largest control on the page.
 - **Field:** glass, fully rounded, 60px tall. The slab is nearly clear, with the faintest smoke (ink at 5%) so that the light on it can be lighter than the paper: a white sheen along its top that thins out by the middle, its edges a little brighter all round, a bright line along its lower lip and, above that lip, the green of the glass's thickness (olive at 32%). Round it a 1px cut edge (ink at 56%, 3:1 on the paper) with a 1.5px polished rim inside, which is bright where it catches the light: on top at one point and, across from it, underneath. Under it the "way in" shadow. Whatever is behind it is blurred (14px) and a little more saturated. The point where the light falls (`--gx`, 24% along at rest) follows a mouse along the field and glides to 76% when the field takes the focus; with reduced motion it stays put. Inside: a 20px search glyph in `muted`, the text at 17px, a muted placeholder that says what to type, and the action button ("Show me" and an arrow) inside its right end, with a line of light along its own top edge. With transparency turned down (`prefers-reduced-transparency`) the field and its list are plain white; with forced colours the cut edge is a real border. Below 480px, and between 1024 and 1179px where the words' column is narrow, the button is its arrow alone, a 48px circle.
 - **Focus:** the 2px ink ring goes round the whole field, offset 3px; the input itself shows none.
-- **List:** opens 10px under the field at its full width: a sheet of the same glass, frosted (white at 80% falling to 64%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 16px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
+- **List:** opens 10px under the field at its full width: a sheet of the same glass, nearly solid because it opens over the products row (white at 96% falling to 90%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 16px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
 - **Picking** a row or pressing the button hands the place to the stage and moves the page down to it. If the list of places cannot be fetched, the sentence under the field says so and the button opens the Playground.
 
 ### The picture and its pinned figures
