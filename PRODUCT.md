@@ -111,7 +111,9 @@ Open decisions:
   brand mark (the mark itself: the plot snapped to the map's dots, olive
   line and corners, orange wash, chosen 2026-10-10 as "techy and
   professional", "crystalized", with the olive brought in as the drawn
-  line). The owner kept the beige and olive after comparing seven
+  line; on 2026-10-11 the owner kept the olive outline and asked for it
+  "more techy and professional", so the corners now sit on the dots as the
+  page's square handles). The owner kept the beige and olive after comparing seven
   alternatives (2026-10-08). The accent has changed twice: tangerine was
   replaced by teal on 2026-10-08 ("I dont like the orange colour"), and teal
   was dropped on 2026-10-09 ("It does not look good and professional. We
