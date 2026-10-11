@@ -54,19 +54,19 @@ colors:
 typography:
   display:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "clamp(2.75rem, 4vw, 3.75rem)"
+    fontSize: "clamp(3rem, 4.4vw, 4.25rem)"
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.025em"
   headline:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "clamp(2.125rem, 2.78vw, 2.5rem)"
+    fontSize: "clamp(2.25rem, 3vw, 2.75rem)"
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.025em"
   card-name:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "calc(clamp(2.125rem, 2.78vw, 2.5rem) * 0.7)"
+    fontSize: "calc(clamp(2.25rem, 3vw, 2.75rem) * 0.7)"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.025em"
@@ -78,43 +78,43 @@ typography:
     letterSpacing: "-0.035em"
   title:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "18px"
+    fontSize: "20px"
     fontWeight: 600
-    lineHeight: "24px"
+    lineHeight: "26px"
   lede:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "17px"
+    fontSize: "18px"
     fontWeight: 400
     lineHeight: 1.5
   body:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.45
   body-small:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "15px"
+    fontSize: "16px"
     fontWeight: 400
     lineHeight: 1.45
   figure:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 600
-    lineHeight: "22px"
+    lineHeight: "24px"
     fontFeature: "tnum"
   action:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "15px"
+    fontSize: "16px"
     fontWeight: 600
     lineHeight: 1
   caption:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "13px"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: "18px"
+    lineHeight: "20px"
   micro:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 600
     lineHeight: 1
 rounded:
@@ -293,7 +293,7 @@ components:
 
 # Design System: Plotsights landing
 
-Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (six towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is a separate, dark surface and is not described here.
+Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (six towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is still a separate, dark surface (Inter and Barlow Condensed, a green ramp) and is not described here; the owner decided on 2026-10-11 that it moves onto this page's beige, olive and orange and Google Sans, which is not yet done.
 
 ## Overview
 
@@ -347,6 +347,39 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 - **Wire** (`wire`): the lines from the area to the product panels that are not open, and the outer ring of the How section's small map.
 - **Outside dot** (`dot-out`): a listing outside the drawn line; deliberately recessive.
 - **The close** (`close-ink`, `close-muted`, `close-edge`, `close-line`): the same paper and ink turned over, with a quieter paper for secondary lines and two weights of rule.
+
+### Named Rules
+**The Olive Works, Orange Marks Rule.** Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.
+
+**The Beige Ground Rule.** Every screen the visitor works on is the beige ground. A screen does not open on ink, on a tinted wash or on a picture with a frame of its own colour.
+
+**The Ring Rule.** A pale orange never stands alone on a pale ground. A listing dot and a booked night wear the `occ-ring`; the mark sits inside an ink line.
+
+**The Step Back Rule.** A figure that no longer describes the area on screen goes to `pending` until the new one arrives. It is never hidden, blurred or replaced by a spinner.
+
+**The Turned Over Rule.** The close is the same palette inverted (`close` and `close-*`), not a second palette. The focus ring inverts with it.
+
+## Typography
+
+**Display Font:** Google Sans (with sans-serif), self-hosted variable 400 to 700, Latin, Latin Extended and Greek. Pinned by the owner.
+**Body Font:** Google Sans. There is no second face.
+
+**Character:** One friendly geometric sans doing every job, from a 68px headline to a 13px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
+
+**Scale raised 2026-10-11** (owner: "fonts being bigger readable everywhere"): every text size on the landing went up one step, with its pixel line-height scaled to match: 11 to 13px, 13 to 15px, 15 to 16px, 16 to 17px, 17 to 18px, 18 to 20px, the first screen's lede 19 to 20px and 22 to 24px, the nav links 15 to 16px, and the display and headline clamps as below. Nothing on the page is set under 13px. Text sizes given in the component notes further down predate this and read one step up by the same map; sizes of squares, dots, glyphs and gaps did not change.
+
+### Hierarchy
+- **Display** (700, `clamp(3rem, 4.4vw, 4.25rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, "Plot an area on the map. Get the insights.", in three lines. In it "Plot" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
+- **Headline** (700, `clamp(2.25rem, 3vw, 2.75rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
+- **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
+- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
+- **Title** (600, 20px/26px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
+- **Lede** (400, 18px on phones, 20px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the close): the one sentence under a heading. The first screen's is a size up, 20px on phones and 24px from 1024px on a 27em measure, because it is read beside the page's largest words, and "Updated every day" and its last clause, what the visitor gets, are picked out in ink. The search field's own text is 18px in ink.
+- **Body** (400, 17px, line-height 1.45): the report page, the conversation, form input. 16px for notes, panel text, a row of the place list and what a stop on the How line says.
+- **Figure** (600, 17px/24px, tabular): a number, always followed by its unit at 15px in `muted`. On a pinned card the figures are set as a small table at 15px: a count and a figure in ink at weight 600, their words in `muted`.
+- **Action** (600, 16px): buttons, text links, switch options, tabs (500 until selected).
+- **Caption** (400, 15px/20px, `muted`): what a figure block covers, chart captions, notes under controls, what kind of place a row is. Captions wrap rather than cut off with an ellipsis.
+- **Micro** (600, 13px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
 
 ### Named Rules
 **The Olive Works, Orange Marks Rule.** Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.

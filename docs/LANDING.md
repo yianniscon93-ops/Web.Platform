@@ -781,5 +781,5 @@ tinted at 22% (`--th-area-tint`).
 - The covered card's recede needs CSS scroll-driven animations; browsers
   without them get the stack with no recede.
 - `CredibilityStrip.tsx`, `ProductTabs.tsx`, `SplitHero.tsx` and
-  `HeroSequence.tsx` are no longer mounted; their files are kept until the
-  new page is accepted.
+  `HeroSequence.tsx` (the earlier landing) were deleted on 2026-10-11; they
+  are in git history.

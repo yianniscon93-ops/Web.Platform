@@ -315,8 +315,8 @@ React Query's `queryKey`.
 
 ### 4.5 Seasonality chart
 
-Use the existing SVG area-chart pattern from `HeroSequence.tsx`
-(already built) or swap in Recharts:
+Use the existing SVG area-chart pattern from the former `HeroSequence.tsx`
+(in git history) or swap in Recharts:
 
 ```bash
 pnpm add recharts --filter @workspace/landing

@@ -54,7 +54,7 @@ export default function Nav() {
             <a
               key={l.label}
               href={l.href}
-              className="th-navlink flex min-h-11 items-center text-[15px] font-medium"
+              className="th-navlink flex min-h-11 items-center text-[16px] font-medium"
               style={{ color: C.ink }}
             >
               {l.label}
@@ -62,7 +62,7 @@ export default function Nav() {
           ))}
           <a
             href="/dashboard"
-            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[15px] font-semibold"
+            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[16px] font-semibold"
             style={{ background: C.solid, color: C.solidInk }}
           >
             Open the Playground
