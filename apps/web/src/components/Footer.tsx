@@ -1,7 +1,7 @@
 import { BRAND } from "@/lib/brand";
 import AreaMark from "@/components/landing/AreaMark";
 
-/** The foot of the landing page, on ink with the access form above it (styles in app/landing-sections.css). */
+/** The foot of the landing page, on ink under the close (styles in app/landing-sections.css). */
 export default function Footer() {
   return (
     <footer className="th-landing ps-foot">
@@ -16,9 +16,9 @@ export default function Footer() {
 
         <p className="ps-foot-rights">© 2026 {BRAND.name}</p>
 
+        {/* Privacy and Terms come back here when their pages exist; until then the foot links to nothing that is not there. */}
         <div className="ps-foot-links">
-          <a href="#">Privacy</a>
-          <a href="#">Terms</a>
+          <a href={`mailto:${BRAND.email}`}>{BRAND.email}</a>
         </div>
       </div>
     </footer>

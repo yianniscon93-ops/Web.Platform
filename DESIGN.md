@@ -54,19 +54,30 @@ colors:
 typography:
   display:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "clamp(2.75rem, 4vw, 3.75rem)"
+    fontSize: "clamp(3rem, 4.4vw, 4.25rem)"
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.025em"
   headline:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "clamp(2.125rem, 2.78vw, 2.5rem)"
+    fontSize: "clamp(2.25rem, 3vw, 2.75rem)"
     fontWeight: 700
     lineHeight: 1.04
     letterSpacing: "-0.025em"
+  display-phone:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "clamp(2.5rem, 7vw, 3.5rem)"
+    fontWeight: 700
+    lineHeight: 1.04
+    letterSpacing: "-0.025em"
+  lede-large:
+    fontFamily: "Google Sans, sans-serif"
+    fontSize: "24px"
+    fontWeight: 400
+    lineHeight: 1.5
   card-name:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "calc(clamp(2.125rem, 2.78vw, 2.5rem) * 0.7)"
+    fontSize: "calc(clamp(2.25rem, 3vw, 2.75rem) * 0.7)"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.025em"
@@ -78,9 +89,9 @@ typography:
     letterSpacing: "-0.035em"
   title:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "18px"
+    fontSize: "20px"
     fontWeight: 600
-    lineHeight: "24px"
+    lineHeight: "26px"
   lede:
     fontFamily: "Google Sans, sans-serif"
     fontSize: "17px"
@@ -88,33 +99,33 @@ typography:
     lineHeight: 1.5
   body:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.45
   body-small:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "15px"
+    fontSize: "17px"
     fontWeight: 400
     lineHeight: 1.45
   figure:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "16px"
+    fontSize: "17px"
     fontWeight: 600
-    lineHeight: "22px"
+    lineHeight: "24px"
     fontFeature: "tnum"
   action:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "15px"
+    fontSize: "17px"
     fontWeight: 600
     lineHeight: 1
   caption:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "13px"
+    fontSize: "15px"
     fontWeight: 400
-    lineHeight: "18px"
+    lineHeight: "20px"
   micro:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "11px"
+    fontSize: "13px"
     fontWeight: 600
     lineHeight: 1
 rounded:
@@ -293,7 +304,7 @@ components:
 
 # Design System: Plotsights landing
 
-Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (six towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is a separate, dark surface and is not described here.
+Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is read from the built page: the `--th-*` roles in the "Landing (nav and hero)" block of `apps/web/app/globals.css`, then `apps/web/app/landing-hero.css` (the first screen), `apps/web/app/landing-sections.css` (the product cards and the close) and `apps/web/app/landing-how.css` ("How the numbers are made"), and the five map pictures in `apps/web/public/landing/` (six towns and the island), whose colours are baked in by `apps/web/scripts/build-hero-town.mjs` and `build-island-map.mjs`. The Playground under `/dashboard` is still a separate, dark surface (Inter and Barlow Condensed, a green ramp) and is not described here; the owner decided on 2026-10-11 that it moves onto this page's beige, olive and orange and Google Sans, which is not yet done.
 
 ## Overview
 
@@ -303,7 +314,7 @@ The whole page is drawn with the tool the product hands the visitor: an area wit
 
 The ground is a warm beige on every screen and nearly everything on it is ink. Two colours carry meaning and they do not trade jobs: olive works (every drawn area, its outline and its lines, the one filled action, the visitor's own words) and a light orange marks (the brand mark, the three product icons, the listing that is being counted, a booked night, and in four steps how full each listing has been). The map pictures (six towns and the island) are generated from OpenStreetMap data in the page's own quiet map colours; they carry no labels of their own and no boundary lines, they are credited on the page, and what names appear on them are set by the page in its own type. The page ends by turning the palette over: paper on ink, for the close and the footer only.
 
-Density rises as the visitor goes down. The first screen holds a headline, one sentence, one field and one picture. The stage and the cards are working instruments set in small, exact type with tabular figures. The system is flat: hairlines divide, and a shadow appears only under something that lies on top of something else.
+Density rises as the visitor goes down. The first screen holds a headline, one sentence, one field, the three products named under it, and one picture. The stage and the cards are working instruments set in small, exact type with tabular figures. The system is flat: hairlines divide, and a shadow appears only under something that lies on top of something else.
 
 Confirmed rejections: teal and tangerine are both out of the palette; a dark first screen was built and rejected by the owner, and the ground stays beige; the page must not read as AI-generated (no pill or badge labels, no monospace labels, no logo tiles) and must not read as a research publication. Google Sans is pinned by the owner.
 
@@ -344,7 +355,7 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 - **Map land and streets** (`map-land`, `map-road`, `map-road-major`): the land in every map and the frame's ground while a map loads; the halo behind a name set on land. The two street weights now colour only the two street maps the page mounts out of sight for the head-to-head's counts; nothing on screen uses them.
 - **Pending** (`pending`): a figure whose area has moved and whose new value has not arrived (4.9:1 on the ground).
 - **Edge** (`edge`): the outline of a control drawn on a surface and a slider's empty track (3:1 or better on white, the ground and the tint).
-- **Wire** (`wire`): the lines from the area to the product panels that are not open, and the outer ring of the How section's small map.
+- **Wire** (`wire`): the outer ring of the How section's small map.
 - **Outside dot** (`dot-out`): a listing outside the drawn line; deliberately recessive.
 - **The close** (`close-ink`, `close-muted`, `close-edge`, `close-line`): the same paper and ink turned over, with a quieter paper for secondary lines and two weights of rule.
 
@@ -364,23 +375,23 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 **Display Font:** Google Sans (with sans-serif), self-hosted variable 400 to 700, Latin, Latin Extended and Greek. Pinned by the owner.
 **Body Font:** Google Sans. There is no second face.
 
-**Character:** One friendly geometric sans doing every job, from a 60px headline to an 11px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
+**Character:** One friendly geometric sans doing every job, from a 68px headline to a 13px chart tick. The page gets its range from size and three working weights (400, 500, 600) under a 700 display, with tight tracking only at display sizes.
+
+**Scale raised, then settled, 2026-10-11.** The owner asked for "fonts being bigger readable everywhere": every size went up a step, and a critique the same day found eight sizes in use, four within 3px of each other, and an 18px muted card sentence set above 17px ink. The scale is now five steps, 13, 15, 17, 20 and 24px, under the headline and display clamps. Nothing on the page is set under 13px. Text sizes given in the component notes further down predate this: 11px there reads 13, 13 reads 15, 15 to 18 read 17, and 18 or 20 for a title reads 20. Sizes of squares, dots, glyphs and gaps did not change.
 
 ### Hierarchy
-- **Display** (700, `clamp(2.75rem, 4vw, 3.75rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, in three lines. In it the letters "Prop" of "Property" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
-- **Headline** (700, `clamp(2.125rem, 2.78vw, 2.5rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
+- **Display** (700, `clamp(3rem, 4.4vw, 4.25rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, "Plot an area on the map. Get the insights.", in three lines. In it "Plot" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
+- **Headline** (700, `clamp(2.25rem, 3vw, 2.75rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
 - **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
-- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 18px in the footer.
-- **Title** (600, 18px/24px): a product's name in a stage panel and a stop's name on the How line; 700 for a report page's title.
-- **Lede** (400, 17px on phones, 18px from 640px; line-height 1.5; `muted`; 34em measure, 30em on the close): the one sentence under a heading. The first screen's is a size up, 18px on phones and 20px from 1024px on a 28em measure, because it is read beside the page's largest words (owner, 2026-10-09: "arent the letters a bit small?"), and its last clause, what the visitor gets, is picked out in ink at weight 500. The search field's own text is 17px in ink.
-- **Body** (400, 16px, line-height 1.45): the report page, the conversation, form input. 15px for notes, panel text, a row of the place list and what a stop on the How line says.
-- **Figure** (600, 16px/22px, tabular): a number, always followed by its unit at 13px in `muted`. On a pinned card the figures are set as a small table at 13px/20px: a count and a figure in ink at weight 600, their words in `muted`.
-- **Action** (600, 15px): buttons, text links, switch options, tabs (500 until selected).
-- **Caption** (400, 13px/18px, `muted`): what a figure block covers, chart captions, notes under controls, what kind of place a row is.
-- **Micro** (600, 11px): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the words under a pinned card's figures and its count (400), the "sample" and "an example listing" notes.
+- **Wordmark** (700, 22px, -0.035em): the name beside the brand mark; 20px in the footer. The one size off the scale, because it is the brand's, not the text's.
+- **24px:** the first screen's sentence from 1280px, on a 27em measure, with "Updated every day" and what the visitor gets picked out in ink.
+- **20px, title** (600, 20px/26px): the stage figures' heading ("Inside the line"), a stop's name on the How line, the town's name on the first screen's map; 700 for a report page's title. Also a section's lede from 640px, the tie line from 640px, and the first screen's sentence on phones and between 1024 and 1279px.
+- **17px, text** (400, line-height 1.45 to 1.5, or 24px): everything read as running text, whatever its weight or colour. The lede on phones and a card's opening sentence (`muted`), notes, panel text, the report page, the conversation, form input and the search field's text; a figure at weight 600 in tabular numerals; an action at weight 600 (buttons, text links, switch options, tabs at 500 until selected). A card's opening sentence is never larger than the ink statements under it.
+- **15px, caption** (400, 20 to 22px line-height, `muted`): a figure's unit beside it, what a figure block covers, chart captions, notes under controls, what kind of place a row is, the words on a pinned card. Captions wrap rather than cut off with an ellipsis.
+- **13px, micro** (600): place names on a map (with a halo in the colour beneath them), chart axis ticks (400), the map credit and the tour's pause control beside it (600, ink), the "sample" and "an example listing" notes, the "Demo data" tag.
 
 ### Named Rules
-**The Seven Sizes Rule.** Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them. The one exception is the first screen's sentence at 20px from 1024px.
+**The Five Sizes Rule.** Running type is 13, 15, 17, 20 or 24px, plus the headline and display clamps. A new element takes one of them; a role that seems to need a size between two steps takes the lower one and is told apart by weight or colour.
 
 **The Weight Not Case Rule.** A label is a sentence-case word at weight 600. There is no uppercase and no monospace anywhere, and tracking is never what makes something a label; the name of a body of water on a map is spaced out (0.08em) as maps do.
 
@@ -392,8 +403,8 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 
 One centred column up to 1440px wide with gutters of 16px on phones, 32px from 640px and 64px from 1024px. Breakpoints are 640, 1024 and 1280px (the nav alone switches at 768px, the How line at 1100px, the search button's words at 480px), and the working surfaces also answer to window height (stage: 860 and 760px; cards: 880, 779 and 699px) so that an instrument and its action stay inside one screen on a laptop.
 
-- **First screen.** From 1024px one screen tall (at least 720px). The words sit in the left 42% of the column, at most 580px wide and vertically centred: headline, sentence, then the search field (up to 540px wide) with nothing under it. The picture is not in the column: it fills the right 58% of the screen from top to bottom, runs off the right edge, and fades into the paper on its left (over 24% of its width), under the nav (15%) and at its foot (6%). It has no frame. Below 1024px one column in reading order, and the picture becomes a band under the words, 364px tall (520px from 640px), the full width of the screen, fading in from its top. The band is a window onto a larger map (at least 860px wide), centred on the area in hand and never so far over that the map's own edge shows; the cards pinned beside their areas on the whole picture give way there to one card docked in the band's corner.
-- **The stage.** From 1024px a 7:5 grid, 40px apart (56px from 1280px), one viewport tall between 700 and 860px: the framed map on the left, three product panels on the right as one list divided by hairlines with at most one open at a time: a header opens its panel and, pressed again, closes it. The heading and its sentence share the row above, their bottoms aligned. Thin lines join the area to the panels on desktop only.
+- **First screen.** From 1024px one screen tall (at least 720px). The words sit in the left 42% of the column, at most 580px wide and vertically centred: headline, sentence, then the search field (up to 540px wide), and under it the three products in a row: each its 32px icon, its name at 17px weight 600 and one 15px line in `muted`, a link down to its card (32px below the field from 640px, 28px on phones). The picture is not in the column: it fills the right 58% of the screen from top to bottom, runs off the right edge, and fades into the paper on its left (over 24% of its width), under the nav (15%) and at its foot (6%). It has no frame. Below 1024px one column in reading order, and the picture becomes a band under the words, 364px tall (520px from 640px), the full width of the screen, fading in from its top. The band is a window onto a larger map (at least 860px wide), centred on the area in hand and never so far over that the map's own edge shows; the cards pinned beside their areas on the whole picture give way there to one card docked in the band's corner. The picture can be plotted on: over it a mouse is a crosshair with an olive offer beside it ("Plot an area in Limassol", 15px weight 600, the filled action's colour), and the tour waits while the mouse is there; on a touch screen, or with keyboard focus, the offer sits in the frame's top-right corner. Taking it picks the town on show, as the search would.
+- **The stage.** From 1024px a 7:5 grid, 40px apart (56px from 1280px), one viewport tall between 700 and 860px: the framed map on the left; on the right, under a hairline, "Inside the line": the brand's area mark (40px), the heading and one muted sentence naming the area, the table of short-lets, long-lets and sales inside it, and "Open the Playground, it's free". The three products are not shown on the stage (2026-10-11: they were told four times on the page); their cards below follow the area. The heading and its sentence share the row above, their bottoms aligned. One olive line joins the area to the mark, on desktop only.
 - **The stack.** Three product cards up to 1312px wide, 16px apart, each a 56px header row (icon, name, the card's one action) over a body. From 1024px the body is a 3:9 grid (sentence and plain statements left, the working object right; Reports and Connector add a middle column for what drives the object) and each card pins 80px from the top, one header row lower than the last, so covered cards remain as working tabs.
 - **How the numbers are made.** Comes up over the cards, on the ground. The heading and its sentence share a 7:5 row as on the stage. Under them one line with five stops: from 1100px it runs left to right across five columns of slightly unequal width, each stop a square on the line with its name, its exhibit in a 164px row, a sentence and a fact beneath; at the fifth the line turns down and forks to the three products. Below 1100px the line is a rail down the left with the stops stacked beside it.
 - **The close.** A 7:5 grid on ink: heading and sentence left, the form right, aligned to their bottoms.
@@ -408,16 +419,15 @@ Flat. Depth is said with hairlines and with tone: the ground, white, the olive t
 
 ### Shadow Vocabulary
 - **Sheet on a card** (`box-shadow: 0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow)`): the report sheet lying on the Reports card. It shortens in short windows so it stays inside the card.
-- **Sheet in a panel** (`box-shadow: 0 10px 20px -12px var(--th-shadow)`): the sample report page in the stage's Reports panel.
 - **Pinned to a map** (`box-shadow: 0 8px 16px -10px var(--th-shadow)`): an area's card on the first screen's picture, pinned beside its area or docked in the band's corner.
 - **Floating control** (`box-shadow: 0 8px 18px -10px var(--th-shadow)`): the zoom control on the stage map's top-right corner and the "Draw an area here" button on its bottom-left. The example listing's card takes nearly the same (`0 8px 18px -12px`).
 - **The way in** (`box-shadow: 0 2px 3px -1px` at 24% ink and `0 20px 32px -18px` at 50%): the glass search field, a contact shadow and a deep one, with a soft white light set in the middle of the deep one (the light the glass gathers). Its open list drops further (`0 26px 44px -22px` at 50%).
 - **Knock-out ring** (`box-shadow: 0 0 0 2px var(--th-surface)`): around a chart's hover dot, so it reads off the line. Not a shadow in effect.
 
 ### Named Rules
-**The Glass Rule.** The page's surfaces are glass (owner, 2026-10-09: first "a nice liquid glass search thing. crystalized" for the search field, then "lets try glass everywhere to see how it shows", then "great I prefer it"). Three forms, in `app/landing-hero.css` (the search field) and `app/landing-glass.css` (the rest). *Clear*: the search field alone, a slab lying on the paper with nothing frosted, said by its edges and its light. *Frost*: anything that lies on something else, namely the nav once the page moves under it (the paper's tone at 80% falling to 56%, a 22px blur), a card pinned on the first screen's map, the stage map's controls, the three product cards (their own ground at 86% falling to 70%, a 30px blur, so each shows the last through it), a report sheet, the switch's tray, an answer bubble, the example listing and the search field's list: white at 80% falling to 58%, an 18px blur with the colour behind raised, a 1px edge of ink at 38% (58% on a busy map), a white rim inside and a line of light along the top. *Bead*: every filled button, the visitor's bubble and the chosen side of the switch keep their colour and take a line of light along the top and a shade at the foot. The stage's map lies under a plate: a cut edge round its frame and a lit rim over the map. On the ink close the email field is clear glass on the dark. Text on glass keeps its contrast: the frost is never thinner than 56%. With transparency turned down, or where nothing can be blurred, every piece goes back to its plain surface. An element that blurs what is behind it must not sit inside a parent with `isolation: isolate` or a `backdrop-filter` of its own, or it will blur only that parent.
+**The Glass Rule.** The page's surfaces are glass (owner, 2026-10-09: first "a nice liquid glass search thing. crystalized" for the search field, then "lets try glass everywhere to see how it shows", then "great I prefer it"). Three forms, in `app/landing-hero.css` (the search field) and `app/landing-glass.css` (the rest). *Clear*: the search field alone, a slab lying on the paper with nothing frosted, said by its edges and its light. *Frost*: anything that lies on something else, namely the nav once the page moves under it (the paper's tone at 80% falling to 56%, a 22px blur), a card pinned on the first screen's map, the stage map's controls, the three product cards (their own ground at 97% falling to 93%, a 30px blur, so each shows the colour of the last through it, never its words), a report sheet, the switch's tray, an answer bubble, the example listing and the search field's list: white at 80% falling to 58%, an 18px blur with the colour behind raised, a 1px edge of ink at 38% (58% on a busy map), a white rim inside and a line of light along the top. *Bead*: every filled button, the visitor's bubble and the chosen side of the switch keep their colour and take a line of light along the top and a shade at the foot. The stage's map lies under a plate: a cut edge round its frame and a lit rim over the map. The product cards' glass is near solid (their ground at 97% falling to 93%, 2026-10-11), so a covered card's words never read through the one over it. Text on glass keeps its contrast: the frost is never thinner than 56%. With transparency turned down, or where nothing can be blurred, every piece goes back to its plain surface. An element that blurs what is behind it must not sit inside a parent with `isolation: isolate` or a `backdrop-filter` of its own, or it will blur only that parent.
 
-**The Lying On Top Rule.** A shadow means "this is a separate thing resting on what is under it": a sheet, a pinned card, a floating control, the field. Product cards, stage panels, filled buttons and bubbles are flat at rest and stay flat on hover.
+**The Lying On Top Rule.** A shadow means "this is a separate thing resting on what is under it": a sheet, a pinned card, a floating control, the field. Product cards, the stage figures, filled buttons and bubbles are flat at rest and stay flat on hover.
 
 **The Faded Edge Rule.** A map with no frame meets the paper by fading into it, with a mask on the drawing alone. What is drawn over the map (areas, corners, names, pinned cards) is on a sheet of its own and never fades.
 
@@ -425,7 +435,7 @@ Flat. Depth is said with hairlines and with tone: the ground, white, the olive t
 
 ## Shapes
 
-Three kinds of corner, each with a meaning. **Square** (0 radius, ink border, 9 to 17px): anything that marks a point, can be picked up, or is one counted unit, such as an area's corners (12px with a 2px border on the stage, 8px with a 1.5px border on the first screen's picture), a stop on the How line (11.5px), a chart's last value, the contents rail, the chosen question, the slider's thumb, the typing indicator, a night on a calendar (17px, 1.5px border). **Round** (full radius): a listing among many on a map being read (map dots, the key, a chart's hover dot), a button, and the search field. **Softly rounded**: surfaces, in a ladder of 6px (sheet, switch options, focus on inner controls), 8px (a card pinned on the first screen's picture), 10px (a row of the place list, the listing card), 12px (the switch, the select, the email field, the controls that float on the stage's map), 14px (the map frame), 16px (the place list, whose 10px rows sit 6px inside it) and 26px (the product cards).
+Three kinds of corner, each with a meaning. **Square** (0 radius, ink border, 9 to 17px): anything that marks a point, can be picked up, or is one counted unit, such as an area's corners (12px with a 2px border on the stage, 8px with a 1.5px border on the first screen's picture), a stop on the How line (11.5px), a chart's last value, the contents rail, the chosen question, the slider's thumb, the typing indicator, a night on a calendar (17px, 1.5px border). **Round** (full radius): a listing among many on a map being read (map dots, the key, a chart's hover dot), a button, and the search field. **Softly rounded**: surfaces, in a ladder of 6px (sheet, switch options, focus on inner controls), 8px (a card pinned on the first screen's picture), 10px (a row of the place list, the listing card), 12px (the switch, the select, the controls that float on the stage's map), 14px (the map frame), 16px (the place list, whose 10px rows sit 6px inside it) and 26px (the product cards).
 
 Message shapes take the card's 26px on three corners and 6px on the corner nearest the speaker (bottom-right for the visitor, bottom-left for the answer and for a map sent as a message).
 
@@ -438,7 +448,7 @@ Lines: 2px for anything drawn as a shape (an area's outline in olive, chart line
 ### Buttons
 Calm and exact: one shape, three fills, and each fill means something.
 - **Shape:** fully rounded (9999px), 46px tall with 22px side padding, 15px at weight 600, an arrow (18px, 2.4 stroke) after the words. 48px with 20px padding inside the search field; 40px in a card's header row; 42px on the stage in windows under 760px tall.
-- **Action (olive, white text):** the page's filled action, the next step with the visitor's place: "Show me" in the search field, and "Open the Playground, it's free" on the stage (under the sentence on phones, in the Playground panel from 640px) and in the Playground card.
+- **Action (olive, white text):** the page's filled action, the next step with the visitor's place: "Show me" in the search field, and "Open the Playground, it's free" on the stage (under the sentence on phones, under the figures beside the map from 640px) and in the Playground card.
 - **Solid (ink, white text):** the nav's "Open the Playground" and a request to the team ("Ask for a report", "Ask for access").
 - **Paper (beige, ink text):** the submit on the ink close; hover goes to white.
 - **Hover / Active:** the fill deepens over 0.15s and the arrow moves 3px in its direction over 0.2s; pressed scales to 0.97. Focus is a 2px ink outline offset 3px (paper on the close).
@@ -447,13 +457,13 @@ Calm and exact: one shape, three fills, and each fill means something.
 Ink at weight 600 with a 1.5px underline 4px below the baseline; on hover the underline drops to 7px over 0.2s. A link that goes down the page carries a down arrow that moves 3px on hover. Nav, footer and credit links are not underlined until hovered. A link inside a line of text keeps a 44px target with negative margins so the line does not move.
 
 ### Navigation
-A fixed 72px bar: brand mark (32px) and wordmark left; three text links at 15px weight 500 and the solid button right. Transparent over the first screen, so the picture runs up under it; after 60px of scroll it takes the ground and a hairline. Below 768px the links fold into a menu of 48px rows divided by hairlines, each product with its icon at 24px, then a full-width solid button.
+A fixed 72px bar: brand mark (32px) and wordmark left; three text links at 17px weight 500 and the solid button right. Transparent over the first screen, so the picture runs up under it; after 60px of scroll it takes the ground and a hairline. Below 768px the links fold into a menu, on solid paper (not frost), of 48px rows divided by hairlines, each product with its icon at 24px, then a full-width solid button.
 
 ### Place search
 The first screen's way in, and the largest control on the page.
 - **Field:** glass, fully rounded, 60px tall. The slab is nearly clear, with the faintest smoke (ink at 5%) so that the light on it can be lighter than the paper: a white sheen along its top that thins out by the middle, its edges a little brighter all round, a bright line along its lower lip and, above that lip, the green of the glass's thickness (olive at 32%). Round it a 1px cut edge (ink at 56%, 3:1 on the paper) with a 1.5px polished rim inside, which is bright where it catches the light: on top at one point and, across from it, underneath. Under it the "way in" shadow. Whatever is behind it is blurred (14px) and a little more saturated. The point where the light falls (`--gx`, 24% along at rest) follows a mouse along the field and glides to 76% when the field takes the focus; with reduced motion it stays put. Inside: a 20px search glyph in `muted`, the text at 17px, a muted placeholder that says what to type, and the action button ("Show me" and an arrow) inside its right end, with a line of light along its own top edge. With transparency turned down (`prefers-reduced-transparency`) the field and its list are plain white; with forced colours the cut edge is a real border. Below 480px, and between 1024 and 1179px where the words' column is narrow, the button is its arrow alone, a 48px circle.
 - **Focus:** the 2px ink ring goes round the whole field, offset 3px; the input itself shows none.
-- **List:** opens 10px under the field at its full width: a sheet of the same glass, frosted (white at 80% falling to 64%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 18px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
+- **List:** opens 10px under the field at its full width: a sheet of the same glass, nearly solid because it opens over the products row (white at 96% falling to 90%, over a 22px blur of whatever it opens on, which below 1024px is the map), a 1px edge of ink at 34% with a white rim inside, 16px radius, 6px padding, the deeper shadow. Up to six rows of at least 44px on a 10px radius: the place's name at weight 600 with its Greek name after it in `muted`, what kind of place it is beneath at 13px where that helps, and its listing count at the right in tabular figures. The current row is olive at 14%. No match is one muted sentence in the list, never an empty box.
 - **Picking** a row or pressing the button hands the place to the stage and moves the page down to it. If the list of places cannot be fetched, the sentence under the field says so and the button opens the Playground.
 
 ### The picture and its pinned figures
@@ -465,21 +475,21 @@ A tour of six drawn street maps of real towns (Limassol, Nicosia, Paphos, Ayia N
 - **Pointer:** a small drawn arrow, white with a 1.6px ink line, that goes round each area's corners as it is drawn.
 - **Name:** the town's name once, at 17px weight 600 with a halo in the land colour: the largest word on the map.
 - **Below 1024px:** the picture is a band that shows a few streets and follows the area in hand. Cards are not pinned on the map there: one card is docked in the band's bottom-left corner for the area the band is on, coming when that area closes and going when the band moves on; the town's name sits in its top-left corner at 15px; and only the area in hand is tinted, the others keeping their line and their listings.
-- **Credit line:** one 11px muted line at the picture's bottom-right (under the band below 1024px): the control that stops the tour, as ink words at weight 600 with a 12px glyph ("Pause the tour", "Play the tour") and a 44px target, then the key to the dots ("Short-lets this season: emptier", four ringed dots, "fuller"; "this season" left out below 1440px and the whole key between 1024 and 1279px), then the credit naming OpenStreetMap contributors and OpenMapTiles.
+- **Credit line:** one 13px muted line at the picture's bottom-right (under the band below 1024px): the control that stops the tour, as ink words at weight 600 with a 12px glyph ("Pause the tour", "Play the tour") and a 44px target, then the key to the dots ("Short-lets this season: emptier", four ringed dots, "fuller"; "this season" left out below 1440px and the whole key between 1024 and 1279px), then the credit naming OpenStreetMap contributors and OpenMapTiles.
 
 ### Switch
 Options in a white tray (12px radius, 3px padding, hairline), flat on its card. The chosen option is solid ink with white text on a 6px radius; an unchosen one tints olive on hover. Options are 44px tall at 15px weight 600. It is used once, for the kind of report ("For a property", "For an area") at the head of the Reports card's contents; from 1024px it spans the contents rail in two equal halves at 13px, and 15px again from 1280px. The stage's map no longer carries a switch: there is one map, and the visitor zooms it.
 
 ### Cards / Containers
 - **Product card:** 26px radius, 1px hairline, flat, in its own ground: white for the Playground, the olive tint for Reports, the orange wash for the Connector. A 56px header row holds the icon (40px), the name and the card's one action, under a hairline. Body padding 16px on phones, 24px from 640px, 20 to 28px from 1024px.
-- **Stage panel:** not a card. A row in a hairline-divided list: icon, name, one muted sentence, one live line, a chevron; it opens by growing its row over 0.32s.
+- **Stage figures ("Inside the line"):** not a card. A block between hairlines: the area mark, a 20px heading and its muted sentence, then the markets table and the filled action.
 - **Map frame:** 14px radius, hairline, the map above a 48px white bar that holds the count, the key and Reset. On phones the frame is the map alone and the count, key and credit sit under it on the ground.
 - **Report sheet:** white, 6px radius, no outline, the sheet shadow; a running head and a pager divided by hairlines.
 - **Listing card:** the example listing as its site shows it: white, hairline, 10px radius, a 44px light-orange square with a 1.5px ink border standing for its picture, then its kind at weight 600, its place and its price in `muted`. Always followed by the note "An example listing".
 - **Messages:** the visitor's in olive with `visitor-ink` text at weight 500, the answer on white with a hairline; 16px (17px from 640px), up to 35em wide.
 
 ### Inputs / Fields
-- **Email field (on ink):** transparent, 1.5px `close-edge` outline, 12px radius, 48px tall; the outline goes to paper on hover and focus.
+- **The close's request** is an email (`mailto:` to `info@plotsights.com`, the carried request as its subject) on a solid paper button, "Email the team", with "Or open the Playground, it's free" beside it as a text link; there is no field on the page (the one that stood here only simulated a send, removed 2026-10-11).
 - **Select (phones, report contents):** white, 1px `edge` outline, 12px radius, 48px tall, a drawn 2px ink chevron.
 - **Slider:** a 2px track filled in ink up to a 16px square white thumb with a 2px ink border; the thumb fills olive and grows to 1.2 on hover; the focus ring goes on the thumb.
 - **Tabs:** text at 15px, muted until hovered, ink at weight 600 when selected with a 2px ink underline on the row's own rule; an overflowing row fades at the hidden side and shows an arrow.
@@ -489,7 +499,7 @@ Options in a white tray (12px radius, 3px padding, hairline), flat on its card. 
 The mark is a five-sided drawn area filled light orange, stroked in ink (2.2), with five square handles in the ground colour. The three product icons are drawn on a 32px grid in the same hand: a 2px ink line with round joins, small square white nodes, and exactly one shape filled with the marking orange. Each has one part that makes one small move when its product is opened (the pointer reaches its corner, the chart line draws, the cable seats). At the last stop of the How line they appear at 40px beside the product's name and one muted line.
 
 ### The area on the stage's map
-The stage has one map in one frame: the island, a single generated picture (sea, coast, forest, built-up ground, lakes and three weights of road, unlabelled), shown whole at first, enlarged in steps (2, 4 and 8 times) and, for a place picked in the search, opened on the ground round that place. On the whole island five towns are named by the page, each set in the sea beside it with a halo in the sea's colour (Nicosia on land); closer in, the towns in the window are named at their centres, and a picked place at its own. The area is a 2px olive outline with round joins and a 22% olive fill laid over the picture, with a 12px white square handle at each corner; held, the fill deepens and the outline thickens to 3px. Listings are dots: fullness steps with their ring inside the line, `dot-out` outside, drawn smaller on the whole island where a town is a few dots wide. Inside the line they are thinned until they stand side by side, never one on another, so a dense town is beads with readable shades and not a blot; outside it a finer grey stipple fills in between, so a town the area does not hold still reads as a town. A 1px olive line runs from the area to the open product panel; the lines to the others are `wire`. One corner sends out a slow ring, with the invitation "Drag a corner, or the whole area" set beside it like a place name, until a corner is first moved. The bar under the map counts what is inside the line and, for a picked place, says both counts ("421 short-lets inside, of 545 in Paphos").
+The stage has one map in one frame: the island, a single generated picture (sea, coast, forest, built-up ground, lakes and three weights of road, unlabelled), shown whole at first, enlarged in steps (2, 4 and 8 times) and, for a place picked in the search, opened on the ground round that place. Past 8 times is street level (16, 32, 64 and 128 times; at 128 about 2.4 km of ground fills the window), and only over the six towns the first screen tours: there the island's picture gives way to its plain shape (sea and land) under the town's own street map (`public/landing/town-*.svg`), which fades into the land at its edges, and the map can be moved only within that street map. Picking one of the six towns opens at 128 times on one of the tour's own areas, a few streets wide, named for its streets and its town ("Old town, Limassol", "Kato Paphos, Paphos"). Elsewhere plus stops at 8. On the whole island five towns are named by the page, each set in the sea beside it with a halo in the sea's colour (Nicosia on land); closer in, the towns in the window are named at their centres, and a picked place at its own. The area is a 2px olive outline with round joins and a 22% olive fill laid over the picture, with a 12px white square handle at each corner; held, the fill deepens and the outline thickens to 3px. Listings are dots: fullness steps with their ring inside the line, `dot-out` outside, drawn smaller on the whole island where a town is a few dots wide. Inside the line they are thinned until they stand side by side, never one on another, so a dense town is beads with readable shades and not a blot; outside it a finer grey stipple fills in between, so a town the area does not hold still reads as a town. A 1px olive line runs from the area to the mark heading the figures beside the map. One corner sends out a slow ring, with the invitation "Drag a corner, or the whole area" set beside it like a place name, until a corner is first moved. The bar under the map counts what is inside the line and, for a picked place, says both counts ("421 short-lets inside, of 545 in Paphos").
 - **Zoom control:** floats on the frame's top-right corner, 10px in (12px from 640px): plus over minus, two 44px squares on one white surface with a hairline, a 12px radius and the floating shadow, divided by a hairline, each an 18px ink glyph. Hover and press tint olive; a step that cannot be taken stays in place and steps back in colour. Once the map is zoomed, "Whole island" appears under it on the same surface, smaller (36px tall, 13px weight 600, reaching a 44px target).
 - **Moving the map:** a mouse takes the map by its ground (a grab cursor) and a double click or double tap goes in on that point. Once the map is zoomed in a finger takes it by its ground too, or by a quick swipe across the area; on the whole island a finger's swipe scrolls the page.
 - **Draw an area here:** the same white surface as a 44px button at 15px weight 600 on the frame's bottom-left corner, offered whenever the map is zoomed in, and whenever nothing of the area is in the window to take hold of.
@@ -524,7 +534,7 @@ One easing, `cubic-bezier(0.16, 1, 0.3, 1)`. State changes take 0.15 to 0.2s; a 
 - **Don't** use the marking orange for text, for a button, or without an ink line or ring around it.
 - **Don't** add pill or badge labels, eyebrow lines above headings, monospace labels, uppercase or letter-spaced labels, or logo tiles.
 - **Don't** add a second typeface or a type size outside the seven.
-- **Don't** put a shadow on a product card, a stage panel, a filled button or a hover state; a shadow is for something lying on top of something else, as a control floating on a map is.
+- **Don't** put a shadow on a product card, the stage figures, a filled button or a hover state; a shadow is for something lying on top of something else, as a control floating on a map is.
 - **Don't** round a handle or a node, and don't square a listing dot on a map of many listings.
 - **Don't** put a frame, a label layer or administrative boundaries on a generated map picture.
 - **Don't** use a gradient as decoration; the only gradients are the fade at the edge of something that scrolls or of a frameless map, the slider's two-colour track, and the ink hatching that means "blocked".

@@ -55,10 +55,19 @@
   box-shadow: inset 0 -1px 0 rgb(255 255 255 / 0.55), 0 16px 28px -22px color-mix(in srgb, var(--th-ink) 45%, transparent);
 }
 
-/* The three product cards: sheets of tinted glass that slide over one another, each showing the last through it. */
+/* The open menu (phones) is the paper itself, not frost: the headline under it would smear through the links. */
+.th-glassy header.th-landing[data-solid][data-menu] {
+  background: var(--th-ground) !important;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+}
+
+/* The three product cards: sheets of tinted glass that slide over one another. The glass is nearly solid: at 86%
+   the words of the card beneath read through a covering card's header as ghost text (critique, 2026-10-11), so
+   what shows through now is the colour of the card beneath, never its words. */
 .th-glassy .ps-card {
   border-color: transparent;
-  background: linear-gradient(180deg, color-mix(in srgb, var(--ps-ground) 86%, transparent), color-mix(in srgb, var(--ps-ground) 70%, transparent));
+  background: linear-gradient(180deg, color-mix(in srgb, var(--ps-ground) 97%, transparent), color-mix(in srgb, var(--ps-ground) 93%, transparent));
   -webkit-backdrop-filter: blur(30px) saturate(1.7);
   backdrop-filter: blur(30px) saturate(1.7);
   box-shadow:
@@ -67,6 +76,9 @@
     inset 0 2px 0 rgb(255 255 255 / 0.85),
     0 -20px 40px -32px color-mix(in srgb, var(--th-ink) 50%, transparent);
 }
+/* A card's header row is all that shows of it once others are over it, and it lies on the card before it: it is
+   the card's own ground, solid, so no word of the card beneath reaches it in any window. */
+.th-glassy .ps-card-head { border-radius: 25px 25px 0 0; background: var(--ps-ground); box-shadow: inset 0 2px 0 rgb(255 255 255 / 0.85), inset 0 1px 0 1px rgb(255 255 255 / 0.5); }
 
 /* The stage's map, under a plate of glass: a cut edge round its frame, a lit rim over the map itself. */
 @media (min-width: 640px) {
@@ -86,25 +98,13 @@
 }
 
 /* Bead: every filled button, the visitor's own bubble, the chosen side of the switch. */
-.th-glassy :is(.th-go, .th-solid, .ps-solid, .th-asked, .ps-bubble-q, .ps-close-form button, .ps-switch button[aria-pressed="true"]) {
+.th-glassy :is(.th-go, .th-solid, .ps-solid, .th-asked, .ps-bubble-q, .ps-close-mail, .ps-switch button[aria-pressed="true"]) {
   background-image: linear-gradient(180deg, rgb(255 255 255 / 0.2), rgb(255 255 255 / 0) 58%) !important;
   box-shadow:
     inset 0 1px 0 rgb(255 255 255 / 0.36),
     inset 0 -1px 1px rgb(0 0 0 / 0.24),
     0 1px 2px color-mix(in srgb, var(--th-ink) 30%, transparent),
     0 8px 14px -10px color-mix(in srgb, var(--th-ink) 55%, transparent);
-}
-
-/* The close, on ink: the email field is a slab of clear glass on the dark. */
-.th-glassy .ps-close-form input {
-  border-color: transparent;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.17), rgb(255 255 255 / 0.05));
-  box-shadow: 0 0 0 1px rgb(255 255 255 / 0.4), inset 0 1px 0 rgb(255 255 255 / 0.5), inset 0 -8px 10px -8px rgb(255 255 255 / 0.14);
-  transition: box-shadow 0.15s;
-}
-.th-glassy .ps-close-form input:is(:hover, :focus) {
-  border-color: transparent;
-  box-shadow: 0 0 0 1px var(--th-close-ink), inset 0 1px 0 rgb(255 255 255 / 0.6), inset 0 -8px 10px -8px rgb(255 255 255 / 0.18);
 }
 
 /* Where transparency is turned down, or nothing can be blurred, the frost is the plain surface again. */
@@ -119,5 +119,5 @@
   .th-glassy header.th-landing[data-solid] { background: var(--th-ground) !important; }
 }
 @media (forced-colors: active) {
-  .th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet, .ps-card, .ps-close-form input) { border-color: CanvasText; }
+  .th-glassy :is(.lh-pin, .th-zoom-steps, .th-zoom-whole, .th-draw-here, .hw-card, .th-answer, .ps-bubble-a, .ps-switch, .th-sheet, .ps-sheet, .ps-card) { border-color: CanvasText; }
 }

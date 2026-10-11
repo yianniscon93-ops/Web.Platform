@@ -2,7 +2,6 @@
 
 import { useCallback, useEffect, useRef, useState } from "react";
 import { useHeroArea } from "@/lib/landing/areaContext";
-import { countLine } from "@/lib/landing/areaLines";
 import AreaMark from "./AreaMark";
 import ConnectorSection from "./ConnectorSection";
 import PlaygroundSection from "./PlaygroundSection";
@@ -204,13 +203,8 @@ export default function ProductSections({ close }: { close?: React.ReactNode }) 
           <span className="ps-tie-text">
             Everything below is about <b>{area.name}</b>
             {/* "The area you drew" would not be true of a place's own area: until a corner has moved it is the one on the map. */}
-            {area.changed ? "" : ", the area on the map above"}
-            {area.count != null && (
-              <>
-                : <b>{countLine(area.count)}</b>
-              </>
-            )}
-            .{" "}
+            {/* Its count is not repeated here: the map's bar just above says it. */}
+            {area.changed ? "" : ", the area on the map above"}.{" "}
             <a href="#" className="th-link" onClick={toMap}>
               Change the area
             </a>

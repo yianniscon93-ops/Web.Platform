@@ -3,8 +3,8 @@ import { LANDING as C } from "./tokens";
 // The three product icons, in the brand mark's vocabulary (AreaMark): a 2px ink
 // line with round joins, small square white nodes stroked in ink, and exactly
 // one element filled with the mark's colour. Drawn on a 32px grid; they are
-// shown at 40px in the panels and 24px in the phone menu. The th-ic-* classes
-// name the one part of each that moves when its panel is opened (globals.css).
+// shown at 32px on the first screen and in the cards' headers, 24px in the phone menu. The th-ic-* classes
+// name the one part of each that moves as its card arrives (landing-sections.css).
 
 type IconProps = { size?: number; className?: string };
 

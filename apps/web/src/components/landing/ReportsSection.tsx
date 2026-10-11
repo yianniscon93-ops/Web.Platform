@@ -35,7 +35,7 @@ interface ReportSection {
 }
 
 /** A title as it is set: its hyphens do not break, so "minimum-nights" stays on one line in the narrow rail. */
-const unbroken = (title: string) => title.replace(/-/g, "\u2011");
+const unbroken = (title: string) => title.replace(/-/g, "-\u2060");
 
 // The two kinds of report the team writes. The section titles are the reports' own, verbatim.
 const REPORTS = {
@@ -151,7 +151,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
     const have = [stats.effOccTodate != null && "occupancy", stats.medianRate != null && "nightly rate"].filter(Boolean).join(" and ");
     return (
       <div className="ps-sample" aria-busy={area.pending || undefined}>
-        <p className="ps-sample-cap">{partial ? `From this area today: ${have}.` : <>Short&#8209;lets in {area.name}</>}</p>
+        <p className="ps-sample-cap">{partial ? `From this area today: ${have}.` : <>Short-&#8288;lets in {area.name}</>}</p>
         <dl className="ps-facts" data-pending={late}>
           {stats.effOccTodate != null && (
             <div>
@@ -194,7 +194,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
     if (weekly.length < 3) return none;
     return (
       <div className="ps-sample" aria-busy={area.pending || undefined}>
-        <p className="ps-sample-cap">Nights occupied by week, short&#8209;lets in {area.name}</p>
+        <p className="ps-sample-cap">Nights occupied by week, short-&#8288;lets in {area.name}</p>
         <div data-pending={late}>
           <LineChart
             points={weekly}
@@ -217,7 +217,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
     <div className="ps-sample" aria-busy={area.pending || undefined}>
       <table className="ps-table ps-comps" data-pending={late}>
         <caption>
-          {rows.length === 1 ? "The fullest short\u2011let" : `The ${rows.length} fullest short\u2011lets`} in {area.name}
+          {rows.length === 1 ? "The fullest short-\u2060let" : `The ${rows.length} fullest short-\u2060lets`} in {area.name}
         </caption>
         <thead>
           <tr>
@@ -269,10 +269,12 @@ const LEAF_MS = 250;
  */
 export default function ReportsSection({ area, index }: { area: HeroArea; index: number }) {
   const [kind, setKind] = useState<Kind>("property");
-  // Each kind of report keeps its own place. Both open on a section the visitor's area has figures for.
-  const [at, setAt] = useState<Record<Kind, number>>({ property: 1, area: 0 });
+  // Each kind of report keeps its own place. Both open on a section the visitor's area has figures for: the
+  // property report on its year of revenue, a chart and the key finding it ends in, which nothing else on the
+  // page shows (its key figures repeated the stage's two numbers on a half-empty sheet; critique, 2026-10-11).
+  const [at, setAt] = useState<Record<Kind, number>>({ property: 2, area: 0 });
   // The page on the sheet. It follows `kind` and `at`, a page-turn behind them when motion is allowed.
-  const [shown, setShown] = useState<{ kind: Kind; i: number }>({ kind: "property", i: 1 });
+  const [shown, setShown] = useState<{ kind: Kind; i: number }>({ kind: "property", i: 2 });
   // A page-turn under way: the old page leaving, or the new one coming in, and which way.
   const [leaf, setLeaf] = useState<{ stage: "out" | "in"; dir: 1 | -1 } | null>(null);
   const ids = useId();

@@ -29,12 +29,12 @@ const NUMBERS = ["no", "one", "two", "three", "four", "five", "six", "seven", "e
 export const euro = (v: number) => `€${Math.round(v).toLocaleString("en-GB")}`;
 export const int = (v: number) => Math.round(v).toLocaleString("en-GB");
 export const pct = (v: number) => `${Math.round(v)}%`;
-export const lets = (n: number) => `${int(n)} short\u2011let${n === 1 ? "" : "s"}`;
+export const lets = (n: number) => `${int(n)} short-\u2060let${n === 1 ? "" : "s"}`;
 /** A count in words where a sentence reads better for it ("six months"); figures past twelve. */
 export const inWords = (n: number) => NUMBERS[n] ?? int(n);
 
 /** What the count under the map says before there is a count. */
-export const COUNTING = "Counting short\u2011lets inside";
+export const COUNTING = "Counting short-\u2060lets inside";
 
 /** What a line or a figure block says while the first answer for the area is on its way. */
 export const READING = "Reading the listings inside this line";
@@ -86,13 +86,13 @@ export function playgroundLine(count: number, s: Rates | null): string {
 
 /** One sentence on the area from the count, occupancy and rate. */
 export function finding(count: number, s: Rates | null): string {
-  if (count === 0) return "No short\u2011lets sit inside this line. Draw it over more streets.";
+  if (count === 0) return "No short-\u2060lets sit inside this line. Draw it over more streets.";
   if (count < MIN_LISTINGS) return `Only ${lets(count)} inside this line, too few to give a figure. Draw it wider.`;
   const occ = s?.effOccTodate == null ? null : pct(s.effOccTodate);
   const rate = s?.medianRate == null ? null : euro(s.medianRate);
-  if (occ && rate) return `Short\u2011lets inside this line fill ${occ} of nights ${SEASON}, at a median ${rate} a night.`;
-  if (occ) return `Short\u2011lets inside this line fill ${occ} of nights ${SEASON}.`;
-  if (rate) return `Short\u2011lets inside this line ask a median ${rate} a night.`;
+  if (occ && rate) return `Short-\u2060lets inside this line fill ${occ} of nights ${SEASON}, at a median ${rate} a night.`;
+  if (occ) return `Short-\u2060lets inside this line fill ${occ} of nights ${SEASON}.`;
+  if (rate) return `Short-\u2060lets inside this line ask a median ${rate} a night.`;
   return `${lets(count)} sit inside this line.`;
 }
 
@@ -236,7 +236,7 @@ export function reading(count: number, s: (Rates & Pick<SelectionStats, "weekly"
 
 /** The question a visitor would put to the connector, in their own voice. */
 export function question(place: string, changed: boolean, roams = false): string {
-  return `How are short\u2011lets doing in ${changed ? (roams ? "my area" : `my area near ${place}`) : place}?`;
+  return `How are short-\u2060lets doing in ${changed ? (roams ? "my area" : `my area near ${place}`) : place}?`;
 }
 
 /** The connector's answer to it, from the same figures. */
@@ -244,8 +244,8 @@ export function answer(count: number, s: Rates | null): string {
   const across = `across ${int(count)} listing${count === 1 ? "" : "s"}`;
   if (count < MIN_LISTINGS) {
     return count === 0
-      ? "There are no short\u2011lets inside that area, so there is nothing to quote."
-      : `Only ${int(count)} short\u2011let${count === 1 ? " sits" : "s sit"} inside that area, too few to quote a figure.`;
+      ? "There are no short-\u2060lets inside that area, so there is nothing to quote."
+      : `Only ${int(count)} short-\u2060let${count === 1 ? " sits" : "s sit"} inside that area, too few to quote a figure.`;
   }
   const occ = s?.effOccTodate == null ? null : `${pct(s.effOccTodate)} occupancy ${SEASON}`;
   const rate = s?.medianRate == null ? null : `${euro(s.medianRate)} a night`;

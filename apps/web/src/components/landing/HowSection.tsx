@@ -1,13 +1,7 @@
-import { ConnectorIcon, PlaygroundIcon, ReportsIcon } from "./ProductIcons";
+import { PRODUCTS } from "./products";
 import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
 import { int } from "@/lib/landing/areaLines";
 import { getInvest, getRentals, getStats, getSummary } from "@/lib/server/marketData";
-
-const PRODUCTS = [
-  { id: "playground", name: "Playground", about: "Explore every listing yourself. Free.", Icon: PlaygroundIcon },
-  { id: "reports", name: "Reports", about: "We write it up for you.", Icon: ReportsIcon },
-  { id: "connector", name: "Connector", about: "Ask it in Claude.", Icon: ConnectorIcon },
-] as const;
 
 // One month of the example listing's calendar: b a night booked, o a night its owner blocked, f a night free.
 const MONTH = "bbbbbfbbbbbooobbbbbfbbbbfbobff";
@@ -44,9 +38,14 @@ export default async function HowSection() {
     <section id="how" className="th-landing hw" aria-labelledby="how-h">
       <div className="hw-in">
         <h2 id="how-h" className="th-h1 hw-h m-0">How the numbers are made.</h2>
+        {/* What is behind the figures, in the owner's terms (2026-10-11): the listings collected across the island,
+            all three markets, and the models that turn them into insights. The count is the database's, today's. */}
         <p className="th-lede m-0">
-          Every figure on this page starts as a listing someone published. Follow one from the site it was posted
-          on to the three ways it reaches you.
+          We collect{" "}
+          {/* Demo data has no true count to quote: there the sentence says it without one. */}
+          {held && !demo ? <b>{int(held.shortLets + held.longLets + held.forSale)} listings</b> : "the listings"} from across
+          Cyprus, short-&#8288;lets, long-&#8288;lets and homes for sale, and our models turn them into every figure on
+          this page. Follow one from the site it was posted on to the three ways it reaches you.
         </p>
 
         <ol className="hw-line m-0 list-none p-0">
@@ -55,16 +54,16 @@ export default async function HowSection() {
             <div className="hw-spec">
               <p className="hw-card m-0">
                 <i aria-hidden="true" />
-                <b>2&#8209;bed apartment</b>
+                <b>2-&#8288;bed apartment</b>
                 <span>Kato Paphos</span>
                 <span>€140 a night</span>
               </p>
               <span className="th-sample">An example listing</span>
             </div>
-            <p className="hw-say m-0">On Airbnb if it is a short&#8209;let, on Bazaraki if it is to rent or for sale.</p>
+            <p className="hw-say m-0">On Airbnb if it is a short-&#8288;let, on Bazaraki if it is to rent or for sale.</p>
             {held && (
               <p className="hw-fact m-0">
-                <b>{int(held.shortLets)}</b> short&#8209;lets, <b>{int(held.longLets)}</b> long&#8209;lets and{" "}
+                <b>{int(held.shortLets)}</b> short-&#8288;lets, <b>{int(held.longLets)}</b> long-&#8288;lets and{" "}
                 <b>{int(held.forSale)}</b> homes for sale today.
                 {demo && <span className="th-tag">Demo data</span>}
               </p>
@@ -139,25 +138,24 @@ export default async function HowSection() {
             </div>
             <p className="hw-say m-0">
               Nights really booked are told apart from nights the owner blocked. A home for sale is matched with
-              short&#8209;lets near it of the same size, to say what it could earn.
+              short-&#8288;lets near it of the same size, to say what it could earn.
             </p>
           </li>
 
+          {/* The line ends on the products in one sentence: the first screen and their cards have said what each is. */}
           <li data-stop="out">
             <h3>It reaches you, three ways</h3>
-            <ul className="hw-out m-0 list-none p-0">
-              {PRODUCTS.map(({ id, name, about, Icon }) => (
-                <li key={id}>
-                  <a href={`#${id}`}>
-                    <Icon size={40} />
-                    <span>
-                      <b>{name}</b>
-                      <span>{about}</span>
-                    </span>
+            <p className="hw-say hw-out m-0">
+              In the{" "}
+              {PRODUCTS.map(({ id, name }, i) => (
+                <span key={id}>
+                  <a href={`#${id}`} className="th-link">
+                    {name}
                   </a>
-                </li>
+                  {i === 0 ? ", in " : i === 1 ? " and through the " : "."}
+                </span>
               ))}
-            </ul>
+            </p>
           </li>
         </ol>
       </div>

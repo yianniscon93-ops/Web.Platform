@@ -4,8 +4,8 @@ The first screen says what Plotsights is and asks the visitor for their own
 place: a headline, one sentence, a search box, and a picture that moves by
 itself, a tour of six drawn town maps with areas drawn on them and what the
 short-lets inside come to. The second screen, the stage,
-lets the visitor try the mechanism: a map with a hand-drawn area, joined by
-thin lines to three product panels made from it. Under it, one card per
+lets the visitor try the mechanism: a map with a hand-drawn area, down to
+street level in the six toured towns, and beside it what the area holds. Under it, one card per
 product explains each with a working object, all three about the area the
 visitor has on the stage's map; the cards stack as the visitor scrolls.
 Then "How the numbers are made", and the close. Product facts live in
@@ -263,9 +263,10 @@ arrow alone, so the field has room for its placeholder.
 One viewport: a band (an `h2`, "Draw an area. Get it three ways.", and one
 sentence), then the stage. Left, a map with a hand-drawn area whose corners
 the visitor can move.
-Right, three product panels made from that area, at most one open at a time:
-Playground, Reports, Connector. From 1024px thin lines run from the area to
-each panel's icon.
+Right, "Inside the line": the area's short-lets, long-lets and sales and the
+Playground's button (the three product panels that stood here until
+2026-10-11 are described below as they were; see "After the critique"). From
+1024px a thin line runs from the area to it.
 
 The stage has one map, the island, which the visitor can zoom and move
 (owner, 2026-10-09: "why not use the full map on the second page?", then
@@ -665,7 +666,7 @@ plays under reduced motion. `data-arrived` stays on the card;
   otherwise drawn empty ("Key finding: written by the team for your
   property"). No placeholder chart or invented number. The pager's buttons
   are `aria-disabled` at either end, not `disabled`, so focus is never
-  dropped. "Ask for a report" carries `A report on <name>` to the form.
+  dropped. "Ask for a report" carries `A report on <name>` to the close.
 - **Connector** (`ConnectorSection.tsx`). Seven questions and the
   conversation they build: each one chosen is added under the earlier ones
   (the log scrolls to it; one already asked goes back to its exchange;
@@ -694,7 +695,7 @@ plays under reduced motion. `data-arrived` stays on the card;
   `role="status"` line announces the answer, once per choice, and only
   while the card is near the viewport; a change of area is announced by the
   hero alone. "Ask for access" carries `Access to the Claude connector` to
-  the form.
+  the close.
 - On one column, choosing a question brings the composer and then the new
   exchange into view, and "Ask another question" under the conversation
   goes back up to the list.
@@ -729,12 +730,58 @@ data team. From 1100px the stops run left to right; below it, down a rail.
 ## The close (`CTASection.tsx`, `Footer.tsx`)
 
 "Ask the team." on ink, with the footer, in the same face and sizes. Over
-the email field stands the brand's drawn area with its square corners,
-quietly outlined, a line joining it to the field. A carried request ("Your
-request: …", `sessionStorage` key `ps-question`, event `ps:question`, both
-exported from `compare.ts`) is shown beside the area, fills the area in,
-and is named in the heading ("Ask the team for a report on Protaras."). The
-form still only simulates sending.
+the actions stands the brand's drawn area with its square corners, quietly
+outlined, a line joining it to them. The request is an email to
+`info@plotsights.com` (`BRAND.email`), written in the visitor's own mail app
+("Email the team"); beside it, "Or open the Playground, it's free". A
+carried request ("Your request: …", `sessionStorage` key `ps-question`,
+event `ps:question`, both exported from `compare.ts`) is shown beside the
+area, fills the area in, is named in the heading ("Ask the team for a report
+on Protaras.") and becomes the email's subject. The email field that stood
+here only simulated a send and was removed on 2026-10-11. The footer links
+the address; Privacy and Terms return when their pages exist.
+
+## After the critique of 2026-10-11
+
+- The first screen names the three products under the search
+  (`.lh-products`, from `products.ts`, which the How line's last stop
+  shares).
+- The first screen's picture can be plotted on: a button over the frame
+  (`.lh-plot`) with a crosshair and an offer beside the pointer ("Plot an
+  area in Limassol"); a click asks for the town on show by name
+  (`PICK_NAME_EVENT`), and the search box picks it as if it had been typed.
+  The tour waits while a mouse is over it.
+- The stage no longer shows the three products (they were told four times on
+  the page): beside the map is "Inside the line", the area's short-lets,
+  long-lets and sales (`StageFigures.tsx`, formerly `ProductPanels.tsx`) and
+  "Open the Playground, it's free"; one line runs from the area to it. The
+  cards below follow the area as before. The How line ends on one sentence
+  naming the products.
+- **Street level for the six towns.** The stage zooms past 8x (16, 32, 64,
+  128) only over the six towns the first screen tours: there it draws the
+  island's plain shape and the town's street map over it (`IslandBasemap`,
+  `public/landing/town-*.svg`), and the map moves only within that street
+  map (`townAreas.ts`: `streetWindow`, `centreBounds`, `maxZoomAt`).
+  Picking one of the six (by search or by clicking the first screen's map)
+  opens at 128x on one of the tour's areas, a few streets wide
+  (`streetArea`; the tour's areas, `DRAWN`, moved from `LandingHero.tsx` to
+  `townAreas.ts`). Other places keep the round ring on the island and stop at
+  8x. Demo listings scatter round each place's centre, so at street level
+  some fall in the sea near the coast; live listings are where they are.
+- "How the numbers are made" opens on what is behind the figures: the
+  listings collected across Cyprus, all three markets, and the models that
+  turn them into the page's figures (owner, 2026-10-11), with today's total
+  on live data.
+- The Reports card opens on "Revenue potential across the year" (a chart and
+  its key finding), not on the key figures, which repeated the stage's two
+  numbers on a half-empty sheet. The line under the stage no longer repeats
+  the count the map's bar gives.
+- The product cards' glass is near solid (97% to 93%), so the words of a
+  covered card never read through the card over it, and the How section
+  comes up as a sheet with a rounded, edged top.
+- Words that must not break at a hyphen use a hyphen and a word joiner
+  (U+2060): Google Sans has no non-breaking hyphen.
+- Type is five sizes, 13 to 24px (`DESIGN.md`, Typography).
 
 ## Palette
 
@@ -765,10 +812,11 @@ tinted at 22% (`--th-area-tint`).
 - The demo listings now gather round each place's centre instead of
   filling a rectangle (`scatter` in `demoData.ts`), so demo counts differ
   from earlier screenshots.
-- **No inbox.** The two requests on the page ("Ask for a report", "Ask for
-  access") only carry a line to the form, and that form still only
-  simulates sending, though it now says "Thanks. We will write back."
-  Nothing reaches the team until a real route exists.
+- **Requests are emails.** "Ask for a report" and "Ask for access" end in an
+  email to `info@plotsights.com` from the visitor's mail app; a visitor with
+  no mail app set up has the address on screen to copy. A form posting to a
+  real inbox would replace it.
+- **No Privacy or Terms pages yet**, so the footer does not link them.
 - A hand-drawn shape cannot be passed to the Playground, so "Open it in the
   Playground" in the Connector's map answer opens the named place and says
   so once the visitor has redrawn the area.
@@ -781,5 +829,5 @@ tinted at 22% (`--th-area-tint`).
 - The covered card's recede needs CSS scroll-driven animations; browsers
   without them get the stack with no recede.
 - `CredibilityStrip.tsx`, `ProductTabs.tsx`, `SplitHero.tsx` and
-  `HeroSequence.tsx` are no longer mounted; their files are kept until the
-  new page is accepted.
+  `HeroSequence.tsx` (the earlier landing) were deleted on 2026-10-11; they
+  are in git history.

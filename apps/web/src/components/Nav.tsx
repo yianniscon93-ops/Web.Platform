@@ -31,6 +31,8 @@ export default function Nav() {
       className="th-landing fixed top-0 left-0 right-0 z-50 transition-colors duration-300"
       // The bar has a ground of its own once the page has moved under it, or its menu is open.
       data-solid={scrolled || open ? "" : undefined}
+      // The open menu is solid paper: the page must not read through the links laid over it.
+      data-menu={open ? "" : undefined}
       style={{
         color: C.ink,
         ...(scrolled || open
@@ -54,7 +56,7 @@ export default function Nav() {
             <a
               key={l.label}
               href={l.href}
-              className="th-navlink flex min-h-11 items-center text-[15px] font-medium"
+              className="th-navlink flex min-h-11 items-center text-[17px] font-medium"
               style={{ color: C.ink }}
             >
               {l.label}
@@ -62,7 +64,7 @@ export default function Nav() {
           ))}
           <a
             href="/dashboard"
-            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[15px] font-semibold"
+            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[17px] font-semibold"
             style={{ background: C.solid, color: C.solidInk }}
           >
             Open the Playground
@@ -94,7 +96,7 @@ export default function Nav() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center gap-3 text-base font-medium"
+                className="flex min-h-12 items-center gap-3 text-[17px] font-medium"
                 style={{ color: C.ink, borderBottom: `1px solid ${C.groundLine}` }}
               >
                 {/* The icon column is kept on every row, so the labels line up. */}
@@ -105,7 +107,7 @@ export default function Nav() {
             <a
               href="/dashboard"
               onClick={() => setOpen(false)}
-              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-base font-semibold"
+              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-[17px] font-semibold"
               style={{ background: C.solid, color: C.solidInk }}
             >
               Open the Playground

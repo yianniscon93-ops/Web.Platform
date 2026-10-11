@@ -6,7 +6,7 @@ import { Minus, Plus, RotateCcw } from "lucide-react";
 import type { PointRow } from "@/lib/dashboard/types";
 import { COUNTING, countChip, countLine } from "@/lib/landing/areaLines";
 import { VIEW_H, VIEW_W, project, unproject, viewOf } from "@/lib/landing/areaView";
-import { ISLAND_AREA, ISLAND_BOUNDS, ZOOM_LEVELS, type DrawnArea } from "@/lib/landing/compare";
+import { ISLAND_AREA, ZOOM_LEVELS, type DrawnArea } from "@/lib/landing/compare";
 import { inPolygon, isSimple, rightmost, ringPath, type Pt } from "@/lib/landing/polygon";
 
 // The dots are thinned by what the screen can show, in two sets, each chosen once per window and size of map.
@@ -158,6 +158,10 @@ export interface AreaMapProps {
   zoom: number;
   /** The visitor asks for another window: this far in, with [lat, lng] at its middle. */
   onWindow: (zoom: number, lat: number, lng: number) => void;
+  /** How far in the window may go with its middle at [lat, lng]: street level only where a town's street map is. */
+  zoomLimit: (lat: number, lng: number) => number;
+  /** Where the window's middle may be taken by hand: the island, or at street level the town's square. */
+  bounds: { south: number; north: number; west: number; east: number };
   points: PointRow[] | null;
   /** The area's corners in the window's view units, as last released. */
   verts: Pt[];
@@ -209,6 +213,8 @@ export default function AreaMap({
   basemap,
   zoom,
   onWindow,
+  zoomLimit,
+  bounds: centreBounds,
   points,
   verts,
   changed,
@@ -1113,7 +1119,14 @@ export default function AreaMap({
     if (!drag.current) setMoving(null);
   }
 
-  const stepIn = ZOOM_LEVELS.find((level) => level > zoom + 0.001);
+  /** Where plus zooms in about: the area's middle while it is in the window, else the window's own. */
+  const plusAt = (): [number, number] => {
+    const mid = middleOf(live.current);
+    return within(mid, shown) ? unproject(view, mid[0], mid[1]) : unproject(view, VIEW_W / 2, VIEW_H / 2);
+  };
+  /** The next step in about [lat, lng], if there is one there: past the island's steps only over a street map. */
+  const stepInAt = (lat: number, lng: number) => ZOOM_LEVELS.find((level) => level > zoom + 0.001 && level <= zoomLimit(lat, lng));
+  const stepIn = stepInAt(...plusAt());
   const stepOut = [...ZOOM_LEVELS].reverse().find((level) => level < zoom - 0.001);
 
   /**
@@ -1122,10 +1135,10 @@ export default function AreaMap({
    * in the window the new window is centred on it, and once the visitor has left it behind, on the window's own.
    */
   function zoomIn(about?: [number, number]) {
-    if (stepIn == null || drag.current || pan.current) return;
-    const mid = middleOf(live.current);
-    const [lat, lng] = about ?? (within(mid, shown) ? unproject(view, mid[0], mid[1]) : unproject(view, VIEW_W / 2, VIEW_H / 2));
-    onWindow(stepIn, lat, lng);
+    if (drag.current || pan.current) return;
+    const [lat, lng] = about ?? plusAt();
+    const next = stepInAt(lat, lng);
+    if (next != null) onWindow(next, lat, lng);
   }
 
   /** One step back out, round the same middle. */
@@ -1150,8 +1163,8 @@ export default function AreaMap({
     const [lat, lng] = unproject(view, VIEW_W / 2 - dx / px, VIEW_H / 2 - dy / px);
     const [x, y] = project(
       view,
-      Math.min(ISLAND_BOUNDS.north, Math.max(ISLAND_BOUNDS.south, lat)),
-      Math.min(ISLAND_BOUNDS.east, Math.max(ISLAND_BOUNDS.west, lng))
+      Math.min(centreBounds.north, Math.max(centreBounds.south, lat)),
+      Math.min(centreBounds.east, Math.max(centreBounds.west, lng))
     );
     return [(VIEW_W / 2 - x) * px, (VIEW_H / 2 - y) * px];
   }

@@ -100,8 +100,11 @@ export interface StageWindow {
   lat: number;
   lng: number;
 }
-/** The steps the map's plus and minus go through. */
-export const ZOOM_LEVELS = [1, 2, 4, 8];
+/**
+ * The steps the map's plus and minus go through. Past 8 is street level, which only the six towns with a drawn
+ * street map have (townAreas.ts holds the stage there); at 128 about 2.4 km of ground fills the window.
+ */
+export const ZOOM_LEVELS = [1, 2, 4, 8, 16, 32, 64, 128];
 /** The middle of the window stays on the island, between these. */
 export const ISLAND_BOUNDS = { south: 34.56, north: 35.7, west: 32.27, east: 34.6 };
 const within = (v: number, low: number, high: number) => Math.min(high, Math.max(low, v));
@@ -140,6 +143,11 @@ export interface PickedPlace {
 }
 /** How the search box hands a picked place to the stage: the event's detail is a PickedPlace. */
 export const PICK_EVENT = "ps:pick";
+/**
+ * How the first screen's picture asks for its town by name (the event's detail is the name): the search box,
+ * which holds the list of places, picks it as if it had been typed, and hands it on with PICK_EVENT.
+ */
+export const PICK_NAME_EVENT = "ps:pick-name";
 
 const KM_PER_DEG = 111.2;
 /**

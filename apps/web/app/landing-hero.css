@@ -3,7 +3,9 @@
    moves by itself, a tour of drawn town maps that come out of the paper, each with three areas a few streets
    wide and what the short-lets inside them come to. The stage (the map and the three products at work, in
    globals.css) is the second screen. */
-.lh { position: relative; overflow: hidden; background: var(--th-ground); color: var(--th-ink); }
+/* Clipped sideways only: the open list of places may run on below the first screen, over the stage, rather than
+   be cut at its foot (it was, in windows under about 900px tall). The picture clips itself. */
+.lh { position: relative; overflow-x: clip; background: var(--th-ground); color: var(--th-ink); }
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
@@ -11,10 +13,10 @@
    from the page's other ledes, its lines kept even so the last is never two stray words. A serif was tried for
    it on 2026-10-10 and dropped the same hour ("I hate these fonts"): the page keeps one voice, and the sentence
    gets its difference from size, weight and ink, not a second family. */
-.lh .th-lede { align-self: auto; margin: 16px 0 0; font-size: 19px; line-height: 1.5; text-wrap: balance; }
+.lh .th-lede { align-self: auto; margin: 16px 0 0; font-size: 20px; line-height: 1.5; text-wrap: balance; }
 /* What is fresh and what the visitor gets, picked out of the sentence in ink: the rest of it is how. */
 .lh .th-lede b { color: var(--th-ink); font-weight: 500; }
-/* The name, picked out of the headline's own letters ("Prop…sights") in the mark's colour. */
+/* The name, picked out of the headline's own letters ("Plot… …sights") in the mark's colour. */
 .lh-name { color: var(--th-mark); }
 
 /* The way in: one field and its button, and the list of places that opens under it. The field was the page's
@@ -103,8 +105,10 @@
   left: 0;
   z-index: 5;
   padding: 6px;
-  border-radius: 18px;
-  background: linear-gradient(180deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.64));
+  /* Its 10px rows sit 6px inside, so the corners run parallel. */
+  border-radius: 16px;
+  /* Nearly solid: it opens over the products' names, which must not read through its rows. */
+  background: linear-gradient(180deg, rgb(255 255 255 / 0.96), rgb(255 255 255 / 0.9));
   -webkit-backdrop-filter: blur(22px) saturate(1.7);
   backdrop-filter: blur(22px) saturate(1.7);
   box-shadow:
@@ -113,16 +117,25 @@
     inset 0 1.5px 0 rgb(255 255 255),
     0 26px 44px -22px color-mix(in srgb, var(--th-ink) 50%, transparent);
 }
-.lh-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 10px; font-size: 15px; line-height: 21px; cursor: pointer; }
+.lh-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 10px; font-size: 17px; line-height: 24px; cursor: pointer; }
 .lh-list li[aria-selected="true"] { background: color-mix(in srgb, var(--th-a) 14%, transparent); }
 .lh-list li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--th-muted); }
 /* A row with nothing under its name: the name takes both lines, so it sits level with the count. */
 .lh-list li:not(:has(small)) > span { grid-row: 1 / span 2; }
 .lh-list b { color: var(--th-ink); font-weight: 600; }
-.lh-list small { grid-column: 1; color: var(--th-muted); font-size: 13px; line-height: 18px; }
-.lh-list em { grid-column: 2; grid-row: 1 / span 2; color: var(--th-ink); font-size: 13px; font-style: normal; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.lh-list small { grid-column: 1; color: var(--th-muted); font-size: 15px; line-height: 20px; }
+.lh-list em { grid-column: 2; grid-row: 1 / span 2; color: var(--th-ink); font-size: 15px; font-style: normal; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .lh-list li.lh-none { display: block; color: var(--th-muted); cursor: default; }
-.lh-try { margin-top: 12px; padding-left: 4px; color: var(--th-muted); font-size: 15px; line-height: 22px; }
+.lh-try { margin-top: 12px; padding-left: 4px; color: var(--th-muted); font-size: 17px; line-height: 24px; }
+/* The three products under the search, named on the first screen: an icon, the name and one line each, three
+   across at every width, each a link down to its card. Not boxed: they are words on the paper, like the How
+   line's last stop, which says the same. */
+.lh-products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; width: 100%; margin-top: 28px; }
+.lh-products a { display: flex; flex-direction: column; align-items: flex-start; min-height: 44px; color: var(--th-ink); }
+.lh-products svg { margin-bottom: 8px; }
+.lh-products b { font-size: 17px; font-weight: 600; line-height: 24px; }
+.lh-products span { color: var(--th-muted); font-size: 15px; line-height: 20px; text-wrap: pretty; }
+.lh-products a:hover b { text-decoration: underline 1.5px; text-underline-offset: 4px; }
 /* Where the field is narrow (a phone, and the words' column just above 1024px) the button is its arrow alone,
    so the field keeps room for its own words. */
 @media (max-width: 479px), (min-width: 1024px) and (max-width: 1179px) {
@@ -137,11 +150,48 @@
    drawing. Below 1024px the window is a band under the words, centred on one point of the map (--fx, --fy: the
    area in hand), though never so far over that the map's own edge shows. `--u` is how many of the map's units
    one screen pixel is: the drawn lines are in those units and so keep one width at any size of map. */
-.lh-town { position: relative; }
+/* A layer of its own under the words: the plot button inside it (z-index 3) must never lie over the list of
+   places, which opens from the words' layer (z-index 2) down over the picture on phones and tablets. */
+.lh-town { position: relative; z-index: 1; }
 .lh-frame { position: relative; height: 364px; container-type: size; }
 .lh-sheet, .lh-over { position: absolute; inset: 0; overflow: hidden; }
 .lh-sheet { mask-image: linear-gradient(180deg, transparent 0, #000 16%); }
 .lh-over { pointer-events: none; }
+/* The picture can be plotted on: one button over the whole frame, a crosshair, and beside the pointer an offer in
+   the filled action's olive, "Plot an area in Limassol", which a click takes up. Without a mouse the offer sits
+   in the frame's top-right corner, and keyboard focus shows it there too. */
+.lh-plot { position: absolute; inset: 0; z-index: 3; width: 100%; padding: 0; border: 0; background: transparent; cursor: crosshair; }
+.th-landing .lh-plot:focus-visible { outline-offset: -6px; border-radius: 14px; }
+.lh-plot-chip {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+  padding: 0 14px;
+  border-radius: 9999px;
+  background: var(--th-action);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.3), 0 8px 16px -10px color-mix(in srgb, var(--th-ink) 60%, transparent);
+  color: var(--th-action-ink);
+  font-size: 15px;
+  font-weight: 600;
+  white-space: nowrap;
+  opacity: 0;
+  translate: var(--px, 0) var(--py, 0);
+  scale: 0.94;
+  transition: opacity 0.15s, scale 0.2s var(--th-ease);
+  pointer-events: none;
+}
+@media (hover: hover) and (pointer: fine) {
+  .lh-plot:hover .lh-plot-chip { opacity: 1; scale: 1; }
+}
+.lh-plot:focus-visible .lh-plot-chip { opacity: 1; scale: 1; translate: none; top: 12px; right: 12px; left: auto; }
+@media (hover: none) {
+  .lh-plot { cursor: pointer; }
+  .lh-plot-chip { opacity: 1; scale: 1; translate: none; top: 12px; right: 12px; left: auto; }
+}
 .lh-map {
   position: absolute;
   top: 0;
@@ -188,7 +238,7 @@
 .lh-node { width: 8px; height: 8px; margin: -4px 0 0 -4px; border: 1.5px solid var(--th-ink); background: var(--th-surface); }
 .lh-where {
   color: var(--th-ink);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   line-height: 1;
   transform: translate(-50%, -50%);
@@ -216,8 +266,8 @@
   background: var(--th-surface);
   box-shadow: 0 8px 16px -10px var(--th-shadow);
   color: var(--th-muted);
-  font-size: 13px;
-  line-height: 20px;
+  font-size: 15px;
+  line-height: 24px;
   white-space: nowrap;
   opacity: 0;
   translate: 0 6px;
@@ -240,7 +290,7 @@
    occupancy") on a line of its own, then the bar filled to that share in the short-lets' shade. It left the
    short-let row because the longer word made neighbouring cards overlap. */
 .lh-pin i { display: block; grid-column: 1 / -1; margin: 7px -12px 0; border-top: 1px solid var(--th-ink); background: var(--th-surface); font-style: normal; }
-.lh-pin i::before { display: block; padding: 3px 12px 2px; color: var(--th-muted); font-size: 11px; font-weight: 600; line-height: 14px; letter-spacing: 0.01em; content: attr(data-occ); }
+.lh-pin i::before { display: block; padding: 3px 12px 2px; color: var(--th-muted); font-size: 13px; font-weight: 600; line-height: 16px; letter-spacing: 0.01em; content: attr(data-occ); }
 .lh-pin i::after { display: block; width: var(--full); height: 6px; border-right: 1px solid var(--th-occ-ring); content: ""; }
 .lh-pin i[data-step="1"]::after { background: var(--th-occ-1); }
 .lh-pin i[data-step="2"]::after { background: var(--th-occ-2); }
@@ -249,12 +299,13 @@
 /* Hidden with `visibility`, not `display`, so crossing 1024px does not start anything again. */
 .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: hidden; }
 /* The town's name in the band: in its corner, since the band shows only part of the town. */
-.lh-named { top: 72px; left: 16px; font-size: 15px; transform: none; transition: opacity 0.4s ease; }
+.lh-named { top: 72px; left: 16px; font-size: 17px; transform: none; transition: opacity 0.4s ease; }
 .lh-named[data-leaving] { opacity: 0; }
 /* Docked at the band's lower right, clear of the connector's round button in the page's lower left corner. */
 .lh-dock { position: absolute; top: auto; right: 16px; bottom: 14px; left: auto; transform: none; }
 .lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
-.lh-credit { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: 11px; line-height: 16px; }
+/* Over the plot button's layer, so the pause control and the credit's links stay pressable where they lie on the picture. */
+.lh-credit { position: relative; z-index: 4; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: 13px; line-height: 18px; }
 /* The way to stop the tour: words, as the page's other small links are. */
 .lh-stopper { position: relative; display: inline-flex; align-items: center; gap: 5px; min-height: 24px; color: var(--th-ink); font-weight: 600; cursor: pointer; text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
 .lh-stopper:hover { text-decoration-color: currentColor; }
@@ -268,6 +319,7 @@
 .th-stage-h { font-size: var(--th-heading); }
 
 @media (min-width: 640px) {
+  .lh-products { column-gap: 24px; margin-top: 32px; }
   .lh-in { padding: 120px 32px 36px; }
   .lh .th-lede { margin-top: 16px; }
   .lh-find { margin-top: 26px; }
@@ -282,8 +334,8 @@
   .lh { display: grid; min-height: max(100svh, 720px); }
   .lh-in { display: flex; align-items: center; width: 100%; padding: 112px 64px 72px; pointer-events: none; }
   .lh-copy { width: 42%; max-width: 580px; pointer-events: auto; }
-  .lh .th-h1 { font-size: clamp(2.75rem, 4vw, 3.75rem); line-height: 1.04; }
-  .lh .th-lede { max-width: 27em; margin-top: 24px; font-size: 22px; }
+  .lh .th-h1 { font-size: clamp(3rem, 4.4vw, 4.25rem); line-height: 1.04; }
+  .lh .th-lede { max-width: 27em; margin-top: 24px; font-size: 20px; }
   .lh-find { margin-top: 32px; }
   .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
   .lh-frame { position: absolute; inset: 0; height: auto; }
@@ -295,7 +347,7 @@
   .lh-map { top: 50%; right: 0; left: auto; width: max(100%, 100svh, 720px); transform: translateY(-50%); }
   .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: visible; }
   /* The town's name is the picture's title: the largest words on the map. */
-  .lh-stop .lh-where { font-size: 17px; }
+  .lh-stop .lh-where { font-size: 20px; }
   .lh-dock, .lh-named { visibility: hidden; }
   .lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 1; }
   .lh-key { pointer-events: none; }
@@ -308,6 +360,11 @@
 @media (min-width: 1024px) and (max-width: 1279px) {
   .lh-key { display: none; }
 }
+/* The sentence under the headline takes its full size only where its column is wide enough for it to stay at
+   three lines; between 1024 and 1279px it is a step down. */
+@media (min-width: 1280px) {
+  .lh .th-lede { font-size: 24px; }
+}
 /* Up to 1440px three cards share a small map: a price goes without its "a night" or "a month", which the
    market's name beside it already says. */
 @media (min-width: 1024px) and (max-width: 1439px) {
@@ -316,7 +373,7 @@
 /* A big picture takes a bigger name on its cards, and a little more room. */
 @media (min-width: 1440px) {
   .lh-stop .lh-pin { column-gap: 12px; padding: 10px 14px 0; }
-  .lh-stop .lh-pin b { margin-bottom: 3px; font-size: 15px; line-height: 20px; }
+  .lh-stop .lh-pin b { margin-bottom: 3px; font-size: 17px; line-height: 24px; }
   .lh-stop .lh-pin i { margin: 9px -14px 0; }
   .lh-stop .lh-pin i::before { padding-left: 14px; padding-right: 14px; }
 }

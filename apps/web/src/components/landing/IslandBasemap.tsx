@@ -1,6 +1,8 @@
 import { VIEW_H, VIEW_W, project, viewOf } from "@/lib/landing/areaView";
 import { ISLAND_AREA, type DrawnArea } from "@/lib/landing/compare";
 import { CYPRUS_OUTLINE } from "@/lib/landing/cyprusOutline";
+import { HERO_TOWNS } from "@/lib/landing/heroTowns";
+import { ISLAND_MAX, townBox } from "@/lib/landing/townAreas";
 
 // The towns named on the island's map, each set in the sea beside it, clear of the coast: [name, lat, lng].
 const NAMES: Array<[string, number, number]> = [
@@ -59,6 +61,11 @@ export default function IslandBasemap({ area }: { area: DrawnArea }) {
     const [x, y] = project(view, lat, lng);
     return x > 60 && x < VIEW_W - 60 && y > 40 && y < VIEW_H - 40;
   };
+  // Past the island's last step the stage is at street level: the island's picture is no use that close (its
+  // lines would be metres wide), so the land is the coast's plain shape, and over it lie the street maps the
+  // first screen tours (public/landing/town-*.svg) wherever they meet the window, each fading into the land.
+  const street = view.sx > WHOLE.sx * ISLAND_MAX * 1.01;
+  const k = view.sx / WHOLE.sx;
   const towns = offshore ? NAMES : TOWNS.filter(inside);
   // The picked place's own name, unless the whole island already names it out at sea.
   const own = area.centre != null && !(offshore && NAMES.some((t) => t[0] === area.name));
@@ -67,8 +74,41 @@ export default function IslandBasemap({ area }: { area: DrawnArea }) {
     : towns;
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element -- a vector drawing, sized and placed by hand */}
-      <img className="th-island" src="/landing/island.svg" alt="" style={art} loading="lazy" decoding="async" />
+      {street ? (
+        <>
+          <svg className="th-island-plain" viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-hidden="true">
+            <rect width={VIEW_W} height={VIEW_H} fill="var(--th-map-sea)" />
+            <path
+              d={COAST}
+              fill="var(--th-map-land)"
+              transform={`translate(${((WHOLE.west - view.west) * view.sx).toFixed(2)} ${((view.north - WHOLE.north) * view.sy).toFixed(2)}) scale(${k.toFixed(4)})`}
+            />
+          </svg>
+          {HERO_TOWNS.map((t) => {
+            const b = townBox(t);
+            if (b.east < view.west || b.west > view.west + VIEW_W / view.sx || b.south > view.north || b.north < view.north - VIEW_H / view.sy) return null;
+            return (
+              // eslint-disable-next-line @next/next/no-img-element -- a vector drawing, sized and placed by hand
+              <img
+                key={t.key}
+                className="th-island th-town-map"
+                src={t.src}
+                alt=""
+                style={{
+                  left: pct(((t.west - view.west) * view.sx) / VIEW_W),
+                  top: pct(((view.north - t.north) * view.sy) / VIEW_H),
+                  width: pct(((b.east - b.west) * view.sx) / VIEW_W),
+                  height: pct(((b.north - b.south) * view.sy) / VIEW_H),
+                }}
+                decoding="async"
+              />
+            );
+          })}
+        </>
+      ) : (
+        // eslint-disable-next-line @next/next/no-img-element -- a vector drawing, sized and placed by hand
+        <img className="th-island" src="/landing/island.svg" alt="" style={art} loading="lazy" decoding="async" />
+      )}
       <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-hidden="true">
         {/* AreaMap finds this path to keep listings out of the water: the whole island's window, less the island.
             It is not painted; the picture has the sea. */}

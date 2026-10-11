@@ -6,7 +6,7 @@
    scaled to its 56px header row). */
 :root {
   /* A product's name: the section-heading size. */
-  --th-heading: clamp(2.125rem, 2.78vw, 2.5rem);
+  --th-heading: clamp(2.25rem, 3vw, 2.75rem);
   /* The three cards' grounds: the plain surface, the olive tint, and a light tint of the light orange on the map's land. */
   --th-card-playground: var(--th-surface);
   --th-card-reports: var(--th-tint);
@@ -118,12 +118,12 @@
 }
 .ps-card-body > * { min-width: 0; }
 .ps-lede { max-width: 35em; color: var(--th-muted); font-size: 17px; line-height: 1.5; text-wrap: pretty; }
-.ps-h3 { margin-bottom: 8px; font-size: 16px; font-weight: 600; line-height: 22px; }
+.ps-h3 { margin-bottom: 8px; font-size: 17px; font-weight: 600; line-height: 24px; }
 /* The product's statements: plain lines. Under them, a note on what the card's object is. */
-.ps-notes li { padding: 4px 0; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-notes li { padding: 4px 0; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
 .ps-card-foot .ps-under { margin-top: 14px; }
 .ps-card-end { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-.ps-action-note { color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-action-note { color: var(--th-muted); font-size: 15px; line-height: 20px; }
 /* A request to the team: the solid ink button. The accent fill is kept for opening the Playground. */
 .ps-solid {
   display: inline-flex;
@@ -135,7 +135,7 @@
   border-radius: 9999px;
   background: var(--th-solid);
   color: var(--th-solid-ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
   transition: background-color 0.15s, transform 0.15s var(--th-ease);
@@ -144,7 +144,7 @@
 .ps-solid:active { transform: scale(0.97); }
 .ps-solid svg { transition: transform 0.2s var(--th-ease); }
 .ps-solid:hover svg { transform: translateX(3px); }
-.ps-under { margin-top: 12px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.ps-under { margin-top: 12px; color: var(--th-muted); font-size: 15px; line-height: 20px; text-wrap: pretty; }
 .ps-tag {
   display: inline-flex;
   align-items: center;
@@ -153,21 +153,21 @@
   border-radius: 6px;
   background: var(--th-solid);
   color: var(--th-solid-ink);
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 600;
   letter-spacing: 0.02em;
   white-space: nowrap;
 }
 /* Under a figure block: whether it is demo data, and what it covers. */
-.ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: 13px; line-height: 20px; }
+.ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: 15px; line-height: 24px; }
 /* Words where a figure block has no figures. */
-.ps-standin { padding: 6px 0; color: var(--th-muted); font-size: 15px; line-height: 1.45; text-wrap: pretty; }
+.ps-standin { padding: 6px 0; color: var(--th-muted); font-size: 17px; line-height: 1.45; text-wrap: pretty; }
 .ps-textbtn {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
   color: var(--th-ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   text-decoration: underline 1.5px;
   text-underline-offset: 4px;
@@ -196,7 +196,7 @@
   padding: 0 12px 0 0;
   margin-right: 12px;
   color: var(--th-muted);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 500;
   white-space: nowrap;
   cursor: pointer;
@@ -251,8 +251,8 @@
 /* "Head to head", above the views as the Playground's compared areas sit above its tabs: one row to a figure,
    one column to an area, the leading figure of each row in ink and the others a step back. */
 .ps-versus { padding: 0 0 12px; border-bottom: 1px solid var(--th-line); }
-.ps-versus h3 { font-size: 16px; font-weight: 600; line-height: 22px; }
-.ps-versus .ps-table thead th { padding-bottom: 6px; font-size: 13px; line-height: 18px; vertical-align: bottom; }
+.ps-versus h3 { font-size: 17px; font-weight: 600; line-height: 24px; }
+.ps-versus .ps-table thead th { padding-bottom: 6px; font-size: 15px; line-height: 20px; vertical-align: bottom; }
 .ps-versus .ps-table :is(thead th:not(:first-child), td) { width: 23%; padding: 6px 0 6px 10px; text-align: right; }
 /* The visitor's own area carries the corner of the area on the map. */
 .ps-versus th[data-mine]::before {
@@ -265,8 +265,9 @@
   background: var(--th-a);
 }
 .ps-versus .ps-table tbody th { padding: 6px 0; font-weight: 400; white-space: normal; }
-.ps-versus tbody th small { color: var(--th-muted); font-size: 13px; white-space: nowrap; }
-.ps-versus .ps-table td { color: var(--th-muted); font-size: 16px; }
+/* On a phone the qualifier goes under its label, so the three areas' columns keep their room. */
+.ps-versus tbody th small { display: block; color: var(--th-muted); font-size: 15px; }
+.ps-versus .ps-table td { color: var(--th-muted); font-size: 17px; }
 .ps-versus .ps-covers { padding-top: 10px; }
 .ps-view { display: flex; flex-direction: column; min-height: 312px; padding: 18px 0 0; }
 .th-landing .ps-view:focus-visible { outline-offset: 2px; border-radius: 6px; }
@@ -274,11 +275,11 @@
 .ps-view > .ps-covers, .ps-view > .ps-fig > .ps-covers { margin-top: auto; }
 .ps-fig { min-width: 0; }
 .ps-fig-head { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; gap: 0 16px; }
-.ps-fig h3 { font-size: 16px; font-weight: 600; line-height: 22px; }
+.ps-fig h3 { font-size: 17px; font-weight: 600; line-height: 24px; }
 /* The newest value of a series, beside its title. */
-.ps-fig-now { color: var(--th-muted); font-size: 13px; line-height: 22px; white-space: nowrap; }
-.ps-fig-now b { margin-right: 3px; color: var(--th-ink); font-size: 16px; }
-.ps-fig-sub { margin-top: 2px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.ps-fig-now { color: var(--th-muted); font-size: 15px; line-height: 26px; white-space: nowrap; }
+.ps-fig-now b { margin-right: 3px; color: var(--th-ink); font-size: 17px; }
+.ps-fig-sub { margin-top: 2px; color: var(--th-muted); font-size: 15px; line-height: 20px; text-wrap: pretty; }
 .ps-fig-sub b { color: var(--th-ink); }
 .ps-pair { display: grid; grid-template-columns: minmax(0, 1fr); gap: 26px; }
 
@@ -288,8 +289,8 @@
 .ps-chart-cap {
   overflow: hidden;
   color: var(--th-muted);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 15px;
+  line-height: 20px;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -307,8 +308,8 @@
   justify-content: space-between;
   margin: -5px 0;
   color: var(--th-muted);
-  font-size: 11px;
-  line-height: 11px;
+  font-size: 13px;
+  line-height: 13px;
   text-align: right;
 }
 .ps-chart-plot {
@@ -341,7 +342,7 @@
   background: var(--th-ink);
   box-shadow: 0 0 0 2px var(--th-surface);
 }
-.ps-chart-x { position: relative; grid-column: 2; margin-right: 6px; color: var(--th-muted); font-size: 11px; line-height: 11px; }
+.ps-chart-x { position: relative; grid-column: 2; margin-right: 6px; color: var(--th-muted); font-size: 13px; line-height: 13px; }
 .ps-chart-x span { position: absolute; top: 6px; transform: translateX(-50%); }
 .ps-chart-x span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 4px; background: var(--th-map-road-major); }
 /* Bars: each named beneath and valued above. With a value axis the top rule is its upper end and a value may
@@ -352,14 +353,15 @@
 .ps-bars:not([data-axis]) .ps-bars-x { grid-column: 1; }
 .ps-bars .ps-chart-plot { cursor: default; }
 /* The two lines over the plot: what the bars are, and how the figures were arrived at. */
-.ps-bars-cap { display: grid; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-bars-cap { display: grid; color: var(--th-muted); font-size: 15px; line-height: 20px; }
 .ps-bars-cap b { color: var(--th-ink); font-weight: 600; }
-.ps-bars-cap :is(b, span) { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-bars-cap :is(b, span) { text-wrap: balance; }
 .ps-bars-row { position: absolute; inset: 0; display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; align-items: end; padding: 0 4px; }
 .ps-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
 .ps-bar i { flex: none; width: min(24px, 50%); height: calc(var(--ps-bar) * 100%); min-height: 2px; background: var(--th-ink); }
 .ps-bars:not([data-axis]) .ps-bar i { height: calc(var(--ps-bar) * (100% - 18px)); }
-.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: 13px; font-weight: 600; line-height: 13px; white-space: nowrap; }
+/* A bar's value is a chart label, at the micro size: at 15px six of them run into one another on a phone. */
+.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: 13px; font-weight: 600; line-height: 13px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .ps-bars-x {
   display: grid;
   grid-column: 2;
@@ -367,37 +369,37 @@
   grid-auto-flow: column;
   padding: 6px 4px 0;
   color: var(--th-muted);
-  font-size: 11px;
-  line-height: 11px;
+  font-size: 13px;
+  line-height: 13px;
   text-align: center;
   white-space: nowrap;
 }
 
 /* A table of figures: hairline rows, each column saying what it covers. */
 .ps-table { width: 100%; border-collapse: collapse; text-align: left; }
-.ps-table thead th { padding: 0 12px 8px 0; font-size: 16px; font-weight: 600; line-height: 22px; vertical-align: top; }
-.ps-table thead small { display: block; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.ps-table thead th { padding: 0 12px 8px 0; font-size: 17px; font-weight: 600; line-height: 24px; vertical-align: top; }
+.ps-table thead small { display: block; color: var(--th-muted); font-size: 15px; font-weight: 400; line-height: 20px; }
 .ps-table tbody :is(th, td) {
   padding: 7px 12px 7px 0;
   border-top: 1px solid var(--th-line);
   color: var(--th-muted);
-  font-size: 13px;
-  line-height: 22px;
+  font-size: 15px;
+  line-height: 26px;
   vertical-align: top;
 }
-.ps-table tbody th { color: var(--th-ink); font-size: 15px; font-weight: 500; white-space: nowrap; }
+.ps-table tbody th { color: var(--th-ink); font-size: 17px; font-weight: 500; white-space: nowrap; }
 .ps-table td { white-space: nowrap; }
-.ps-table td b { color: var(--th-ink); font-size: 16px; }
+.ps-table td b { color: var(--th-ink); font-size: 17px; }
 .ps-table td b.ps-none { color: var(--th-muted); font-weight: 400; }
 .ps-table :is(th, td):last-child { padding-right: 0; }
 
 /* Revenue calculator: two sliders, one sum. */
 .ps-calc { display: grid; grid-template-columns: minmax(0, 1fr); gap: 24px; }
 .ps-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; margin-top: 12px; }
-.ps-field label { font-size: 15px; font-weight: 500; line-height: 22px; }
-.ps-field output { font-size: 16px; font-weight: 600; line-height: 22px; }
+.ps-field label { font-size: 17px; font-weight: 500; line-height: 24px; }
+.ps-field output { font-size: 17px; font-weight: 600; line-height: 24px; }
 .ps-field input, .ps-field-note { grid-column: 1 / -1; }
-.ps-field-note { margin-top: -4px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-wrap: pretty; }
+.ps-field-note { margin-top: -4px; color: var(--th-muted); font-size: 15px; line-height: 20px; text-wrap: pretty; }
 /* The slider: a hairline track filled in ink up to the thumb, and the brand's square handle to hold. */
 .ps-field input[type="range"] {
   --ps-fill: 50%;
@@ -447,7 +449,7 @@
 .ps-field input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
 .ps-field input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
 .ps-calc-out { display: flex; flex-direction: column; align-items: flex-start; }
-.ps-calc-sum { display: block; margin: 12px 0 6px; font-size: 18px; line-height: 1.35; text-wrap: balance; }
+.ps-calc-sum { display: block; margin: 12px 0 6px; font-size: 20px; line-height: 1.35; text-wrap: balance; }
 .ps-calc-sum b { font-weight: 700; }
 .ps-calc-out .ps-fig-sub + .ps-fig-sub { margin-top: 8px; }
 .ps-calc-out .ps-textbtn { margin-top: 4px; }
@@ -471,7 +473,7 @@
   padding: 0 16px;
   border-radius: 6px;
   color: var(--th-ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
   cursor: pointer;
@@ -481,7 +483,7 @@
 .ps-switch button[aria-pressed="true"] { background: var(--th-solid); color: var(--th-solid-ink); cursor: default; }
 /* Under 1024px: the contents as one control. */
 .ps-contents-select { position: relative; display: grid; row-gap: 4px; }
-.ps-contents-select > span { color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-contents-select > span { color: var(--th-muted); font-size: 15px; line-height: 20px; }
 .ps-contents-select select {
   width: 100%;
   min-height: 48px;
@@ -491,7 +493,7 @@
   background: var(--th-surface);
   color: var(--th-ink);
   font: inherit;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 600;
   text-overflow: ellipsis;
   cursor: pointer;
@@ -523,8 +525,8 @@
   min-height: 44px;
   padding: 6px 0 6px 28px;
   color: var(--th-muted);
-  font-size: 15px;
-  line-height: 20px;
+  font-size: 17px;
+  line-height: 24px;
   text-align: left;
   text-wrap: balance;
   cursor: pointer;
@@ -577,21 +579,21 @@
   padding-bottom: 10px;
   border-bottom: 1px solid var(--th-line);
   color: var(--th-muted);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 15px;
+  line-height: 20px;
 }
 .ps-sheet-head > :last-child { flex: none; }
 /* The page itself: its title and sentence, its sample or its contents, and at its foot the key finding where it has one. */
 .ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding-top: 18px; }
-.ps-sheet-page h3 { font-size: 18px; font-weight: 700; line-height: 24px; letter-spacing: -0.01em; text-wrap: balance; }
-.ps-sheet-page p { max-width: 32em; margin-top: 6px; font-size: 16px; line-height: 1.45; text-wrap: pretty; }
+.ps-sheet-page h3 { font-size: 20px; font-weight: 700; line-height: 26px; letter-spacing: -0.01em; text-wrap: balance; }
+.ps-sheet-page p { max-width: 32em; margin-top: 6px; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
 .ps-sample { min-width: 0; }
-.ps-sample-words { color: var(--th-muted); font-size: 15px; line-height: 1.45; }
-.ps-sample-cap { margin-bottom: 6px; color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-sample-words { color: var(--th-muted); font-size: 17px; line-height: 1.45; }
+.ps-sample-cap { margin-bottom: 6px; color: var(--th-muted); font-size: 15px; line-height: 20px; }
 .ps-sample .ps-chart { --ps-chart-h: 112px; }
 .ps-sample .ps-covers { padding-top: 10px; }
 /* What a section contains, where the page has no figures of its own for it: hairline rows, each behind an empty corner. */
-.ps-contains li { position: relative; padding: 9px 0 9px 24px; border-top: 1px solid var(--th-line); font-size: 16px; line-height: 22px; text-wrap: pretty; }
+.ps-contains li { position: relative; padding: 9px 0 9px 24px; border-top: 1px solid var(--th-line); font-size: 17px; line-height: 24px; text-wrap: pretty; }
 .ps-contains li:last-child { border-bottom: 1px solid var(--th-line); }
 .ps-contains li::before, .ps-finding::before {
   content: "";
@@ -611,7 +613,7 @@
   padding: 11px 0 12px 24px;
   border-top: 1px solid var(--th-line);
   border-bottom: 1px solid var(--th-line);
-  font-size: 15px;
+  font-size: 17px;
   line-height: 1.45;
   text-wrap: pretty;
 }
@@ -621,13 +623,13 @@
 .ps-finding[data-empty] b { color: var(--th-ink); }
 .ps-facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--th-line); }
 .ps-facts > div:last-child { border-bottom: 1px solid var(--th-line); }
-.ps-facts dt { font-size: 15px; line-height: 22px; }
-.ps-facts dt small { margin-left: 6px; color: var(--th-muted); font-size: 13px; white-space: nowrap; }
-.ps-facts dd { font-size: 16px; font-weight: 600; line-height: 22px; white-space: nowrap; }
-.ps-facts dd span { color: var(--th-muted); font-size: 13px; font-weight: 400; }
-.ps-comps caption { padding-bottom: 6px; color: var(--th-muted); font-size: 13px; line-height: 18px; text-align: left; }
-.ps-comps thead th { padding-bottom: 6px; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
-.ps-comps tbody th { font-size: 15px; white-space: normal; }
+.ps-facts dt { font-size: 17px; line-height: 24px; }
+.ps-facts dt small { margin-left: 6px; color: var(--th-muted); font-size: 15px; white-space: nowrap; }
+.ps-facts dd { font-size: 17px; font-weight: 600; line-height: 24px; white-space: nowrap; }
+.ps-facts dd span { color: var(--th-muted); font-size: 15px; font-weight: 400; }
+.ps-comps caption { padding-bottom: 6px; color: var(--th-muted); font-size: 15px; line-height: 20px; text-align: left; }
+.ps-comps thead th { padding-bottom: 6px; color: var(--th-muted); font-size: 15px; font-weight: 400; line-height: 20px; }
+.ps-comps tbody th { font-size: 17px; white-space: normal; }
 .ps-comps :is(th, td):not(:first-child) { width: 1%; text-align: right; white-space: nowrap; }
 .ps-comps tbody tr:last-child :is(th, td) { border-bottom: 1px solid var(--th-line); }
 .ps-sheet-foot { padding-top: 20px; }
@@ -640,9 +642,9 @@
   min-width: 44px;
   min-height: 48px;
   color: var(--th-ink);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
-  line-height: 20px;
+  line-height: 24px;
   text-align: right;
   cursor: pointer;
 }
@@ -661,7 +663,7 @@
   .ps-pager-next::after { content: none; }
 }
 /* The page's footer: how a real report is delivered. */
-.ps-sheet-line { padding-top: 10px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: 13px; line-height: 18px; }
+.ps-sheet-line { padding-top: 10px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: 15px; line-height: 20px; }
 
 /* ── Connector: what you can ask, and the conversation ── */
 /* The questions: a list to choose one from. The square beside the chosen one is filled. */
@@ -687,7 +689,7 @@
 .ps-questions button:hover i { background: var(--th-a); transform: scale(1.2); }
 .ps-questions button[aria-checked="true"] { font-weight: 600; cursor: default; }
 .ps-questions button[aria-checked="true"] i { background: var(--th-ink); transform: none; }
-.ps-questions small { display: block; margin-top: 1px; color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.ps-questions small { display: block; margin-top: 1px; color: var(--th-muted); font-size: 15px; font-weight: 400; line-height: 20px; }
 .th-landing .ps-questions button:focus-visible { outline-offset: -2px; border-radius: 6px; }
 /* The conversation: the hero's two bubbles, the visitor's in olive and the answer on white. Each question asked
    adds an exchange under the earlier ones. */
@@ -700,8 +702,8 @@
   min-height: 44px;
   border-bottom: 1px solid var(--th-line);
   color: var(--th-muted);
-  font-size: 13px;
-  line-height: 18px;
+  font-size: 15px;
+  line-height: 20px;
 }
 .ps-chat-head p { padding: 12px 0; text-wrap: pretty; }
 /* Back to the first exchange: a small text control whose target is the head's full height. */
@@ -710,7 +712,7 @@
   min-width: 44px;
   min-height: 44px;
   color: var(--th-ink);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 600;
   text-align: right;
   text-decoration: underline 1.5px;
@@ -737,16 +739,16 @@
   align-items: center;
   min-height: 48px;
   border-top: 1px solid var(--th-line);
-  font-size: 16px;
-  line-height: 22px;
+  font-size: 17px;
+  line-height: 24px;
 }
 .ps-composer i { width: 12px; height: 12px; border: 2px solid var(--th-ink); background: var(--th-surface); }
 .ps-composer[data-on] i { background: var(--th-ink); }
 .ps-composer > span { grid-row: 1; grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .ps-composer-text { font-weight: 500; }
-.ps-composer-idle { color: var(--th-muted); font-size: 13px; }
+.ps-composer-idle { color: var(--th-muted); font-size: 15px; }
 .ps-composer[data-on] .ps-composer-idle { visibility: hidden; }
-.ps-bubble { max-width: min(94%, 35em); font-size: 16px; line-height: 1.45; }
+.ps-bubble { max-width: min(94%, 35em); font-size: 17px; line-height: 1.45; }
 .ps-bubble-q {
   align-self: flex-end;
   padding: 10px 18px;
@@ -764,18 +766,18 @@
   background: var(--th-surface);
   transform-origin: 0 100%;
 }
-.ps-tool { color: var(--th-muted); font-size: 13px; font-weight: 600; line-height: 18px; }
+.ps-tool { color: var(--th-muted); font-size: 15px; font-weight: 600; line-height: 20px; }
 .ps-reply { margin-top: 4px; text-wrap: pretty; }
 .ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 600; }
-.ps-reply-link small { color: var(--th-muted); font-size: 13px; font-weight: 400; line-height: 18px; }
+.ps-reply-link small { color: var(--th-muted); font-size: 15px; font-weight: 400; line-height: 20px; }
 /* How firm the answer is, in the connector's words, then the date it refers to. */
-.ps-firm { margin-top: 8px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
-.ps-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; color: var(--th-muted); font-size: 13px; line-height: 20px; }
+.ps-firm { margin-top: 8px; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
+.ps-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; color: var(--th-muted); font-size: 15px; line-height: 24px; }
 /* The wait before an answer: three of the brand's squares. Without motion, words instead. */
 .ps-typing { display: flex; align-items: center; min-height: 48px; padding: 0 20px; }
 .ps-typing-dots { display: flex; gap: 6px; }
 .ps-typing-dots i { width: 6px; height: 6px; background: var(--th-muted); }
-.ps-typing-words { display: none; color: var(--th-muted); font-size: 15px; }
+.ps-typing-words { display: none; color: var(--th-muted); font-size: 17px; }
 /* The area on its street map, as a message of its own: the map takes the answer bubble's corners and hairline. */
 .ps-minimap {
   position: relative;
@@ -833,50 +835,31 @@
 .ps-close-nodes rect { fill: var(--th-close); stroke: var(--th-close-muted); stroke-width: 2px; transition: stroke 0.3s; }
 .ps-close-area[data-on] .ps-close-shape { fill-opacity: 1; stroke: var(--th-close-ink); }
 .ps-close-area[data-on] .ps-close-wire, .ps-close-area[data-on] .ps-close-nodes rect { stroke: var(--th-close-ink); }
-.ps-close-carried { margin-bottom: 30px; font-size: 15px; line-height: 1.45; text-wrap: pretty; }
-.ps-close-form { display: flex; flex-direction: column; gap: 10px; }
-.ps-close-form input {
-  flex: 1;
-  min-width: 0;
-  min-height: 48px;
-  padding: 0 16px;
-  border: 1.5px solid var(--th-close-edge);
-  border-radius: 12px;
-  background: transparent;
-  color: var(--th-close-ink);
-  font: inherit;
-  font-size: 16px;
-  caret-color: var(--th-close-ink);
-  transition: border-color 0.15s;
-}
-.ps-close-form input::placeholder { color: var(--th-close-muted); opacity: 1; }
-.ps-close-form input:hover, .ps-close-form input:focus { border-color: var(--th-close-ink); }
-.ps-close-form input:disabled { opacity: 0.5; }
-.ps-close-form input:-webkit-autofill { -webkit-text-fill-color: var(--th-close-ink); box-shadow: 0 0 0 100px var(--th-close) inset; }
-/* The submit: solid paper, ink text. */
-.ps-close-form button {
+.ps-close-carried { margin-bottom: 30px; font-size: 17px; line-height: 1.45; text-wrap: pretty; }
+/* The actions: the email in solid paper with ink text, and beside it the free way in, a text link. */
+.ps-close-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.ps-close-mail {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 120px;
   min-height: 48px;
   padding: 0 22px;
   border-radius: 9999px;
   background: var(--th-close-ink);
   color: var(--th-close);
-  font-size: 15px;
+  font-size: 17px;
   font-weight: 600;
   white-space: nowrap;
-  cursor: pointer;
   transition: background-color 0.15s, transform 0.15s var(--th-ease);
 }
-.ps-close-form button:hover { background: var(--th-surface); }
-.ps-close-form button:active { transform: scale(0.97); }
-.ps-close-form button:disabled { cursor: default; }
-.ps-close-form button svg { transition: transform 0.2s var(--th-ease); }
-.ps-close-form button:hover svg { transform: translateX(3px); }
-.ps-close-small { margin-top: 12px; color: var(--th-close-muted); font-size: 13px; line-height: 18px; }
+.ps-close-mail:hover { background: var(--th-surface); }
+.ps-close-mail:active { transform: scale(0.97); }
+.ps-close-mail svg { transition: transform 0.2s var(--th-ease); }
+.ps-close-mail:hover svg { transform: translateX(3px); }
+.ps-close-play { display: inline-flex; align-items: center; min-height: 44px; color: var(--th-close-ink); font-size: 17px; font-weight: 600; }
+.ps-close-small { margin-top: 16px; color: var(--th-close-muted); font-size: 15px; line-height: 22px; }
+.ps-close-small a { color: var(--th-close-ink); }
 .ps-foot { --th-focus: var(--th-close-ink); border-top: 1px solid var(--th-close-line); background: var(--th-close); color: var(--th-close-ink); }
 .ps-foot-in {
   display: flex;
@@ -888,9 +871,9 @@
   margin: 0 auto;
   padding: 18px 16px 22px;
 }
-.ps-foot-brand { display: flex; align-items: center; gap: 8px; font-size: 18px; font-weight: 700; letter-spacing: -0.035em; }
-.ps-foot-rights { color: var(--th-close-muted); font-size: 13px; }
-.ps-foot-links { display: flex; gap: 16px; font-size: 13px; }
+.ps-foot-brand { display: flex; align-items: center; gap: 8px; font-size: 20px; font-weight: 700; letter-spacing: -0.035em; }
+.ps-foot-rights { color: var(--th-close-muted); font-size: 15px; }
+.ps-foot-links { display: flex; gap: 16px; font-size: 15px; }
 .ps-foot-links a {
   display: inline-flex;
   align-items: center;
@@ -904,7 +887,7 @@
 .ps-foot-links a:hover { text-decoration-color: currentColor; }
 
 @container (min-width: 520px) {
-  .ps-versus .ps-table thead th { font-size: 15px; line-height: 22px; }
+  .ps-versus .ps-table thead th { font-size: 17px; line-height: 24px; }
   .ps-versus .ps-table :is(thead th:not(:first-child), td) { width: 20%; }
   .ps-pair { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; }
   .ps-calc { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: 0; }
@@ -913,8 +896,9 @@
 }
 
 @media (min-width: 640px) {
+  .ps-versus tbody th small { display: inline; white-space: nowrap; }
   .ps-in { padding: 0 32px; }
-  .ps-tie { padding: 28px 0; font-size: 18px; }
+  .ps-tie { padding: 28px 0; font-size: 20px; }
   .ps-card { width: calc(100% - 64px); }
   .ps-card-head { padding: 0 8px 0 22px; }
   .ps-card-body { padding: 20px 24px 24px; }
@@ -922,10 +906,8 @@
   .ps-tablist button::after { right: 14px; }
   .ps-sheet { min-height: 440px; padding: 22px 26px 16px; }
   .ps-chat-log { padding: 22px 0 24px; }
-  .ps-bubble { font-size: 17px; }
   .ps-close-in { padding: 80px 32px 72px; }
-  .ps-close-lede { font-size: 18px; }
-  .ps-close-form { flex-direction: row; }
+  .ps-close-lede { font-size: 20px; }
   .ps-foot-in { padding: 14px 32px 18px; }
 }
 
@@ -949,10 +931,10 @@
   .ps-card[data-card="reports"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(216px, 2.5fr) minmax(0, 6.5fr); }
   /* The kind of report, across the rail's own width. */
   .ps-report-nav .ps-switch { display: grid; grid-auto-columns: minmax(0, 1fr); justify-self: stretch; }
-  .ps-report-nav .ps-switch button { padding: 0 6px; font-size: 13px; }
+  .ps-report-nav .ps-switch button { padding: 0 6px; font-size: 15px; }
   .ps-card[data-card="connector"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(0, 4fr) minmax(0, 5fr); }
   /* Seven questions in a column beside the conversation: a size down and closer set, so the list fits a pinned card. */
-  .ps-questions button { padding: 10px 0; font-size: 16px; }
+  .ps-questions button { padding: 10px 0; font-size: 17px; }
   .ps-lede { grid-row: 1; grid-column: 1; }
   .ps-card-foot { grid-row: 2; grid-column: 1; }
   .ps-card-lead { grid-row: 1 / span 2; grid-column: 2; }
@@ -1002,7 +984,7 @@
 }
 /* A wide and tall window has room for the questions at their full size. */
 @media (min-width: 1280px) and (min-height: 880px) {
-  .ps-questions button { padding: 12px 0; font-size: 17px; }
+  .ps-questions button { padding: 12px 0; }
 }
 
 /* A laptop-height window (under 780px: 1366×768, 1280×720): every card still fits its pin. Nothing is left out and
@@ -1030,7 +1012,7 @@
   .ps-sample .ps-chart { --ps-chart-h: 72px; }
   /* Connector: the questions. */
   .ps-h3 { margin-bottom: 6px; }
-  .ps-questions button { padding: 8px 0; font-size: 15px; }
+  .ps-questions button { padding: 8px 0; }
   .ps-questions i { margin-top: 4px; }
   .ps-chat-log { gap: 18px; padding: 16px 0 18px; }
 }
@@ -1075,7 +1057,7 @@
 @media (min-width: 1280px) {
   /* Room for the kind-of-report switch at its full size, and for the longest title on one line in its bold setting. */
   .ps-card[data-card="reports"] .ps-card-body { grid-template-columns: minmax(0, 3fr) minmax(280px, 2.6fr) minmax(0, 6.4fr); }
-  .ps-report-nav .ps-switch button { padding: 0 10px; font-size: 15px; }
+  .ps-report-nav .ps-switch button { padding: 0 10px; font-size: 17px; }
   .ps-card-body { column-gap: 40px; }
   .ps-close-in { column-gap: 56px; }
 }
@@ -1183,7 +1165,7 @@
   .ps-solid, .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-close-shape, .ps-close-nodes rect,
   .ps-tablist button, .ps-tablist button::after, .ps-switch button,
   .ps-contents button, .ps-contents button::before, .ps-pager button svg, .ps-questions i,
-  .ps-close-form input, .ps-close-form button, .ps-close-form button svg, .ps-foot-links a,
+  .ps-close-mail, .ps-close-mail svg, .ps-foot-links a,
   .ps-card-action,
   .ps-field input[type="range"]::-webkit-slider-thumb, .ps-field input[type="range"]::-moz-range-thumb { transition: none; }
 }

@@ -445,7 +445,7 @@ function CalculatorView({ area }: { area: HeroArea }) {
             onChange={(e) => setMine((m) => ({ ...m, occ: Number(e.target.value) }))}
           />
           <p id={`${ids}-occ-note`} className="ps-field-note" data-pending={area.pending ? "" : undefined}>
-            {areaOcc != null ? `Short\u2011lets in ${area.name} fill ${pct(areaOcc)} of nights ${SEASON}.` : without("occupancy figure")}
+            {areaOcc != null ? `Short-\u2060lets in ${area.name} fill ${pct(areaOcc)} of nights ${SEASON}.` : without("occupancy figure")}
           </p>
         </div>
       </section>
