@@ -3,10 +3,9 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X } from "lucide-react";
-import { BRAND } from "@/lib/brand";
-import AreaMark from "@/components/landing/AreaMark";
 import { ConnectorIcon, ReportsIcon } from "@/components/landing/ProductIcons";
 import { LANDING as C } from "@/components/landing/tokens";
+import Wordmark from "@/components/landing/Wordmark";
 
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
@@ -45,18 +44,18 @@ export default function Nav() {
     >
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-4 sm:px-8 lg:px-16">
         <a href="#" className="flex min-h-11 items-center gap-2.5">
-          <AreaMark size={32} />
-          <span className="text-[22px] font-bold" style={{ letterSpacing: "-0.035em" }}>
-            {BRAND.name}
-          </span>
+          {/* The wordmark is the display role: its weight is the headline's (globals.css). The plot is its "o". */}
+          <Wordmark size={24} />
         </a>
 
-        <nav className="hidden items-center gap-9 md:flex">
+        {/* Closer set between 768 and 1024px, and the button a little narrower: at the type's size the three links
+            and the button need the room, and the wordmark keeps 20px clear of them at 768px. */}
+        <nav className="hidden items-center gap-5 whitespace-nowrap md:flex lg:gap-9">
           {links.map((l) => (
             <a
               key={l.label}
               href={l.href}
-              className="th-navlink flex min-h-11 items-center text-[17px] font-medium"
+              className="th-navlink flex min-h-11 items-center text-[length:var(--th-text-body)] font-medium"
               style={{ color: C.ink }}
             >
               {l.label}
@@ -64,7 +63,7 @@ export default function Nav() {
           ))}
           <a
             href="/dashboard"
-            className="th-solid inline-flex h-11 items-center rounded-full px-5 text-[17px] font-semibold"
+            className="th-solid inline-flex h-11 items-center rounded-full px-4 text-[length:var(--th-text-body)] font-semibold lg:px-5"
             style={{ background: C.solid, color: C.solidInk }}
           >
             Open the Playground
@@ -96,7 +95,7 @@ export default function Nav() {
                 key={l.label}
                 href={l.href}
                 onClick={() => setOpen(false)}
-                className="flex min-h-12 items-center gap-3 text-[17px] font-medium"
+                className="flex min-h-12 items-center gap-3 text-[length:var(--th-text-body)] font-medium"
                 style={{ color: C.ink, borderBottom: `1px solid ${C.groundLine}` }}
               >
                 {/* The icon column is kept on every row, so the labels line up. */}
@@ -107,7 +106,7 @@ export default function Nav() {
             <a
               href="/dashboard"
               onClick={() => setOpen(false)}
-              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-[17px] font-semibold"
+              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-[length:var(--th-text-body)] font-semibold"
               style={{ background: C.solid, color: C.solidInk }}
             >
               Open the Playground

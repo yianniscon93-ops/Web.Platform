@@ -8,7 +8,8 @@ import { ISLAND_MAX, townBox } from "@/lib/landing/townAreas";
 const NAMES: Array<[string, number, number]> = [
   ["Paphos", 34.665, 32.45],
   ["Limassol", 34.53, 32.86],
-  ["Larnaca", 34.83, 33.78],
+  // Larnaca is set a little further out in its bay than the others, so its name stays clear of Ayia Napa's on a phone.
+  ["Larnaca", 34.795, 33.78],
   ["Ayia Napa", 34.92, 34.12],
   ["Nicosia", 35.24, 33.37],
 ];

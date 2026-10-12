@@ -63,13 +63,13 @@ export default function OccupancyChart({ weekly }: { weekly: WeeklyPoint[] }) {
 
   return (
     <figure className="th-chart m-0">
+      {/* The caption wraps on a narrow phone; the readout lies over it in the same place, so pointing moves nothing. */}
       <figcaption className="th-chart-cap">
-        {hover ? (
-          <>
+        <span data-off={hover ? "" : undefined}>Nights occupied by week, {chart.range}</span>
+        {hover && (
+          <span>
             Week of {hover.label}: <b>{Math.round(hover.v)}% occupied</b>
-          </>
-        ) : (
-          <>Nights occupied by week, {chart.range}</>
+          </span>
         )}
       </figcaption>
       <div className="th-chart-body">

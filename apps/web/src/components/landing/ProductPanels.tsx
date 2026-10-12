@@ -221,10 +221,11 @@ function MarketsTable({
       {/* The row names are for assistive tech only: each cell already says what it is. Their column has no width. */}
       <colgroup>
         <col className="th-rowhead" />
-        {/* The first column carries the occupancy with its period, the middle one a range. */}
-        <col style={{ width: "35%" }} />
-        <col style={{ width: "37%" }} />
-        <col style={{ width: "28%" }} />
+        {/* The first column carries the occupancy with its period, the middle one a range. How the three share
+            the table's width is the stylesheet's (`.th-markets col`): it changes with the stage's layout. */}
+        <col />
+        <col />
+        <col />
       </colgroup>
       <thead>
         <tr>

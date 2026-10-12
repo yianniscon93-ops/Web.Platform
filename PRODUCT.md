@@ -112,10 +112,11 @@ Open decisions:
 - Palette: off-white (beige), ink, **olive** (#4A5E3A) and a **light orange**
   (#F2A154). Olive does the working jobs (the drawn area, the filled
   action); the light orange marks the listings, the product icons and the
-  brand mark (the mark itself: the plot snapped to the map's dots, olive
-  line and corners, orange wash, chosen 2026-10-10 as "techy and
-  professional", "crystalized", with the olive brought in as the drawn
-  line). The owner kept the beige and olive after comparing seven
+  brand mark (the mark itself: the plot as the "o" of the name, an olive
+  line through five orange corner dots with no fill, the lines forming
+  again on hover; owner, 2026-10-12. Before that, from 2026-10-10, a
+  separate mark beside the name with an orange wash, chosen as "techy and
+  professional", "crystalized"). The owner kept the beige and olive after comparing seven
   alternatives (2026-10-08). The accent has changed twice: tangerine was
   replaced by teal on 2026-10-08 ("I dont like the orange colour"), and teal
   was dropped on 2026-10-09 ("It does not look good and professional. We
@@ -123,6 +124,11 @@ Open decisions:
   orange-and-olive renderings of the built page the owner chose the one where
   olive leads.
 - Typeface: Google Sans, chosen 2026-10-08 for being clear and UI-friendly.
+  Free faces close to Gilroy were compared on 2026-10-12 and the owner kept
+  Google Sans for now.
+- Type is big: nothing on the landing page is set under 15px (owner,
+  2026-10-12: "in a website all letters should be clearly visible, big and
+  readable to the customer"). The sizes and weights are in DESIGN.md.
 
 ## Evidence on Hand
 

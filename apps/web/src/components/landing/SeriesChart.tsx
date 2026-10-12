@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useLayoutEffect, useMemo, useRef, useState } from "react";
 import { MONTHS } from "@/lib/landing/areaLines";
 import { seriesRange, type SeriesPoint } from "@/lib/landing/sectionLines";
 
@@ -89,17 +89,18 @@ export function LineChart({
 
   return (
     <figure className="ps-chart">
+      {/* The caption wraps where it has to, and the readout lies over it in the same place: pointing at the chart
+          swaps one for the other and moves nothing, however many lines the caption took. */}
       <figcaption className="ps-chart-cap">
-        {hover ? (
-          <>
+        <span data-off={hover ? "" : undefined}>{caption ?? chart.range}</span>
+        {hover && (
+          <span>
             {per} {hover.label}:{" "}
             <b>
               {format(hover.v)}
               {unit}
             </b>
-          </>
-        ) : (
-          (caption ?? chart.range)
+          </span>
         )}
       </figcaption>
       <div className="ps-chart-body">
@@ -149,12 +150,18 @@ export interface Bar {
   v: number;
 }
 
+/** The least room, in px, between two neighbouring labels of a bar chart. */
+const LABEL_GAP = 6;
+
 /**
  * A handful of labelled bars: each one named beneath and its value written
  * above it. With `axis` the value axis's two ends are labelled as well, for
  * values that do not say their own unit; without it the bars stand on a
- * baseline alone. `title` and `sub` are the two lines over the plot. Returns
- * nothing for an empty list.
+ * baseline alone. `title` and `sub` are the two lines over the plot. Where
+ * the bars stand closer than their labels are wide (six values on a phone)
+ * every other label is left out, never set smaller: the values keep the
+ * tallest bar's, and the text alternative keeps them all. Returns nothing
+ * for an empty list.
  */
 export function BarChart({
   bars,
@@ -175,8 +182,46 @@ export function BarChart({
   /** A quieter second line: how the figures were arrived at. */
   sub?: string;
 }) {
+  const row = useRef<HTMLDivElement>(null);
+  const under = useRef<HTMLSpanElement>(null);
+  // Whether the values, and the names, have room side by side at this width. Measured: it depends on the figures.
+  const [thin, setThin] = useState({ values: false, names: false });
+  // Before the first paint, so six values are never shown overlapping for a frame.
+  useLayoutEffect(() => {
+    const el = row.current;
+    const names = under.current;
+    if (!el || !names || typeof ResizeObserver === "undefined") return;
+    const range = document.createRange();
+    const widest = (labels: Iterable<Element>) => {
+      let w = 0;
+      for (const label of labels) {
+        range.selectNodeContents(label);
+        w = Math.max(w, range.getBoundingClientRect().width);
+      }
+      return w;
+    };
+    const measure = () => {
+      const column = el.firstElementChild?.getBoundingClientRect().width ?? 0;
+      if (!column) return;
+      const now = {
+        values: widest(el.querySelectorAll("b")) + LABEL_GAP > column,
+        names: widest(names.children) + LABEL_GAP > column,
+      };
+      setThin((was) => (was.values === now.values && was.names === now.names ? was : now));
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(el);
+    // The labels are measured again once the page's face has arrived: it is wider than the fallback.
+    document.fonts?.ready.then(measure).catch(() => {});
+    return () => ro.disconnect();
+  }, [bars, format]);
+
   if (!bars.length) return null;
   const max = Math.max(...bars.map((b) => b.v));
+  // Left out, every other one: the values keep the tallest bar's, and the names go with the values that stay.
+  const kept = thin.values ? bars.findIndex((b) => b.v === max) % 2 : 0;
+  const quiet = (on: boolean, i: number) => (on && i % 2 !== kept ? "" : undefined);
   // With an axis the bars are measured against its round upper end; without one, against the tallest of them.
   const high = axis ? bounds(0, max)[1] : max || 1;
   return (
@@ -199,18 +244,20 @@ export function BarChart({
           role="img"
           aria-label={`Bar chart of ${subject}: ${bars.map((b) => `${b.name} ${format(b.v)}`).join(", ")}.`}
         >
-          <div className="ps-bars-row" aria-hidden="true">
-            {bars.map((b) => (
+          <div ref={row} className="ps-bars-row" aria-hidden="true">
+            {bars.map((b, i) => (
               <span key={b.name} className="ps-bar">
-                <b>{format(b.v)}</b>
+                <b data-quiet={quiet(thin.values, i)}>{format(b.v)}</b>
                 <i style={{ "--ps-bar": b.v / high } as React.CSSProperties} />
               </span>
             ))}
           </div>
         </div>
-        <span className="ps-bars-x" aria-hidden="true">
-          {bars.map((b) => (
-            <span key={b.name}>{b.label}</span>
+        <span ref={under} className="ps-bars-x" aria-hidden="true">
+          {bars.map((b, i) => (
+            <span key={b.name} data-quiet={quiet(thin.names, i)}>
+              {b.label}
+            </span>
           ))}
         </span>
       </div>

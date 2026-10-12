@@ -12,13 +12,15 @@ export type Drawn = Pick<TourArea, "name" | "ring" | "at" | "side" | "from">;
  * What the tour draws on each town's map, in that map's view units: three areas a few streets wide, each with
  * the corner its figures are pinned at when the map is whole (`at`, and the `side` of it the card hangs from)
  * and the corner of the area the line to them leaves from. `where` is the place of the town's name. All of it
- * is set by hand against the drawing, on built streets, the cards over open water where they can be.
+ * is set by hand against the drawing, on built streets, the cards over open water where they can be. A card
+ * with all three markets is about 225 by 147px (270 by 158 from 1440px): the lowest ones (Kato Paphos, Skala)
+ * are pinned high enough to end above the credit row in an 800px window.
  */
 export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> = {
   limassol: {
     areas: [
       { name: "Old town", ring: [[730, 990], [1010, 940], [1070, 1160], [900, 1250], [720, 1190]], at: [1545, 1200], side: "right", from: 2 },
-      { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1070, 480], side: "right", from: 1 },
+      { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1070, 455], side: "right", from: 1 },
       { name: "Seafront", ring: [[1100, 740], [1350, 680], [1440, 860], [1260, 1010], [1090, 940]], at: [1575, 440], side: "right", from: 1 },
     ],
     where: [880, 400],
@@ -35,7 +37,7 @@ export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> =
   paphos: {
     areas: [
       { name: "Tombs of the Kings", ring: [[540, 240], [740, 215], [830, 330], [760, 480], [540, 470]], at: [900, 270], side: "left", from: 2 },
-      { name: "Kato Paphos", ring: [[560, 800], [900, 770], [990, 930], [820, 1000], [560, 980]], at: [830, 1240], side: "right", from: 4 },
+      { name: "Kato Paphos", ring: [[560, 800], [900, 770], [990, 930], [820, 1000], [560, 980]], at: [830, 1215], side: "right", from: 4 },
       { name: "Poseidonos Avenue", ring: [[850, 1120], [990, 1000], [1110, 1180], [1080, 1400], [960, 1330]], at: [1580, 800], side: "right", from: 1 },
     ],
     where: [1180, 620],
@@ -52,7 +54,7 @@ export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> =
     areas: [
       { name: "Finikoudes", ring: [[960, 540], [1240, 520], [1250, 760], [1130, 790], [950, 680]], at: [1570, 230], side: "right", from: 1 },
       { name: "St Lazarus", ring: [[930, 820], [1180, 800], [1220, 980], [1080, 1110], [910, 1000]], at: [880, 900], side: "right", from: 4 },
-      { name: "Skala", ring: [[1010, 1150], [1210, 1130], [1230, 1300], [1180, 1460], [1020, 1400]], at: [990, 1230], side: "right", from: 4 },
+      { name: "Skala", ring: [[1010, 1150], [1210, 1130], [1230, 1300], [1180, 1460], [1020, 1400]], at: [990, 1220], side: "right", from: 4 },
     ],
     where: [700, 520],
   },

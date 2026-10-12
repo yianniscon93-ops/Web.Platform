@@ -36,9 +36,9 @@
 }
 /* What is counted is the light orange: the listing as it is published. */
 .hw-line > li[data-stop="source"]::after { background: var(--th-mark); }
-.hw-line h3 { font-size: 20px; font-weight: 600; line-height: 26px; }
-.hw-say { max-width: 34em; color: var(--th-muted); font-size: 17px; line-height: 24px; text-wrap: pretty; }
-.hw-fact { font-size: 15px; line-height: 22px; font-variant-numeric: tabular-nums; }
+.hw-line h3 { font-size: var(--th-text-lead); font-weight: 600; line-height: 26px; }
+.hw-say { max-width: 34em; color: var(--th-muted); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
+.hw-fact { font-size: var(--th-text-small); line-height: 24px; font-variant-numeric: tabular-nums; }
 .hw-fact b { font-weight: 600; }
 .hw-fact .th-tag { display: flex; width: fit-content; margin-top: 6px; }
 .hw-spec { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
@@ -54,8 +54,8 @@
   background: var(--th-surface);
   box-shadow: 0 8px 18px -12px var(--th-shadow);
   color: var(--th-muted);
-  font-size: 15px;
-  line-height: 22px;
+  font-size: var(--th-text-small);
+  line-height: 24px;
 }
 .hw-card i { grid-row: 1 / span 3; align-self: start; width: 44px; height: 44px; border: 1.5px solid var(--th-ink); background: var(--th-mark); }
 .hw-card b { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
@@ -67,7 +67,7 @@
   background: repeating-linear-gradient(135deg, var(--th-ink) 0 1.5px, var(--th-surface) 1.5px 4px);
 }
 .hw-month i[data-night="f"], .hw-key span[data-night="f"]::before { border-color: var(--th-line); background: var(--th-surface); }
-.hw-key { display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--th-muted); font-size: 13px; line-height: 22px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hw-key { display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 24px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .hw-key span { display: inline-flex; align-items: center; gap: 4px; }
 .hw-key span::before { content: ""; width: 9px; height: 9px; border-width: 1px; }
 /* Stop 3: where it is, inside the areas that hold it. */
@@ -78,14 +78,14 @@
 .hw-map path.hw-map-near { fill: var(--th-a); fill-opacity: var(--th-area-tint); stroke: var(--th-a); stroke-width: 1.5px; }
 .hw-map-nodes rect { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.1px; }
 .hw-map-dot { fill: var(--th-mark); stroke: var(--th-ink); stroke-width: 1.1px; }
-.hw-crumb { color: var(--th-muted); font-size: 15px; line-height: 20px; }
+.hw-crumb { color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
 /* Stop 4: what its calendar shows against what we count. */
-.hw-bars { display: grid; row-gap: 12px; width: 100%; max-width: 300px; color: var(--th-muted); font-size: 15px; line-height: 20px; font-variant-numeric: tabular-nums; }
+.hw-bars { display: grid; row-gap: 12px; width: 100%; max-width: 300px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; font-variant-numeric: tabular-nums; }
 .hw-bars > span { display: grid; row-gap: 5px; }
 .hw-bars > span > span { text-wrap: balance; }
 .hw-bars i { width: var(--w); height: 13px; border: 1.5px solid var(--th-ink); background: repeating-linear-gradient(135deg, var(--th-ink) 0 1.5px, var(--th-surface) 1.5px 4px); }
 .hw-bars span[data-ours] i { border-color: var(--th-occ-ring); background: var(--th-occ-3); }
-.hw-bars em { color: var(--th-ink); font-size: 17px; font-style: normal; font-weight: 600; }
+.hw-bars em { color: var(--th-ink); font-size: var(--th-text-body); font-style: normal; font-weight: 600; }
 /* Stop 5: the three products. */
 /* Stop 5: the products, named in one sentence, each a link to its card. */
 .hw-out a { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
@@ -97,8 +97,8 @@
    five stops share the next, each under its square. */
 @media (min-width: 1100px) {
   .hw-in { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: end; padding: 104px 64px 96px; }
-  .hw-line { grid-column: 1 / -1; grid-template-columns: minmax(0, 1fr) minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1.3fr) minmax(0, 1.15fr); margin-top: 48px; }
-  .hw-line > li { grid-template-rows: auto 164px auto auto; padding: 34px 32px 0 0; }
+  .hw-line { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.06fr) minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1.24fr) minmax(0, 1.15fr); margin-top: 48px; }
+  .hw-line > li { grid-template-rows: auto 180px auto auto; padding: 34px 32px 0 0; }
   .hw-line > li::before { top: 5px; right: 0; bottom: auto; left: 6px; width: auto; height: 1.5px; }
   .hw-line > li::after { top: 0; }
   .hw-spec { align-self: center; }

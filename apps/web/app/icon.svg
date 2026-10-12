@@ -1,12 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" fill="none">
-  <!-- Plotsights mark, a static copy of src/components/landing/AreaMark.tsx for the favicon: olive line, orange wash, the map's dots in ink. -->
-  <g fill="#161C11" fill-opacity="0.35">
-    <circle cx="4" cy="4" r="0.75"/><circle cx="4" cy="10.5" r="0.75"/><circle cx="4" cy="17" r="0.75"/><circle cx="4" cy="23.5" r="0.75"/><circle cx="4" cy="30" r="0.75"/>
-    <circle cx="10.5" cy="4" r="0.75"/><circle cx="10.5" cy="10.5" r="0.75"/><circle cx="10.5" cy="17" r="0.75"/><circle cx="10.5" cy="23.5" r="0.75"/><circle cx="10.5" cy="30" r="0.75"/>
-    <circle cx="17" cy="4" r="0.75"/><circle cx="17" cy="10.5" r="0.75"/><circle cx="17" cy="17" r="0.75"/><circle cx="17" cy="23.5" r="0.75"/><circle cx="17" cy="30" r="0.75"/>
-    <circle cx="23.5" cy="4" r="0.75"/><circle cx="23.5" cy="10.5" r="0.75"/><circle cx="23.5" cy="17" r="0.75"/><circle cx="23.5" cy="23.5" r="0.75"/><circle cx="23.5" cy="30" r="0.75"/>
-    <circle cx="30" cy="4" r="0.75"/><circle cx="30" cy="10.5" r="0.75"/><circle cx="30" cy="17" r="0.75"/><circle cx="30" cy="23.5" r="0.75"/><circle cx="30" cy="30" r="0.75"/>
-  </g>
-  <path d="M7 9.5 22.5 6l6.5 13-10 9L7 22z" fill="#F2A154" fill-opacity="0.3" stroke="#4A5E3A" stroke-width="1.5" stroke-linejoin="miter"/>
-  <g fill="#4A5E3A"><circle cx="7" cy="9.5" r="1.6"/><circle cx="22.5" cy="6" r="1.6"/><circle cx="29" cy="19" r="1.6"/><circle cx="19" cy="28" r="1.6"/><circle cx="7" cy="22" r="1.6"/></g>
+  <!-- Plotsights mark, a static copy of src/components/landing/AreaMark.tsx for the favicon: olive line, orange dots, nothing inside. The page's hairline (1.25) would be about half a pixel in a 16px tab, and with no wash the line alone holds the shape, so it is 2.6 here, a little over one pixel at 16px; the dots are 3.2, as in the wordmark. -->
+  <path d="M7 9.5L22.5 6L29 19L19 28L7 22Z" stroke="#4A5E3A" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <g fill="#F2A154"><circle cx="7" cy="9.5" r="3.2"/><circle cx="22.5" cy="6" r="3.2"/><circle cx="29" cy="19" r="3.2"/><circle cx="19" cy="28" r="3.2"/><circle cx="7" cy="22" r="3.2"/></g>
 </svg>

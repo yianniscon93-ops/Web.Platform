@@ -44,8 +44,8 @@ what they earn, rent for and sell for." (2026-10-10: "show that our database
 is updated daily"; chosen over three other wordings). The owner asked for
 "different fonts for this part" and left the face to the designer; Newsreader,
 a serif, was tried and dropped within the hour ("I hate these fonts"). The
-sentence stays in Google Sans, the page's one voice, at 19px (22px from
-1024px), and gets its difference from weight and ink: "Updated every day" and
+sentence stays in Google Sans, the page's one voice, at 20px (24px from
+1280px), and gets its difference from weight and ink: "Updated every day" and
 the promise are set in ink at weight 500, the rest in the muted tone. Cyprus is named once, in the
 sentence, so the headline stays place-neutral for Athens. It replaced "We analyse prices, bookings,
 ratings and locations across the island every day. You see what any street
@@ -229,16 +229,17 @@ multiplied fourteen times, not yet on the live database.
 A card is a small table: the area's name, then a line to each market
 inside it. "Short-let", how many, a night's median price and how full
 ("58% full"); "Long-let", how many, a month's median rent; "For sale", how
-many, the median asking price. Everything is 13px; counts and figures are
+many, the median asking price. Everything is 16px; counts and figures are
 ink at weight 600, tabular, the counts ranged right. The dots on the map
 are the short-lets only, so the short-let line starts with the mark those
 dots wear, in the shade of the area's occupancy, and along the card's foot
 the occupancy is drawn again as a bar in that shade. From 1440px the name
 is a size larger; between 1024 and 1439px, where three cards share a small
 map, the prices go without "a night" and "a month", which the market's name
-already says. A card is about 255px by 110px from 1440px and 210px by 103px
-below it, and every card's place in `DRAWN` was set for that size. The
-town's name is the largest word on the map (17px). The credit row under
+already says. A card with all three markets is about 270px by 158px from
+1440px and 225px by 147px below it, and every card's place in `DRAWN` is set
+for that size (no two overlap and none leaves the picture at 1280, 1400 and
+1500px). The town's name is the largest word on the map (20px). The credit row under
 the picture carries the pause control, the key ("Short-lets this season:
 emptier", four dots, "fuller"; "this season" is left out below 1440px and
 the whole key between 1024 and 1279px, where the row has one line's room)
@@ -546,12 +547,13 @@ of paper.
   (`data-covered`, set by an `IntersectionObserver` on the next card's
   resting place, made again whenever the window's height changes). If any
   card does not fit, no card pins and they follow one another.
-- **Short windows.** The cards pin down to 1280×720 and 1366×650. Under 780px
-  of window height, and again under 700px, the cards' paddings, gaps, table
-  rows and chart heights close up (`landing-sections.css`, the two
-  `max-height` blocks); nothing is left out and no type goes below the
-  scale. From 1024px the Connector's questions are set a size down (16px,
-  15px in a short window; 17px only from 1280×880), so seven of them fit
+- **Short windows.** With the sample figures the cards pin down to about
+  1440×720 and 1280×760 (measured 2026-10-12, at the 18px body size). Under
+  880px of window height, again under 780px and again under 700px, the
+  cards' paddings, gaps, table rows and chart heights close up
+  (`landing-sections.css`, the three `max-height` blocks); nothing is left out and no type goes below the
+  scale. From 1024px the Connector's questions keep the body size (18px)
+  and are set closer in a short window, so seven of them fit
   beside the conversation, with a redrawn area's longer wording too. Not
   pinned, the report's sheet keeps one height from page to page, capped at
   the height it would have in a pinned card so the sheet itself never stops
@@ -750,11 +752,12 @@ the address; Privacy and Terms return when their pages exist.
 - The first screen named the three products under the search for a day.
   Taken off on 2026-10-12 at the owner's word; `products.ts` remains for the
   How line's last stop.
-- The first screen's picture can be plotted on: a button over the frame
-  (`.lh-plot`) with a crosshair and an offer beside the pointer ("Plot an
-  area in Limassol"); a click asks for the town on show by name
-  (`PICK_NAME_EVENT`), and the search box picks it as if it had been typed.
-  The tour waits while a mouse is over it.
+- The first screen's picture only plays the tour: it cannot be plotted on.
+  From commit 7c26c2c it carried a button over the frame, with a crosshair
+  and an offer beside the pointer ("Plot an area in Limassol"); that was
+  removed on 2026-10-12 at the owner's word ("I dont like that you can draw
+  on the hero"): drawing belongs to the second screen only. The search box
+  is the first screen's way to the stage; `PICK_NAME_EVENT` stays for it.
 - The stage's three product panels were replaced by "Inside the line", a
   table of the area's short-lets, long-lets and sales (`StageFigures.tsx`).
   Reverted on 2026-10-12: `ProductPanels.tsx` is back as it was on the 11th
@@ -786,7 +789,8 @@ the address; Privacy and Terms return when their pages exist.
   comes up as a sheet with a rounded, edged top.
 - Words that must not break at a hyphen use a hyphen and a word joiner
   (U+2060): Google Sans has no non-breaking hyphen.
-- Type is five sizes, 13 to 24px (`DESIGN.md`, Typography).
+- Type is four role tokens, 15, 16, 18 and 20px, under the display sizes;
+  nothing is set under 15px (`DESIGN.md`, Typography).
 
 ## Palette
 

@@ -1,5 +1,5 @@
 import { BRAND } from "@/lib/brand";
-import AreaMark from "@/components/landing/AreaMark";
+import Wordmark from "@/components/landing/Wordmark";
 
 /** The foot of the landing page, on ink under the close (styles in app/landing-sections.css). */
 export default function Footer() {
@@ -7,11 +7,7 @@ export default function Footer() {
     <footer className="th-landing ps-foot">
       <div className="ps-foot-in">
         <div className="ps-foot-brand">
-          <AreaMark size={24} line="var(--th-close-ink)" dots="var(--th-close-ink)" />
-          <span>
-            {BRAND.namePart1}
-            {BRAND.namePart2}
-          </span>
+          <Wordmark line="var(--th-close-ink)" />
         </div>
 
         <p className="ps-foot-rights">© 2026 {BRAND.name}</p>
