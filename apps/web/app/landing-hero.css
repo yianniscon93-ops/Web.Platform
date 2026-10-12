@@ -16,8 +16,10 @@
 .lh .th-lede { align-self: auto; margin: 16px 0 0; font-size: var(--th-text-lead); line-height: 1.5; text-wrap: balance; }
 /* What is fresh and what the visitor gets, picked out of the sentence in ink: the rest of it is how. */
 .lh .th-lede b { color: var(--th-ink); font-weight: 500; }
-/* The name, picked out of the headline's own letters ("Plot… …sights") in the mark's colour. */
-.lh-name { color: var(--th-mark); }
+/* The name, picked out of the headline's own letters ("Plot… …sights") in the brand's olive, the colour of the
+   dots in the wordmark: 6.3:1 on the ground, where the saffron (and the light orange before it) was 1.9:1
+   (owner, 2026-10-12: "reconsider whether the Plot and the sights should be saffron or olive"). */
+.lh-name { color: var(--th-a); }
 
 /* The way in: one field and its button, and the list of places that opens under it. The field was the page's
    first piece of glass (owner, 2026-10-09: "a nice liquid glass search thing. crystalized"), and the clearest: a
@@ -172,17 +174,18 @@
 .lh-dots, .lh-stop, .lh-stop > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
 .lh-stop, .lh-dots[data-leaving] { transition: opacity 0.4s ease; }
 .lh-stop[data-leaving], .lh-dots[data-leaving] { opacity: 0; }
-/* An area: a firm, hard-cornered line, drawn corner to corner. When it closes it sets: a light tint comes in,
+/* An area, in the hand the brand mark is drawn in: an ink line run from corner to corner, each corner an olive
+   dot that lands as the line reaches it. When it closes it sets: a light tint comes in,
    clear enough to read the streets through, with a thin white edge under the line, which lifts the line off
    the streets, and the line to its figures follows. */
-.lh-area { fill: none; stroke: var(--th-a); stroke-width: calc(2.5px * var(--u, 2)); stroke-linejoin: miter; }
+.lh-area { fill: none; stroke: var(--th-ink); stroke-width: calc(2px * var(--u, 2)); stroke-linejoin: round; }
 .lh-area-fill {
   fill: var(--th-a);
   /* Lighter than the stage's area: a street map is under it, and its streets and listings are to be read through it. */
   fill-opacity: 0.12;
   stroke: var(--th-surface);
   stroke-width: calc(5px * var(--u, 2));
-  stroke-linejoin: miter;
+  stroke-linejoin: round;
   opacity: 0;
   transition: opacity 0.3s ease-out;
 }
@@ -192,7 +195,7 @@
    line and their listings. */
 .lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 0; }
 .lh-node, .lh-where, .lh-pin { position: absolute; top: var(--y); left: var(--x); }
-.lh-node { width: 8px; height: 8px; margin: -4px 0 0 -4px; border: 1.5px solid var(--th-ink); background: var(--th-surface); }
+.lh-node { width: 11px; height: 11px; margin: -5.5px 0 0 -5.5px; border: 1.5px solid var(--th-surface); border-radius: 50%; background: var(--th-a); }
 .lh-where {
   color: var(--th-ink);
   font-size: var(--th-text-small);

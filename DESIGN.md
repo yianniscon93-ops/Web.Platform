@@ -13,12 +13,12 @@ colors:
   action-hover: "#3C4E2E"
   visitor: "#4A5E3A"
   visitor-ink: "#F7F5EE"
-  mark: "#F2A154"
-  occ-1: "#FDEBD3"
-  occ-2: "#F7C48B"
-  occ-3: "#EE9740"
-  occ-4: "#B85F14"
-  occ-ring: "#7A3D0A"
+  mark: "#E9A22B"
+  occ-1: "#F8EDD2"
+  occ-2: "#EEC987"
+  occ-3: "#E9A22B"
+  occ-4: "#AE6800"
+  occ-ring: "#734300"
   solid: "#161C11"
   solid-ink: "#FFFFFF"
   solid-hover: "#26331C"
@@ -45,7 +45,7 @@ colors:
   area-land: "color-mix(in srgb, #4A5E3A 22%, #FBFAF4)"
   card-playground: "#FFFFFF"
   card-reports: "#E6EBDA"
-  card-connector: "color-mix(in srgb, #F2A154 18%, #FBFAF4)"
+  card-connector: "color-mix(in srgb, #E9A22B 18%, #FBFAF4)"
   close: "#161C11"
   close-ink: "#F4F1E8"
   close-muted: "color-mix(in srgb, #F4F1E8 74%, #161C11)"
@@ -83,7 +83,7 @@ typography:
     letterSpacing: "-0.025em"
   wordmark:
     fontFamily: "Google Sans, sans-serif"
-    fontSize: "24px"
+    fontSize: "28px"
     fontWeight: 700
     lineHeight: 1
     letterSpacing: "-0.035em"
@@ -310,17 +310,17 @@ Scope: the public landing page (`apps/web/app/page.tsx`). Every value here is re
 
 **Creative North Star: "The Drawn Area"**
 
-The whole page is drawn with the tool the product hands the visitor: an area with an olive outline and square white corners you can pick up. The brand mark is that area set as the "o" of the name: a line in the letters' own ink through five olive corner dots, with nothing inside (owner, 2026-10-12: "not filled with colour", "use the O of plotsights for the logo instead of outside of it", "black lines for the logo and then the dots that join these lines to be the olive green of our palette"). From 2026-10-10 until then it stood beside the name, snapped to the map's dots with an orange wash ("Actually use J"). The first screen shows them being drawn: a tour of six drawn town maps that runs by itself, three areas a few streets wide on each, every one answered on a small white card with how full its short-lets are and what a night costs, next to a search field that asks the visitor for their own place. The second screen, the stage, is one map of the island that zooms, with one such area on it whose corners drag, joined by thin lines to three product panels. The product icons, the chart ends, the report's contents rail, the chosen question, the slider's handle and the five stops of "How the numbers are made" are all the same square corner. Nothing on the page is illustrated in another hand.
+The whole page is drawn with the tool the product hands the visitor: an area drawn as an ink line through round olive corner dots you can pick up, the hand the brand mark is drawn in (2026-10-12; until then an olive outline with square white corners). The brand mark is that area set as the "o" of the name: a line in the letters' own ink through five olive corner dots, with nothing inside (owner, 2026-10-12: "not filled with colour", "use the O of plotsights for the logo instead of outside of it", "black lines for the logo and then the dots that join these lines to be the olive green of our palette"). From 2026-10-10 until then it stood beside the name, snapped to the map's dots with an orange wash ("Actually use J"). The first screen shows them being drawn: a tour of six drawn town maps that runs by itself, three areas a few streets wide on each, every one answered on a small white card with how full its short-lets are and what a night costs, next to a search field that asks the visitor for their own place. The second screen, the stage, is one map of the island that zooms, with one such area on it whose corners drag, joined by thin lines to three product panels. The product icons, the chart ends, the report's contents rail, the chosen question, the slider's handle and the five stops of "How the numbers are made" are all the same square corner. Nothing on the page is illustrated in another hand.
 
-The ground is a warm beige on every screen and nearly everything on it is ink. Two colours carry meaning and they do not trade jobs: olive works (every drawn area, its outline and its lines, the one filled action, the visitor's own words) and a light orange marks (the brand mark, the three product icons, the listing that is being counted, a booked night, and in four steps how full each listing has been). The map pictures (six towns and the island) are generated from OpenStreetMap data in the page's own quiet map colours; they carry no labels of their own and no boundary lines, they are credited on the page, and what names appear on them are set by the page in its own type. The page ends by turning the palette over: paper on ink, for the close and the footer only.
+The ground is a warm beige on every screen and nearly everything on it is ink. Two colours carry meaning and they do not trade jobs: olive works and is the brand's own (every drawn area's corner dots and tint, the dots of the wordmark, the name picked out of the headline, the one filled action, the visitor's own words) and saffron marks (the three product icons, the listing that is being counted, a booked night, and in four steps how full each listing has been). The map pictures (six towns and the island) are generated from OpenStreetMap data in the page's own quiet map colours; they carry no labels of their own and no boundary lines, they are credited on the page, and what names appear on them are set by the page in its own type. The page ends by turning the palette over: paper on ink, for the close and the footer only.
 
 Density rises as the visitor goes down. The first screen holds a headline, one sentence, one field, the three products named under it, and one picture. The stage and the cards are working instruments set in small, exact type with tabular figures. The system is flat: hairlines divide, and a shadow appears only under something that lies on top of something else.
 
 Confirmed rejections: teal and tangerine are both out of the palette; a dark first screen was built and rejected by the owner, and the ground stays beige; the page must not read as AI-generated (no pill or badge labels, no monospace labels, no logo tiles) and must not read as a research publication. Google Sans is pinned by the owner.
 
 **Key Characteristics:**
-- One drawing vocabulary: an olive area outlined at 2px, and square white corners with an ink border.
-- Olive works, light orange marks. Ink does everything else.
+- One drawing vocabulary: an area outlined in ink at 2px with round olive corner dots, as the brand mark is; a square with an ink border for what is chosen or stands for a point on a line or a chart.
+- Olive works, saffron marks. Ink does everything else.
 - Beige ground on every screen; the close alone is ink.
 - Maps are drawn from open data in the page's own colours, unlabelled, and fade into the paper or sit in a hairline frame.
 - One typeface, Google Sans; hierarchy by weight and size, never by case or a second face.
@@ -333,7 +333,7 @@ Confirmed rejections: teal and tangerine are both out of the palette; a dark fir
 A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 
 ### Primary
-- **Working Olive** (`a`, `action`, `visitor`): every drawn area's outline and its tint over the land (22% as a role, `area-land` where a name's halo sits on it), the line from the stage's area to the open product panel, the filled action with white on it (7.1:1), the visitor's bubble in the conversation, the text selection, and the fill a square handle takes when it is hovered or held. Hover on the button deepens to `action-hover`.
+- **Working Olive** (`a`, `action`, `visitor`): every drawn area's corner dots and its tint over the land (its outline is ink) (22% as a role, `area-land` where a name's halo sits on it), the line from the stage's area to the open product panel, the filled action with white on it (7.1:1), the visitor's bubble in the conversation, the text selection, and the fill a square marker takes when it is hovered or held (a drawn area's own corner dot is olive at rest and ink in the hand). Hover on the button deepens to `action-hover`.
 - **Rail** (`rail`): the olive at 70% over the ground. The line of "How the numbers are made", its fork to the three products, and the middle ring of that section's small map. It is a local property of that section, not yet a `--th-*` role.
 
 ### Secondary
@@ -360,7 +360,7 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 - **The close** (`close-ink`, `close-muted`, `close-edge`, `close-line`): the same paper and ink turned over, with a quieter paper for secondary lines and two weights of rule.
 
 ### Named Rules
-**The Olive Works, Orange Marks Rule.** Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.
+**The Olive Works, Saffron Marks Rule.** Olive is for what the visitor does or has drawn, and for the brand itself (the wordmark's dots, the name in the headline); saffron (`#E9A22B`, chosen 2026-10-12 from six compared, replacing the light orange `#F2A154`) is for what is counted. Neither does the other's job, and neither is used as decoration.
 
 **The Beige Ground Rule.** Every screen the visitor works on is the beige ground. A screen does not open on ink, on a tinted wash or on a picture with a frame of its own colour.
 
@@ -388,13 +388,13 @@ A warm paper palette in which two hues have fixed jobs and ink carries the rest.
 | body | `--th-text-body` | 18px | 17px |
 | lead | `--th-text-lead` | 20px | 20px |
 
-Above them are only the display sizes: the first screen's 24px sentence, the 24px wordmark, and the heading clamps. Line heights went up with their sizes at the ratio they had (15/20 became 16/22, 17/24 became 18/26). Where the bigger type pressed on a fixed layout it was given room, never cut or set smaller: the tour's lowest cards are pinned a little higher and its credit row runs on to the left to stay on one line; table rows close up in short windows (the stage's under 860px tall, the cards' under 880px) so the stage still fits a 768px window and every card still pins; between 1024 and 1279px the stage's panel column is held to 400px; a bar chart leaves out every other label where the bars stand closer than their labels are wide (a phone); a chart's caption wraps, with its readout laid over it. Text sizes given in the component notes further down predate both this and the 2026-10-11 scale: 11 or 13px there reads 15, 15 reads 16, 16 to 18 read 18, and 18 or 20 for a title reads 20. Sizes of squares, dots, glyphs and gaps did not change.
+Above them are only the display sizes: the first screen's 24px sentence, the 28px wordmark, and the heading clamps. Line heights went up with their sizes at the ratio they had (15/20 became 16/22, 17/24 became 18/26). Where the bigger type pressed on a fixed layout it was given room, never cut or set smaller: the tour's lowest cards are pinned a little higher and its credit row runs on to the left to stay on one line; table rows close up in short windows (the stage's under 860px tall, the cards' under 880px) so the stage still fits a 768px window and every card still pins; between 1024 and 1279px the stage's panel column is held to 400px; a bar chart leaves out every other label where the bars stand closer than their labels are wide (a phone); a chart's caption wraps, with its readout laid over it. Text sizes given in the component notes further down predate both this and the 2026-10-11 scale: 11 or 13px there reads 15, 15 reads 16, 16 to 18 read 18, and 18 or 20 for a title reads 20. Sizes of squares, dots, glyphs and gaps did not change.
 
 ### Hierarchy
 - **Display** (700, `clamp(3rem, 4.4vw, 4.25rem)` from 1024px, `clamp(2.5rem, 7vw, 3.5rem)` below; line-height 1.04; -0.025em; balanced): the first screen's headline only, "Plot an area on the map. Get the insights.", in three lines. In it "Plot" and "sights" of "insights" are set in `mark`, so the name is read out of the sentence; nothing else on the page sets words in the marking orange (it is 1.9:1 on the ground, and is used here on the owner's word, at display size only).
 - **Headline** (700, `clamp(2.25rem, 3vw, 2.75rem)`, line-height 1.04 to 1.08, -0.025em): the stage's heading, the heading of "How the numbers are made" and the close's heading.
 - **Card name** (700, the headline size times 0.7, line-height 1): a product's name in its card's 56px header row.
-- **Wordmark** (700, 24px, -0.035em): the name with the brand mark as its "o"; 20px in the footer. It is the display role at the brand's own size and tracking.
+- **Wordmark** (700, 28px, -0.035em): the name with the brand mark as its "o"; 20px in the footer. It is the display role at the brand's own size and tracking.
 - **24px:** the first screen's sentence from 1280px, on a 27em measure, with "Updated every day" and what the visitor gets picked out in ink.
 - **Lead, 20px** (600 as a title, 20px/26px): a product's name in a stage panel, a stop's name on the How line, the town's name on the first screen's map; 700 for a report page's title. At 400, a section's lede from 640px, the tie line from 640px, and the first screen's sentence on phones and between 1024 and 1279px.
 - **Body, 18px** (400, line-height 1.45 to 1.5, or 26px): everything read as running text, whatever its weight or colour. The lede on phones and a card's opening sentence (`muted`), notes, panel text, the report page, the conversation, form input and the search field's text; a figure at weight 600 in tabular numerals; an action at weight 600 (buttons, the nav's links at 500, text links, switch options, tabs at 500 until selected). A card's opening sentence is never larger than the ink statements under it.
@@ -453,7 +453,7 @@ Message shapes take the card's 26px on three corners and 6px on the corner neare
 
 Lines: 2px for anything drawn as a shape (an area's outline in olive, chart lines and icons in ink, the selected tab's underline), 1.5px for a line that leads somewhere on the ground (the How line and its fork, underlines on links) and for the polished rim of the search field's glass, 1px for the glass's cut edge and for a hairline that ties one thing to another (in ink from an area to its pinned card, in olive from the stage's area to a panel), for a pinned card's ink edge and for every `line` divider and outline. Joins are round on the stage, in charts and in icons; the areas on the first screen's picture are drawn hard-cornered (mitred), over a thin white edge (5px, of which about 1.5px shows each side of the line) that lifts the line off the streets. Node corners are mitred. Hatching (ink on white at 135 degrees, 1.5px in 4px) means "taken but not counted": a night the owner blocked, the calendar's raw share. Dashed rules appear once, for a report finding the team has not written yet.
 
-**The Square Corner Rule.** If it can be dragged, chosen, or stands for a point on a map, a line or a chart, it is a square with an ink border: white when empty, olive when hovered or held, ink when chosen, light orange when it is the thing being counted.
+**The Square Corner Rule.** If it can be dragged, chosen, or stands for a point on a map, a line or a chart, it is a square with an ink border: white when empty, olive when hovered or held, ink when chosen, saffron when it is the thing being counted. The corners of a drawn area are the exception since 2026-10-12: on the first screen's tour, on the stage and in the close they are the brand mark's round olive dots, edged in the map's paper.
 
 ## Components
 
@@ -517,7 +517,7 @@ The stage has one map in one frame: the island, a single generated picture (sea,
 - **Draw an area here:** the same white surface as a 44px button at 15px weight 600 on the frame's bottom-left corner, offered whenever the map is zoomed in, and whenever nothing of the area is in the window to take hold of.
 
 ### The How line
-One listing followed along a 1.5px `rail` line with five stops. Each stop is an 11.5px white square with a 2px ink border; the first, where the listing is published, is filled light orange. Each stop shows the listing as it is at that point, small and in the page's own marks: the listing card; a month of its calendar as thirty 17px squares (booked in the third fullness step with its ring, blocked in ink hatching, free in white with a hairline) over a key of the same three marks at 9px; a small map of three nested outlines (`wire`, `rail`, then an olive area with square corners) holding the listing as a light-orange square, with its place as a muted trail beneath; two bars 13px tall, the hatched one for what the calendar shows and the orange one for what is counted, each with its figure at 16px weight 600 and the nights it stands for; and the three products. Real counts and the time of the last read appear under their stops at weight 600 when they can be had and are left out when they cannot.
+One listing followed along a 1.5px `rail` line with five stops. Each stop is an 11.5px white square with a 2px ink border; the first, where the listing is published, is filled saffron. Each stop shows the listing as it is at that point, small and in the page's own marks: the listing card; a month of its calendar as thirty 17px squares (booked in the third fullness step with its ring, blocked in ink hatching, free in white with a hairline) over a key of the same three marks at 9px; a small map of three nested outlines (`wire`, `rail`, then an olive area with square corners) holding the listing as a saffron square, with its place as a muted trail beneath; two bars 13px tall, the hatched one for what the calendar shows and the orange one for what is counted, each with its figure at 16px weight 600 and the nights it stands for; and the three products. Real counts and the time of the last read appear under their stops at weight 600 when they can be had and are left out when they cannot.
 
 ### Charts and tables
 One 2px ink line between two hairlines, ending in a 9px square node; ink bars with their value above and name beneath; the value axis shows only its two ends and the time axis up to three ticks, at 11px. Tables are hairline rows; the leading figure of a row is ink at 600 and the others step back to muted.
@@ -529,7 +529,7 @@ One easing, `cubic-bezier(0.16, 1, 0.3, 1)`. State changes take 0.15 to 0.2s; a 
 
 ### Do:
 - **Do** draw anything new in the page's own hand: a 2px olive outline for an area, square nodes with an ink border, a 2px ink line for a chart or an icon, and at most one shape filled with the marking orange.
-- **Do** keep olive for what the visitor does or has drawn and light orange for what is counted or is the brand's.
+- **Do** keep olive for what the visitor does or has drawn and for the brand's own marks, and saffron for what is counted.
 - **Do** keep the ground beige on every screen, and let a frameless map fade into it.
 - **Do** take every colour from a `--th-*` role, and mix a hairline from the card's own ground when the ground is tinted.
 - **Do** make a new map picture from open map data in the map colours recorded here, with no labels and no boundary lines of its own, and credit it on the page.

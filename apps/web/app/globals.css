@@ -201,8 +201,10 @@
   --th-solid-hover: #26331C;
   /* The drawn area: its outline and fill, and the line to the open panel. */
   --th-a: #4A5E3A;
-  /* The brand mark, the product icons and the listing the "how" section follows: the light orange. */
-  --th-mark: #F2A154;
+  /* The listings, the product icons and the listing the "how" section follows: saffron, an orange that leans to
+     yellow, the side the olive sits on (owner, 2026-10-12, from six compared; it was a light orange, #F2A154).
+     It marks data only: the brand mark and the name in the headline are ink and olive. */
+  --th-mark: #E9A22B;
   --th-map-sea: #C2DADF;
   --th-map-shore: #6F929B;
   --th-map-land: #FBFAF4;
@@ -211,15 +213,16 @@
   /* Listings inside and outside the drawn line. AreaMap reads these for its canvas. */
   --th-dot: #161C11;
   --th-dot-out: #9AA08E;
-  /* How full a listing inside the line has been this season, in four steps of the light orange, emptier to
-     fuller: from nearly white to a burnt orange. A pale fill would vanish on the tinted land, so every inside
-     dot wears a thin ring darker than the last step (--th-occ-ring), which carries the mark: it is 8.0:1 on plain
-     land, 5.8:1 on the tinted land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
-  --th-occ-1: #FDEBD3;
-  --th-occ-2: #F7C48B;
-  --th-occ-3: #EE9740;
-  --th-occ-4: #B85F14;
-  --th-occ-ring: #7A3D0A;
+  /* How full a listing inside the line has been this season, in four steps of the saffron, emptier to fuller:
+     from nearly white to a deep amber, the third step the mark itself. They are the old orange steps at the same
+     lightness, turned to the saffron's hue. A pale fill would vanish on the tinted land, so every inside dot
+     wears a thin ring darker than the last step (--th-occ-ring), which carries the mark: it is 7.9:1 on plain
+     land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
+  --th-occ-1: #F8EDD2;
+  --th-occ-2: #EEC987;
+  --th-occ-3: #E9A22B;
+  --th-occ-4: #AE6800;
+  --th-occ-ring: #734300;
   --th-focus: var(--th-ink);
   /* Hairline where the ground itself is divided (the scrolled nav, the phone menu). */
   --th-ground-line: var(--th-line);
@@ -499,7 +502,8 @@
 .th-road-major { stroke: var(--th-map-road-major); stroke-width: 1.5px; }
 /* The drawn area. Its strokes are in view units, scaled back to a fixed width on screen, so the outline can be traced on load. */
 .th-area-fill { fill: var(--th-a); fill-opacity: var(--th-area-tint); }
-.th-area-line { fill: none; stroke: var(--th-a); stroke-width: calc(2px * var(--th-u)); stroke-linejoin: round; }
+/* The line is ink and its corners are olive dots: the hand the brand mark is drawn in (owner, 2026-10-12). */
+.th-area-line { fill: none; stroke: var(--th-ink); stroke-width: calc(2px * var(--th-u)); stroke-linejoin: round; }
 /* The inside of the area: a press here moves the whole of it. On a touch screen it takes a held finger
    (AreaMap), so a swipe across the area still scrolls the page or, zoomed in, moves the map; the browser's own
    long-press menu stays out of it. */
@@ -523,7 +527,8 @@
 .th-map-view:has(.th-area-key:focus-visible) .th-area-line { stroke: var(--th-focus); stroke-width: calc(3px * var(--th-u)); }
 /* The lead to the panels, inside the map: a hairline, so it does not read as another edge of the area. */
 .th-trunk { display: none; fill: none; stroke: var(--th-a); stroke-width: calc(1px * var(--th-u)); }
-/* A corner of the area: the brand mark's square handle, here a control. The button is the 44px target, the square is what shows. */
+/* A corner of the area: the brand mark's olive dot, here a control. The button is the 44px target, the dot is
+   what shows; a thin edge in the map's paper lifts it off the streets. In the hand it turns to ink. */
 .th-handle {
   position: absolute;
   z-index: 3;
@@ -538,13 +543,14 @@
 }
 .th-handle i {
   position: relative;
-  width: 12px;
-  height: 12px;
-  border: 2px solid var(--th-ink);
-  background: var(--th-surface);
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--th-surface);
+  border-radius: 50%;
+  background: var(--th-a);
   transition: background-color 0.15s, transform 0.15s var(--th-ease);
 }
-.th-handle:hover i, .th-handle[data-dragging] i { background: var(--th-a); transform: scale(1.25); }
+.th-handle:hover i, .th-handle[data-dragging] i { background: var(--th-ink); transform: scale(1.25); }
 .th-handle[data-dragging] { cursor: grabbing; }
 .th-landing .th-handle:focus-visible { outline: none; }
 .th-handle:focus-visible i { outline: 2px solid var(--th-focus); outline-offset: 3px; }
@@ -1032,15 +1038,16 @@
   .th-map[data-cue] .th-handle[data-cue] i::after {
     content: "";
     position: absolute;
-    inset: -3px;
+    inset: -4px;
     border: 2px solid var(--th-a);
+    border-radius: 50%;
     opacity: 0;
     animation: th-cue 3.2s var(--th-ease) 2.8s infinite;
   }
 }
 @media (prefers-reduced-motion: reduce) {
-  /* No ring without motion: the inviting corner is filled instead, until a corner is first moved. */
-  .th-map[data-cue] .th-handle[data-cue] i { background: var(--th-a); }
+  /* No moving ring without motion: the inviting corner wears a still one, until a corner is first moved. */
+  .th-map[data-cue] .th-handle[data-cue] i { outline: 2px solid var(--th-a); outline-offset: 2px; }
   .th-link, .th-more > span, .th-more svg, .th-go, .th-go svg, .th-solid, .th-navlink, .th-credit a, .th-reset,
   .th-handle i, .th-zoom button, .th-draw-here, .th-panel-body, .th-panel-chevron, .th-area-fill { transition: none; }
 }

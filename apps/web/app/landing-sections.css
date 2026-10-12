@@ -837,9 +837,9 @@
   stroke-linejoin: round;
   transition: fill-opacity 0.3s, stroke 0.3s;
 }
-.ps-close-nodes rect { fill: var(--th-close); stroke: var(--th-close-muted); stroke-width: 2px; transition: stroke 0.3s; }
+.ps-close-nodes circle { fill: var(--olive-light); stroke: var(--th-close); stroke-width: 2px; }
 .ps-close-area[data-on] .ps-close-shape { fill-opacity: 1; stroke: var(--th-close-ink); }
-.ps-close-area[data-on] .ps-close-wire, .ps-close-area[data-on] .ps-close-nodes rect { stroke: var(--th-close-ink); }
+.ps-close-area[data-on] .ps-close-wire { stroke: var(--th-close-ink); }
 .ps-close-carried { margin-bottom: 30px; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 /* The actions: the email in solid paper with ink text, and beside it the free way in, a text link. */
 .ps-close-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
@@ -1207,7 +1207,7 @@
   .ps-typing-dots { display: none; }
   .ps-typing-words { display: inline; }
   .ps-tablist { scroll-behavior: auto; }
-  .ps-solid, .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-close-shape, .ps-close-nodes rect,
+  .ps-solid, .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-close-shape,
   .ps-tablist button, .ps-tablist button::after, .ps-switch button,
   .ps-contents button, .ps-contents button::before, .ps-pager button svg, .ps-questions i,
   .ps-close-mail, .ps-close-mail svg, .ps-foot-links a,

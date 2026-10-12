@@ -94,7 +94,8 @@ Open decisions:
   approved on 2026-10-09 ("Property data and insights for every street in
   Cyprus.", "its good"), which had replaced "The whole Cyprus property market,
   down to the street." In it "Plot" and "sights" (of "insights") are set in
-  the light orange, so the name is read out of the headline in order, a device
+  olive, the colour of the wordmark's dots (2026-10-12; a light orange until
+  then, which was 1.9:1 on the ground), so the name is read out of the headline in order, a device
   the owner asked for with the old name (2026-10-09). The lede under it states
   the habit, then the gesture and the promise: "Updated every day: every short-let,
   long-let and sale in Cyprus. Draw a line round any streets and see what they
@@ -109,9 +110,11 @@ Open decisions:
   box), as most sites in this field do. The ground stays beige on every
   screen; a dark first screen was tried and rejected (2026-10-09).
 - The dashboard is called the Playground.
-- Palette: off-white (beige), ink, **olive** (#4A5E3A) and a **light orange**
-  (#F2A154). Olive does the working jobs (the drawn area, the filled
-  action); the light orange marks the listings and the product icons. The
+- Palette: off-white (beige), ink, **olive** (#4A5E3A) and **saffron**
+  (#E9A22B, chosen 2026-10-12 from six oranges and yellows compared beside
+  the olive; it replaced the light orange #F2A154). Olive does the working
+  jobs (the drawn area, the filled action) and is the brand's own colour;
+  saffron marks the listings and the product icons. The
   brand mark carries no orange (the plot as the "o" of the name, an ink
   line through five olive corner dots with no fill, the lines forming
   again on hover; owner, 2026-10-12. Before that, from 2026-10-10, a

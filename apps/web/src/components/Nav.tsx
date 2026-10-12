@@ -45,7 +45,7 @@ export default function Nav() {
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-4 sm:px-8 lg:px-16">
         <a href="#" className="flex min-h-11 items-center gap-2.5">
           {/* The wordmark is the display role: its weight is the headline's (globals.css). The plot is its "o". */}
-          <Wordmark size={24} />
+          <Wordmark size={28} />
         </a>
 
         {/* Closer set between 768 and 1024px, and the button a little narrower: at the type's size the three links

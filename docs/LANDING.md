@@ -62,8 +62,9 @@ shorter one ("I like this more"). It says "ratings", not "reviews":
 review scores and counts are tracked, the reviews' words are not
 (docs/POSTGRES.md), and the Connector card says as much. It is set a size
 up from the page's other ledes (18px on phones, 20px from 1024px). In the
-headline the opening "Plot" and the "sights" of "insights" wear the mark's
-light orange (`.lh-name`), so the name is read out of the sentence. The
+headline the opening "Plot" and the "sights" of "insights" are olive, the
+colour of the wordmark's dots (`.lh-name`; until 2026-10-12 the mark's light
+orange), so the name is read out of the sentence. The
 device was the owner's for the old name (2026-10-09: "make Prop with the
 light orange colour and sights the same", when "Prop" came out of
 "Property"); with the new name the sentence opens on "Plot an area"
@@ -75,9 +76,8 @@ search found Propsight (a French property-analytics SaaS), PropertyInsights
 a long search the owner chose Plotsights, a plot being the land, the shape
 drawn on the map and the chart, and the word Cypriots use for land for
 sale; plotsights.com, .io, .cy, .com.cy and .gr were bought the same day. The `h1` carries the plain sentence as its
-`aria-label`. The light orange is 1.9:1 on the ground, below the 3:1 asked
-of large text; it is the owner's choice of colour and the letters are 40px
-or more and bold.
+`aria-label`. The olive is 6.3:1 on the ground; the light orange it replaced
+was 1.9:1, below the 3:1 asked of large text.
 
 The field is glass, the one piece of it on the page (owner, 2026-10-09:
 "a nice liquid glass search thing. crystalized"): a clear slab on the
@@ -358,7 +358,8 @@ maps (`AreaBasemap`, rendered on the server in `page.tsx`), which
   cell that states an area's level uses that figure and says "this season"
   (`SEASON` in `areaLines.ts`); any other occupancy on the page names its
   own period ("75% week of 5 Oct", "July was the fullest").
-- `AreaMap.tsx` is the map. The square handles are buttons: drag them
+- `AreaMap.tsx` is the map. The corner handles (round olive dots since
+  2026-10-12, the brand mark's own, on an ink outline) are buttons: drag them
   (pointer capture, `touch-action: none` on the handles only) or move them
   with the arrow keys (10 view units, 40 with Shift). While a corner moves
   nothing re-renders: the outline, the handles, the dots, the count under
@@ -806,8 +807,8 @@ orange. Olive (`--th-a`, `--th-action`, with white on it for the filled
 button) is the drawn area, its line to the open panel and the page's filled
 action: "Show me" in the first screen's search field, and "Open the
 Playground, it's free" (stage panel, Playground card). The nav's "Open the Playground", "Ask for a report" and
-"Ask for access" are ink. The light orange is what is counted and what is ours:
-the brand mark and the product icons (`--th-mark`), the
+"Ask for access" are ink. Saffron (`--th-mark`, #E9A22B since 2026-10-12) is
+what is counted: the product icons, the
 four shades of "how full" (`--th-occ-1` to `--th-occ-4`, with a darker ring;
 the "how the numbers are made" calendar uses the third) and, as a light tint, the Connector card's ground. The land inside the area is
 tinted at 22% (`--th-area-tint`).

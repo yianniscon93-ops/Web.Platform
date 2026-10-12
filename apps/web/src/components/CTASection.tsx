@@ -71,11 +71,11 @@ export default function CTASection() {
               <path className="ps-close-wire" d="M60 100V132" />
               <path className="ps-close-shape" d="M12 26 74 12l26 52-40 36-48-24z" />
               <g className="ps-close-nodes">
-                <rect x="6.5" y="20.5" width="11" height="11" />
-                <rect x="68.5" y="6.5" width="11" height="11" />
-                <rect x="94.5" y="58.5" width="11" height="11" />
-                <rect x="54.5" y="94.5" width="11" height="11" />
-                <rect x="6.5" y="70.5" width="11" height="11" />
+                <circle cx="12" cy="26" r="5.5" />
+                <circle cx="74" cy="12" r="5.5" />
+                <circle cx="100" cy="64" r="5.5" />
+                <circle cx="60" cy="100" r="5.5" />
+                <circle cx="12" cy="76" r="5.5" />
               </g>
             </svg>
             {carried && <p className="ps-close-carried">Your request: &ldquo;{carried}&rdquo;</p>}
