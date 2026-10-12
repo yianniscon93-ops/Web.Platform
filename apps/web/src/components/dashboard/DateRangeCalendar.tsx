@@ -146,7 +146,7 @@ export default function DateRangeCalendar({
         disabled={disabled}
         onClick={() => pick(day)}
         onMouseEnter={() => setHoverDay(day)}
-        className="relative w-9 h-9 flex items-center justify-center text-[13px] font-medium rounded-full transition-colors disabled:cursor-not-allowed"
+        className="relative w-9 h-9 flex items-center justify-center text-[15px] font-medium rounded-full transition-colors disabled:cursor-not-allowed"
         style={{
           color: disabled ? "rgba(234,240,223,0.22)" : isStart || isEnd ? "#0C100A" : UI.text,
           background:
@@ -171,7 +171,7 @@ export default function DateRangeCalendar({
   };
 
   return (
-    <div ref={boxRef} className="relative">
+    <div ref={boxRef} className="lg:relative">
       <button
         onClick={() => {
           setOpen((o) => !o);
@@ -179,19 +179,19 @@ export default function DateRangeCalendar({
           setDraftStart(null);
         }}
         aria-expanded={open}
-        className="flex items-center gap-2 rounded-xl pl-3 pr-2.5 h-10 glass-card transition-colors hover:bg-white/[0.06]"
+        className="flex items-center gap-2 rounded-xl pl-3 pr-2.5 h-12 glass-card transition-colors hover:bg-white/[0.06]"
         style={open ? { boxShadow: `0 0 0 1.5px ${UI.green}66` } : undefined}
       >
         <CalendarRange size={15} style={{ color: UI.green }} />
         <span className="flex flex-col items-start leading-tight">
-          <span className="text-[11px] font-bold uppercase tracking-wider" style={{ color: UI.faint }}>
+          <span className="text-[14px] font-bold uppercase tracking-wider" style={{ color: UI.faint }}>
             Date range
           </span>
           <span className="flex items-baseline gap-1.5">
-            <span className="text-[14px] font-semibold" style={{ color: UI.text }}>
+            <span className="text-base font-semibold" style={{ color: UI.text }}>
               {fmtDay(selStart)} → {fmtDay(selEnd)}
             </span>
-            <span className="text-[12px]" style={{ color: UI.faint }}>
+            <span className="text-[14px]" style={{ color: UI.faint }}>
               {Math.round((+new Date(`${addDays(sundayOf(selEnd), 1)}T00:00:00Z`) - +new Date(`${mondayOf(selStart)}T00:00:00Z`)) / (7 * 86400000))}{" "}
               wks
             </span>
@@ -205,7 +205,7 @@ export default function DateRangeCalendar({
 
       {open && (
         <div
-          className="absolute right-0 top-11 z-[1300] rounded-2xl p-4 shadow-2xl"
+          className="absolute left-3 mt-1 lg:left-auto lg:right-0 lg:top-[52px] lg:mt-0 z-[1300] rounded-2xl p-4 shadow-2xl"
           style={{
             background: "rgba(16,20,12,0.98)",
             border: `1px solid ${UI.border}`,
@@ -223,7 +223,7 @@ export default function DateRangeCalendar({
             >
               <ChevronLeft size={15} style={{ color: UI.text }} />
             </button>
-            <p className="text-[13px]" style={{ color: UI.muted }}>
+            <p className="text-[15px]" style={{ color: UI.muted }}>
               {draftStart ? "Now pick the last day" : "Pick the first day of your range"}
             </p>
             <button
@@ -239,12 +239,12 @@ export default function DateRangeCalendar({
           <div className="flex gap-6 justify-center">
             {months.map((m) => (
               <div key={m} className="hidden first:block sm:block">
-                <p className="text-center text-[14px] font-bold mb-2" style={{ color: UI.text }}>
+                <p className="text-center text-base font-bold mb-2" style={{ color: UI.text }}>
                   {fmtMonth(m)}
                 </p>
                 <div className="grid grid-cols-7 gap-y-0.5">
                   {DOW.map((d) => (
-                    <span key={d} className="w-9 h-7 flex items-center justify-center text-[12px] font-bold uppercase" style={{ color: UI.faint }}>
+                    <span key={d} className="w-9 h-7 flex items-center justify-center text-[14px] font-bold uppercase" style={{ color: UI.faint }}>
                       {d}
                     </span>
                   ))}
@@ -255,14 +255,14 @@ export default function DateRangeCalendar({
           </div>
 
           <div className="flex flex-wrap items-center justify-between gap-2 mt-3 pt-3" style={{ borderTop: `1px solid ${UI.border}` }}>
-            <span className="text-[13px]" style={{ color: UI.muted }}>
+            <span className="text-[15px]" style={{ color: UI.muted }}>
               Stats aggregate by whole weeks:{" "}
               <b style={{ color: UI.text }}>
                 Mon {fmtDay(snapStart)} – Sun {fmtDay(snapEnd)}
               </b>{" "}
               · {weekCount} {weekCount === 1 ? "week" : "weeks"}
             </span>
-            <div className="flex gap-1">
+            <div className="flex flex-wrap gap-1">
               {PRESETS.map((p) => (
                 <button
                   key={p.label}
@@ -271,7 +271,7 @@ export default function DateRangeCalendar({
                     setDraftStart(null);
                     setOpen(false);
                   }}
-                  className="px-2.5 py-1 rounded-md text-[13px] font-semibold transition-colors hover:bg-white/[0.08]"
+                  className="px-2.5 py-1 rounded-md text-[15px] font-semibold transition-colors hover:bg-white/[0.08]"
                   style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
                 >
                   {p.label}

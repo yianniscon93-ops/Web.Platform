@@ -194,9 +194,9 @@ export default function SearchBar({
   };
 
   return (
-    <div ref={boxRef} className="relative w-[340px] max-w-[calc(100vw-120px)]">
+    <div ref={boxRef} className="relative z-10 pointer-events-auto order-first sm:order-none w-full sm:w-auto sm:flex-1 sm:min-w-0 sm:max-w-[400px] lg:flex-none lg:w-[400px]">
       <div
-        className="glass-dark rounded-xl flex items-center gap-2.5 px-3.5 h-11"
+        className="glass-dark rounded-xl flex items-center gap-2 sm:gap-2.5 px-2.5 sm:px-3.5 h-11"
         style={armed ? { boxShadow: `0 0 0 1.5px ${UI.green}66` } : undefined}
       >
         <Search size={15} style={{ color: UI.green }} className="shrink-0" />
@@ -205,7 +205,7 @@ export default function SearchBar({
             className="flex-1 flex items-center justify-between gap-2 text-left"
             onClick={() => setOpen(true)}
           >
-            <span className="text-sm font-semibold truncate" style={{ color: UI.text }}>
+            <span className="text-base font-semibold truncate" style={{ color: UI.text }}>
               {label}
             </span>
           </button>
@@ -228,7 +228,7 @@ export default function SearchBar({
                 ? "Add an area to compare…"
                 : "Search any area — town, resort, district…"
             }
-            className="flex-1 bg-transparent outline-none text-sm font-medium"
+            className="flex-1 min-w-0 bg-transparent outline-none text-base font-medium placeholder:text-[15px] sm:placeholder:text-base"
             style={{ color: UI.text }}
           />
         )}
@@ -250,14 +250,14 @@ export default function SearchBar({
       {open && results.length > 0 && (
         <div className="absolute top-12 left-0 right-0 glass-dark rounded-xl overflow-hidden py-1.5 max-h-[420px] overflow-y-auto ps-scroll">
           {armed && (
-            <p className="px-3.5 pt-1 pb-1.5 text-[12px] font-semibold" style={{ color: UI.green }}>
+            <p className="px-3.5 pt-1 pb-1.5 text-[15px] font-semibold" style={{ color: UI.green }}>
               Adding to comparison
             </p>
           )}
           {groups.map((g) => (
             <div key={g.key} role="group" aria-label={g.label}>
               <p
-                className="px-3.5 pt-2 pb-1 text-[11px] font-bold uppercase tracking-wide"
+                className="px-3.5 pt-2 pb-1 text-[14px] font-bold uppercase tracking-wide"
                 style={{ color: UI.muted }}
               >
                 {g.label}
@@ -265,7 +265,7 @@ export default function SearchBar({
               {g.levels.map((l) => (
                 <div key={l.type}>
                   {l.type !== "district" && (
-                    <p className="px-3.5 pt-1 text-[11px] font-semibold" style={{ color: UI.faint }}>
+                    <p className="px-3.5 pt-1 text-[14px] font-semibold" style={{ color: UI.faint }}>
                       {LEVEL_HEADING[l.type]}
                     </p>
                   )}
@@ -284,19 +284,19 @@ export default function SearchBar({
                           className="shrink-0"
                         />
                         <span className="flex-1 min-w-0">
-                          <span className="text-sm font-medium truncate block" style={{ color: UI.text }}>
+                          <span className="text-base font-medium leading-snug block" style={{ color: UI.text }}>
                             {a.nameEn}
                             {r.dupParent && (
                               <span style={{ color: UI.muted }}> ({r.dupParent})</span>
                             )}
                           </span>
                           {sub && (
-                            <span className="text-[12px] block" style={{ color: UI.faint }}>
+                            <span className="text-[14px] block" style={{ color: UI.faint }}>
                               {sub}
                             </span>
                           )}
                         </span>
-                        <span className="text-[13px] shrink-0" style={{ color: UI.faint }}>
+                        <span className="text-[15px] shrink-0" style={{ color: UI.faint }}>
                           {a.listingCount.toLocaleString("en-GB")}
                         </span>
                       </button>

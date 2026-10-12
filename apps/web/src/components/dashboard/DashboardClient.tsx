@@ -62,7 +62,7 @@ const MarketMap = dynamic(() => import("./MarketMap"), {
   ssr: false,
   loading: () => (
     <div
-      className="w-full h-full flex items-center justify-center text-sm"
+      className="w-full h-full flex items-center justify-center text-base"
       style={{ background: "#E8EDE3", color: "#697264" }}
     >
       Loading map…
@@ -98,7 +98,7 @@ function Segmented<T extends string>({
           <button
             key={o.value}
             onClick={() => onChange(o.value)}
-            className="px-3 py-1.5 rounded-md text-[13px] font-semibold transition-colors whitespace-nowrap"
+            className="px-3 py-1.5 rounded-md text-[15px] font-semibold transition-colors whitespace-nowrap"
             style={
               active
                 ? { background: UI.olive, color: "#FFFFFF" }
@@ -617,7 +617,7 @@ export default function DashboardClient() {
     <div className="min-h-screen dash-bg" style={{ color: UI.text }}>
       {/* Top bar */}
       <header
-        className="sticky top-0 z-40 h-14 flex items-center justify-between px-4 md:px-6 glass-dark"
+        className="sticky top-0 z-40 min-h-14 py-1.5 flex items-center justify-between gap-3 px-4 md:px-6 glass-dark"
         style={{ borderRadius: 0, borderLeft: "none", borderRight: "none", borderTop: "none" }}
       >
         <div className="flex items-center gap-3 min-w-0">
@@ -626,22 +626,22 @@ export default function DashboardClient() {
               className="w-7 h-7 rounded-lg flex items-center justify-center"
               style={{ background: "linear-gradient(135deg, #4A5E3A, #6B7B4F)" }}
             >
-              <span className="text-white font-display text-sm font-bold">P</span>
+              <span className="text-white font-display text-base font-bold">P</span>
             </div>
             <span className="font-display text-lg font-bold tracking-tight uppercase hidden sm:inline">
               <span style={{ color: UI.text }}>{BRAND.namePart1}</span>
               <span style={{ color: UI.oliveMid }}>{BRAND.namePart2}</span>
             </span>
           </Link>
-          <span className="w-px h-5" style={{ background: UI.border }} />
-          <span className="text-sm font-medium truncate" style={{ color: UI.muted }}>
+          <span className="w-px h-5 shrink-0" style={{ background: UI.border }} />
+          <span className="text-base font-medium leading-tight" style={{ color: UI.muted }}>
             Market Dashboard · Cyprus
           </span>
         </div>
 
         <div className="flex items-center gap-3">
           {summary && (
-            <span className="text-[13px] hidden md:flex items-center gap-1.5" style={{ color: UI.muted }}>
+            <span className="text-[15px] hidden md:flex items-center gap-1.5" style={{ color: UI.muted }}>
               Calendars through {fmtDate(summary.todateEnd)}
               {summary.bookingsThrough && <> · bookings to {fmtDate(summary.bookingsThrough)}</>}
               <Explain id="freshness" align="right" />
@@ -649,7 +649,7 @@ export default function DashboardClient() {
           )}
           {summary && (
             <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[12px] font-bold tracking-wide"
+              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[14px] font-bold tracking-wide whitespace-nowrap shrink-0"
               style={
                 summary.source === "live"
                   ? { background: "rgba(143,204,128,0.12)", color: UI.green }
@@ -669,7 +669,7 @@ export default function DashboardClient() {
       {link?.viaLink && (
         // Hook for a later token-gated mode; nothing is hidden yet.
         <div
-          className="mx-3 md:mx-4 mt-3 px-3 py-1.5 rounded-lg text-[13px] glass-card"
+          className="mx-3 md:mx-4 mt-3 px-3 py-1.5 rounded-lg text-[15px] glass-card"
           style={{ color: UI.muted }}
           role="note"
         >
@@ -716,11 +716,11 @@ export default function DashboardClient() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: 12 }}
               transition={{ duration: 0.25 }}
-              className="absolute left-1/2 -translate-x-1/2 bottom-3 z-[960] flex items-center gap-2.5 glass-dark rounded-xl pl-3 pr-3.5 py-2.5 max-w-[calc(100%-1.5rem)]"
+              className="absolute left-1/2 -translate-x-1/2 bottom-3 z-[960] flex items-center gap-2.5 glass-dark rounded-xl pl-3 pr-3.5 py-2.5 w-max max-w-[calc(100%-1.5rem)]"
               style={{ boxShadow: `0 0 0 1.5px ${UI.green}44` }}
             >
               <CheckCircle2 size={17} style={{ color: UI.green }} className="shrink-0" />
-              <span className="text-[14px] leading-snug" style={{ color: UI.text }}>
+              <span className="text-base leading-snug" style={{ color: UI.text }}>
                 Now showing{" "}
                 <b style={{ color: UI.green }}>{selectionToast}</b>
                 {" — "}
@@ -738,7 +738,15 @@ export default function DashboardClient() {
         </AnimatePresence>
 
         {/* Search + draw toolbar (top-centre) */}
-        <div className="absolute left-1/2 -translate-x-1/2 top-3 z-[950] flex items-center gap-2">
+        <div className="absolute left-1.5 right-1.5 sm:left-3 sm:right-3 lg:left-1/2 lg:right-auto lg:-translate-x-1/2 top-3 z-[950] flex flex-wrap sm:flex-nowrap items-center justify-center gap-2 pointer-events-none">
+          <button
+            onClick={() => setMobileFilters(true)}
+            className="lg:hidden pointer-events-auto glass-dark rounded-xl px-3 h-11 flex items-center gap-2 text-[15px] font-semibold whitespace-nowrap"
+            style={{ color: UI.text }}
+          >
+            <SlidersHorizontal size={14} style={{ color: UI.green }} />
+            Filters
+          </button>
           <SearchBar
             areas={areas}
             label={searchLabel}
@@ -753,7 +761,7 @@ export default function DashboardClient() {
                 setDrawing(true);
                 setPinnedId(null);
               }}
-              className="glass-dark rounded-xl px-4 h-11 flex items-center gap-2 text-sm font-semibold transition-transform hover:scale-[1.03] active:scale-95 whitespace-nowrap"
+              className="pointer-events-auto glass-dark rounded-xl px-4 h-11 flex items-center gap-2 text-base font-semibold transition-transform hover:scale-[1.03] active:scale-95 whitespace-nowrap"
               style={{ color: UI.text }}
             >
               <PenLine size={14} style={{ color: UI.green }} />
@@ -766,7 +774,7 @@ export default function DashboardClient() {
           ) : (
             <button
               onClick={handleDrawCancel}
-              className="glass-dark rounded-xl px-4 h-11 flex items-center gap-2 text-sm font-semibold whitespace-nowrap"
+              className="pointer-events-auto glass-dark rounded-xl px-4 h-11 flex items-center gap-2 text-base font-semibold whitespace-nowrap"
               style={{ color: UI.oliveLight }}
             >
               <X size={14} /> Cancel
@@ -775,7 +783,7 @@ export default function DashboardClient() {
           {canAdd && !drawing && (
             <button
               onClick={() => setArmed((a) => !a)}
-              className="hidden sm:flex glass-dark rounded-xl px-4 h-11 items-center gap-2 text-sm font-semibold transition-transform hover:scale-[1.03] active:scale-95 whitespace-nowrap"
+              className="hidden sm:flex pointer-events-auto glass-dark rounded-xl px-4 h-11 items-center gap-2 text-base font-semibold transition-transform hover:scale-[1.03] active:scale-95 whitespace-nowrap"
               style={armed ? { color: UI.green, boxShadow: `0 0 0 1.5px ${UI.green}66` } : { color: UI.text }}
               aria-pressed={armed}
             >
@@ -785,15 +793,15 @@ export default function DashboardClient() {
           )}
         </div>
         {drawing && (
-          <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
-            <span className="glass-dark rounded-xl px-3.5 py-2 text-[13px] font-medium whitespace-nowrap" style={{ color: UI.text }}>
+          <div className="absolute left-3 right-3 top-[116px] sm:top-16 z-[940] flex justify-center pointer-events-none">
+            <span className="glass-dark rounded-xl px-3.5 py-2 text-[15px] font-medium text-center sm:whitespace-nowrap pointer-events-auto" style={{ color: UI.text }}>
               Click to add points · double-click or ⏎ to finish · Esc to cancel
             </span>
           </div>
         )}
         {armed && !drawing && (
-          <div className="absolute left-1/2 -translate-x-1/2 top-16 z-[940]">
-            <span className="glass-dark rounded-xl px-3.5 py-2 text-[13px] font-medium whitespace-nowrap" style={{ color: UI.text }}>
+          <div className="absolute left-3 right-3 top-[116px] sm:top-16 z-[940] flex justify-center pointer-events-none">
+            <span className="glass-dark rounded-xl px-3.5 py-2 text-[15px] font-medium text-center sm:whitespace-nowrap pointer-events-auto" style={{ color: UI.text }}>
               Search an area or draw one — it&apos;ll be added to the comparison
             </span>
           </div>
@@ -804,37 +812,8 @@ export default function DashboardClient() {
           <FilterPanel filters={filters} onChange={setFilters} resultCount={points?.length ?? null} />
         </div>
 
-        {/* Mobile filter toggle + drawer */}
-        <button
-          onClick={() => setMobileFilters(true)}
-          className="lg:hidden absolute left-3 top-3 z-[900] glass-dark rounded-xl px-3 h-11 flex items-center gap-2 text-[13px] font-semibold"
-          style={{ color: UI.text }}
-        >
-          <SlidersHorizontal size={14} style={{ color: UI.green }} />
-          Filters
-        </button>
-        {mobileFilters && (
-          <div className="lg:hidden fixed inset-0 z-[1100] flex">
-            <div
-              className="absolute inset-0"
-              style={{ background: "rgba(6,9,4,0.55)" }}
-              onClick={() => setMobileFilters(false)}
-            />
-            <div className="relative glass-dark w-[300px] max-w-[85vw] h-full overflow-y-auto ps-scroll rounded-r-2xl">
-              <button
-                onClick={() => setMobileFilters(false)}
-                className="absolute right-3 top-3 z-10 p-1"
-                aria-label="Close filters"
-              >
-                <X size={16} style={{ color: UI.muted }} />
-              </button>
-              <FilterPanel filters={filters} onChange={setFilters} resultCount={points?.length ?? null} />
-            </div>
-          </div>
-        )}
-
         {/* Listing hover/pin card */}
-        <div className="absolute right-3 top-16 z-[930] pointer-events-none">
+        <div className="absolute right-3 top-[116px] sm:top-16 bottom-3 z-[930] flex flex-col items-end pointer-events-none">
           <AnimatePresence>
             {detail && (
               <HoverCard
@@ -849,8 +828,8 @@ export default function DashboardClient() {
         </div>
 
         {/* Occupancy legend + map-colour window toggle */}
-        <div className="absolute left-3 lg:left-[304px] bottom-3 z-[900] glass-light rounded-lg px-3 py-2">
-          <p className="text-[12px] font-semibold mb-1" style={{ color: "#4C5546" }}>
+        <div className="absolute left-3 lg:left-[304px] bottom-10 sm:bottom-3 z-[900] glass-light rounded-lg px-3 py-2">
+          <p className="text-[14px] font-semibold mb-1" style={{ color: "#4C5546" }}>
             Occupancy · {window_ === "todate" ? "season to date" : "next 60 days"}
           </p>
           <div
@@ -858,8 +837,8 @@ export default function DashboardClient() {
             style={{ background: "linear-gradient(90deg,#D8DECB,#8FA36B,#4A5E3A,#26331C)" }}
           />
           <div className="flex justify-between mt-0.5">
-            <span className="text-[11px]" style={{ color: "#69725F" }}>40%</span>
-            <span className="text-[11px]" style={{ color: "#69725F" }}>95%</span>
+            <span className="text-[14px]" style={{ color: "#69725F" }}>40%</span>
+            <span className="text-[14px]" style={{ color: "#69725F" }}>95%</span>
           </div>
         </div>
       </section>
@@ -894,7 +873,7 @@ export default function DashboardClient() {
             {canAdd && (
               <button
                 onClick={() => setArmed((a) => !a)}
-                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-full text-[15px] font-semibold transition-colors hover:bg-white/10"
                 style={
                   armed
                     ? { color: UI.green, border: `1px solid ${UI.green}66` }
@@ -906,7 +885,7 @@ export default function DashboardClient() {
             )}
             <button
               onClick={clearAll}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[15px] font-semibold transition-colors hover:bg-white/10"
               style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
             >
               <X size={11} /> Clear all
@@ -921,14 +900,14 @@ export default function DashboardClient() {
               </h2>
             </span>
             {slotCount(slotViews[0]) != null && (
-              <span className="text-sm" style={{ color: UI.muted }}>
+              <span className="text-base" style={{ color: UI.muted }}>
                 {fmtInt(slotCount(slotViews[0]))} listings
               </span>
             )}
             {single.selection.kind !== "all" && (
               <button
                 onClick={clearAll}
-                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10"
+                className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[15px] font-semibold transition-colors hover:bg-white/10"
                 style={{ color: UI.muted, border: `1px solid ${UI.border}` }}
               >
                 <X size={11} /> Clear selection
@@ -936,7 +915,7 @@ export default function DashboardClient() {
             )}
             <button
               onClick={() => setArmed((a) => !a)}
-              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[13px] font-semibold transition-colors hover:bg-white/10 sm:hidden"
+              className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[15px] font-semibold transition-colors hover:bg-white/10 sm:hidden"
               style={
                 armed
                   ? { color: UI.green, border: `1px solid ${UI.green}66` }
@@ -947,7 +926,7 @@ export default function DashboardClient() {
             </button>
           </>
         )}
-        <div className="flex-1" />
+        <div className="hidden sm:block flex-1" />
         <DateRangeCalendar min={FIRST_WEEK} max={maxDay} value={effectiveDays} onChange={setDayRange} />
         <Segmented
           value={window_}
@@ -968,7 +947,7 @@ export default function DashboardClient() {
               <button
                 key={t.id}
                 onClick={() => setTab(t.id)}
-                className="flex items-center gap-2 px-4 py-2.5 text-sm font-semibold rounded-t-xl transition-colors whitespace-nowrap"
+                className="flex items-center gap-2 px-4 py-2.5 text-base font-semibold rounded-t-xl transition-colors whitespace-nowrap"
                 style={
                   active
                     ? {
@@ -997,6 +976,31 @@ export default function DashboardClient() {
         {tab === "buyrent" && <BuyRentTab slots={slotViews} />}
         {tab === "calc" && <CalculatorTab slots={slotViews} />}
       </div>
+
+      {/* Mobile filter drawer (its toggle sits in the map toolbar). It lives at the page root:
+          inside the map section it was painted under the top bar and the tab content. */}
+      {mobileFilters && (
+        <div className="lg:hidden fixed inset-0 z-[1100] flex">
+          <div
+            className="absolute inset-0"
+            style={{ background: "rgba(6,9,4,0.55)" }}
+            onClick={() => setMobileFilters(false)}
+          />
+          <div className="relative glass-dark w-[300px] max-w-[85vw] h-full overflow-y-auto ps-scroll rounded-r-2xl">
+            <button
+              onClick={() => setMobileFilters(false)}
+              className="absolute right-3 top-3 z-10 p-1"
+              aria-label="Close filters"
+            >
+              <X size={16} style={{ color: UI.muted }} />
+            </button>
+            {/* the close button gets its own row, clear of the panel's result count */}
+            <div className="pt-7">
+              <FilterPanel filters={filters} onChange={setFilters} resultCount={points?.length ?? null} />
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

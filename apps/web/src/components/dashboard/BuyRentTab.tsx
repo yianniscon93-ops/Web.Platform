@@ -135,14 +135,16 @@ function SingleBuyRent({
     <div>
       {selection.kind === "area" && (
         <div
-          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[15px]"
+          className="flex items-center gap-2.5 rounded-xl px-4 py-3 mb-2.5 text-[17px]"
           style={{ background: "rgba(255,255,255,0.04)", border: `1px solid ${UI.border}`, color: UI.text }}
         >
           <Info size={15} style={{ color: UI.green }} className="shrink-0" />
-          <span className="flex items-center gap-1.5">
+          <span>
             Showing properties around <b style={{ color: UI.green }}>{selection.area.nameEn}</b>{" "}
-            (matched by distance from the area centre). Bedrooms &amp; property-type filters apply.
-            <Explain id="sale_scope" align="left" />
+            (matched by distance from the area centre). Bedrooms &amp; property-type filters apply.{" "}
+            <span className="inline-flex align-middle">
+              <Explain id="sale_scope" align="left" />
+            </span>
           </span>
         </div>
       )}
@@ -160,12 +162,12 @@ function SingleBuyRent({
                 <p className="font-display font-bold text-2xl leading-none" style={{ color: c.accent ? UI.green : UI.text }}>
                   {c.value}
                 </p>
-                <p className="text-[13px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
+                <p className="text-[15px] mt-2 uppercase tracking-wider font-medium flex items-center gap-1.5" style={{ color: UI.muted }}>
                   {c.label}
                   <Explain id={c.id} align="left" />
                 </p>
                 {"hint" in c && c.hint && (
-                  <p className="text-[13px] mt-1" style={{ color: UI.faint }}>
+                  <p className="text-[15px] mt-1" style={{ color: UI.faint }}>
                     {c.hint}
                   </p>
                 )}
@@ -178,12 +180,12 @@ function SingleBuyRent({
       {/* The verdict: Airbnb it or rent it out? Compared NET of costs —
           gross-to-gross would structurally favour Airbnb. */}
       {strNet != null && ltrNet != null && strYear != null && ltrYear != null && (
-        <div className="glass-card rounded-2xl p-5 mt-2.5">
-          <div className="flex items-center justify-between mb-4">
+        <div className="glass-card rounded-2xl p-4 sm:p-5 mt-2.5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-4">
             <StatLabel id="verdict" align="left">
               Airbnb it or rent it out?
             </StatLabel>
-            <span className="text-[13px]" style={{ color: UI.faint }}>
+            <span className="text-[15px]" style={{ color: UI.faint }}>
               typical property in this selection · per year, after the running costs you set below
             </span>
           </div>
@@ -205,22 +207,22 @@ function SingleBuyRent({
               },
             ].map((r) => (
               <div key={r.label}>
-                <div className="flex items-center justify-between mb-1.5">
-                  <span className="text-[15px] font-semibold flex items-center gap-2" style={{ color: UI.text }}>
+                <div className="flex flex-wrap items-center justify-between gap-x-3 gap-y-0.5 mb-1.5">
+                  <span className="text-[17px] font-semibold flex items-center gap-2" style={{ color: UI.text }}>
                     <span style={{ color: r.win ? UI.green : UI.faint }}>{r.icon}</span>
                     {r.label}
                     {r.win && (
                       <span
-                        className="text-[12px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full"
+                        className="text-[14px] font-bold uppercase tracking-wider px-1.5 py-0.5 rounded-full"
                         style={{ background: "rgba(143,204,128,0.12)", color: UI.green }}
                       >
                         earns more
                       </span>
                     )}
                   </span>
-                  <span className="text-sm font-bold" style={{ color: r.win ? UI.green : UI.text }}>
+                  <span className="text-base font-bold" style={{ color: r.win ? UI.green : UI.text }}>
                     {fmtEuro(Math.round(r.value))}/yr
-                    <span className="font-normal text-[13px]" style={{ color: UI.faint }}>
+                    <span className="font-normal text-[15px]" style={{ color: UI.faint }}>
                       {" "}
                       · {fmtEuro(Math.round(r.gross))} gross
                     </span>
@@ -242,7 +244,7 @@ function SingleBuyRent({
               </div>
             ))}
           </div>
-          <div className="grid grid-cols-2 gap-x-4 mt-4 pt-4" style={{ borderTop: `1px solid ${UI.border}` }}>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3.5 mt-4 pt-4" style={{ borderTop: `1px solid ${UI.border}` }}>
             <Slider
               label="Airbnb running costs"
               value={strCostPct}
@@ -263,7 +265,7 @@ function SingleBuyRent({
             />
           </div>
           {parityNet != null && (
-            <p className="text-[15px] leading-relaxed mt-4" style={{ color: UI.muted }}>
+            <p className="text-[17px] leading-relaxed mt-4" style={{ color: UI.muted }}>
               The tipping point: at these costs, Airbnb wins as long as the calendar stays booked
               at least{" "}
               <b style={{ color: UI.text }}>
@@ -291,12 +293,12 @@ function SingleBuyRent({
 
       {/* Buy vs rent, by bedrooms */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
+        <div className="glass-card rounded-2xl p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-3">
             <StatLabel id="quartiles" align="left">
               What buying costs
             </StatLabel>
-            <span className="text-[13px]" style={{ color: UI.faint }}>
+            <span className="text-[15px]" style={{ color: UI.faint }}>
               median asking price · count in brackets
             </span>
           </div>
@@ -311,12 +313,12 @@ function SingleBuyRent({
             emptyLabel="No sale listings match this selection"
           />
         </div>
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
+        <div className="glass-card rounded-2xl p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-3">
             <StatLabel id="monthly_rent" align="left">
               What renting pays
             </StatLabel>
-            <span className="text-[13px]" style={{ color: UI.faint }}>
+            <span className="text-[15px]" style={{ color: UI.faint }}>
               median monthly rent · count in brackets
             </span>
           </div>
@@ -336,7 +338,7 @@ function SingleBuyRent({
       <DealsBlock invest={invest} />
 
       <div
-        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[14px] leading-relaxed"
+        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-base leading-relaxed"
         style={{ background: "rgba(217,139,106,0.06)", border: "1px solid rgba(217,139,106,0.2)", color: UI.muted }}
       >
         <Info size={14} style={{ color: NEG }} className="shrink-0 mt-0.5" />
@@ -361,13 +363,13 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
   return (
     <>
       {/* Deal screener */}
-      <div className="glass-card rounded-2xl p-5 mt-2.5">
+      <div className="glass-card rounded-2xl p-4 sm:p-5 mt-2.5">
         <div className="flex flex-wrap items-center justify-between gap-3 mb-3">
           <StatLabel id="screener" align="left">
             Deal screener — fastest payback
           </StatLabel>
-          <div className="flex items-center gap-3 w-64">
-            <span className="text-[13px] whitespace-nowrap" style={{ color: UI.muted }}>
+          <div className="flex items-center gap-3 w-80 max-w-full">
+            <span className="text-[15px] whitespace-nowrap" style={{ color: UI.muted }}>
               Budget ≤ <b style={{ color: UI.green }}>{fmtEuro(budget)}</b>
             </span>
             <input
@@ -377,7 +379,7 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
               step={25000}
               value={budget}
               onChange={(e) => setBudget(Number(e.target.value))}
-              className="flex-1 accent-[#8FCC80]"
+              className="flex-1 min-w-0 accent-[#8FCC80]"
             />
           </div>
         </div>
@@ -389,7 +391,7 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
                   {["Listing", "Price", "Pays back in · gross", "Est. earnings", "Based on", "On market", ""].map((h) => (
                     <th
                       key={h}
-                      className="text-[12px] uppercase tracking-wider font-semibold py-2 pr-4 whitespace-nowrap"
+                      className="text-[14px] uppercase tracking-wider font-semibold py-2 pr-4 whitespace-nowrap"
                       style={{ color: UI.faint, borderBottom: `1px solid ${UI.border}` }}
                     >
                       {h}
@@ -400,30 +402,30 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
               <tbody>
                 {screener.map((d) => (
                   <tr key={d.id}>
-                    <td className="py-2.5 pr-4 text-[15px] font-medium" style={{ color: UI.text, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-[17px] font-medium min-w-[13rem]" style={{ color: UI.text, borderBottom: `1px solid ${UI.border}` }}>
                       {d.title}
                       {d.bedrooms != null && d.sizeM2 != null && (
-                        <span className="text-[13px] ml-2" style={{ color: UI.faint }}>
+                        <span className="text-[15px] ml-2" style={{ color: UI.faint }}>
                           {d.bedrooms} bed · {Math.round(d.sizeM2)} m²
                         </span>
                       )}
                     </td>
-                    <td className="py-2.5 pr-4 text-[15px] font-semibold whitespace-nowrap" style={{ color: UI.text, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-[17px] font-semibold whitespace-nowrap" style={{ color: UI.text, borderBottom: `1px solid ${UI.border}` }}>
                       {fmtEuro(d.price)}
                     </td>
-                    <td className="py-2.5 pr-4 text-[15px] font-bold whitespace-nowrap" style={{ color: UI.green, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-[17px] font-bold whitespace-nowrap" style={{ color: UI.green, borderBottom: `1px solid ${UI.border}` }}>
                       {d.strYield ? `${(100 / d.strYield).toFixed(1)} yrs` : "—"}
                     </td>
-                    <td className="py-2.5 pr-4 text-[15px] whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-[17px] whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
                       {d.strRevenue != null ? `${fmtEuro(d.strRevenue)}/yr` : "—"}
                     </td>
-                    <td className="py-2.5 pr-4 text-[14px] whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-base whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
                       {d.compCount != null ? `${d.compCount} similar rentals` : "—"}
                     </td>
-                    <td className="py-2.5 pr-4 text-[14px] whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 pr-4 text-base whitespace-nowrap" style={{ color: UI.muted, borderBottom: `1px solid ${UI.border}` }}>
                       {fmtDom(d)}
                     </td>
-                    <td className="py-2.5 text-[14px]" style={{ borderBottom: `1px solid ${UI.border}` }}>
+                    <td className="py-2.5 text-base" style={{ borderBottom: `1px solid ${UI.border}` }}>
                       {d.url && (
                         <a
                           href={d.url}
@@ -442,7 +444,7 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
             </table>
           </div>
         ) : (
-          <p className="text-sm" style={{ color: UI.faint }}>
+          <p className="text-base" style={{ color: UI.faint }}>
             Nothing with credible comparables under this budget — raise the budget slider or widen
             the area.
           </p>
@@ -450,12 +452,12 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
       </div>
 
       {/* Motivated sellers */}
-      <div className="glass-card rounded-2xl p-5 mt-2.5">
-        <div className="flex items-center justify-between mb-3">
+      <div className="glass-card rounded-2xl p-4 sm:p-5 mt-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-3">
           <StatLabel id="price_cuts" align="left">
             Motivated sellers — biggest price cuts
           </StatLabel>
-          <span className="text-[13px]" style={{ color: UI.faint }}>
+          <span className="text-[15px]" style={{ color: UI.faint }}>
             {invest?.cutsCount != null
               ? `${fmtInt(invest.cutsCount)} listings have cut · median ${invest.cutsMedianPct?.toFixed(1) ?? "—"}%`
               : ""}
@@ -469,7 +471,7 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
               style={{ borderBottom: `1px solid ${UI.border}` }}
             >
               <div className="min-w-0">
-                <p className="text-[15px] font-medium truncate" style={{ color: UI.text }}>
+                <p className="text-[17px] font-medium leading-snug" style={{ color: UI.text }}>
                   {d.url ? (
                     <a href={d.url} target="_blank" rel="noopener noreferrer" className="hover:underline">
                       {d.title}
@@ -478,19 +480,19 @@ function DealsBlock({ invest }: { invest: InvestStats | null }) {
                     d.title
                   )}
                 </p>
-                <p className="text-[13px]" style={{ color: UI.faint }}>
+                <p className="text-[15px]" style={{ color: UI.faint }}>
                   {fmtEuro(d.price)} · {fmtDom(d)} on market
                   {d.nDrops != null && d.nDrops > 1 ? ` · cut ${d.nDrops} times` : ""}
                 </p>
               </div>
-              <span className="text-[15px] font-bold whitespace-nowrap" style={{ color: NEG }}>
+              <span className="text-[17px] font-bold whitespace-nowrap" style={{ color: NEG }}>
                 {d.priceChangePct != null ? `${d.priceChangePct.toFixed(1)}%` : "—"}
               </span>
             </div>
           ))}
         </div>
         {!invest?.movers?.length && (
-          <p className="text-sm" style={{ color: UI.faint }}>
+          <p className="text-base" style={{ color: UI.faint }}>
             No observed price cuts in this selection yet — this builds up as tracking continues.
           </p>
         )}
@@ -556,12 +558,12 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
   return (
     <div>
       {/* Buying head to head */}
-      <div className="glass-card rounded-2xl p-5">
-        <div className="flex items-center justify-between mb-2">
+      <div className="glass-card rounded-2xl p-4 sm:p-5">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-2">
           <StatLabel id="compare" align="left">
             Buying head to head
           </StatLabel>
-          <span className="text-[13px]" style={{ color: UI.faint }}>
+          <span className="text-[15px]" style={{ color: UI.faint }}>
             named areas matched by distance from the area centre
           </span>
         </div>
@@ -615,12 +617,12 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
       </div>
 
       {/* Earning head to head — with the shared cost assumptions */}
-      <div className="glass-card rounded-2xl p-5 mt-2.5">
-        <div className="flex items-center justify-between mb-2">
+      <div className="glass-card rounded-2xl p-4 sm:p-5 mt-2.5">
+        <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-2">
           <StatLabel id="verdict" align="left">
             Airbnb it or rent it out?
           </StatLabel>
-          <span className="text-[13px]" style={{ color: UI.faint }}>
+          <span className="text-[15px]" style={{ color: UI.faint }}>
             typical property per area · per year, after the running costs you set below
           </span>
         </div>
@@ -685,7 +687,7 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
             },
           ]}
         />
-        <div className="grid grid-cols-2 gap-x-4 mt-4 pt-4" style={{ borderTop: `1px solid ${UI.border}` }}>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-4 gap-y-3.5 mt-4 pt-4" style={{ borderTop: `1px solid ${UI.border}` }}>
           <Slider
             label="Airbnb running costs"
             value={strCostPct}
@@ -709,12 +711,12 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
 
       {/* Buy vs rent, by bedrooms — grouped */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-2.5 mt-2.5">
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
+        <div className="glass-card rounded-2xl p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-3">
             <StatLabel id="quartiles" align="left">
               What buying costs
             </StatLabel>
-            <span className="text-[13px]" style={{ color: UI.faint }}>
+            <span className="text-[15px]" style={{ color: UI.faint }}>
               median asking price by bedrooms
             </span>
           </div>
@@ -731,12 +733,12 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
             emptyLabel="No sale listings match these selections"
           />
         </div>
-        <div className="glass-card rounded-2xl p-5">
-          <div className="flex items-center justify-between mb-3">
+        <div className="glass-card rounded-2xl p-4 sm:p-5">
+          <div className="flex flex-wrap items-center justify-between gap-x-4 gap-y-1 mb-3">
             <StatLabel id="monthly_rent" align="left">
               What renting pays
             </StatLabel>
-            <span className="text-[13px]" style={{ color: UI.faint }}>
+            <span className="text-[15px]" style={{ color: UI.faint }}>
               median monthly rent by bedrooms
             </span>
           </div>
@@ -756,8 +758,8 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
       </div>
 
       {/* Deals — one area at a time (rows don't compare across areas) */}
-      <div className="flex items-center gap-2 mt-2.5">
-        <span className="text-[13px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
+      <div className="flex flex-wrap items-center gap-2 mt-2.5">
+        <span className="text-[15px] font-bold uppercase tracking-wider" style={{ color: UI.muted }}>
           Deals in
         </span>
         {slots.map((v) => {
@@ -766,7 +768,7 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
             <button
               key={v.id}
               onClick={() => setDealsSlotId(v.id)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[13px] font-semibold transition-colors"
+              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-[15px] font-semibold transition-colors"
               style={
                 active
                   ? { color: UI.text, border: `1px solid ${v.color}88`, background: `${v.color}1A` }
@@ -782,7 +784,7 @@ function CompareBuyRent({ slots }: { slots: SlotView[] }) {
       <DealsBlock key={dealsSlot.id} invest={dealsSlot.invest} />
 
       <div
-        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-[14px] leading-relaxed"
+        className="flex items-start gap-2.5 rounded-xl px-4 py-3 mt-2.5 text-base leading-relaxed"
         style={{ background: "rgba(217,139,106,0.06)", border: "1px solid rgba(217,139,106,0.2)", color: UI.muted }}
       >
         <Info size={14} style={{ color: NEG }} className="shrink-0 mt-0.5" />

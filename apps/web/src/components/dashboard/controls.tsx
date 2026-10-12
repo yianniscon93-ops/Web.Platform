@@ -22,11 +22,11 @@ export function Slider({
 }) {
   return (
     <div>
-      <div className="flex items-center justify-between mb-1">
-        <span className="text-[14px] font-medium" style={{ color: UI.text }}>
+      <div className="flex flex-wrap items-center justify-between gap-x-3 mb-1">
+        <span className="text-base font-medium" style={{ color: UI.text }}>
           {label}
         </span>
-        <span className="text-[14px] font-bold" style={{ color: UI.green }}>
+        <span className="text-base font-bold" style={{ color: UI.green }}>
           {fmt(value)}
         </span>
       </div>
@@ -75,7 +75,7 @@ export function Toggle({
           }}
         />
       </span>
-      <span className="text-[15px] font-semibold" style={{ color: UI.text }}>
+      <span className="text-[17px] font-semibold" style={{ color: UI.text }}>
         {label}
       </span>
     </button>
