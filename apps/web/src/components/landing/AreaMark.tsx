@@ -7,12 +7,13 @@ import { LANDING } from "./tokens";
    "Actually use J"): a hairline plot in the olive the stage draws with.
    2026-10-12: the owner liked Lordicon's animated polygon (a line that runs corner to corner, corner dots that
    pop as it arrives) and left the look to us. Nothing is copied from that icon, the shape and the code are ours:
-   the corners are dots larger than the line, in the orange of the listings, and the map's dots are off unless
-   asked for. The same day he asked for three more things. "Make the lines more minimal": the line is a hairline
+   the corners are dots larger than the line, and the map's dots are off unless asked for. The same day he asked for three more things. "Make the lines more minimal": the line is a hairline
    again. "I prefer it to be not filled with colour": the orange wash inside is gone, the plot is an outline and
    five dots. And "when you hover above it the lines form and join on each dot": the line is drawn again from the
    first corner round, where a corner used to be pulled out. He also asked for the plot to be the "o" of the
-   name (Wordmark.tsx), which is why the line, the dots and the frame can be set from outside. */
+   name (Wordmark.tsx), which is why the line, the dots and the frame can be set from outside. Last, the colours:
+   "Why dont we use black lines for the logo and then the dots that join these lines to be the olive green of our
+   palette?" The line is the ink of the letters around it and the dots are olive; the mark carries no orange. */
 const CORNERS: [number, number][] = [
   [7, 9.5],
   [22.5, 6],
@@ -72,8 +73,9 @@ const CSS = `
 
 /**
  * The brand mark: the plot as the stage draws it, an outline and its five corners. `line` is the colour of the
- * drawn line (olive on the page's ground); the footer, on ink, hands in its own light ink instead. `corners` is
- * the colour of the five dots, the orange of the listings on either ground; `handles` leaves them out. `grid`
+ * drawn line: the ink of the text it sits in, so on the footer's ink ground it is that ground's light ink with
+ * nothing handed in. `corners` is the colour of the five dots, the palette's olive; the footer hands in a
+ * lighter olive, since the palette's own is 2.4:1 on ink. `handles` leaves them out. `grid`
  * adds the map's grid of points behind the plot, in `dots`: it is off unless asked for, since beside corners this
  * size it is noise at 24 to 32px.
  *
@@ -86,8 +88,8 @@ const CSS = `
  */
 export default function AreaMark({
   size = 34,
-  line = LANDING.area,
-  corners = LANDING.mark,
+  line = "currentColor",
+  corners = LANDING.area,
   dots = LANDING.ink,
   strokeWidth = 1.25,
   cornerRadius = 2.2,

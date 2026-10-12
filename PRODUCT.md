@@ -111,9 +111,9 @@ Open decisions:
 - The dashboard is called the Playground.
 - Palette: off-white (beige), ink, **olive** (#4A5E3A) and a **light orange**
   (#F2A154). Olive does the working jobs (the drawn area, the filled
-  action); the light orange marks the listings, the product icons and the
-  brand mark (the mark itself: the plot as the "o" of the name, an olive
-  line through five orange corner dots with no fill, the lines forming
+  action); the light orange marks the listings and the product icons. The
+  brand mark carries no orange (the plot as the "o" of the name, an ink
+  line through five olive corner dots with no fill, the lines forming
   again on hover; owner, 2026-10-12. Before that, from 2026-10-10, a
   separate mark beside the name with an orange wash, chosen as "techy and
   professional", "crystalized"). The owner kept the beige and olive after comparing seven

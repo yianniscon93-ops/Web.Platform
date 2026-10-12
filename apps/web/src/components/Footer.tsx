@@ -7,7 +7,7 @@ export default function Footer() {
     <footer className="th-landing ps-foot">
       <div className="ps-foot-in">
         <div className="ps-foot-brand">
-          <Wordmark line="var(--th-close-ink)" />
+          <Wordmark corners="var(--olive-light)" />
         </div>
 
         <p className="ps-foot-rights">© 2026 {BRAND.name}</p>

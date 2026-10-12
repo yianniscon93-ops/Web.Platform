@@ -1,6 +1,5 @@
 import { BRAND } from "@/lib/brand";
 import AreaMark from "./AreaMark";
-import { LANDING } from "./tokens";
 
 /* The name with the plot as its "o" (owner, 2026-10-12: "lets use the O of plotsights for the logo instead of
    outside of it"). The name is split at its first "o", so the halves follow the brand's name wherever it is set. */
@@ -27,10 +26,11 @@ const CSS = `
 
 /**
  * The wordmark: the name in the display role, its "o" the brand mark (AreaMark, which brings the drawing and its
- * motion). `size` is the type's size in px; without it the wordmark takes the size of where it is set. `line` is
- * the colour of the plot's line: olive on the page's ground, the footer hands in its own light ink.
+ * motion). `size` is the type's size in px; without it the wordmark takes the size of where it is set. The plot's
+ * line is the colour of the letters. `corners` is the colour of its dots where the palette's olive would not
+ * show: the footer, on ink, hands in a lighter one.
  */
-export default function Wordmark({ size, line = LANDING.area }: { size?: number; line?: string }) {
+export default function Wordmark({ size, corners }: { size?: number; corners?: string }) {
   return (
     <>
       <style href="wordmark" precedence="medium">
@@ -43,7 +43,7 @@ export default function Wordmark({ size, line = LANDING.area }: { size?: number;
           <>
             {BEFORE}
             <span className="wm-letter">o</span>
-            <AreaMark className="wm-o" size="0.76em" tight line={line} strokeWidth={2.1} cornerRadius={3.2} />
+            <AreaMark className="wm-o" size="0.76em" tight corners={corners} strokeWidth={2.1} cornerRadius={3.2} />
             {AFTER}
           </>
         )}

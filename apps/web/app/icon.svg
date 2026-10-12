@@ -1,5 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 34 34" fill="none">
-  <!-- Plotsights mark, a static copy of src/components/landing/AreaMark.tsx for the favicon: olive line, orange dots, nothing inside. The page's hairline (1.25) would be about half a pixel in a 16px tab, and with no wash the line alone holds the shape, so it is 2.6 here, a little over one pixel at 16px; the dots are 3.2, as in the wordmark. -->
-  <path d="M7 9.5L22.5 6L29 19L19 28L7 22Z" stroke="#4A5E3A" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
-  <g fill="#F2A154"><circle cx="7" cy="9.5" r="3.2"/><circle cx="22.5" cy="6" r="3.2"/><circle cx="29" cy="19" r="3.2"/><circle cx="19" cy="28" r="3.2"/><circle cx="7" cy="22" r="3.2"/></g>
+  <!-- Plotsights mark, a static copy of src/components/landing/AreaMark.tsx for the favicon: ink line, olive dots, nothing inside. The page's hairline (1.25) would be about half a pixel in a 16px tab, and with no wash the line alone holds the shape, so it is 2.6 here, a little over one pixel at 16px; the dots are 3.2, as in the wordmark. On a dark tab strip an ink line would vanish, so there the line is the page's light ink and the dots a lighter olive. -->
+  <style>
+    .l { stroke: #161C11; } .d { fill: #4A5E3A; }
+    @media (prefers-color-scheme: dark) { .l { stroke: #F4F1E8; } .d { fill: #A8C290; } }
+  </style>
+  <path class="l" d="M7 9.5L22.5 6L29 19L19 28L7 22Z" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>
+  <g class="d"><circle cx="7" cy="9.5" r="3.2"/><circle cx="22.5" cy="6" r="3.2"/><circle cx="29" cy="19" r="3.2"/><circle cx="19" cy="28" r="3.2"/><circle cx="7" cy="22" r="3.2"/></g>
 </svg>
