@@ -1,6 +1,6 @@
 import type postgres from "postgres";
 import { getSql } from "./db";
-import { demo } from "./demoData";
+import { demo, DEMO_AREA_ALIASES } from "./demoData";
 import type {
   AmenityImpact,
   AmenityPremium,
@@ -578,6 +578,7 @@ function rowToArea(r: postgres.Row): AreaInfo {
     areaId: r.area_id,
     nameEn: r.name_en,
     nameEl: r.name_el ?? null,
+    aliases: parseAliases(r.aliases),
     areaType: r.area_type as AreaType,
     district: r.district ?? null,
     parentId: r.parent_id ?? null,
@@ -588,6 +589,15 @@ function rowToArea(r: postgres.Row): AreaInfo {
     ...(r.has_boundary != null ? { hasBoundary: !!r.has_boundary } : {}),
     ...(r.boundary !== undefined ? { boundary: parseBoundary(r.boundary) } : {}),
   };
+}
+
+/** dim_areas.aliases as the area queries read it (a JSON array) → string[];
+ * [] for a row with none, a query that does not select it, or a database
+ * that has no such column yet. */
+function parseAliases(v: unknown): string[] {
+  return Array.isArray(v)
+    ? v.filter((s): s is string => typeof s === "string" && s.trim() !== "")
+    : [];
 }
 
 function parseBoundary(v: unknown): AreaBoundary | null {
@@ -614,11 +624,13 @@ export const MAX_BOUNDARY_IDS = 10;
 export function getAreas(): Promise<AreaInfo[]> {
   return tryLive<AreaInfo[]>(
     async (sql) => {
+      // aliases lands with the 2026-10 areas sync: read via to_jsonb, NULL while the column is missing.
       const rows = await sql`
         SELECT area_id, name_en, name_el, area_type, district, parent_id,
                latitude, longitude, search_radius_km::float AS search_radius_km,
-               listing_count, boundary IS NOT NULL AS has_boundary
-        FROM dim_areas
+               listing_count, boundary IS NOT NULL AS has_boundary,
+               (to_jsonb(d) -> 'aliases') AS aliases
+        FROM dim_areas d
         ORDER BY listing_count DESC NULLS LAST
       `;
       return rows.map(rowToArea);
@@ -635,6 +647,7 @@ export function getAreaBoundaries(ids: string[]): Promise<AreaInfo[]> {
   return tryLive<AreaInfo[]>(
     async (sql) => {
       if (!want.length) return [];
+      // aliases via to_jsonb (NULL while the column is missing), as in getAreas.
       const rows = await sql`
         SELECT area_id, name_en, name_el, area_type, district, parent_id,
                latitude, longitude, search_radius_km::float AS search_radius_km,
@@ -642,8 +655,9 @@ export function getAreaBoundaries(ids: string[]): Promise<AreaInfo[]> {
                ST_AsGeoJSON(
                  ST_SimplifyPreserveTopology(boundary::geometry, ${BOUNDARY_TOLERANCE}::float8),
                  ${BOUNDARY_DECIMALS}::int
-               ) AS boundary
-        FROM dim_areas
+               ) AS boundary,
+               (to_jsonb(d) -> 'aliases') AS aliases
+        FROM dim_areas d
         WHERE area_id IN ${sql(want)}
       `;
       return rows.map(rowToArea);
@@ -1591,7 +1605,7 @@ function demoAreas(): AreaInfo[] {
   const bySlug = new Map(s.areas.map((a) => [a.slug, a]));
   const out: AreaInfo[] = [
     {
-      areaId: "CY", nameEn: "Cyprus", nameEl: "Κύπρος", areaType: "country",
+      areaId: "CY", nameEn: "Cyprus", nameEl: "Κύπρος", aliases: [], areaType: "country",
       district: null, parentId: null, lat: 34.98, lng: 33.25, radiusKm: 100,
       listingCount: s.totalListings,
     },
@@ -1601,7 +1615,8 @@ function demoAreas(): AreaInfo[] {
       const m = bySlug.get(c.slug);
       if (!m) continue;
       out.push({
-        areaId: c.slug, nameEn: c.label, nameEl: null, areaType: "community",
+        areaId: c.slug, nameEn: c.label, nameEl: null,
+        aliases: DEMO_AREA_ALIASES[c.slug] ?? [], areaType: "community",
         district: g.parent, parentId: "CY", lat: m.lat, lng: m.lng,
         radiusKm: 6, listingCount: c.count,
       });

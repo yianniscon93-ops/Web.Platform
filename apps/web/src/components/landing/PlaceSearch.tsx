@@ -18,16 +18,40 @@ type Place = AreaInfo & { lat: number; lng: number };
 /** Lower case, with accents off, so "λεμεσος" finds "Λεμεσός". */
 const plain = (s: string) => s.normalize("NFD").replace(/\p{M}/gu, "").toLowerCase().trim();
 
-/** How well a place answers what was typed: the start of its name, the start of a word in it, or anywhere in it. */
-function rank(place: Place, q: string): number {
+/** How well a name answers what was typed: its start, the start of a word in it, or anywhere in it. */
+function fit(name: string, q: string): number {
+  const n = plain(name);
+  if (!n) return 0;
+  if (n.startsWith(q)) return 3;
+  if (n.split(/[\s,-]+/).some((w) => w.startsWith(q))) return 2;
+  return n.includes(q) ? 1 : 0;
+}
+
+/** A place in the list: how well it answers what was typed and, when only another spelling of it does, that spelling. */
+interface Found {
+  place: Place;
+  rank: number;
+  alias: string | null;
+}
+
+/**
+ * How well a place answers what was typed, by its English name and then its Greek one. A place neither name finds
+ * may still be found by another spelling ("Egkomi" for Engomi), and the row says which spelling it was. Typed in
+ * full, that spelling is nearly a name: the place comes under the names that start with what was typed and over
+ * those that only hold it ("Limassol" finds the town Lemesos). Typed in part, it counts for less than any name.
+ */
+function find(place: Place, q: string): Found {
   for (const name of [place.nameEn, place.nameEl ?? ""]) {
-    const n = plain(name);
-    if (!n) continue;
-    if (n.startsWith(q)) return 3;
-    if (n.split(/[\s,-]+/).some((w) => w.startsWith(q))) return 2;
-    if (n.includes(q)) return 1;
+    const rank = fit(name, q);
+    if (rank) return { place, rank, alias: null };
   }
-  return 0;
+  let best: Found = { place, rank: 0, alias: null };
+  // A list of places kept from before other spellings were sent has none.
+  for (const alias of place.aliases ?? []) {
+    const rank = plain(alias) === q ? 2.5 : fit(alias, q) / 4;
+    if (rank > best.rank) best = { place, rank, alias };
+  }
+  return best;
 }
 
 /**
@@ -61,15 +85,12 @@ export default function PlaceSearch() {
   }, []);
 
   const typed = plain(q);
-  const found = useMemo(() => {
+  const found = useMemo<Found[]>(() => {
     if (!places) return [];
-    const scored = typed
-      ? places.map((p) => [p, rank(p, typed)] as const).filter(([, r]) => r > 0)
-      : places.map((p) => [p, 0] as const);
-    return scored
-      .sort((a, b) => b[1] - a[1] || b[0].listingCount - a[0].listingCount)
-      .slice(0, MOST)
-      .map(([p]) => p);
+    const scored: Found[] = typed
+      ? places.map((p) => find(p, typed)).filter((f) => f.rank > 0)
+      : places.map((place) => ({ place, rank: 0, alias: null }));
+    return scored.sort((a, b) => b.rank - a.rank || b.place.listingCount - a.place.listingCount).slice(0, MOST);
   }, [places, typed]);
   const active = Math.min(at, Math.max(0, found.length - 1));
 
@@ -83,7 +104,8 @@ export default function PlaceSearch() {
   };
 
   // The first screen's picture asks for its town by name (PICK_NAME_EVENT): it is picked as if it had been typed,
-  // the town itself before a district of the same name. Without the list of places the Playground has its own search.
+  // the town itself before a district of the same name. A name no place has may be another spelling of one
+  // ("Limassol" is the town Lemesos). Without the list of places the Playground has its own search.
   const byName = useRef<(name: string) => void>(() => {});
   byName.current = (name: string) => {
     if (!places) {
@@ -92,9 +114,10 @@ export default function PlaceSearch() {
       return;
     }
     const want = plain(name);
-    const match = places
-      .filter((p) => plain(p.nameEn) === want)
-      .sort((a, b) => Number(a.areaType === "district") - Number(b.areaType === "district") || b.listingCount - a.listingCount)[0];
+    const townFirst = (a: Place, b: Place) => Number(a.areaType === "district") - Number(b.areaType === "district") || b.listingCount - a.listingCount;
+    const match =
+      places.filter((p) => plain(p.nameEn) === want).sort(townFirst)[0] ??
+      places.filter((p) => (p.aliases ?? []).some((a) => plain(a) === want)).sort(townFirst)[0];
     if (match) pick(match);
     else document.getElementById("draw")?.scrollIntoView();
   };
@@ -108,7 +131,7 @@ export default function PlaceSearch() {
     e.preventDefault();
     // Without the list of places there is nothing to pick from: the Playground has its own search.
     if (!places) return window.location.assign("/dashboard");
-    if (found[active]) pick(found[active]);
+    if (found[active]) pick(found[active].place);
     else setOpen(true);
   };
   const key = (e: React.KeyboardEvent) => {
@@ -173,7 +196,7 @@ export default function PlaceSearch() {
           <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
         </button>
         <ul id={listId} className="lh-list m-0 list-none" role="listbox" aria-label="Places" hidden={!shown}>
-          {found.map((p, i) => (
+          {found.map(({ place: p, alias }, i) => (
             <li
               key={p.areaId}
               id={`${listId}-${i}`}
@@ -188,6 +211,7 @@ export default function PlaceSearch() {
             >
               <span>
                 <b>{p.nameEn}</b>
+                {alias && <span> · {alias}</span>}
                 {p.nameEl && <span lang="el"> {p.nameEl}</span>}
               </span>
               {under(p) && <small>{under(p)}</small>}

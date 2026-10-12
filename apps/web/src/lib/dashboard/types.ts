@@ -168,6 +168,10 @@ export interface AreaInfo {
   areaId: string;
   nameEn: string;
   nameEl: string | null;
+  /** dim_areas.aliases — the other spellings people type ("Egkomi" for
+   * Engomi); [] when the row has none. Filled on `/api/dashboard/areas`
+   * responses only (the `area` echoed by other endpoints leaves it empty). */
+  aliases: string[];
   areaType: AreaType;
   district: string | null;
   parentId: string | null;

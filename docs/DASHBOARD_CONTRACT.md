@@ -68,7 +68,14 @@ are first-class.
   `search_radius_km` (fly-to + zoom), `listing_count` (active STRs — rank
   search results by it, hide zeros), `boundary` (`geography(MultiPolygon,
   4326)`, OSM admin polygon; NULL for parishes, tourist areas and the
-  country row — 528 of 552 Cyprus rows and 34 Athens rows have one).
+  country row — 528 of 552 Cyprus rows and 34 Athens rows have one),
+  `aliases` (`TEXT[]`, nullable — the other spellings people type:
+  "Egkomi" for Engomi, "Limassol" for both Limassol District and the
+  municipality Lemesos; NULL on a row with none and on every Athens row.
+  **Arrives with the areas-data deploy (2026-10)** — until the column is in
+  the database read it tolerantly as `to_jsonb(d) -> 'aliases'` from
+  `dim_areas d`, never as `d.aliases`: a query naming a missing column
+  fails and the endpoint silently serves demo data).
   Core.Noesis 89a9e63 took Cyprus from 157 to 552 rows (409 communities,
   88 quarters; new ids `CYC-…` / `CYQ-…`, old ids and names unchanged).
   Names repeat across levels (e.g. "Agios Ioannis" is a Lefkosia quarter
@@ -183,6 +190,22 @@ On selection: fly the map to `(latitude, longitude)` zoomed to
 `search_radius_km`, filter path A (or B if attribute filters are on) by the
 area. Group suggestions by `area_type`; `parent_id` gives the breadcrumb
 (e.g. Kato Paphos → Pafos → Paphos District).
+
+A name search also matches `aliases` (see the column note for the tolerant
+read). The app does the matching client-side on the full list from
+`/api/dashboard/areas`, which returns `aliases: string[]` per area (`[]`
+when none). An area found only by an alias shows that alias after its
+name ("Engomi · Egkomi"). In the Playground such areas form one trailing
+"Other spellings" group under every name match, so Enter never picks one
+while a name matches (district rows carry their town's name as an alias:
+"lefkosia" must pick the municipality, not Nicosia District). On the
+landing page an alias typed in full ranks under the names that start with
+the query and over those that only contain it ("limassol" → Limassol
+District, Limassol Marina and Limassol Historical Centre, then Lemesos,
+then the "(Limassol)" quarters); a partial alias ranks under every name
+match.
+The first screen's town pictures resolve their town by exact name, then by
+an alias equal to it, a non-district row first.
 
 ### Map pins
 

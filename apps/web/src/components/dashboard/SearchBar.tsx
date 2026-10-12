@@ -47,29 +47,41 @@ interface Row {
   /** Name occurs more than once in dim_areas → this parent (district
    * included) is shown inline: "Agios Ioannis (Lefkosia)". */
   dupParent: string | null;
+  /** Found by this alias alone (no name, district or parent match) → listed
+   * in the trailing group and shown after the name: "Engomi · Egkomi". */
+  alias: string | null;
 }
 
 interface Group {
   key: string;
   label: string;
-  levels: Array<{ type: AreaType; rows: Row[] }>;
+  /** `type: null` = one flat list in listing-count order, no level
+   * headings (the trailing alias group). */
+  levels: Array<{ type: AreaType | null; rows: Row[] }>;
 }
 
-/** Breadcrumb under a result: "Quarter · Lefkosia" (district is the group). */
-function crumb(r: Row): string | null {
+/** Heading of the trailing group that holds the alias-only matches. */
+const ALIAS_GROUP = "Other spellings";
+
+/** Breadcrumb under a result: "Quarter · Lefkosia" (district is the group);
+ * a row outside its district group names the district too. */
+function crumb(r: Row, district: string | null = null): string | null {
   const a = r.area;
   if (a.areaType === "country" || a.areaType === "district") return null;
-  return r.parentName ? `${TYPE_LABEL[a.areaType]} · ${r.parentName}` : TYPE_LABEL[a.areaType];
+  return [TYPE_LABEL[a.areaType], r.parentName, district].filter(Boolean).join(" · ");
 }
 
 /**
  * Area search over dim_areas (all levels — 552 Cyprus rows since the OSM
  * hierarchy of 24 Sep 2026). Substring match on English + Greek names,
  * district and parent name; the best matches by listing count (product
- * decision 11 Jul 2026) are grouped by district, then level. Names that
- * occur more than once (e.g. "Agios Ioannis" quarter of Lefkosia vs the
- * Nicosia community) carry their parent's name. Zero-listing areas are
- * hidden.
+ * decision 11 Jul 2026) are grouped by district, then level. Areas whose
+ * only match is one of their aliases ("Egkomi" → Engomi) follow in one
+ * trailing group, by listing count, each with the alias beside its name:
+ * they never sit above a name match, and Enter picks one only when
+ * nothing else matched. Names that occur more than once (e.g. "Agios
+ * Ioannis" quarter of Lefkosia vs the Nicosia community) carry their
+ * parent's name. Zero-listing areas are hidden.
  *
  * Comparison-aware: the label summarises the active selection(s); when the
  * user armed "+ Compare", the placeholder flips and areas already in the
@@ -140,21 +152,36 @@ export default function SearchBar({
           parent.areaType !== "country"
             ? parent.nameEn
             : null,
+        alias: null,
       });
     }
     const q = query.trim().toLowerCase();
-    const matched = q
-      ? rows.filter(
-          (r) =>
-            r.area.nameEn.toLowerCase().includes(q) ||
-            (r.area.nameEl ?? "").toLowerCase().includes(q) ||
-            (r.area.district ?? "").toLowerCase().includes(q) ||
-            (r.parentName ?? "").toLowerCase().includes(q)
-        )
-      : rows;
+    const matched: Row[] = [];
+    const aliased: Row[] = [];
+    for (const r of rows) {
+      if (
+        !q ||
+        r.area.nameEn.toLowerCase().includes(q) ||
+        (r.area.nameEl ?? "").toLowerCase().includes(q) ||
+        (r.area.district ?? "").toLowerCase().includes(q) ||
+        (r.parentName ?? "").toLowerCase().includes(q)
+      ) {
+        matched.push(r);
+        continue;
+      }
+      // An areas list cached before aliases shipped has none.
+      const hits = (r.area.aliases ?? []).filter((s) => s.toLowerCase().includes(q));
+      // "Makenzy" before "Larnaka - Makenzy" when both hold the query.
+      const alias = hits.find((s) => s.toLowerCase().startsWith(q)) ?? hits[0];
+      if (alias) aliased.push({ ...r, alias });
+    }
     const top = [...matched]
       .sort((a, b) => b.area.listingCount - a.area.listingCount)
       .slice(0, q ? MAX_RESULTS : TOP_N);
+    // Alias-only matches take what room is left, after everything above.
+    const others = aliased
+      .sort((a, b) => b.area.listingCount - a.area.listingCount)
+      .slice(0, MAX_RESULTS - top.length);
 
     // District groups ordered by their best match; levels in LEVEL_ORDER.
     const byDistrict = new Map<string, Row[]>();
@@ -164,7 +191,7 @@ export default function SearchBar({
       list.push(r);
       byDistrict.set(k, list);
     }
-    return [...byDistrict.entries()].map(([k, list]) => ({
+    const out: Group[] = [...byDistrict.entries()].map(([k, list]) => ({
       key: k || "_other",
       label: k ? (index.districtName.get(k) ?? k) : "Other",
       levels: LEVEL_ORDER.map((type) => ({
@@ -172,6 +199,10 @@ export default function SearchBar({
         rows: list.filter((r) => r.area.areaType === type),
       })).filter((l) => l.rows.length),
     }));
+    if (others.length) {
+      out.push({ key: "_aliases", label: ALIAS_GROUP, levels: [{ type: null, rows: others }] });
+    }
+    return out;
   }, [areas, index, query, excludeAreaIds]);
 
   const results = useMemo(
@@ -263,15 +294,19 @@ export default function SearchBar({
                 {g.label}
               </p>
               {g.levels.map((l) => (
-                <div key={l.type}>
-                  {l.type !== "district" && (
+                <div key={l.type ?? "all"}>
+                  {l.type && l.type !== "district" && (
                     <p className="px-3.5 pt-1 text-[14px] font-semibold" style={{ color: UI.faint }}>
                       {LEVEL_HEADING[l.type]}
                     </p>
                   )}
                   {l.rows.map((r) => {
                     const a = r.area;
-                    const sub = crumb(r);
+                    // The alias group spans districts: its rows name theirs.
+                    const sub = crumb(
+                      r,
+                      l.type || !a.district ? null : (index.districtName.get(a.district) ?? a.district)
+                    );
                     return (
                       <button
                         key={a.areaId}
@@ -289,6 +324,7 @@ export default function SearchBar({
                             {r.dupParent && (
                               <span style={{ color: UI.muted }}> ({r.dupParent})</span>
                             )}
+                            {r.alias && <span style={{ color: UI.muted }}> · {r.alias}</span>}
                           </span>
                           {sub && (
                             <span className="text-[14px] block" style={{ color: UI.faint }}>

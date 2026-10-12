@@ -89,6 +89,15 @@ function mondayOnOrBefore(d: Date): Date {
 
 const slugify = (name: string) => name.toLowerCase().replace(/\s+/g, "_");
 
+/** Other spellings of a few demo areas, by slug, as dim_areas.aliases
+ * carries them — so search by alias can be tried without a database.
+ * Every other demo area has none ([]). */
+export const DEMO_AREA_ALIASES: Record<string, string[]> = {
+  limassol: ["Lemesos"],
+  paphos: ["Pafos"],
+  latchi: ["Latsi", "Lakki"],
+};
+
 interface DemoStore {
   listings: ListingDetail[];
   byId: Map<string, ListingDetail>;

@@ -286,7 +286,11 @@ reconcile across views.
 `dim_areas` (552-row Cyprus hierarchy since 2026-09-24 — search bar /
 named-area filtering, active `listing_count` per area, OSM `boundary`
 `geography(MultiPolygon,4326)` on 528 rows; NULL for parishes, tourist
-areas and the country row), `str_listings` (1 row/listing, PostGIS
+areas and the country row; `aliases` `TEXT[]`, nullable — other spellings
+for name search, e.g. "Egkomi" for Engomi — arrives with the areas-data
+deploy (2026-10) and is read tolerantly until then, as
+`to_jsonb(d) -> 'aliases'`, so a database without the column still
+answers), `str_listings` (1 row/listing, PostGIS
 `geog`, GiST-indexed; now carries `district/municipality/community/quarter/
 tourist_area/area_label` (`quarter` = neighbourhood below `community`;
 Athens: OSM polygons, nullable) + `area_id` + `is_active` — §2.4
