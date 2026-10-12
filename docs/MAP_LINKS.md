@@ -25,7 +25,7 @@ and the payload has that shape. Code: `apps/web/src/lib/server/maplink.ts`
 | Var | Where | Meaning |
 |---|---|---|
 | `MAP_LINK_SECRET` | this app + the connector (same value) | HMAC key. Unset here → `/m/*` answers 404 (feature off). |
-| `NOESIS_DASHBOARD_URL` | the connector | This app's public origin. There is none yet — it arrives with the Vercel deploy (ROADMAP §2); until then leave it unset on the connector. |
+| `NOESIS_DASHBOARD_URL` | the connector | This app's public origin. There is none yet — it arrives with the Vercel deploy (Core.Noesis `docs/roadmap.md`, hosting); until then leave it unset on the connector. |
 
 ## Route (`apps/web/app/m/[token]/route.ts`)
 
