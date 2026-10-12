@@ -127,15 +127,6 @@
 .lh-list em { grid-column: 2; grid-row: 1 / span 2; color: var(--th-ink); font-size: 15px; font-style: normal; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .lh-list li.lh-none { display: block; color: var(--th-muted); cursor: default; }
 .lh-try { margin-top: 12px; padding-left: 4px; color: var(--th-muted); font-size: 17px; line-height: 24px; }
-/* The three products under the search, named on the first screen: an icon, the name and one line each, three
-   across at every width, each a link down to its card. Not boxed: they are words on the paper, like the How
-   line's last stop, which says the same. */
-.lh-products { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 16px; width: 100%; margin-top: 28px; }
-.lh-products a { display: flex; flex-direction: column; align-items: flex-start; min-height: 44px; color: var(--th-ink); }
-.lh-products svg { margin-bottom: 8px; }
-.lh-products b { font-size: 17px; font-weight: 600; line-height: 24px; }
-.lh-products span { color: var(--th-muted); font-size: 15px; line-height: 20px; text-wrap: pretty; }
-.lh-products a:hover b { text-decoration: underline 1.5px; text-underline-offset: 4px; }
 /* Where the field is narrow (a phone, and the words' column just above 1024px) the button is its arrow alone,
    so the field keeps room for its own words. */
 @media (max-width: 479px), (min-width: 1024px) and (max-width: 1179px) {
@@ -301,8 +292,7 @@
 /* The town's name in the band: in its corner, since the band shows only part of the town. */
 .lh-named { top: 72px; left: 16px; font-size: 17px; transform: none; transition: opacity 0.4s ease; }
 .lh-named[data-leaving] { opacity: 0; }
-/* Docked at the band's lower right, clear of the connector's round button in the page's lower left corner. */
-.lh-dock { position: absolute; top: auto; right: 16px; bottom: 14px; left: auto; transform: none; }
+.lh-dock { position: absolute; top: auto; bottom: 14px; left: 16px; }
 .lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
 /* Over the plot button's layer, so the pause control and the credit's links stay pressable where they lie on the picture. */
 .lh-credit { position: relative; z-index: 4; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: 13px; line-height: 18px; }
@@ -319,13 +309,12 @@
 .th-stage-h { font-size: var(--th-heading); }
 
 @media (min-width: 640px) {
-  .lh-products { column-gap: 24px; margin-top: 32px; }
   .lh-in { padding: 120px 32px 36px; }
   .lh .th-lede { margin-top: 16px; }
   .lh-find { margin-top: 26px; }
   /* On a tablet the band is taller. */
   .lh-frame { height: 520px; }
-  .lh-dock { right: 32px; bottom: 20px; }
+  .lh-dock { bottom: 20px; left: 32px; }
   .lh-named { top: 96px; left: 32px; }
   .lh-credit { padding-right: 32px; padding-left: 32px; }
 }

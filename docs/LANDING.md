@@ -206,8 +206,9 @@ rim inside, and the shade falls away from it. Its foot is the occupancy
 meter, labelled "43% occupancy" on a line of its own above the bar (owner:
 "instead of x% full lets say occupancy"); the figure left the short-let row
 because the longer word made neighbouring cards overlap in Limassol. In the
-band the docked card sits at the lower right, clear of the connector's round
-button in the page's lower left. After
+band the docked card sits at the lower left, under the town's name. (It was
+moved right for a day to clear a round button that turned out to be Next.js's
+own development badge, which no visitor sees; put back 2026-10-12.) After
 the third everything holds, then leaves. One clock drives it (a
 `requestAnimationFrame` loop in `TownTour`); the canvas dots and the
 pointer are placed from it, the corners and the traced line are CSS
@@ -263,10 +264,13 @@ arrow alone, so the field has room for its placeholder.
 One viewport: a band (an `h2`, "Draw an area. Get it three ways.", and one
 sentence), then the stage. Left, a map with a hand-drawn area whose corners
 the visitor can move.
-Right, "Inside the line": the area's short-lets, long-lets and sales and the
-Playground's button (the three product panels that stood here until
-2026-10-11 are described below as they were; see "After the critique"). From
-1024px a thin line runs from the area to it.
+Right, the three product panels, joined to the area by thin lines from
+1024px. They are where the page first names the products: the first screen
+holds only the headline, the sentence, the search and the map (owner,
+2026-10-12: "the hero should only have the things without the actual
+products", and of the panels, "I prefer it where the products were on the
+second page with the line syncing to the map"). For one day, 2026-10-11, a
+table of the area's figures ("Inside the line") stood here instead.
 
 The stage has one map, the island, which the visitor can zoom and move
 (owner, 2026-10-09: "why not use the full map on the second page?", then
@@ -743,20 +747,21 @@ the address; Privacy and Terms return when their pages exist.
 
 ## After the critique of 2026-10-11
 
-- The first screen names the three products under the search
-  (`.lh-products`, from `products.ts`, which the How line's last stop
-  shares).
+- The first screen named the three products under the search for a day.
+  Taken off on 2026-10-12 at the owner's word; `products.ts` remains for the
+  How line's last stop.
 - The first screen's picture can be plotted on: a button over the frame
   (`.lh-plot`) with a crosshair and an offer beside the pointer ("Plot an
   area in Limassol"); a click asks for the town on show by name
   (`PICK_NAME_EVENT`), and the search box picks it as if it had been typed.
   The tour waits while a mouse is over it.
-- The stage no longer shows the three products (they were told four times on
-  the page): beside the map is "Inside the line", the area's short-lets,
-  long-lets and sales (`StageFigures.tsx`, formerly `ProductPanels.tsx`) and
-  "Open the Playground, it's free"; one line runs from the area to it. The
-  cards below follow the area as before. The How line ends on one sentence
-  naming the products.
+- The stage's three product panels were replaced by "Inside the line", a
+  table of the area's short-lets, long-lets and sales (`StageFigures.tsx`).
+  Reverted on 2026-10-12: `ProductPanels.tsx` is back as it was on the 11th
+  before that change (the Playground's panel still opens on the three
+  markets' table; below 1024px all three start closed), with its lines to
+  the map, and `StageFigures.tsx` is gone. The How line still ends on one
+  sentence naming the products.
 - **Street level for the six towns.** The stage zooms past 8x (16, 32, 64,
   128) only over the six towns the first screen tours: there it draws the
   island's plain shape and the town's street map over it (`IslandBasemap`,

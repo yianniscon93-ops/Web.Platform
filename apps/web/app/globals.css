@@ -285,6 +285,25 @@
 .th-solid { transition: background-color 0.15s, transform 0.15s var(--th-ease); }
 .th-solid:hover { background-color: var(--th-solid-hover) !important; }
 .th-solid:active { transform: scale(0.97); }
+/* A panel's link down the page to its product's section: a text link with a down arrow, the same in all three. */
+.th-more {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 44px;
+  color: var(--th-ink);
+  font-size: 17px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+.th-more > span {
+  text-decoration: underline 1.5px;
+  text-underline-offset: 4px;
+  transition: text-underline-offset 0.2s var(--th-ease);
+}
+.th-more:hover > span { text-underline-offset: 7px; }
+.th-more svg { transition: transform 0.2s var(--th-ease); }
+.th-more:hover svg { transform: translateY(3px); }
 /* The page's filled action: "Show me" in the first screen's search field, "Open the Playground, it's free" below it. */
 .th-go {
   display: inline-flex;
@@ -689,15 +708,27 @@
 .th-panel-head {
   position: relative;
   display: grid;
-  grid-template-columns: 40px minmax(0, 1fr);
+  grid-template-columns: 40px minmax(0, 1fr) 18px;
   column-gap: 14px;
   align-items: start;
   padding: 14px 0;
 }
 .th-panel-icon { display: flex; }
 .th-panel-title { display: flex; flex-wrap: wrap; align-items: baseline; column-gap: 10px; }
-.th-panel-title h3 { font-size: 20px; font-weight: 600; line-height: 26px; }
+.th-panel-title h2 { font-size: 20px; font-weight: 600; line-height: 26px; }
+.th-panel-title button { cursor: pointer; }
+/* The heading's button covers the whole header, and lies over everything in it: the chevron is turned when its
+   panel is open and the icon moves as it opens, and a transformed thing would otherwise come out on top and
+   take the press for itself. */
+.th-panel-title button::after { content: ""; position: absolute; inset: 0; z-index: 1; border-radius: 6px; }
+.th-landing .th-panel-title button:focus-visible { outline: none; }
+.th-panel-title button:focus-visible::after { outline: 2px solid var(--th-focus); outline-offset: 1px; }
+/* Every header can be pressed, the open one to shut it: each says so the same way. */
+.th-panel-head:hover h2 { text-decoration: underline 1.5px; text-underline-offset: 4px; }
 .th-panel-about { color: var(--th-muted); font-size: 17px; line-height: 24px; }
+.th-panel-live { font-size: 17px; font-weight: 500; line-height: 24px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.th-panel-chevron { margin-top: 3px; transition: transform 0.32s var(--th-ease); }
+.th-panel[data-open] .th-panel-chevron { transform: rotate(180deg); }
 .th-panel-body { display: grid; grid-template-rows: 0fr; transition: grid-template-rows 0.32s var(--th-ease); }
 .th-panel[data-open] > .th-panel-body { grid-template-rows: 1fr; }
 /* The clip is let out sideways so a focus ring or the sheet's shadow is not cut. */
@@ -887,6 +918,16 @@
   .th-map-view { --th-u: 1.08; }
   .th-trunk { display: inline; }
   .th-wires { display: block; }
+  /* Beside the filled button the link is "Find out more": the panel is the Playground's and the button has just
+     named it, and the column has no room for the rest. The words stay in the link's name for assistive tech. */
+  .th-actions[data-pair] .th-more-about {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+  }
 }
 @media (min-width: 1280px) {
   .th-hero-in { column-gap: 56px; }
@@ -938,6 +979,12 @@
 @keyframes th-fade {
   from { opacity: 0; }
 }
+@keyframes th-ic-reach {
+  from { transform: translate(4px, 4px); }
+}
+@keyframes th-ic-seat {
+  from { transform: translate(2.5px, 4px); }
+}
 @keyframes th-cue {
   0% { opacity: 0.9; transform: scale(1); }
   45%, 100% { opacity: 0; transform: scale(2.8); }
@@ -949,6 +996,12 @@
   .th-map[data-intro] .th-trunk { stroke-dasharray: 1; animation: th-trace 0.3s var(--th-ease) 1.5s both; }
   .th-wires[data-intro] path { stroke-dasharray: 1; animation: th-trace 0.5s var(--th-ease) 1.7s both; }
   .th-map[data-intro] .th-cue-label { animation: th-fade 0.4s ease-out 1.2s both; }
+  /* An icon makes one small move when the visitor opens its panel: the pointer reaches its corner,
+     the chart line draws, the cable seats into its node. */
+  .th-panel[data-open][data-lively] .th-ic-pointer { animation: th-ic-reach 0.4s var(--th-ease) both; }
+  .th-panel[data-open][data-lively] .th-ic-line { stroke-dasharray: 1; animation: th-trace 0.4s var(--th-ease) both; }
+  .th-panel[data-open][data-lively] .th-ic-node { animation: th-fade 0.15s ease-out 0.25s both; }
+  .th-panel[data-open][data-lively] .th-ic-cable { animation: th-ic-seat 0.4s var(--th-ease) both; }
   /* Until the visitor first moves a corner, one handle sends out a slow ring. */
   .th-map[data-cue] .th-handle[data-cue] i::after {
     content: "";
@@ -962,6 +1015,6 @@
 @media (prefers-reduced-motion: reduce) {
   /* No ring without motion: the inviting corner is filled instead, until a corner is first moved. */
   .th-map[data-cue] .th-handle[data-cue] i { background: var(--th-a); }
-  .th-link, .th-go, .th-go svg, .th-solid, .th-navlink, .th-credit a, .th-reset,
-  .th-handle i, .th-zoom button, .th-draw-here, .th-panel-body, .th-area-fill { transition: none; }
+  .th-link, .th-more > span, .th-more svg, .th-go, .th-go svg, .th-solid, .th-navlink, .th-credit a, .th-reset,
+  .th-handle i, .th-zoom button, .th-draw-here, .th-panel-body, .th-panel-chevron, .th-area-fill { transition: none; }
 }

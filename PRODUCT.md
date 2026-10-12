@@ -22,8 +22,12 @@ Clients work with the data in two ways: they ask the team a question and get
 an answer built for them (tailored reporting, insights and forecasts), or
 they explore it themselves in the Playground.
 
-The owner names three products (2026-10-08), and the landing hero has to say
-exactly what they are and make the visitor want to explore further:
+The owner names three products (2026-10-08). The landing page has to say
+exactly what they are and make the visitor want to explore further; since
+2026-10-12 it does so on its second screen, where lines join the drawn area
+to the three, and not on the first, which holds the headline, the sentence,
+the search and the map ("the hero should only have the things without the
+actual products"):
 
 1. **The Playground**: the dashboard, free to explore, with analytics that
    compare short-term rentals, long-term rentals and sales.
