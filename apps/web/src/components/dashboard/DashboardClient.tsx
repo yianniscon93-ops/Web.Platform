@@ -17,7 +17,7 @@ import {
   Timer,
   X,
 } from "lucide-react";
-import { BRAND } from "@/lib/brand";
+import Wordmark from "@/components/landing/Wordmark";
 import type {
   AreaBoundary,
   AreaInfo,
@@ -36,7 +36,7 @@ import type {
   SlotView,
 } from "@/lib/dashboard/types";
 import { DEFAULT_FILTERS, encodeFilters, type Filters } from "@/lib/dashboard/filters";
-import { fmtDate, fmtInt } from "@/lib/dashboard/format";
+import { fmtInt } from "@/lib/dashboard/format";
 import { FIRST_WEEK, addDays, clampRange, cyprusToday, mondayOf, sundayOf } from "@/lib/dashboard/weeks";
 import { UI } from "./tokens";
 import {
@@ -57,13 +57,15 @@ import CalculatorTab from "./CalculatorTab";
 import HoverCard from "./HoverCard";
 import DateRangeCalendar from "./DateRangeCalendar";
 import Explain from "./Explain";
+import type { MapFocus, MapPlaceMark } from "./MarketMap";
+import { MAP } from "./mapStyle";
 
 const MarketMap = dynamic(() => import("./MarketMap"), {
   ssr: false,
   loading: () => (
     <div
       className="w-full h-full flex items-center justify-center text-base"
-      style={{ background: "#E8EDE3", color: "#697264" }}
+      style={{ background: MAP.land, color: "var(--th-muted)" }}
     >
       Loading map…
     </div>
@@ -111,6 +113,12 @@ function Segmented<T extends string>({
       })}
     </div>
   );
+}
+
+/** "13 Oct": the top bar's dates, which are always recent, so the year goes unsaid. */
+function dayMonth(iso: string | null | undefined): string {
+  const d = iso ? new Date(iso) : null;
+  return d && !Number.isNaN(d.getTime()) ? d.toLocaleDateString("en-GB", { day: "numeric", month: "short" }) : "—";
 }
 
 /** Fly-to zoom from a dim_areas search radius. */
@@ -170,7 +178,7 @@ export default function DashboardClient() {
   // `areaId` = a named area whose boundary the camera should fit once it is
   // loaded (falls back to `focus` when it has none).
   const [mapCam, setMapCam] = useState<{
-    focus: { lat: number; lng: number; zoom: number } | null;
+    focus: MapFocus | null;
     fit: PolygonCoords | null;
     areaId?: string | null;
   }>({ focus: null, fit: null });
@@ -257,7 +265,12 @@ export default function DashboardClient() {
       if (label) setSelectionToast(label);
       if (sel.kind === "area" && sel.area.lat != null && sel.area.lng != null) {
         setMapCam({
-          focus: { lat: sel.area.lat, lng: sel.area.lng, zoom: zoomForRadius(sel.area.radiusKm) },
+          focus: {
+            lat: sel.area.lat,
+            lng: sel.area.lng,
+            zoom: zoomForRadius(sel.area.radiusKm),
+            radiusKm: sel.area.radiusKm,
+          },
           fit: null,
           areaId: sel.area.hasBoundary ? sel.area.areaId : null,
         });
@@ -540,17 +553,29 @@ export default function DashboardClient() {
     [slots]
   );
 
-  // Named selections: the OSM boundary in the slot colour when dim_areas has
-  // one (single and compare mode); otherwise, in compare mode, a centre ring.
+  // Named selections: the OSM boundary when dim_areas has one. A single place
+  // is drawn in the brand mark's hand (ink line, olive corner dots); compared
+  // places keep their slot colours, which the chips and charts name.
   const areaOutlines = useMemo(
     () =>
       slots.flatMap((s) => {
         if (s.selection.kind !== "area") return [];
         const b = boundaries[s.selection.area.areaId];
-        return b ? [{ boundary: b, color: s.color }] : [];
+        return b ? [{ boundary: b, color: s.color, hand: !compare }] : [];
       }),
-    [slots, boundaries]
+    [slots, boundaries, compare]
   );
+
+  // A single place with no boundary on record (or whose boundary failed to
+  // load): named at its centre rather than arriving as a field of dots.
+  const placeMark = useMemo<MapPlaceMark | null>(() => {
+    if (compare) return null;
+    const sel = slots[0].selection;
+    if (sel.kind !== "area" || sel.area.areaType === "country") return null;
+    const a = sel.area;
+    if (a.hasBoundary && boundaries[a.areaId] !== null) return null;
+    return a.lat != null && a.lng != null ? { lat: a.lat, lng: a.lng, name: a.nameEn } : null;
+  }, [slots, compare, boundaries]);
 
   const areaMarks = useMemo(
     () =>
@@ -615,55 +640,31 @@ export default function DashboardClient() {
 
   return (
     <div className="min-h-screen dash-bg" style={{ color: UI.text }}>
-      {/* Top bar */}
-      <header
-        className="sticky top-0 z-40 min-h-14 py-1.5 flex items-center justify-between gap-3 px-4 md:px-6 glass-dark"
-        style={{ borderRadius: 0, borderLeft: "none", borderRight: "none", borderTop: "none" }}
-      >
-        <div className="flex items-center gap-3 min-w-0">
-          <Link href="/" className="flex items-center gap-2.5 shrink-0">
-            <div
-              className="w-7 h-7 rounded-lg flex items-center justify-center"
-              style={{ background: "linear-gradient(135deg, #4A5E3A, #6B7B4F)" }}
-            >
-              <span className="text-white font-display text-base font-bold">P</span>
-            </div>
-            <span className="font-display text-lg font-bold tracking-tight uppercase hidden sm:inline">
-              <span style={{ color: UI.text }}>{BRAND.namePart1}</span>
-              <span style={{ color: UI.oliveMid }}>{BRAND.namePart2}</span>
-            </span>
+      {/* Top bar: the landing's wordmark and the product's name, on the landing's ink (the palette turned over, as
+          its close and foot are) until the Playground itself moves onto the beige. Styles in playground.css. */}
+      <header className="pg-bar sticky top-0 z-40">
+        <div className="pg-bar-brand">
+          <Link href="/" className="pg-bar-home">
+            <Wordmark corners="var(--olive-light)" />
           </Link>
-          <span className="w-px h-5 shrink-0" style={{ background: UI.border }} />
-          <span className="text-base font-medium leading-tight" style={{ color: UI.muted }}>
-            Market Dashboard · Cyprus
-          </span>
+          <span className="pg-bar-rule" aria-hidden="true" />
+          <h1 className="pg-bar-name">Playground</h1>
         </div>
 
-        <div className="flex items-center gap-3">
-          {summary && (
-            <span className="text-[15px] hidden md:flex items-center gap-1.5" style={{ color: UI.muted }}>
-              Calendars through {fmtDate(summary.todateEnd)}
-              {summary.bookingsThrough && <> · bookings to {fmtDate(summary.bookingsThrough)}</>}
+        {summary && (
+          <div className="pg-bar-status">
+            <span className="pg-bar-note">
+              Calendars to {dayMonth(summary.todateEnd)}
+              {summary.bookingsThrough && <>, bookings to {dayMonth(summary.bookingsThrough)}</>}
               <Explain id="freshness" align="right" />
             </span>
-          )}
-          {summary && (
-            <span
-              className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[14px] font-bold tracking-wide whitespace-nowrap shrink-0"
-              style={
-                summary.source === "live"
-                  ? { background: "rgba(143,204,128,0.12)", color: UI.green }
-                  : { background: "rgba(168,194,144,0.1)", color: UI.oliveLight, border: `1px solid ${UI.border}` }
-              }
-            >
-              <span
-                className={`w-1.5 h-1.5 rounded-full ${summary.source === "live" ? "animate-pulse" : ""}`}
-                style={{ background: summary.source === "live" ? UI.green : UI.oliveLight }}
-              />
-              {summary.source === "live" ? "LIVE" : "DEMO DATA"}
-            </span>
-          )}
-        </div>
+            {summary.source === "live" ? (
+              <span className="pg-bar-source">Live data</span>
+            ) : (
+              <span className="pg-bar-source pg-bar-demo">Demo data</span>
+            )}
+          </div>
+        )}
       </header>
 
       {link?.viaLink && (
@@ -695,6 +696,7 @@ export default function DashboardClient() {
           shapes={shapes}
           areaMarks={areaMarks}
           areaOutlines={areaOutlines}
+          placeMark={placeMark}
           fitTo={mapCam.fit}
           fitBoundary={camBoundary ?? null}
           holdCamera={camHold}
@@ -828,7 +830,7 @@ export default function DashboardClient() {
         </div>
 
         {/* Occupancy legend + map-colour window toggle */}
-        <div className="absolute left-3 lg:left-[304px] bottom-10 sm:bottom-3 z-[900] glass-light rounded-lg px-3 py-2">
+        <div className="absolute left-3 lg:left-[304px] bottom-14 sm:bottom-3 z-[900] glass-light rounded-lg px-3 py-2">
           <p className="text-[14px] font-semibold mb-1" style={{ color: "#4C5546" }}>
             Occupancy · {window_ === "todate" ? "season to date" : "next 60 days"}
           </p>

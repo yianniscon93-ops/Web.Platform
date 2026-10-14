@@ -1,0 +1,107 @@
+/* The Playground (/dashboard): the parts that already speak the landing's language. The rest of the screen is
+   still its earlier dark design (globals.css, "Dashboard glassmorphism") until it moves onto the beige. */
+
+/* The top bar: the wordmark and the product's name on the landing's ink, the palette turned over as the landing's
+   close and foot are (DESIGN.md, The Turned Over Rule), with the same tokens. */
+.pg-bar {
+  --pg-ground: var(--th-ink);
+  --pg-ink: var(--th-ground);
+  --pg-muted: color-mix(in srgb, var(--th-ground) 74%, var(--th-ink));
+  --pg-edge: color-mix(in srgb, var(--th-ground) 46%, var(--th-ink));
+  --pg-line: color-mix(in srgb, var(--th-ground) 20%, var(--th-ink));
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 64px;
+  padding: 0 16px;
+  border-bottom: 1px solid var(--pg-line); /* taste-skill-ignore: DESIGN.md's hairline dividers, owner-pinned */
+  background: var(--pg-ground);
+  color: var(--pg-ink);
+  font-family: var(--th-font);
+}
+.pg-bar ::selection { background: var(--pg-ink); color: var(--pg-ground); }
+.pg-bar-brand { display: flex; align-items: center; gap: 14px; min-width: 0; }
+/* The wordmark takes the size of where it is set: the landing foot's 20px on a phone, its nav's 28px from 640px. */
+.pg-bar-home { display: inline-flex; align-items: center; min-height: 44px; color: var(--pg-ink); font-size: 20px; line-height: 1; border-radius: 6px; }
+.pg-bar-home:focus-visible { outline: 2px solid var(--pg-ink); outline-offset: 3px; }
+.pg-bar-rule { flex: none; width: 1px; height: 22px; background: var(--pg-edge); }
+.pg-bar-name { margin: 0; font-size: var(--th-text-body); font-weight: 500; line-height: 1; white-space: nowrap; }
+.pg-bar-status { display: flex; align-items: center; gap: 16px; min-width: 0; }
+.pg-bar-note {
+  display: none;
+  align-items: center;
+  gap: 6px;
+  color: var(--pg-muted);
+  font-size: var(--th-text-fine);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.pg-bar-source { color: var(--pg-muted); font-size: var(--th-text-fine); font-weight: 600; line-height: 22px; white-space: nowrap; }
+/* Demo data is said plainly, as the landing's tag (globals.css .th-tag) turned over: paper on the ink, so it is
+   never taken for the live numbers. */
+.pg-bar-demo {
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 8px;
+  border-radius: 6px;
+  background: var(--pg-ink);
+  color: var(--pg-ground);
+}
+@media (min-width: 640px) {
+  .pg-bar { min-height: 72px; }
+  .pg-bar-home { font-size: 28px; }
+}
+@media (min-width: 768px) {
+  .pg-bar { padding: 0 24px; }
+}
+@media (min-width: 960px) {
+  .pg-bar-note { display: inline-flex; }
+}
+
+/* The map's credit, in the page's face at its fine size, on the map's own land. */
+.pg-map .leaflet-control-attribution {
+  padding: 2px 8px !important;
+  border-top-left-radius: 6px;
+  background: color-mix(in srgb, var(--th-map-land) 88%, transparent) !important;
+  color: var(--th-muted) !important;
+  font-family: var(--th-font);
+  font-size: var(--th-text-fine) !important;
+  line-height: 20px;
+}
+/* A name never breaks inside itself; on a phone the credit takes two lines, and the key above it is lifted clear. */
+.pg-map .leaflet-control-attribution a { color: var(--th-ink) !important; text-decoration: none; white-space: nowrap; }
+.pg-map .leaflet-control-attribution a:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* A picked place with no boundary on record: one corner of the drawn hand at its centre (as on the outline: an
+   olive dot, a white edge, a 1px ink rim among the listing dots), its name under it, set as the landing sets a
+   place name on its maps (weight 600, ink, a halo in the land's colour). */
+/* Leaflet places the marker by its own position: absolute; the dot and the name hang from that point. */
+.pg-place { position: absolute; pointer-events: none; }
+.pg-place i {
+  position: absolute;
+  top: -7px;
+  left: -7px;
+  width: 14px;
+  height: 14px;
+  border: 2px solid var(--th-surface);
+  border-radius: 50%;
+  background: var(--th-a);
+  outline: 1px solid var(--th-ink);
+}
+.pg-place b {
+  position: absolute;
+  top: 12px;
+  left: 0;
+  transform: translateX(-50%);
+  color: var(--th-ink);
+  font-family: var(--th-font);
+  font-size: var(--th-text-body);
+  font-weight: 600;
+  line-height: 1;
+  white-space: nowrap;
+  text-shadow: /* taste-skill-ignore: DESIGN.md's halo for a place name on a map, for legibility, not depth */
+    0 0 2px var(--th-map-land), 0 0 3px var(--th-map-land),
+    1px 1px 0 var(--th-map-land), -1px -1px 0 var(--th-map-land), 1px -1px 0 var(--th-map-land), -1px 1px 0 var(--th-map-land);
+}

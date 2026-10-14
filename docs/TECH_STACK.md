@@ -12,6 +12,16 @@ lib/db          Drizzle ORM schema + Postgres client (schema source of truth
 
 - **Runtime:** Node 24, TypeScript 5.9, pnpm workspace.
 - **UI:** React 19, Tailwind 4, framer-motion, react-leaflet.
+- **Maps:** the Playground's basemap is OpenFreeMap's vector tiles
+  (`tiles.openfreemap.org`, OpenMapTiles schema, OpenStreetMap data; free,
+  no key or account, commercial use allowed, no SLA), decoded and painted on
+  canvas by `apps/web/src/components/dashboard/basemap.ts` in the landing's
+  map colours; no map library beyond Leaflet. Credit: "OpenFreeMap ©
+  OpenMapTiles © OpenStreetMap". The landing's map pictures come from the
+  same tiles at build time (`apps/web/scripts/build-*.mjs`). If OpenFreeMap
+  goes away, a self-hosted Cyprus extract (PMTiles) is the fallback. CARTO's
+  raster basemap was dropped on 2026-10-14 (it began returning "API key
+  required" tiles; its free tier is not for commercial sites).
 - **Data:** PostgreSQL on the Hetzner box (`DATABASE_URL`), populated by the
   data-engineering pipelines (see `docs/DATA_ENGINEERING.md`). The schema is
   owned by data engineering — this app reads only. With no `DATABASE_URL`

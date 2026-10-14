@@ -1,10 +1,23 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { MapContainer, TileLayer, Polygon, Polyline, CircleMarker, useMap, useMapEvents } from "react-leaflet";
+import {
+  AttributionControl,
+  CircleMarker,
+  MapContainer,
+  Marker,
+  Pane,
+  Polygon,
+  Polyline,
+  useMap,
+  useMapEvents,
+} from "react-leaflet";
 import L from "leaflet";
 import type { AreaBoundary, AreaInfo, OccWindow, PointRow, PolygonCoords } from "@/lib/dashboard/types";
 import { occupancyColor } from "@/lib/dashboard/format";
+import { createBasemapLayer } from "./basemap";
+import { plotCorners } from "./areaHand";
+import { HAND, MAP } from "./mapStyle";
 
 const CYPRUS_CENTER: [number, number] = [34.98, 33.25];
 const CYPRUS_ZOOM = 9;
@@ -19,6 +32,18 @@ function radiusForZoom(z: number): number {
 
 function effOcc(p: PointRow, window_: OccWindow): number | null {
   return window_ === "todate" ? p.effOccTodate : p.effOccFwd60;
+}
+
+/** The basemap: OpenFreeMap's vector tiles painted in the landing's map colours (basemap.ts). */
+function Basemap() {
+  const map = useMap();
+  useEffect(() => {
+    const layer = createBasemapLayer().addTo(map);
+    return () => {
+      layer.remove();
+    };
+  }, [map]);
+  return null;
 }
 
 /**
@@ -172,6 +197,62 @@ function AreaOutline({ outline }: { outline: MapAreaOutline }) {
   return <Polygon positions={positions} interactive={false} pathOptions={pathOptions} />;
 }
 
+/* The picked place in the brand mark's hand (areaHand.ts). The tint and the white edge lie under the listings, in
+   the pane "ps-area-under"; the ink line and the corner dots lie over them, in "ps-area-over" (both set up in
+   MarketMap below). None of it takes the pointer, so the listings stay clickable. */
+const HAND_EDGE = {
+  color: HAND.paper,
+  weight: 5,
+  lineJoin: "round" as const,
+  fillColor: HAND.olive,
+  fillOpacity: 0.12,
+};
+const HAND_LINE = { color: HAND.ink, weight: 2, lineJoin: "round" as const, fill: false };
+/* A corner: the olive dot with its white edge, 14px across as the landing stage's are, and outside that a 1px ink
+   edge, because here it sits among listing dots of much the same green (as a card pinned on the landing's busy map
+   takes one). The edge is a white disc with an ink rim; the dot lies on it. */
+const HAND_CORNER_EDGE = { color: HAND.ink, weight: 1, fillColor: HAND.paper, fillOpacity: 1 };
+const HAND_CORNER = { stroke: false, fillColor: HAND.olive, fillOpacity: 1 };
+
+function HandTint({ boundary }: { boundary: AreaBoundary }) {
+  const positions = useMemo(() => boundaryLatLngs(boundary), [boundary]);
+  return <Polygon positions={positions} interactive={false} pathOptions={HAND_EDGE} />;
+}
+
+function HandLine({ boundary }: { boundary: AreaBoundary }) {
+  const positions = useMemo(() => boundaryLatLngs(boundary), [boundary]);
+  const corners = useMemo(() => plotCorners(boundary), [boundary]);
+  return (
+    <>
+      <Polygon positions={positions} interactive={false} pathOptions={HAND_LINE} />
+      {corners.map((c, i) => (
+        <CircleMarker key={`e${i}`} center={c} radius={7.5} interactive={false} pathOptions={HAND_CORNER_EDGE} />
+      ))}
+      {corners.map((c, i) => (
+        <CircleMarker key={`d${i}`} center={c} radius={5} interactive={false} pathOptions={HAND_CORNER} />
+      ))}
+    </>
+  );
+}
+
+/* A picked place with no boundary on record (parishes, tourist areas, and every place in the demo data): its name,
+   set at its centre in the page's type over one olive corner dot. No line is drawn, because none is known. */
+const escapeHtml = (t: string) =>
+  t.replace(/[&<>"']/g, (c) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string);
+
+function PlaceMark({ place }: { place: MapPlaceMark }) {
+  const icon = useMemo(
+    () =>
+      L.divIcon({
+        className: "pg-place",
+        html: `<i></i><b>${escapeHtml(place.name)}</b>`,
+        iconSize: [0, 0],
+      }),
+    [place.name]
+  );
+  return <Marker position={[place.lat, place.lng]} icon={icon} interactive={false} keyboard={false} />;
+}
+
 function ZoomTracker({ onZoom }: { onZoom: (z: number) => void }) {
   const map = useMapEvents({
     zoomend() {
@@ -248,6 +329,17 @@ function DrawLayer({
   );
 }
 
+/** What the camera keeps clear when it fits a place: the search bar along the top (two rows on a phone), the filter
+ * panel down the left from 1024px, and the key and the credit along the foot. */
+function fitPadding(map: L.Map): Pick<L.FitBoundsOptions, "paddingTopLeft" | "paddingBottomRight"> {
+  const w = map.getSize().x;
+  const wide = typeof window !== "undefined" && window.matchMedia?.("(min-width: 1024px)").matches;
+  return {
+    paddingTopLeft: [wide ? 312 : 24, w < 640 ? 132 : 76],
+    paddingBottomRight: [24, w < 640 ? 84 : 52],
+  };
+}
+
 function FitPolygon({
   polygon,
   boundary,
@@ -259,7 +351,7 @@ function FitPolygon({
   boundary: AreaBoundary | null;
   /** Boundary still loading: keep the camera where it is. */
   hold: boolean;
-  focus: { lat: number; lng: number; zoom: number } | null;
+  focus: MapFocus | null;
 }) {
   const map = useMap();
   useEffect(() => {
@@ -276,20 +368,26 @@ function FitPolygon({
     const reduce =
       typeof window !== "undefined" &&
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    const fit = (bounds: L.LatLngBounds, maxZoom: number) => {
+      const options = { ...fitPadding(map), maxZoom };
+      if (reduce) map.fitBounds(bounds, { ...options, animate: false });
+      else map.flyToBounds(bounds, { ...options, duration: 1.1, easeLinearity: 0.25 });
+    };
     if (polygon) {
-      map.fitBounds(L.latLngBounds(polygon.map(([a, b]) => L.latLng(a, b))), {
-        padding: [60, 60],
-        maxZoom: 14,
-        animate: !reduce,
-      });
+      fit(L.latLngBounds(polygon.map(([a, b]) => L.latLng(a, b))), 14);
       return;
     }
     if (boundary) {
       const bounds = boundaryBounds(boundary);
       if (bounds.isValid()) {
-        map.fitBounds(bounds, { padding: [40, 40], maxZoom: 15, animate: !reduce });
+        fit(bounds, 15);
         return;
       }
+    }
+    // A place with no boundary: its search radius, so it fits a phone as it fits a desktop.
+    if (focus?.radiusKm) {
+      fit(L.latLng(focus.lat, focus.lng).toBounds(focus.radiusKm * 2000), 15);
+      return;
     }
     const target: [number, number] = focus ? [focus.lat, focus.lng] : CYPRUS_CENTER;
     const zoom = focus ? focus.zoom : CYPRUS_ZOOM;
@@ -325,10 +423,27 @@ export interface MapAreaMark {
   color: string;
 }
 
-/** A named-area selection's boundary, in its slot colour. */
+/** A named-area selection's boundary, in its slot colour. `hand` draws it in
+ * the brand mark's hand instead (a single place, not a comparison). */
 export interface MapAreaOutline {
   boundary: AreaBoundary;
   color: string;
+  hand?: boolean;
+}
+
+/** A single picked place with no boundary on record: named at its centre. */
+export interface MapPlaceMark {
+  lat: number;
+  lng: number;
+  name: string;
+}
+
+/** Where the camera goes for a picked place; `radiusKm` fits its search radius. */
+export interface MapFocus {
+  lat: number;
+  lng: number;
+  zoom: number;
+  radiusKm?: number | null;
 }
 
 export default function MarketMap({
@@ -339,6 +454,7 @@ export default function MarketMap({
   shapes,
   areaMarks,
   areaOutlines,
+  placeMark,
   fitTo,
   fitBoundary,
   holdCamera,
@@ -356,13 +472,15 @@ export default function MarketMap({
   shapes: MapShape[];
   areaMarks: MapAreaMark[];
   areaOutlines: MapAreaOutline[];
+  /** A single picked place with no boundary on record. */
+  placeMark: MapPlaceMark | null;
   /** Polygon to fit the viewport to (the most recently added drawn area). */
   fitTo: PolygonCoords | null;
   /** Boundary of the most recently picked named area, once loaded. */
   fitBoundary: AreaBoundary | null;
   /** The picked area's boundary is still loading — don't move yet. */
   holdCamera: boolean;
-  focus: { lat: number; lng: number; zoom: number } | null;
+  focus: MapFocus | null;
   onHover: (id: string | null) => void;
   onPick: (id: string) => void;
   onAreaPick: (a: AreaInfo) => void;
@@ -375,17 +493,16 @@ export default function MarketMap({
     <MapContainer
       center={CYPRUS_CENTER}
       zoom={CYPRUS_ZOOM}
+      maxZoom={18}
       zoomControl={false}
-      attributionControl={true}
+      attributionControl={false}
       scrollWheelZoom={true}
-      style={{ width: "100%", height: "100%", background: "#E8EDE3" }}
+      className="pg-map"
+      style={{ width: "100%", height: "100%", background: MAP.land }}
     >
-      {/* Light basemap only — dashboard chrome is dark, the map stays light. */}
-      <TileLayer
-        url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
-        attribution="&copy; OpenStreetMap &copy; CARTO"
-        subdomains="abcd"
-      />
+      {/* The landing's map, painted from open vector tiles; the credit is the map's only text. */}
+      <Basemap />
+      <AttributionControl position="bottomright" prefix={false} />
 
       <ZoomTracker onZoom={setZoom} />
 
@@ -400,40 +517,58 @@ export default function MarketMap({
 
       <AreaMarkersLayer areas={areas} zoom={zoom} drawing={drawing} onAreaPick={onAreaPick} />
 
-      {shapes.map((s, i) => (
-        <Polygon
-          key={`shape-${i}`}
-          positions={s.coords}
-          pathOptions={{
-            color: "#1F2A16",
-            weight: 2.5,
-            fillColor: s.color,
-            fillOpacity: 0.16,
-          }}
-        />
-      ))}
+      {/* Two panes round the listings. The dots' canvas is made afresh whenever the listings or the filters change,
+          which puts it over anything else in the overlay pane, so what must show over the dots has a pane of its
+          own above it (450, under the markers' 600), and a picked place's tint one below it (390). Neither pane
+          takes the pointer: the dots under them stay hoverable and clickable. */}
+      <Pane name="ps-area-under" style={{ zIndex: 390, pointerEvents: "none" }}>
+        {areaOutlines.map((o, i) => (o.hand ? <HandTint key={`tint-${i}`} boundary={o.boundary} /> : null))}
+      </Pane>
 
-      {/* Named selections with a dim_areas boundary: the outline in the slot
-          colour. Non-interactive so pins underneath stay clickable. */}
-      {areaOutlines.map((o, i) => (
-        <AreaOutline key={`outline-${i}-${o.color}`} outline={o} />
-      ))}
+      <Pane name="ps-area-over" style={{ zIndex: 450, pointerEvents: "none" }}>
+        {shapes.map((s, i) => (
+          <Polygon
+            key={`shape-${i}`}
+            positions={s.coords}
+            interactive={false}
+            pathOptions={{
+              color: "#1F2A16",
+              weight: 2.5,
+              fillColor: s.color,
+              fillOpacity: 0.16,
+            }}
+          />
+        ))}
 
-      {/* Areas without a boundary (parishes, tourist areas, demo data): a
-          slot-coloured ring around the area centre instead. */}
-      {areaMarks.map((m, i) => (
-        <CircleMarker
-          key={`mark-${i}`}
-          center={[m.lat, m.lng]}
-          radius={14}
-          pathOptions={{
-            color: m.color,
-            weight: 3,
-            fillColor: m.color,
-            fillOpacity: 0.15,
-          }}
-        />
-      ))}
+        {/* Named selections with a dim_areas boundary: a single place in the
+            brand mark's hand, compared places in their slot colours. */}
+        {areaOutlines.map((o, i) =>
+          o.hand ? (
+            <HandLine key={`hand-${i}`} boundary={o.boundary} />
+          ) : (
+            <AreaOutline key={`outline-${i}-${o.color}`} outline={o} />
+          )
+        )}
+
+        {/* Areas without a boundary (parishes, tourist areas, demo data): a
+            slot-coloured ring around the area centre instead. */}
+        {areaMarks.map((m, i) => (
+          <CircleMarker
+            key={`mark-${i}`}
+            center={[m.lat, m.lng]}
+            radius={14}
+            interactive={false}
+            pathOptions={{
+              color: m.color,
+              weight: 3,
+              fillColor: m.color,
+              fillOpacity: 0.15,
+            }}
+          />
+        ))}
+      </Pane>
+
+      {placeMark && <PlaceMark place={placeMark} />}
 
       {drawing && <DrawLayer onComplete={onPolygonComplete} onCancel={onDrawCancel} />}
       <FitPolygon polygon={fitTo} boundary={fitBoundary} hold={holdCamera} focus={focus} />
