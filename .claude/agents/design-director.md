@@ -34,7 +34,8 @@ Precedence, highest first:
 
 1. **The owner's recorded decisions** — the brief, memory, `DESIGN.md`,
    `PRODUCT.md`. Beige ground, olive works and saffron marks, Google Sans,
-   liquid-glass surfaces, hairline dividers, the name picked out of the
+   glass only on what floats (nav over the map, the search, the hero's
+   pinned cards), hairline dividers, the name picked out of the
    headline in olive, the 15px landing / 14px dashboard text floors: all
    pinned. Every skill agrees that the brief wins; hold them to it.
 2. **Impeccable** — the project's own design system and process. Its context
