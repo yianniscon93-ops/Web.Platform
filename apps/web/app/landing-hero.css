@@ -8,14 +8,22 @@
 .lh { position: relative; overflow-x: clip; background: var(--th-ground); color: var(--th-ink); }
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 96px 16px 24px; }
 .lh-copy { display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
-.lh .th-h1 { align-self: auto; font-size: clamp(2.5rem, 7vw, 3.5rem); text-wrap: balance; }
+/* The headline is three lines, each set as a line. The longest ("Plot your next move") is 9.02em wide in this
+   face at this weight and tracking, so the size is the column's width over 9.2, up to a cap: the three lines
+   hold at every width, and no word is left alone on a fourth (2026-10-13). */
+.lh .th-h1 { align-self: auto; font-size: min(3.5rem, calc((100vw - 32px) / 9.2)); white-space: nowrap; }
+.lh-line { display: block; }
 /* The first screen's sentence is read beside the page's largest words: the page's one face, Google Sans, a size up
    from the page's other ledes, its lines kept even so the last is never two stray words. A serif was tried for
    it on 2026-10-10 and dropped the same hour ("I hate these fonts"): the page keeps one voice, and the sentence
    gets its difference from size, weight and ink, not a second family. */
-.lh .th-lede { align-self: auto; margin: 16px 0 0; font-size: var(--th-text-lead); line-height: 1.5; text-wrap: balance; }
-/* What is fresh and what the visitor gets, picked out of the sentence in ink: the rest of it is how. */
-.lh .th-lede b { color: var(--th-ink); font-weight: 500; }
+.lh .th-lede { align-self: auto; display: grid; row-gap: 8px; max-width: 34em; margin: 20px 0 0; font-size: var(--th-text-body); }
+/* Its two sentences are two tiers (2026-10-13; until then one paragraph in the muted tone with words picked out
+   of it in ink, which read as patches). What is here, in ink at 500, its lines kept even so the last is never
+   one stray word; then what it is for, a size down in the muted tone. The leading is closer than a paragraph's
+   (1.33 to 1.4), since each tier is two or three lines read at a glance under a headline set at 1.04. */
+.lh-what { color: var(--th-ink); font-size: var(--th-text-lead); font-weight: 500; line-height: 28px; letter-spacing: -0.005em; text-wrap: balance; }
+.lh-for { font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
 /* The name, picked out of the headline's own letters ("Plot… …sights") in the brand's olive, the colour of the
    dots in the wordmark: 6.3:1 on the ground, where the saffron (and the light orange before it) was 1.9:1
    (owner, 2026-10-12: "reconsider whether the Plot and the sights should be saffron or olive"). */
@@ -33,7 +41,8 @@
   inherits: true;
   initial-value: 24%;
 }
-.lh-find { width: 100%; max-width: 540px; margin-top: 24px; }
+/* More room above the field than between the headline and its sentence: the words are one group, the field the next. */
+.lh-find { width: 100%; max-width: 540px; margin-top: 32px; }
 .lh-box {
   --gx: 24%;
   position: relative;
@@ -279,8 +288,9 @@
 
 @media (min-width: 640px) {
   .lh-in { padding: 120px 32px 36px; }
-  .lh .th-lede { margin-top: 16px; }
-  .lh-find { margin-top: 26px; }
+  .lh .th-h1 { font-size: min(3.5rem, calc((100vw - 64px) / 9.2)); }
+  .lh .th-lede { margin-top: 24px; }
+  .lh-find { margin-top: 36px; }
   /* On a tablet the band is taller. */
   .lh-frame { height: 520px; }
   .lh-dock { bottom: 20px; left: 32px; }
@@ -292,9 +302,10 @@
   .lh { display: grid; min-height: max(100svh, 720px); }
   .lh-in { display: flex; align-items: center; width: 100%; padding: 112px 64px 72px; pointer-events: none; }
   .lh-copy { width: 42%; max-width: 580px; pointer-events: auto; }
-  .lh .th-h1 { font-size: clamp(3rem, 4.4vw, 4.25rem); line-height: 1.04; }
-  .lh .th-lede { max-width: 27em; margin-top: 24px; font-size: var(--th-text-lead); }
-  .lh-find { margin-top: 32px; }
+  /* The column is 42% of the page's inner width, 580px at most. */
+  .lh .th-h1 { font-size: min(4rem, calc((min(100vw, 1440px) - 128px) * 0.42 / 9.2)); line-height: 1.04; }
+  .lh .th-lede { max-width: none; margin-top: 24px; }
+  .lh-find { margin-top: 36px; }
   .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
   .lh-frame { position: absolute; inset: 0; height: auto; }
   .lh-sheet {
@@ -323,7 +334,10 @@
 /* The sentence under the headline takes its full size only where its column is wide enough for it to stay at
    three lines; between 1024 and 1279px it is a step down. */
 @media (min-width: 1280px) {
-  .lh .th-lede { font-size: 24px; }
+  .lh .th-lede { row-gap: 10px; margin-top: 28px; }
+  .lh-what { font-size: 24px; line-height: 32px; letter-spacing: -0.01em; }
+  .lh-for { font-size: var(--th-text-lead); line-height: 28px; }
+  .lh-find { margin-top: 40px; }
 }
 /* Up to 1440px three cards share a small map: a price goes without its "a night" or "a month", which the
    market's name beside it already says. */
@@ -374,3 +388,64 @@
   .lh-stopper, .lh-sheet .lh-map, .lh-over .lh-map, .lh-stop, .lh-dots, .lh-pin, .lh-named, .lh-area-fill, .lh-lead { transition: none; }
   .lh-sheet .lh-map { translate: 0 0; }
 }
+
+/* ── The opening ───────────────────────────────────────────── */
+/* On the first page of a visit the name is drawn where the words will be, then goes up to the nav as the words
+   come in and the picture starts to draw (owner, 2026-10-12; lib/landing/opening.ts has the whole of it). The
+   document is marked before the first paint, so everything here is in place from the first frame, and everything
+   up to the closed "o" is played here, by the stylesheet alone: the name's two halves rise, the tour's pointer
+   comes to the plot's first corner, and the line runs the outline once with the pointer on its end, each corner
+   dropping in as it is reached. A page whose script is late still shows the whole name, never one with a letter
+   missing. Opening.tsx plays what follows. The map is not touched: only what is drawn over it waits. Whatever is
+   held back is held by an animation with an end, never by a plain rule, so a page whose script never runs
+   still shows its words, five seconds in. */
+.lh-copy { position: relative; }
+.op { display: none; }
+html[data-opening] .op {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  container-type: inline-size;
+  pointer-events: none;
+  animation: op-bail 5s linear forwards;
+}
+/* The name fills the column the words are set in, so it is the largest thing on the screen while it is there. */
+.op-name { font-size: min(20cqw, 128px); transform-origin: 0 0; will-change: transform; }
+.op-half { display: inline-block; animation: op-rise 0.42s var(--th-ease) backwards; }
+.op-half:last-child { animation-delay: 0.08s; }
+/* The plot: the line from 0.62s, for 0.82s at an even pace (the mark's own intro); the corners' moments are set
+   on each (Opening.tsx), and the first answers again as the line closes on it. */
+.op-line { animation: op-draw 0.82s linear 0.62s both; }
+.op-corner { transform-box: fill-box; transform-origin: center; animation: op-pop 0.36s var(--th-ease) both; }
+.op-corner:first-child { animation: op-pop 0.36s var(--th-ease) both, op-answer 0.32s var(--th-ease); }
+/* The pointer rides the end of the line, upright. Where a path cannot be followed there is no pointer, and the
+   line draws by itself. */
+.op-pen { opacity: 0; }
+.op-pen path { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.6px; stroke-linejoin: round; vector-effect: non-scaling-stroke; }
+@supports (offset-path: path("M0 0L1 1")) {
+  .op-pen { offset-rotate: 0deg; animation: op-pen-in 0.2s linear 0.42s both, op-pen-go 0.82s linear 0.62s both; }
+}
+/* The pointer once it has left the name: it grows to the tour's size about its tip as it crosses to the map. */
+.op-pointer { transform-origin: 4px 3px; will-change: transform; }
+/* The words wait for the name to leave, and what is drawn over the map waits for the words. By opacity, not
+   visibility: a card pinned on the map sets its own visibility, and would show through. */
+html[data-opening="on"] .lh-copy > :not(.op) { animation: op-wait 5s step-end; }
+html[data-opening="on"] .lh-over { animation: op-wait 5s step-end; }
+.lh-over[data-held] { opacity: 0; }
+/* So do the tour's own control and the key to its listings: there is no tour yet, and no listing on the map.
+   The map's credit stays. */
+html[data-opening="on"] .lh-credit > :is(.lh-stopper, .lh-key) { animation: op-away 5s step-end; }
+/* The nav's own name stays out until the large one has arrived on it. */
+html[data-opening] header.th-landing .wm { animation: op-away 5s step-end; }
+@keyframes op-rise { from { opacity: 0; transform: translateY(0.16em); } }
+@keyframes op-draw { from { opacity: 0; stroke-dasharray: 0 1; } 2% { opacity: 1; } to { opacity: 1; stroke-dasharray: 1 1; } }
+@keyframes op-pop { 0% { transform: scale(0); } 15% { transform: scale(1.5); } 100% { transform: scale(1); } }
+@keyframes op-answer { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.4); } }
+@keyframes op-pen-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes op-pen-go { from { offset-distance: 0%; } to { offset-distance: 100%; } }
+@keyframes op-wait { from, to { opacity: 0; } }
+@keyframes op-away { from, to { visibility: hidden; } }
+/* Left to itself the name fades at the end of its time, as the words show. */
+@keyframes op-bail { 0%, 96% { opacity: 1; visibility: visible; } 100% { opacity: 0; visibility: hidden; } }

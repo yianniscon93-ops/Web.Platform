@@ -13,8 +13,37 @@ Then "How the numbers are made", and the close. Product facts live in
 in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
 the stage: its component is still `DrawHero`.
 
+**2026-10-13: nothing stands between the first screen and the products.**
+The owner, after reading PriceLabs' site (hello.pricelabs.co) as a model for
+type and wording, found the stage's map redundant ("the map on the second
+page is redundant"). A screen of the market in numbers was built in its
+place and rejected the same day ("Too much information", "no clear section
+difference", "you keep the options of areas", "it is a mess"); nine
+captured numbers sections and three simpler bands were then put to him
+(https://claude.ai/artifact/N3siUE8hdKhvxtFu49rgyC) and he liked none, and
+chose to have no second screen at all. So the first screen is followed by
+the product cards. The cards are about the whole island: `IslandSource.tsx`
+asks for its figures on the server and `PublishIsland.tsx` (which draws
+nothing) hands them to the cards through `areaContext`; with no map
+counting listings, `countsFailed` is true and `dots` null, and the cards
+use the API's counts. The first screen's search opens the Playground on the
+picked place (`/dashboard?area=<id>`). `DrawHero`, `AreaMap`,
+`ProductPanels` and the island basemap are still in the tree and no longer
+mounted; the sections on the stage below describe them as they were. Live
+counts remain in "How the numbers are made".
+
+The headline, chosen by the owner the same day from four: "Plot your next
+move in Cyprus property. Get the insights." Its three lines are set as
+lines, and the type is sized from the column's width so the longest always
+fits (`.lh .th-h1`, `.lh-line`). The sentence under it is two tiers: "Short-lets,
+long-lets, homes and plots for sale: the whole market in one view, updated
+every day." in ink at weight 500 (24px/32px from 1280px, 20px/28px below),
+then "Decide where to buy, what to charge and what to advise." a size down
+in the muted tone (`.lh-what`, `.lh-for`). Google Sans stays.
+
 Page order (`apps/web/app/page.tsx`): `Nav`, `LandingHero` (the first
-screen), `DrawHero` (the stage, `#draw`), `ProductSections`
+screen), `IslandSource` (draws nothing; until 2026-10-13 `DrawHero`, the
+stage, `#draw`, stood here), `ProductSections`
 (the stack: `#playground`, `#reports`, `#connector`, and `CTASection`,
 `#access`, handed in as its last sheet, with `HowSection`, `#how`, before
 it), `Footer`.

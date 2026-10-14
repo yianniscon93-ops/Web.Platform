@@ -3,7 +3,7 @@
 import { createContext, useContext, useState, type Dispatch, type ReactNode, type SetStateAction } from "react";
 import type { InvestStats, PolygonCoords, RentalStats, SelectionStats } from "@/lib/dashboard/types";
 import { areaName } from "./areaLines";
-import { ISLAND_AREA, type DrawnArea } from "./compare";
+import { CYPRUS_AREA, type DrawnArea } from "./compare";
 
 /** What the three endpoints the hero asks returned for the area. Any of them may be missing. */
 interface HeroFigures {
@@ -13,9 +13,10 @@ interface HeroFigures {
 }
 
 /**
- * The area the visitor has on the hero's map, and what the hero knows about
- * it. The hero publishes it; the product sections below read it, so the whole
- * page is about one area.
+ * The place the page is about, and what is known of it. The second screen (PlaceNumbers) publishes it: the whole
+ * island at first, then the place the visitor picks. The product sections below read it, so the whole page is
+ * about one place. Until 2026-10-13 the stage's map published a hand-drawn area here (DrawHero); the fields a
+ * drawn area needed (`changed`, `own`, `dots`) are kept for the cards and are now always at rest.
  */
 export interface HeroArea {
   place: DrawnArea;
@@ -48,12 +49,12 @@ export interface HeroArea {
   playgroundHref: string;
 }
 
-/** What the sections show before the stage has published anything: the map it opens on, as first drawn, still loading. */
+/** What the sections show before the second screen has published anything: the whole island, still loading. */
 const DEFAULT_HERO_AREA: HeroArea = {
-  place: ISLAND_AREA,
-  polygon: ISLAND_AREA.polygon,
+  place: CYPRUS_AREA,
+  polygon: CYPRUS_AREA.polygon,
   changed: false,
-  name: areaName(ISLAND_AREA.name, false),
+  name: areaName(CYPRUS_AREA.name, false),
   count: null,
   own: {},
   countsFailed: false,

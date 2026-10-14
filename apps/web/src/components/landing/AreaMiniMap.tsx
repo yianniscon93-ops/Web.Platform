@@ -54,7 +54,9 @@ export default function AreaMiniMap({
     view = zoomedView(WHOLE, Math.min(maxZoomAt(lat, lng), Math.max(1, z)), lat, lng);
   }
   const seen: DrawnArea = cut ? { ...place, view } : place;
-  const ring: Pt[] = polygon.map(([lat, lng]) => project(view, lat, lng));
+  // The whole island is its own outline: its area is the map's bounds, which are not drawn round it.
+  const whole = place.frame != null && polygon === place.frame;
+  const ring: Pt[] = whole ? [] : polygon.map(([lat, lng]) => project(view, lat, lng));
   const outline = ringPath(ring);
   // The hero's dots are in its own window's units: in another window each is placed again from its ground. They
   // were spaced for the hero's window, which is closer in, so here one is kept to each square a dot and a bit
@@ -86,14 +88,14 @@ export default function AreaMiniMap({
       className="ps-bubble ps-minimap"
       data-play={lively ? "" : undefined}
       role="img"
-      aria-label={`Map with ${name} outlined${shown ? ` and the listings inside it marked` : ""}`}
+      aria-label={whole ? `Map of ${name}` : `Map with ${name} outlined${shown ? ` and the listings inside it marked` : ""}`}
     >
       <div className="ps-minimap-view">
         {/* The island's picture, placed for the window shown, with the fill over it, as on the stage. */}
         <IslandBasemap area={seen} />
-        {fill}
+        {!whole && fill}
         <svg viewBox={`0 0 ${VIEW_W} ${VIEW_H}`} aria-hidden="true">
-          <path className="ps-minimap-line" d={outline} vectorEffect="non-scaling-stroke" />
+          {!whole && <path className="ps-minimap-line" d={outline} vectorEffect="non-scaling-stroke" />}
           {shades.map((d, step) => d && <path key={step} className="ps-minimap-dots" data-step={step} d={d} />)}
         </svg>
         {ring.map(([x, y], i) => (

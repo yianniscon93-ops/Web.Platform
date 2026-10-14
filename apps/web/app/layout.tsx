@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Inter, Barlow_Condensed } from "next/font/google";
 import "./globals.css";
+import { OPENING_SCRIPT } from "@/lib/landing/opening";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -41,8 +42,14 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${inter.variable} ${barlowCondensed.variable}`}
+      // The script below marks the document for the landing's opening before React takes it over.
+      suppressHydrationWarning
     >
-      <body className="antialiased">{children}</body>
+      <body className="antialiased">
+        {/* Whether the landing page opens on its name is settled here, ahead of the first paint (lib/landing/opening.ts). */}
+        <script dangerouslySetInnerHTML={{ __html: OPENING_SCRIPT }} />
+        {children}
+      </body>
     </html>
   );
 }

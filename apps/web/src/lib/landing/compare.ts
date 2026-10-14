@@ -59,6 +59,19 @@ export const ISLAND_AREA: DrawnArea = {
 };
 
 /**
+ * The whole island as a place: what the second screen's figures open on, and what the product cards are about
+ * until the visitor picks somewhere. Its area is the island's own bounds.
+ */
+export const CYPRUS_AREA: DrawnArea = {
+  key: "CY",
+  name: "Cyprus",
+  inGreek: "στην Κύπρο",
+  frame: ISLAND_AREA.frame,
+  polygon: ISLAND_AREA.frame!,
+  cue: ISLAND_AREA.cue,
+};
+
+/**
  * The two places the page has street maps of: the Protaras–Pernera strip on the
  * east coast and Kato Paphos on the west. The stage no longer shows them; the
  * Playground card's head to head still compares them with the area on the map,
@@ -150,13 +163,15 @@ export const PICK_EVENT = "ps:pick";
 export const PICK_NAME_EVENT = "ps:pick-name";
 
 const KM_PER_DEG = 111.2;
+/** How far from a picked place's centre its area reaches, in km: the place's own reach, never under 4 or over 28. */
+export const pickedReach = (place: PickedPlace) => Math.min(28, Math.max(4, place.radiusKm ?? 5));
 /**
  * The stage's area for a picked place, drawn round the place itself: a rough ring of the place's own reach
  * (never under 4 km, so its corners can be held), not its boundary. It is on the island's map; the stage sets
  * the window to the ground round it (DrawHero).
  */
 export function pickedArea(place: PickedPlace): DrawnArea {
-  const reach = Math.min(28, Math.max(4, place.radiusKm ?? 5));
+  const reach = pickedReach(place);
   const kx = Math.cos((place.lat * Math.PI) / 180);
   const at = (km: number, bearing: number): [number, number] => [
     Math.round((place.lat + (km * Math.cos(bearing)) / KM_PER_DEG) * 1e4) / 1e4,

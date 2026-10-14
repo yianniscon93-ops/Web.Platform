@@ -37,7 +37,7 @@ export const inWords = (n: number) => NUMBERS[n] ?? int(n);
 export const COUNTING = "Counting short-\u2060lets inside";
 
 /** What a line or a figure block says while the first answer for the area is on its way. */
-export const READING = "Reading the listings inside this line";
+export const READING = "Reading the listings here";
 
 /** What stands in for a figure when the API cannot be reached. */
 export const UNREACHABLE = "The listings can’t be reached just now.";
@@ -86,14 +86,14 @@ export function playgroundLine(count: number, s: Rates | null): string {
 
 /** One sentence on the area from the count, occupancy and rate. */
 export function finding(count: number, s: Rates | null): string {
-  if (count === 0) return "No short-\u2060lets sit inside this line. Draw it over more streets.";
-  if (count < MIN_LISTINGS) return `Only ${lets(count)} inside this line, too few to give a figure. Draw it wider.`;
+  if (count === 0) return "No short-\u2060lets are tracked here. Try a larger place.";
+  if (count < MIN_LISTINGS) return `Only ${lets(count)} here, too few to give a figure. Try a larger place.`;
   const occ = s?.effOccTodate == null ? null : pct(s.effOccTodate);
   const rate = s?.medianRate == null ? null : euro(s.medianRate);
-  if (occ && rate) return `Short-\u2060lets inside this line fill ${occ} of nights ${SEASON}, at a median ${rate} a night.`;
-  if (occ) return `Short-\u2060lets inside this line fill ${occ} of nights ${SEASON}.`;
-  if (rate) return `Short-\u2060lets inside this line ask a median ${rate} a night.`;
-  return `${lets(count)} sit inside this line.`;
+  if (occ && rate) return `Short-\u2060lets here fill ${occ} of nights ${SEASON}, at a median ${rate} a night.`;
+  if (occ) return `Short-\u2060lets here fill ${occ} of nights ${SEASON}.`;
+  if (rate) return `Short-\u2060lets here ask a median ${rate} a night.`;
+  return `${lets(count)} are tracked here.`;
 }
 
 /** A week of the series, for a sentence or an axis: its day, month and year, and when it began. */
@@ -229,7 +229,7 @@ export function reading(count: number, s: (Rates & Pick<SelectionStats, "weekly"
   if (!facts) return finding(count, s);
   const { fullest, quietest } = facts;
   return (
-    `The fullest week inside this line began ${fullest.label}, at ${pct(fullest.v)}. ` +
+    `The fullest week here began ${fullest.label}, at ${pct(fullest.v)}. ` +
     `The quietest began ${quietest.label}, at ${pct(quietest.v)}.`
   );
 }

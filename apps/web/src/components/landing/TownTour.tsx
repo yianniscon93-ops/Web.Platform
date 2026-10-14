@@ -4,6 +4,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Pause, Play } from "lucide-react";
 import { euro, int, pct } from "@/lib/landing/areaLines";
 import { listingPoints } from "@/lib/landing/listingPoints";
+import { OPENING_TOUR_LEAD_MS, OPENING_WORDS, openingState } from "@/lib/landing/opening";
 import { inPolygon } from "@/lib/landing/polygon";
 import type { TourArea, TourMarket, TourStop, TownPt } from "@/lib/landing/tour";
 
@@ -193,6 +194,12 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   const [wide, setWide] = useState(true);
   // True for a visitor who has asked for no motion: the first town stays, and there is no tour to pause.
   const [still, setStill] = useState(false);
+  // True while the opening is drawing the name beside the picture (lib/landing/opening.ts): the first town is a
+  // bare map until the words come in, and is then drawn from its first corner, as every later town is.
+  const [held, setHeld] = useState(false);
+  // True for that first town, from when it is held until the tour leaves it: the opening's pointer is already on
+  // its first corner when it is let go, so its listings and its first line start at once, with no lead-in.
+  const [handed, setHanded] = useState(false);
 
   const root = useRef<HTMLDivElement>(null);
   const over = useRef<HTMLDivElement>(null);
@@ -210,7 +217,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   // When each of the stop's areas starts being drawn and is closed, and when the stop ends.
   const times = useMemo(() => {
     const set = wide ? SET_MS : SET_BAND_MS;
-    let t = DRAW_AT;
+    let t = handed ? OPENING_TOUR_LEAD_MS : DRAW_AT;
     const areas = stop.areas.map((a) => {
       const from = t;
       const closed = from + a.ring.length * CORNER_MS;
@@ -218,7 +225,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       return { from, closed };
     });
     return { areas, set, end: t - MOVE_MS + HOLD_MS };
-  }, [stop, wide]);
+  }, [stop, wide, handed]);
 
   // The listings on a town's map: where each is, how full, and which of the town's areas it is inside. They are
   // made for the town showing and, once the tour is going to move, for the next one, so a visitor is not sent
@@ -276,6 +283,24 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   }, []);
 
   useEffect(() => {
+    if (openingState() !== "on") return;
+    setHeld(true);
+    setHanded(true);
+    setToured(true);
+    setDrawn(0);
+    setAim(0);
+    clock.current = 0;
+    const release = () => setHeld(false);
+    window.addEventListener(OPENING_WORDS, release);
+    // Should the opening never hand over, the tour sets off by itself when the stylesheet lets the words through.
+    const late = window.setTimeout(release, 5000);
+    return () => {
+      window.removeEventListener(OPENING_WORDS, release);
+      window.clearTimeout(late);
+    };
+  }, []);
+
+  useEffect(() => {
     const mq = window.matchMedia("(min-width: 1024px)");
     const on = () => setWide(mq.matches);
     on();
@@ -293,6 +318,8 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   // the page is showing, and the visitor is neither typing in the search box nor has stopped the tour.
   const mine = dots[stopAt] ?? null;
   useEffect(() => {
+    // Nothing is drawn, and no time passes, until the opening hands over.
+    if (held) return;
     const d = mine;
     // The tour does not leave a town until the next one's map has come: it never shows areas on bare paper.
     const ready = () => maps.current[next]?.complete ?? false;
@@ -315,7 +342,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const back = t > times.end ? Math.max(0, 1 - (t - times.end) / OUT_MS) : Math.min(1, Math.max(0, (t - first) / RECEDE_MS));
       // On arrival the first town is complete: its listings are simply there, in their colours (it is painted at
       // the end of its stop, past every listing's moment).
-      const shown = (i: number) => (toured ? Math.min(1, Math.max(0, (t - DOTS_AT - d.late[i]) / 240)) : 1);
+      const shown = (i: number) => (toured ? Math.min(1, Math.max(0, (t - (handed ? 0 : DOTS_AT) - d.late[i]) / 240)) : 1);
       // How far into its pop a listing inside an area is: below 0 the wave has not reached it, from 1 it is settled.
       const into = (i: number) => (t - times.areas[d.area[i]].closed - d.wave[i]) / POP_MS;
       const grey = tone("--th-dot-out");
@@ -423,7 +450,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     return () => cancelAnimationFrame(raf);
     // `go` and `paint` are the stop's own: the effect is the stop's.
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [stopAt, mine, stopped, toured, still, times]);
+  }, [stopAt, mine, stopped, toured, still, held, handed, times]);
 
   function go() {
     setWas(stopAt);
@@ -432,6 +459,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     setAim(0);
     setLeaving(false);
     setToured(true);
+    setHanded(false);
     clock.current = 0;
   }
 
@@ -451,8 +479,9 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   // out once for the stop and held; the stop's clock moves it, so it waits whenever the clock does.
   useEffect(() => {
     const el = pointer.current;
-    if (!el || !toured) return;
-    const start = DRAW_AT - POINTER_IN;
+    // Held, the stop is put down afresh when it is let go, with a pointer of its own.
+    if (!el || !toured || held) return;
+    const start = times.areas[0].from - POINTER_IN;
     const total = times.end - HOLD_MS + POINTER_IN - start;
     const frames: Keyframe[] = [];
     stop.areas.forEach((a, k) => {
@@ -475,7 +504,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       anim.cancel();
       drawing.current = null;
     };
-  }, [stopAt, toured, stop, times]);
+  }, [stopAt, toured, held, stop, times]);
 
   // The area drawn last: below 1024px it is the one whose figures show.
   const now = Math.min(stop.areas.length, drawn) - 1;
@@ -520,11 +549,12 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               ),
           )}
         </div>
-        <div ref={over} className="lh-over" aria-hidden="true">
+        <div ref={over} className="lh-over" aria-hidden="true" data-held={held ? "" : undefined}>
           <div ref={sheet} className="lh-map" data-pan={pan} style={focus(stop, stopAt)}>
             <canvas ref={canvas} className="lh-dots" data-leaving={leaving ? "" : undefined} />
-            {/* Keyed by the stop, so each town's areas, corners and figures arrive afresh. */}
-            <div key={stopAt} className="lh-stop" data-leaving={leaving ? "" : undefined} data-arrived={toured ? undefined : ""}>
+            {/* Keyed by the stop, so each town's areas, corners and figures arrive afresh; the first does so again
+                when the opening lets it go, so its drawing starts with its clock. */}
+            <div key={held ? "held" : stopAt} className="lh-stop" data-leaving={leaving ? "" : undefined} data-arrived={toured ? undefined : ""}>
               <svg viewBox={`0 0 ${stop.size} ${stop.size}`}>
                 {stop.areas.map((a, k) => (
                   <g

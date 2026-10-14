@@ -245,7 +245,7 @@ function MarketView({ area }: { area: HeroArea }) {
           );
         })}
       </div>
-      <Covers demo={stats.source === "demo"} scope="inside the line" />
+      <Covers demo={stats.source === "demo"} scope="in this place" />
     </>
   );
 }
@@ -275,7 +275,7 @@ function PricingView({ answer }: { answer: AreaAnswer<PricingData> }) {
         </div>
       )}
       {/* The demo fallback for /pricing is filtered by the polygon too (demo.pricing), so it is always "inside the line". */}
-      {answer.data && <Covers demo={answer.data.source === "demo"} scope="inside the line" />}
+      {answer.data && <Covers demo={answer.data.source === "demo"} scope="in this place" />}
     </section>
   );
 }
@@ -332,7 +332,7 @@ function BuyRentView({ area }: { area: HeroArea }) {
   const rent = new Map((rentals?.byBedrooms ?? []).map((r) => [r.label, r.medianRent]));
   const rows = labels.filter((l) => price.get(l) != null || rent.get(l) != null);
   if (!rows.length) return <Standin>{NO_FIGURES}</Standin>;
-  const cover = (r: { source: "live" | "demo" } | null) => (!r ? "\u00a0" : inside(r) ? "inside the line" : "all of Cyprus");
+  const cover = (r: { source: "live" | "demo" } | null) => (!r ? "\u00a0" : inside(r) ? "in this place" : "all of Cyprus");
   // A figure that is not for the drawn area does not change when the area does, so it is never pending.
   const late = [area.pending && inside(invest), area.pending && inside(rentals)];
   const cell = (v: number | null | undefined, unit: string | null, pending: boolean) =>

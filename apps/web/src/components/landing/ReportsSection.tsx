@@ -113,7 +113,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
     const price = invest?.priceQuartiles?.[1] ?? null;
     const rent = rentals?.rentQuartiles?.[1] ?? null;
     if (price == null && rent == null) return none;
-    const cover = (r: { source: "live" | "demo" } | null) => (inside(r) ? "inside the line" : "all of Cyprus");
+    const cover = (r: { source: "live" | "demo" } | null) => (inside(r) ? "in this place" : "all of Cyprus");
     return (
       <div className="ps-sample" aria-busy={(area.pending && (inside(invest) || inside(rentals))) || undefined}>
         <dl className="ps-facts">
@@ -168,7 +168,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
             </div>
           )}
         </dl>
-        <Covers demo={stats.source === "demo"} scope="inside the line" />
+        <Covers demo={stats.source === "demo"} scope="in this place" />
       </div>
     );
   }
@@ -186,7 +186,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
               sub="Estimated from weekly occupancy and nightly rate"
             />
           </div>
-          <Covers demo={stats.source === "demo"} scope="inside the line" />
+          <Covers demo={stats.source === "demo"} scope="in this place" />
         </div>
       );
     }
@@ -204,7 +204,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
             per="Week of"
           />
         </div>
-        <Covers demo={stats.source === "demo"} scope="inside the line">
+        <Covers demo={stats.source === "demo"} scope="in this place">
           <span>The weekly figures carry no nightly rate, so this is occupancy, not revenue.</span>
         </Covers>
       </div>
@@ -236,7 +236,7 @@ function SampleBlock({ sample, area, partial }: { sample: Sample; area: HeroArea
           ))}
         </tbody>
       </table>
-      <Covers demo={stats.source === "demo"} scope="inside the line" />
+      <Covers demo={stats.source === "demo"} scope="in this place" />
     </div>
   );
 }
@@ -352,7 +352,7 @@ export default function ReportsSection({ area, index }: { area: HeroArea; index:
       sentence="When you need more than a map, we write it up: a report on one property or one area, built from the same listings."
       arrived={arrived}
       arriving={arriving}
-      aside={`Sample. The figures are today\u2019s for ${area.changed ? "the area you drew" : "the area on the map"}; a real report is written by the team.`}
+      aside={`Sample. The figures are today\u2019s for ${area.name}; a real report is written by the team.`}
       notes={[
         "Written by the team for your property or your area.",
         "Each analysis section ends in one key finding.",

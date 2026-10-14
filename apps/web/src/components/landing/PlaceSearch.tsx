@@ -4,7 +4,7 @@ import { useEffect, useId, useMemo, useRef, useState } from "react";
 import { ArrowRight, Search } from "lucide-react";
 import type { AreaInfo, AreaType } from "@/lib/dashboard/types";
 import { int } from "@/lib/landing/areaLines";
-import { PICK_EVENT, PICK_NAME_EVENT, type PickedPlace } from "@/lib/landing/compare";
+import { PICK_NAME_EVENT } from "@/lib/landing/compare";
 
 // What a row says under a place's name, in a visitor's words: what it is where that helps, and its district.
 const KIND: Partial<Record<AreaType, string>> = { district: "District", tourist_area: "Resort", quarter: "Quarter", parish: "Quarter" };
@@ -55,8 +55,8 @@ function find(place: Place, q: string): Found {
 }
 
 /**
- * The first screen's way in: the visitor types a town, resort or district and picks it. The place goes to the
- * stage below (PICK_EVENT), which draws an area round it, and the page moves down to it. The list of places is
+ * The first screen's way in: the visitor types a town, resort or district and picks it, and the Playground
+ * opens on that place. The list of places is
  * the Playground's own; if it cannot be had, the box opens the Playground instead and says so.
  */
 export default function PlaceSearch() {
@@ -65,6 +65,10 @@ export default function PlaceSearch() {
   const [q, setQ] = useState("");
   const [open, setOpen] = useState(false);
   const [at, setAt] = useState(0);
+  // True once the visitor has moved to a row with the arrow keys: only then does an empty field have a place to take.
+  const [moved, setMoved] = useState(false);
+  // True when the visitor has asked for their place before the list of places had come: it is answered when it does.
+  const asked = useRef(false);
   const input = useRef<HTMLInputElement>(null);
   const listId = useId();
 
@@ -93,14 +97,15 @@ export default function PlaceSearch() {
     return scored.sort((a, b) => b.rank - a.rank || b.place.listingCount - a.place.listingCount).slice(0, MOST);
   }, [places, typed]);
   const active = Math.min(at, Math.max(0, found.length - 1));
+  // The row "Show me" would take. In an empty field none is, until the visitor has moved to one.
+  const taken = typed !== "" || moved ? active : -1;
 
   const pick = (p: Place) => {
-    const detail: PickedPlace = { areaId: p.areaId, name: p.nameEn, lat: p.lat, lng: p.lng, radiusKm: p.radiusKm, listingCount: p.listingCount };
-    window.dispatchEvent(new CustomEvent(PICK_EVENT, { detail }));
     setQ(p.nameEn);
     setOpen(false);
     input.current?.blur();
-    document.getElementById("draw")?.scrollIntoView();
+    // The Playground opens on the place: there is no map of our own on this page to take it to (2026-10-13).
+    window.location.assign(`/dashboard?area=${encodeURIComponent(p.areaId)}`);
   };
 
   // The first screen's picture asks for its town by name (PICK_NAME_EVENT): it is picked as if it had been typed,
@@ -110,7 +115,6 @@ export default function PlaceSearch() {
   byName.current = (name: string) => {
     if (!places) {
       if (failed) window.location.assign("/dashboard");
-      else document.getElementById("draw")?.scrollIntoView();
       return;
     }
     const want = plain(name);
@@ -119,7 +123,6 @@ export default function PlaceSearch() {
       places.filter((p) => plain(p.nameEn) === want).sort(townFirst)[0] ??
       places.filter((p) => (p.aliases ?? []).some((a) => plain(a) === want)).sort(townFirst)[0];
     if (match) pick(match);
-    else document.getElementById("draw")?.scrollIntoView();
   };
   useEffect(() => {
     const on = (e: Event) => byName.current((e as CustomEvent<string>).detail);
@@ -127,24 +130,50 @@ export default function PlaceSearch() {
     return () => window.removeEventListener(PICK_NAME_EVENT, on);
   }, []);
 
+  // What "Show me" does with what is in the field. A name that finds a place takes the first; so does a row the
+  // visitor has moved to. An empty field takes nothing (it used to take the island's largest place, which nobody
+  // had asked for): the list opens instead. So does a name no place has, to say so.
+  const answer = () => {
+    if (found[taken]) return pick(found[taken].place);
+    setOpen(true);
+    input.current?.focus();
+  };
   const submit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Without the list of places there is nothing to pick from: the Playground has its own search.
-    if (!places) return window.location.assign("/dashboard");
-    if (found[active]) pick(found[active].place);
-    else setOpen(true);
+    // The list could not be had: the Playground has its own search, and the line under the field says so.
+    if (failed) return window.location.assign("/dashboard");
+    // The list is still on its way: what was typed is kept, and answered when it comes.
+    if (!places) {
+      asked.current = true;
+      return setOpen(true);
+    }
+    answer();
   };
+  const settle = useRef(answer);
+  settle.current = answer;
+  useEffect(() => {
+    if (!asked.current || (!places && !failed)) return;
+    asked.current = false;
+    if (places) settle.current();
+    else window.location.assign("/dashboard");
+  }, [places, failed]);
   const key = (e: React.KeyboardEvent) => {
     if (e.key === "ArrowDown" || e.key === "ArrowUp") {
       e.preventDefault();
       if (!open) return setOpen(true);
-      if (found.length) setAt((active + (e.key === "ArrowDown" ? 1 : found.length - 1)) % found.length);
+      if (found.length) {
+        // From a list with no row taken, down goes to its first and up to its last.
+        const down = e.key === "ArrowDown";
+        setAt(taken < 0 ? (down ? 0 : found.length - 1) : (active + (down ? 1 : found.length - 1)) % found.length);
+        setMoved(true);
+      }
     } else if (e.key === "Escape") {
       setOpen(false);
     }
   };
 
-  const shown = open && places != null;
+  // While the list of places is on its way the open list says so, in one line.
+  const shown = open && !failed;
   return (
     <div className="lh-find">
       <form
@@ -171,7 +200,7 @@ export default function PlaceSearch() {
           aria-expanded={shown}
           aria-controls={listId}
           aria-autocomplete="list"
-          aria-activedescendant={shown && found[active] ? `${listId}-${active}` : undefined}
+          aria-activedescendant={shown && found[taken] ? `${listId}-${taken}` : undefined}
           autoComplete="off"
           spellCheck={false}
           placeholder="Your town, resort or district"
@@ -179,6 +208,7 @@ export default function PlaceSearch() {
           onChange={(e) => {
             setQ(e.target.value);
             setAt(0);
+            setMoved(false);
             setOpen(true);
           }}
           // The field may hold a place already picked (typed, or asked for by the picture above): focus selects it, so
@@ -201,8 +231,11 @@ export default function PlaceSearch() {
               key={p.areaId}
               id={`${listId}-${i}`}
               role="option"
-              aria-selected={i === active}
-              onPointerEnter={() => setAt(i)}
+              aria-selected={i === taken}
+              onPointerEnter={() => {
+                setAt(i);
+                setMoved(true);
+              }}
               // The row is taken on the press, before the input's blur closes the list.
               onPointerDown={(e) => {
                 e.preventDefault();
@@ -218,7 +251,12 @@ export default function PlaceSearch() {
               <em>{int(p.listingCount)} short-&#8288;lets</em>
             </li>
           ))}
-          {shown && found.length === 0 && (
+          {shown && !places && (
+            <li className="lh-none" role="option" aria-selected={false} aria-disabled="true">
+              Fetching the list of places…
+            </li>
+          )}
+          {shown && places && found.length === 0 && (
             <li className="lh-none" role="option" aria-selected={false} aria-disabled="true">
               No place by that name. Try a town or a district, in English or Greek.
             </li>

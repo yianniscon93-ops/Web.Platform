@@ -1,3 +1,4 @@
+import Opening from "./Opening";
 import PlaceSearch from "./PlaceSearch";
 import TownTour from "./TownTour";
 import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
@@ -50,7 +51,7 @@ async function measured(town: HeroTown, area: Drawn): Promise<{ area: TourArea; 
 
 /**
  * The landing's first screen: the headline, one sentence, and a box that asks the visitor for their own place
- * (PlaceSearch, which hands it to the stage below). Beside them a picture that moves by itself: a tour of six
+ * (PlaceSearch, which hands it to the figures below). Beside them a picture that moves by itself: a tour of six
  * towns, each a drawn map made from open map data (scripts/build-hero-town.mjs), on which the listings appear
  * and three areas a few streets wide are drawn one after another, each with how full its short-lets are and
  * what a night in them costs pinned beside it (TownTour). The figures are asked for here, on the server.
@@ -74,18 +75,32 @@ export default async function LandingHero() {
     <section className="th-landing lh">
       <div className="lh-in">
         <div className="lh-copy">
-          {/* The name is in the headline: "Plot" (the verb, what the visitor does on the map) and "sights" wear the
-              mark's colour, so Plotsights is read out of the sentence in order. It is read out as plain words. */}
-          <h1 className="th-h1 m-0" aria-label="Plot an area on the map. Get the insights.">
-            <span className="lh-name">Plot</span> an area on the map. Get the in<span className="lh-name">sights</span>.
+          {/* The name is in the headline: "Plot" and "sights" wear the mark's colour, so Plotsights is read out of the
+              sentence in order. It is read out as plain words. The owner chose this wording on 2026-10-13, of four
+              put to him after "plot an area and get insights" was found to undersell the work: "Plot" is now what
+              the visitor does with a decision. Each of its three lines is set as a line (landing-hero.css sizes
+              the type so the longest fits its column). */}
+          <h1 className="th-h1 m-0" aria-label="Plot your next move in Cyprus property. Get the insights.">
+            <span className="lh-line">
+              <span className="lh-name">Plot</span> your next move
+            </span>{" "}
+            <span className="lh-line">in Cyprus property.</span>{" "}
+            <span className="lh-line">
+              Get the in<span className="lh-name">sights</span>.
+            </span>
           </h1>
-          {/* Two beats: the daily update and the three markets as a fact (owner, 2026-10-10: "show that our database is
-              updated daily"), then the gesture (which is what the picture beside it is doing) and the promise in bold. */}
+          {/* Two sentences with two jobs, set as two tiers and not as one paragraph with words picked out of it: what
+              is here (all four kinds of listing, the owner's "str ltr home sales and PLOTS", one view, every day),
+              in ink; then what it is for, quieter, a size down. */}
           <p className="th-lede m-0">
-            <b>Updated every day:</b> every short-&#8288;let, long-&#8288;let and sale in Cyprus. Draw a line round any streets and see{" "}
-            <b>what they earn, rent for and sell for.</b>
+            <span className="lh-what">
+              Short-&#8288;lets, long-&#8288;lets, homes and plots for sale: the whole market in one view, updated every day.
+            </span>{" "}
+            <span className="lh-for">Decide where to buy, what to charge and what to advise.</span>
           </p>
           <PlaceSearch />
+          {/* On the first page of a visit the name is drawn here before the words come in (lib/landing/opening.ts). */}
+          <Opening />
         </div>
       </div>
       <TownTour stops={stops} demo={towns.some((areas) => areas.some((m) => m.demo))} />

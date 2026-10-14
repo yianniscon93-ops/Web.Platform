@@ -14,7 +14,8 @@ import { LANDING } from "./tokens";
    name (Wordmark.tsx), which is why the line, the dots and the frame can be set from outside. Last, the colours:
    "Why dont we use black lines for the logo and then the dots that join these lines to be the olive green of our
    palette?" The line is the ink of the letters around it and the dots are olive; the mark carries no orange. */
-const CORNERS: [number, number][] = [
+/* The corners, the outline and the tight frame are also the opening's (Opening.tsx), which draws the same plot large. */
+export const CORNERS: [number, number][] = [
   [7, 9.5],
   [22.5, 6],
   [29, 19],
@@ -22,9 +23,9 @@ const CORNERS: [number, number][] = [
   [7, 22],
 ];
 const GRID = [4, 10.5, 17, 23.5, 30];
-const PLOT = `M${CORNERS.map(([x, y]) => `${x} ${y}`).join("L")}Z`;
+export const PLOT = `M${CORNERS.map(([x, y]) => `${x} ${y}`).join("L")}Z`;
 /* The plot and its dots with no margin round them, for the mark set as a letter. */
-const TIGHT = "3.5 2.5 29 29";
+export const TIGHT = "3.5 2.5 29 29";
 
 /* The intro. The line runs the outline once at an even pace, so a corner pops when the line has covered the
    share of the outline that lies before it (0, 0.228, 0.436, 0.629 and 0.821 of its length). */

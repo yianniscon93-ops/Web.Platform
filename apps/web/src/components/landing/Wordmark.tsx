@@ -6,6 +6,10 @@ import AreaMark from "./AreaMark";
 const AT = BRAND.name.indexOf("o");
 const BEFORE = BRAND.name.slice(0, AT);
 const AFTER = BRAND.name.slice(AT + 1);
+/* The two halves and the plot's weights, for the opening (Opening.tsx), which sets the same name large. */
+export const NAME_BEFORE = BEFORE;
+export const NAME_AFTER = AFTER;
+export const WORDMARK_PLOT = { strokeWidth: 2.1, cornerRadius: 3.2 } as const;
 
 /* The plot is set as a letter: in its tight frame, a touch larger than the round letters since an outline with
    dots reads smaller than a filled bowl, and dropped so its lowest dot overshoots the baseline as an "o" does.
@@ -43,7 +47,7 @@ export default function Wordmark({ size, corners }: { size?: number; corners?: s
           <>
             {BEFORE}
             <span className="wm-letter">o</span>
-            <AreaMark className="wm-o" size="0.76em" tight corners={corners} strokeWidth={2.1} cornerRadius={3.2} />
+            <AreaMark className="wm-o" size="0.76em" tight corners={corners} {...WORDMARK_PLOT} />
             {AFTER}
           </>
         )}

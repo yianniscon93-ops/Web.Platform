@@ -84,7 +84,19 @@ Open decisions:
   land, the shape drawn on the map and the chart, and the word Cypriots use
   for land for sale; it works in Athens too. plotsights.com, .io, .cy,
   .com.cy and .gr are owned. Written as one word, one capital.
-- Headline in use: "Plot an area on the map. Get the insights." (2026-10-10,
+- Headline in use since 2026-10-13: "Plot your next move in Cyprus
+  property. Get the insights.", with "Plot" and "sights" in olive. The
+  owner chose it from four, after finding the earlier one undersold the
+  work ("plot an area and get insights is basically underestimating what
+  the project is doing") and asking for "plot and insights in the
+  headline", with "plotsights name always in mind". The sentence under it:
+  "Short-lets, long-lets, homes and plots for sale: the whole market in one
+  view, updated every day. Decide where to buy, what to charge and what to
+  advise." It names all four kinds of listing ("We currently have a
+  database of str ltr home sales and PLOTS available. This is a hollistic
+  market view of Cyprus."). PriceLabs (hello.pricelabs.co) is his reference
+  for professional type and wording; Google Sans stays.
+- Headline before that: "Plot an area on the map. Get the insights." (2026-10-10,
   written with the new name; the owner asked for plot "as plotting something
   on a map", for "insights" always in with "sights" highlighted, and for
   "emphasis that we daily get short, long and sales data", which the lede

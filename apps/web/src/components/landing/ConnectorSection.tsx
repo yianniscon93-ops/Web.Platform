@@ -341,7 +341,7 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
       sentence={`The connector puts ${BRAND.name} inside Claude. It uses MCP, the open standard for giving an assistant tools, so you ask in plain words and it answers from the same data.`}
       arrived={arrived}
       arriving={arriving}
-      aside={`Example answers, written from today\u2019s figures for ${area.changed ? "the area you drew" : "the area on the map"}.`}
+      aside={`Example answers, written from today\u2019s figures for ${area.name}.`}
       notes={[
         "Understands place names in Greek and English.",
         "Says how firm each answer is, and the date where the data has one.",

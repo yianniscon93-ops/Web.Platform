@@ -24,14 +24,7 @@ const TABS_FROM = 880;
 /** The window width from which cards may pin at all. */
 const PIN_FROM = 1024;
 
-/** Back up to the hero's map, with the keyboard on its first corner. */
-function toMap(e: React.MouseEvent) {
-  const map = document.querySelector<HTMLElement>(".th-map");
-  if (!map) return; // No hero on this page: the link's own href takes the visitor to the top.
-  e.preventDefault();
-  map.scrollIntoView({ block: "center" });
-  map.querySelector<HTMLElement>(".th-handle")?.focus({ preventScroll: true });
-}
+
 
 /**
  * The three products under the hero, as a stack of cards: Playground,
@@ -201,13 +194,8 @@ export default function ProductSections({ close }: { close?: React.ReactNode }) 
             <AreaMark size={28} />
           </span>
           <span className="ps-tie-text">
-            Everything below is about <b>{area.name}</b>
-            {/* "The area you drew" would not be true of a place's own area: until a corner has moved it is the one on the map. */}
-            {/* Its count is not repeated here: the map's bar just above says it. */}
-            {area.changed ? "" : ", the area on the map above"}.{" "}
-            <a href="#" className="th-link" onClick={toMap}>
-              Change the area
-            </a>
+            {/* The cards' figures are the whole island's; the Playground has every place of its own. */}
+            Three ways to work with the data. The figures below are for <b>{area.name}</b>, the whole island, today.
           </span>
         </p>
       </div>
