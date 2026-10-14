@@ -33,11 +33,15 @@ build to production quality and you prove it with screenshots and checks.
 Precedence, highest first:
 
 1. **The owner's recorded decisions** — the brief, memory, `DESIGN.md`,
-   `PRODUCT.md`. Beige ground, olive works and saffron marks, Google Sans,
-   glass only on what floats (nav over the map, the search, the hero's
-   pinned cards), hairline dividers, the name picked out of the
-   headline in olive, the 15px landing / 14px dashboard text floors: all
-   pinned. Every skill agrees that the brief wins; hold them to it.
+   `PRODUCT.md`. Since 2026-10-14 the landing follows direction G (paper
+   ground, olive ink and action, olive-to-lime data scale, lime only as data,
+   never as ground or decoration) on the normal light map, frameless and
+   fading into the paper, with frosted, mostly opaque glass on most surfaces
+   (buttons stay solid); `DESIGN.md` is the authority. Still pinned:
+   Google Sans, the opening (the name arrives, then rises to the nav), the
+   search-first hero, the drawn plot, the 15px landing / 14px dashboard text
+   floors, and no pills, eyebrows, mono labels or logo tiles. Every skill
+   agrees that the brief wins; hold them to it.
 2. **Impeccable** — the project's own design system and process. Its context
    loader, its mode (Persuade for the landing page, Operate for the Playground
    and dashboard), `reference/craft-floor.md` before any UI edit, its bounded
