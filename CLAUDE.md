@@ -23,3 +23,12 @@ Plotsights web app — Next.js 15 (App Router) frontend + backend.
   `.claude/agents/impeccable-*.md`. Don't hand-edit it; refresh with
   `npx impeccable update`. Its design-detector hook (`.claude/settings.json`)
   checks UI edits and runs a deeper pass on Stop; `/impeccable hooks off` pauses it.
+- Two more vendored design skills, also not hand-edited:
+  `.claude/skills/design-taste-frontend/` ([taste-skill](https://github.com/Leonxlnx/taste-skill)
+  `skills/taste-skill` @ a60a36d, MIT; scripts need Node 22+ and Chrome) and
+  `.claude/skills/frontend-design/` ([anthropics/skills](https://github.com/anthropics/skills)
+  @ dbd4588). Refresh by re-copying the folder at a newer commit.
+- `.claude/agents/design-director.md` (Opus, xhigh) combines all three:
+  Impeccable is the spine, Taste supplies the idea and a lint/inspect gate,
+  frontend-design the plan review and copy. Owner decisions in DESIGN.md
+  outrank every skill's house rules (e.g. Taste's no-glass, no-hairline bans).

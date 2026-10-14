@@ -71,3 +71,6 @@ Thumbs.db
 **/.impeccable/live/deferred-svelte-component-accepts.json
 **/.impeccable/live/*.png
 # impeccable-ignore-end
+
+# taste-skill working files (inspector screenshots, draw state)
+**/.taste-skill/
