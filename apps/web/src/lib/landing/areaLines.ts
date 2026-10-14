@@ -241,7 +241,9 @@ export function question(place: string, changed: boolean, roams = false): string
 
 /** The connector's answer to it, from the same figures. */
 export function answer(count: number, s: Rates | null): string {
-  const across = `across ${int(count)} listing${count === 1 ? "" : "s"}`;
+  // The figures are the short-lets' own, so the count is named as short-lets (critique, 2026-10-14: "listings" read
+  // as every listing, all three markets).
+  const across = `across ${lets(count)}`;
   if (count < MIN_LISTINGS) {
     return count === 0
       ? "There are no short-\u2060lets inside that area, so there is nothing to quote."
@@ -252,5 +254,5 @@ export function answer(count: number, s: Rates | null): string {
   if (occ && rate) return `About ${rate} at ${occ}, ${across}.`;
   if (rate) return `About ${rate}, ${across}.`;
   if (occ) return `About ${occ}, ${across}.`;
-  return `There are ${int(count)} listings there, without enough bookings to quote a figure yet.`;
+  return `There are ${lets(count)} there, without enough bookings to quote a figure yet.`;
 }

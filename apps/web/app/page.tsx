@@ -2,7 +2,8 @@ import { preload } from "react-dom";
 import "./landing-sections.css";
 import "./landing-hero.css";
 import "./landing-how.css";
-// The page's glass: every surface that lies on something, and every filled button. On for the element with the class `th-glassy` below.
+// The page's glass: only what floats over the first screen's map (the nav once scrolled, the search field, the
+// cards pinned on the tour). On for the element with the class `th-glassy` below.
 import "./landing-glass.css";
 import Nav from "@/components/Nav";
 import LandingHero from "@/components/landing/LandingHero";
@@ -22,22 +23,17 @@ export default function Home() {
   return (
     // The product sections are about one place, which they read from here: the whole island (IslandSource).
     <HeroAreaProvider>
-      <div className="th-glassy min-h-screen overflow-x-clip" style={{ background: "#0C100A" }}>
+      {/* Ink behind everything: past the footer, an overscroll shows the close's own colour. */}
+      <div className="th-glassy overflow-x-clip" style={{ background: "var(--th-ink)" }}>
         <Nav />
         <LandingHero />
-        {/* Nothing stands between the first screen and the products (owner, 2026-10-13). The stage's map (DrawHero,
-            still in the tree but no longer mounted) stood here; this hands the cards the island's figures. */}
+        {/* Nothing stands between the first screen and the products (owner, 2026-10-13). This hands the panels the
+            island's figures. */}
         <IslandSource />
-        {/* #playground, #reports and #connector: where the nav lands. The three
-            are a stack of cards, and the close is handed in as the stack's last sheet, which comes up over them. */}
-        <ProductSections
-          close={
-            <>
-              <HowSection />
-              <CTASection />
-            </>
-          }
-        />
+        {/* #playground, #reports and #connector: where the nav lands. Three sections of their own, one after another. */}
+        <ProductSections />
+        <HowSection />
+        <CTASection />
         <Footer />
       </div>
     </HeroAreaProvider>

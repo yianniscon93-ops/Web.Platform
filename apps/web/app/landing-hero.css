@@ -106,8 +106,11 @@
 .lh-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: var(--th-ink); font: inherit; font-size: var(--th-text-body); }
 .th-landing .lh-box input:focus-visible { outline: none; }
 .lh-box input::placeholder { color: var(--th-muted); opacity: 1; }
-/* The button is set in the glass: the light from above runs along its top edge. */
-.lh-box .th-go { flex: none; min-height: 48px; padding: 0 20px; box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.32), inset 0 -1px 1px rgb(0 0 0 / 0.22), 0 1px 2px color-mix(in srgb, var(--th-ink) 28%, transparent); }
+/* The button is set in the glass, and is itself flat: one fill, as every button on the page (Glass Rule, 2026-10-14). */
+.lh-box .th-go { flex: none; min-height: 48px; padding: 0 20px; }
+/* Under the field: what the figures are and how fresh, the database's own counts and time (LandingHero). */
+.lh-fresh { max-width: 540px; margin-top: 14px; padding-left: 4px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 24px; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.lh-fresh b { color: var(--th-ink); font-weight: 600; }
 /* The list is a sheet of the same glass, frosted so its words can be read over whatever it opens on. */
 .lh-list {
   position: absolute;
@@ -170,8 +173,8 @@
   max-width: none;
   height: auto;
   aspect-ratio: 1;
-  /* The point sits a little above the band's middle, clear of the figures docked in its corner. */
-  transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 42cqh - var(--fy, 67%), 0px));
+  /* The point sits a little below the band's middle, clear of the figures docked at its top. */
+  transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 60cqh - var(--fy, 67%), 0px));
 }
 /* One town shows at a time. The next arrives from the east as the last leaves to the west. */
 .lh-sheet .lh-map { opacity: 0; translate: 3% 0; transition: opacity 0.9s ease, translate 1.2s var(--th-ease); }
@@ -267,16 +270,20 @@
 .lh-pin i[data-step="4"]::after { background: var(--th-occ-4); }
 /* Hidden with `visibility`, not `display`, so crossing 1024px does not start anything again. */
 .lh-stop :is(.lh-pin, .lh-where), .lh-lead { visibility: hidden; }
-/* The town's name in the band: in its corner, since the band shows only part of the town. */
-.lh-named { top: 72px; left: 16px; font-size: var(--th-text-body); transform: none; transition: opacity 0.4s ease; }
+/* The town's name in the band: at its foot, since the band shows only part of the town. The figures of the area
+   drawn last are docked at its top, so on a phone they show on the first screen (critique, 2026-10-14: at the
+   band's foot they were under the fold). */
+.lh-named { top: auto; bottom: 14px; left: 16px; font-size: var(--th-text-body); transform: none; transition: opacity 0.4s ease; }
 .lh-named[data-leaving] { opacity: 0; }
-.lh-dock { position: absolute; top: auto; bottom: 14px; left: 16px; }
+.lh-dock { position: absolute; top: 40px; bottom: auto; left: 16px; z-index: 2; }
 .lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
 /* Over the picture, so the pause control and the credit's links stay pressable where they lie on it. */
 .lh-credit { position: relative; z-index: 4; display: flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
 /* The way to stop the tour: words, as the page's other small links are. */
 .lh-stopper { position: relative; display: inline-flex; align-items: center; gap: 5px; min-height: 24px; color: var(--th-ink); font-weight: 600; cursor: pointer; text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; }
 .lh-stopper:hover { text-decoration-color: currentColor; }
+/* "Next town" while the next map is on its way: a step back in colour, and a press is kept until it comes. */
+.lh-stopper[data-busy] { color: var(--th-muted); cursor: progress; }
 .lh-stopper::after { position: absolute; inset: -10px -6px; content: ""; }
 /* What the shades mean: four dots between two words, as under the stage's map. */
 .lh-key { display: inline-flex; align-items: center; gap: 6px; white-space: nowrap; }
@@ -293,8 +300,8 @@
   .lh-find { margin-top: 36px; }
   /* On a tablet the band is taller. */
   .lh-frame { height: 520px; }
-  .lh-dock { bottom: 20px; left: 32px; }
-  .lh-named { top: 96px; left: 32px; }
+  .lh-dock { top: 56px; left: 32px; }
+  .lh-named { bottom: 20px; left: 32px; }
   .lh-credit { padding-right: 32px; padding-left: 32px; }
 }
 /* From 1024px the words are on the left and the picture fills the right of the screen, top to bottom. */
@@ -441,7 +448,7 @@ html[data-opening="on"] .lh-credit > :is(.lh-stopper, .lh-key) { animation: op-a
 html[data-opening] header.th-landing .wm { animation: op-away 5s step-end; }
 @keyframes op-rise { from { opacity: 0; transform: translateY(0.16em); } }
 @keyframes op-draw { from { opacity: 0; stroke-dasharray: 0 1; } 2% { opacity: 1; } to { opacity: 1; stroke-dasharray: 1 1; } }
-@keyframes op-pop { 0% { transform: scale(0); } 15% { transform: scale(1.5); } 100% { transform: scale(1); } }
+@keyframes op-pop { 0% { opacity: 0; transform: scale(0.4); } 15% { opacity: 1; transform: scale(1.5); } 100% { transform: scale(1); } }
 @keyframes op-answer { 0%, 100% { transform: scale(1); } 15% { transform: scale(1.4); } }
 @keyframes op-pen-in { from { opacity: 0; } to { opacity: 1; } }
 @keyframes op-pen-go { from { offset-distance: 0%; } to { offset-distance: 100%; } }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { ArrowRight, ArrowUp } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import type { SelectionStats } from "@/lib/dashboard/types";
 import { BRAND } from "@/lib/brand";
 import type { HeroArea } from "@/lib/landing/areaContext";
@@ -86,14 +86,14 @@ function Firmness({ line, lang }: { line: string; lang?: string }) {
  * the conversation, sends it, and adds that exchange under the earlier ones
  * (a short wait, then an example answer written from today's figures for the
  * area on the hero's map); a question already asked goes back to its
- * exchange. On arrival the first question is asked this way, once. Every
+ * exchange. The first exchange is there from the start, answered. Every
  * answer has the connector's own shape: what it found, how firm that is, and
  * the date it refers to where the data has one (the for-sale figures have
  * none). The last question is one it cannot answer, and it says so. The
  * composer only displays the chosen question: the list of questions is the
  * control.
  */
-export default function ConnectorSection({ area, index }: { area: HeroArea; index: number }) {
+export default function ConnectorSection({ area }: { area: HeroArea }) {
   // The questions asked so far, oldest first, and the one last chosen.
   const [thread, setThread] = useState<QuestionId[]>([FIRST]);
   const [chosen, setChosen] = useState<QuestionId>(FIRST);
@@ -143,15 +143,8 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
     ];
   }
 
-  // The card's arrival: the first question is asked, once, unless the visitor has already asked something.
-  const greeted = useRef(false);
-  useEffect(() => {
-    if (!arriving || greeted.current) return;
-    greeted.current = true;
-    if (thread.length === 1 && !playing) play(FIRST);
-    // Only the arrival starts it; what it reads is as of that moment.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [arriving]);
+  // The first exchange is in place from the start, answered: the panel is never an empty conversation waiting for
+  // its arrival (critique, 2026-10-14). Only a question the visitor chooses is typed, sent and answered.
 
   // The question being typed: written into the composer a few characters at a time. The composer is a
   // display (aria-hidden), so nothing here is announced.
@@ -187,7 +180,6 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
     if (thread.includes(id)) return;
     timers.current.forEach(clearTimeout);
     timers.current = [];
-    greeted.current = true;
     setThread((t) => [...t, id]);
     if (stillPreferred()) {
       setPlaying(null);
@@ -210,13 +202,6 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
     // The control that was pressed is about to go: the keyboard moves to the question that is left.
     list.current?.querySelector<HTMLButtonElement>(`[data-q="${FIRST}"]`)?.focus({ preventScroll: true });
     log.current?.scrollTo({ top: 0 });
-  }
-
-  /** Phones: from the conversation back up to the questions. */
-  function another() {
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    list.current?.closest(".ps-card-lead")?.scrollIntoView({ block: "start", behavior: reduce ? "auto" : "smooth" });
-    list.current?.querySelector<HTMLButtonElement>(`[data-q="${chosen}"]`)?.focus({ preventScroll: true });
   }
 
   function onKey(e: React.KeyboardEvent) {
@@ -335,25 +320,25 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
     <Card
       cardRef={card}
       id="connector"
-      index={index}
+      layout="stack"
       name="Connector"
-      icon={<ConnectorIcon size={32} />}
-      sentence={`The connector puts ${BRAND.name} inside Claude. It uses MCP, the open standard for giving an assistant tools, so you ask in plain words and it answers from the same data.`}
+      icon={<ConnectorIcon size={36} />}
+      claim="Ask Claude about any place in Cyprus."
+      body={
+        <p>
+          Add {BRAND.name} Cyprus to Claude and ask in English or Greek. Every answer says how firm it is, and says so
+          when it cannot answer.
+        </p>
+      }
       arrived={arrived}
       arriving={arriving}
-      aside={`Example answers, written from today\u2019s figures for ${area.name}.`}
-      notes={[
-        "Understands place names in Greek and English.",
-        "Says how firm each answer is, and the date where the data has one.",
-        "Tells you plainly when it cannot answer.",
-      ]}
       action={
         <>
-          <p className="ps-action-note">Access is set up by the team for now.</p>
           <a href="#access" className="ps-solid" onClick={() => carryRequest("Access to the Claude connector")}>
             Ask for access
             <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
           </a>
+          <span className="ps-action-note">Access is set up by the team for now.</span>
         </>
       }
       lead={
@@ -373,10 +358,8 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
                 onClick={() => choose(q.id)}
               >
                 <i aria-hidden="true" />
-                <span>
-                  <span lang={langOf(q.id)}>{ask(q.id, area)}</span>
-                  <small>{q.draws}</small>
-                </span>
+                {/* Which of the connector's tools a question draws on is said in its answer's first line, not here. */}
+                <span lang={langOf(q.id)}>{ask(q.id, area)}</span>
               </button>
             ))}
           </div>
@@ -387,7 +370,7 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
           <div className="ps-chat">
             <div className="ps-chat-head">
               {/* The connector is named as the hero's panel names it. */}
-              <p>A conversation in Claude with the {BRAND.name} connector, Noesis Cyprus</p>
+              <p>An example conversation in Claude, answered by {BRAND.name} Cyprus from today&apos;s figures</p>
               {thread.length > 1 && (
                 <button type="button" className="ps-chat-clear" onClick={clear}>
                   Clear
@@ -481,14 +464,6 @@ export default function ConnectorSection({ area, index }: { area: HeroArea; inde
             <div className="ps-composer" aria-hidden="true" data-on={composing ? "" : undefined}>
               <i />
               <span ref={composer} className="ps-composer-text" lang={composing ? langOf(composing) : undefined} />
-              <span className="ps-composer-idle">The question you choose is asked here</span>
-            </div>
-            {/* Where the questions are above the conversation, not beside it: the way back to them. */}
-            <div className="ps-chat-foot">
-              <button type="button" className="ps-textbtn" onClick={another}>
-                Ask another question
-                <ArrowUp size={16} strokeWidth={2.2} aria-hidden="true" />
-              </button>
             </div>
           </div>
           <p className="sr-only" role="status" aria-live="polite" lang={said.lang}>

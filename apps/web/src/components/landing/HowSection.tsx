@@ -1,7 +1,6 @@
 import { PRODUCTS } from "./products";
-import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
 import { int } from "@/lib/landing/areaLines";
-import { getInvest, getRentals, getStats, getSummary } from "@/lib/server/marketData";
+import { getIsland, readOn } from "@/lib/landing/island";
 
 // One month of the example listing's calendar: b a night booked, o a night its owner blocked, f a night free.
 const MONTH = "bbbbbfbbbbbooobbbbbfbbbbfbobff";
@@ -11,24 +10,15 @@ const BLOCKED = nights("o");
 const FREE = nights("f");
 const share = (n: number) => Math.round((n / MONTH.length) * 100);
 
-const readOn = (iso: string | null) =>
-  iso
-    ? new Date(iso).toLocaleString("en-GB", { day: "numeric", month: "long", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Nicosia" })
-    : null;
-
 /**
  * "How the numbers are made": one listing followed from the site it was published on to the three products,
- * as a line with five stops. The listing is an example and says so; the counts at the first stop and the time of
- * the last read are the database's, asked for here on the server, and are left out if they cannot be had.
- * Its styles are in app/landing-how.css. It comes up over the product cards, before the close.
+ * as a line with five stops, under what the database holds today: the three counts, set large (the owner liked
+ * "the numbers. so many listings tracked", 2026-10-13), and when it was last read. The listing is an example and
+ * says so; the counts and the time are the database's, read on the server (getIsland), and are left out if they
+ * cannot be had. Its styles are in app/landing-how.css. It follows the product panels, before the close.
  */
 export default async function HowSection() {
-  const [stats, rentals, invest, summary] = await Promise.all([
-    getStats(DEFAULT_FILTERS, null).catch(() => null),
-    getRentals(null).catch(() => null),
-    getInvest(null).catch(() => null),
-    getSummary().catch(() => null),
-  ]);
+  const { stats, rentals, invest, summary } = await getIsland();
   const held = stats && rentals && invest ? { shortLets: stats.listingCount, longLets: rentals.supply, forSale: invest.supply } : null;
   const demo = stats?.source === "demo";
   // On demo data the "last read" is only the time the page was built.
@@ -41,16 +31,37 @@ export default async function HowSection() {
         {/* What is behind the figures, in the owner's terms (2026-10-11): the listings collected across the island,
             all three markets, and the models that turn them into insights. The count is the database's, today's. */}
         <p className="th-lede m-0">
-          We collect{" "}
-          {/* Demo data has no true count to quote: there the sentence says it without one. */}
-          {held && !demo ? <b>{int(held.shortLets + held.longLets + held.forSale)} listings</b> : "the listings"} from across
-          Cyprus, short-&#8288;lets, long-&#8288;lets and homes for sale, and our models turn them into every figure on
-          this page. Follow one from the site it was posted on to the three ways it reaches you.
+          Every day we read each short-&#8288;let, long-&#8288;let and for-sale ad in Cyprus, and our models turn them
+          into every figure on this page. Follow one listing from the site it was posted on to the three ways it
+          reaches you.
         </p>
+        {held && (
+          <div className="hw-held">
+            <dl className="hw-counts m-0">
+              <div>
+                <dt>short-&#8288;lets</dt>
+                <dd>{int(held.shortLets)}</dd>
+              </div>
+              <div>
+                <dt>long-&#8288;lets</dt>
+                <dd>{int(held.longLets)}</dd>
+              </div>
+              <div>
+                <dt>for-sale ads</dt>
+                <dd>{int(held.forSale)}</dd>
+              </div>
+            </dl>
+            {/* Ad expiry is not tracked yet (roadmap §4): the count is every ad seen, and says so. */}
+            <p className="hw-held-note m-0">
+              {demo && <span className="th-tag">Demo data</span>}
+              <span>The for-sale count is every ad we have seen; ads taken down are not yet taken off it.</span>
+            </p>
+          </div>
+        )}
 
         <ol className="hw-line m-0 list-none p-0">
           <li data-stop="source">
-            <h3>It is published</h3>
+            <h3>A listing goes up</h3>
             <div className="hw-spec">
               <p className="hw-card m-0">
                 <i aria-hidden="true" />
@@ -61,13 +72,6 @@ export default async function HowSection() {
               <span className="th-sample">An example listing</span>
             </div>
             <p className="hw-say m-0">On Airbnb if it is a short-&#8288;let, on Bazaraki if it is to rent or for sale.</p>
-            {held && (
-              <p className="hw-fact m-0">
-                <b>{int(held.shortLets)}</b> short-&#8288;lets, <b>{int(held.longLets)}</b> long-&#8288;lets and{" "}
-                <b>{int(held.forSale)}</b> homes for sale today.
-                {demo && <span className="th-tag">Demo data</span>}
-              </p>
-            )}
           </li>
 
           <li data-stop="read">
@@ -119,7 +123,7 @@ export default async function HowSection() {
           </li>
 
           <li data-stop="measure">
-            <h3>We measure it</h3>
+            <h3>We count real bookings</h3>
             <div className="hw-spec">
               <p className="hw-bars m-0">
                 <span style={{ "--w": `${share(BOOKED + BLOCKED)}%` } as React.CSSProperties}>

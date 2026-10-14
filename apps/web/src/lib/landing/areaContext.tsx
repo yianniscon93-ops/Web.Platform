@@ -10,6 +10,8 @@ interface HeroFigures {
   stats: SelectionStats | null;
   rentals: RentalStats | null;
   invest: InvestStats | null;
+  /** The median short-let's share of nights booked this season (the Playground's Market snapshot), when known. */
+  occMedian?: number | null;
 }
 
 /**

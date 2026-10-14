@@ -5,9 +5,10 @@ place: a headline, one sentence, a search box, and a picture that moves by
 itself, a tour of six drawn town maps with areas drawn on them and what the
 short-lets inside come to. The second screen, the stage,
 lets the visitor try the mechanism: a map with a hand-drawn area, down to
-street level in the six toured towns, and beside it what the area holds. Under it, one card per
-product explains each with a working object, all three about the area the
-visitor has on the stage's map; the cards stack as the visitor scrolls.
+street level in the six toured towns, and beside it what the area holds. The stage is no
+longer mounted (2026-10-13): under the first screen, one panel per product
+explains each with one working object, all three about the whole island, one
+after another (since 2026-10-14 they no longer stack).
 Then "How the numbers are made", and the close. Product facts live in
 `/PRODUCT.md`; the page's direction ("Start with your place") is recorded
 in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
@@ -32,6 +33,18 @@ picked place (`/dashboard?area=<id>`). `DrawHero`, `AreaMap`,
 mounted; the sections on the stage below describe them as they were. Live
 counts remain in "How the numbers are made".
 
+The hand-off (2026-10-14). The Playground opens on the picked place with its
+boundary (`dim_areas.boundary`) drawn in the brand mark's hand: an ink line,
+a light olive tint, and olive corner dots on the few points that shape it
+most (`components/dashboard/areaHand.ts`; among the Playground's green
+listing dots each dot also takes a 1px ink rim), and the map fitted to it.
+A place with no boundary on record (parishes, tourist areas, and every place
+in the demo data) is named at its centre and fitted to its search radius;
+no line is drawn where none is known. The top bar carries the wordmark and
+"Playground" on the landing's ink, and the map is OpenFreeMap's vector tiles
+painted in this page's map colours (`components/dashboard/basemap.ts`, see
+`TECH_STACK.md`). The rest of the Playground is still its dark design.
+
 The headline, chosen by the owner the same day from four: "Plot your next
 move in Cyprus property. Get the insights." Its three lines are set as
 lines, and the type is sized from the column's width so the longest always
@@ -44,9 +57,8 @@ in the muted tone (`.lh-what`, `.lh-for`). Google Sans stays.
 Page order (`apps/web/app/page.tsx`): `Nav`, `LandingHero` (the first
 screen), `IslandSource` (draws nothing; until 2026-10-13 `DrawHero`, the
 stage, `#draw`, stood here), `ProductSections`
-(the stack: `#playground`, `#reports`, `#connector`, and `CTASection`,
-`#access`, handed in as its last sheet, with `HowSection`, `#how`, before
-it), `Footer`.
+(`#playground`, `#reports`, `#connector`, three panels one after another),
+`HowSection` (`#how`), `CTASection` (`#access`), `Footer`.
 
 ## The first screen (`LandingHero.tsx`, `PlaceSearch.tsx`, `TownTour.tsx`, styles in `app/landing-hero.css`)
 
@@ -126,12 +138,11 @@ it". It is one sheet, `app/landing-glass.css`, laid over the components'
 own flat styles, every rule of it under the class `th-glassy` on the
 page's outer element (`app/page.tsx`): the nav once the page has moved
 under it (`data-solid` on the header), the cards on the first screen's
-map, the stage map's frame and controls, the three product cards, the
-report sheets, the switch, the answer bubbles, the example listing and the
-close's email field are frosted glass, and every filled button takes a
-line of light. Taking the class off gives the flat page back, with the
-search field still glass. Known: three large blurred cards cost more to
-draw while scrolling (not measured), and the nav's blur could not be
+map and the stage map's controls are frosted glass. Since 2026-10-14 that
+is all (the Glass Rule in DESIGN.md: glass only where something floats over
+the map): the product panels, report sheets, tabs, answer bubbles, example
+listing and every button are flat. Taking the class off gives the flat page
+back, with the search field still glass. Known: the nav's blur could not be
 confirmed at 2x pixel density in the test browser, which draws it at 1x.
 
 `PlaceSearch` is a combobox over `GET /api/dashboard/areas` (the
@@ -288,6 +299,28 @@ only up while it does.
 
 Between 1024 and 1179px, as on a narrow phone, the search button is its
 arrow alone, so the field has room for its placeholder.
+
+### Changed on 2026-10-14
+
+- Under the search, one line from the database (`Fresh` in
+  `LandingHero.tsx`, from `getIsland()`): "Read daily: 3,431 short-lets,
+  1,420 long-lets and 3,184 for-sale ads seen. Short-let calendars last read
+  14 October at 06:10." The one time the database gives is the short-let
+  sync, so it is said of the short-lets alone.
+- The tour's credit row has "Next town" beside "Pause the tour": the town
+  showing leaves as it always does and the next comes in, and a paused tour
+  starts again. While the next map loads the control reads "Loading the next
+  town" and keeps the press. It is offered with reduced motion too, where
+  the next town simply replaces this one, complete.
+- Limassol's "Seafront" area was redrawn on the streets behind the
+  promenade; its corners ran into the sea.
+- Below 1024px the docked card sits near the band's top and the town's name
+  at its foot, so a phone shows a card on its first screen.
+- Glass is only what floats over this screen's map: the scrolled nav, the
+  search field and its list, the pinned cards (DESIGN.md, The Glass Rule).
+  "Show me" is a flat olive fill.
+- The nav: "How it works" (to `#how`) from 1024px; "Open the Playground" is
+  a plain link while the search is in view and the olive button after.
 
 ## The stage (`DrawHero.tsx`, the second screen)
 
@@ -542,216 +575,93 @@ maps (`AreaBasemap`, rendered on the server in `page.tsx`), which
   (Latin, Latin Extended, Greek) with `@font-face` rules in `globals.css`;
   `app/page.tsx` preloads the Latin file.
 
-## Product cards (`ProductSections.tsx`, styles in `app/landing-sections.css`)
+## Product panels (`ProductSections.tsx`, styles in `app/landing-sections.css`)
 
-Above the stack, one line says whose area the cards are about: "Everything
-below is about Protaras, the area on the map above: 24 short-lets inside."
-at rest, "Everything below is about your area near Protaras: 27 short-lets
-inside." once a corner has moved ("the area you drew" is said only then,
-here and in the cards' notes).
+Rebuilt on 2026-10-14 from the owner-approved design review (one idea per
+section, "don't mislead the customer", PriceLabs as the reference for
+professional type). One statement opens them: "Three ways to use it: explore
+it yourself, ask us for a report, or ask Claude. The figures below are for
+all of Cyprus, today." Then three panels, each a section on its own ground
+(white, olive tint, saffron wash), flat, never covered: the stack of cards
+that pinned and slid over one another is gone (the owner approved "no card
+may be covered before it has had its full screen"; separate sections were
+chosen over a full screen of runway because each panel now holds one working
+thing, so pinning bought nothing and cost the covered text, the measuring
+script and the phone's long scroll). A link to `#playground`, `#reports` or
+`#connector` lands under the nav by the panel's own scroll margin.
 
-### The stack
+Every panel (`Card` in `SectionParts.tsx`) has the product's name as its
+heading with its icon, one claim (a statement), a sentence or two in ink,
+its one action, at most one line of small print, and one working thing.
+From 1024px the three are composed three ways (`layout`): split, mirrored,
+stacked. Below 1024px each is one column and its action comes again after
+the working thing.
 
-Three cards, then the close. A card (`Card` in `SectionParts.tsx`) is a
-rounded surface (26px) with a hairline, in its own ground: Playground on
-the plain surface, Reports on the olive tint, Connector on a light tint of
-the accent (`--th-card-playground`, `--th-card-reports`,
-`--th-card-connector`). Its header row is exactly 56px: the icon at 32px,
-the name (the `h2`, the section-heading size × 0.7, and a link to the
-card), and at the far right the card's one action. Under it: the sentence,
-the working object, the product's statements as plain lines, and a line on
-what the object is. Nothing boxed sits on a card except the report's sheet
-of paper.
+The panels read the whole island's figures from `HeroAreaProvider`, which
+`IslandSource` fills on the server through `getIsland()` (`lib/landing/
+island.ts`, cached per render and shared with the first screen's line under
+the search and with "How the numbers are made"): `/stats`, `/rentals`,
+`/invest`, the Market snapshot's median occupancy, and the last sync time.
 
-- **Pinning.** `ProductSections` measures, on load, on resize and whenever a
-  card's content changes height (a `ResizeObserver`; nothing runs on
-  scroll): the window is at least 1024px wide and every card's own height
-  (`.ps-card-in`) fits the room a pinned card has (window height − 80 − 16,
-  less 56 per card above it when the header rows are kept in view; a pixel
-  of give, for browser zoom). If so the stack gets `data-pin`: each card is
-  `position: sticky` at 80px (the 72px nav plus 8), fills that room
-  (`min-height`), and the next slides up over it. From 880px of window
-  height it also gets `data-tabs`: each card pins 56px lower than the one
-  before, so the covered cards' header rows stay in view like the tabs of a
-  stack of folders; a covered card's action steps out of its row
-  (`data-covered`, set by an `IntersectionObserver` on the next card's
-  resting place, made again whenever the window's height changes). If any
-  card does not fit, no card pins and they follow one another.
-- **Short windows.** With the sample figures the cards pin down to about
-  1440×720 and 1280×760 (measured 2026-10-12, at the 18px body size). Under
-  880px of window height, again under 780px and again under 700px, the
-  cards' paddings, gaps, table rows and chart heights close up
-  (`landing-sections.css`, the three `max-height` blocks); nothing is left out and no type goes below the
-  scale. From 1024px the Connector's questions keep the body size (18px)
-  and are set closer in a short window, so seven of them fit
-  beside the conversation, with a redrawn area's longer wording too. Not
-  pinned, the report's sheet keeps one height from page to page, capped at
-  the height it would have in a pinned card so the sheet itself never stops
-  the cards pinning. FIT_TABLE
-- **The close is the last sheet.** `CTASection` is passed into the stack so
-  the pinned cards and the close share one containing block: the ink band
-  comes up over the pinned stack.
-- **Recede.** As the next card (or the close) comes over, the covered card's
-  body scales to 0.97 from its top and takes a 6% veil of ink: a CSS
-  scroll-driven animation on the next card's view timeline (`@supports
-  (animation-timeline: view())`, not under reduced motion). The header row
-  does neither: stacked, it is what still shows of the card and it is a
-  working link, so it stays crisp. Without support the stack works the same
-  with no recede.
-- **Links.** A pinned card reports where it is stuck, not where it lives, so
-  links to `#playground`, `#reports` and `#connector` (the nav, the hero, a
-  card's own name) are caught and scrolled to the card's place in the stack
-  with its pin offset; so are the address on load and back/forward.
-  Keyboard focus that lands in a card another card is over (even half over
-  the focused control) brings that card to the top. DOM order is reading
-  order and nothing is hidden or inert for being covered. The conversation
-  in the Connector card scrolls in its own frame but does not hold the
-  wheel: at either end the page takes it.
-- **Narrow or short.** Under 1024px, or where a card does not fit, cards do
-  not pin: each is still a rounded coloured surface and (under 1024px)
-  carries its action at its foot, not in its header. A card has no entrance
-  of its own, pinned or not: it is fully there before its arrival moment
-  and without it.
-
-### Arrival
-
-The first time 40% of a card is in view (`useArrival`) its contents play one
-short moment, then never again; everything is in its final state before it
-and without it (nothing waits at opacity 0 for an observer) and nothing
-plays under reduced motion. `data-arrived` stays on the card;
-`data-arriving` is on for 1.8s.
-
-- Playground: the two chart lines draw from the left (0.9s), their end
-  nodes pop, the selected tab's underline slides in, and the head to head's
-  second place joins (its column slides in from the right and settles,
-  0.7s). No figure counts up: every one shows its true value throughout.
-  Opening a tab afterwards draws its chart in 0.4s.
-- Reports: the sheet is dealt onto the card from the right with a slight
-  turn (0.5s) and the rail's corners tick down one by one. Leafing turns
-  the page: the content leaves to one side and the next comes in from the
-  other (0.25s each way, reversed going back).
-- Connector: the first question is typed into the composer at the foot of
-  the conversation (30ms a character, 1.2s at most), goes up as the
-  visitor's bubble, the typing indicator shows, the answer arrives. Every
-  question chosen later is asked the same way. The composer is a display
-  (`aria-hidden`, no caret at rest): the question list is the control.
-- The card's icon makes its one small move.
-
-### What the cards share
-
-- **The area travels down the page.** `src/lib/landing/areaContext.tsx`:
-  `HeroAreaProvider` wraps the page, `DrawHero` publishes its place, polygon,
-  name, count, each place's own count, the dots inside the line, figures,
-  `pending`, status and Playground link in one effect (`usePublishHeroArea`;
-  publishing does not re-render the hero), and the cards read them with
-  `useHeroArea`. Every count the cards quote is the hero's "one count",
-  never `/stats.listingCount` (which stands in only if `/points` failed).
-  While the hero's figures are pending the cards keep the old values in the
-  pending tone with `aria-busy`.
-- **What the cards fetch themselves** (`useAreaAnswer.ts`): only what the
-  hero does not have, and only while the view that shows it is selected and
-  within 320px of the viewport: `POST /api/dashboard/pricing` (Playground,
-  Pricing), `/pace` (Booking pace), `/stats` with `filters: { minBeds: 2 }`
-  (Connector, the bedrooms question) and `/stats` for the other place's own
-  area (the head to head). Like the hero's: 300ms after the area changes,
-  kept per polygon, an overtaken ask aborted and dropped, a failed one
-  neither shown nor kept.
-- **What each figure covers.** `/stats` and `/pricing` are filtered by the
-  polygon in live and in demo mode. `/rentals`, `/invest` and `/pace` are not
-  in demo mode (`demoRentals`, `demoInvest`, `demoPace` take no polygon), so
-  a demo answer from them is marked "all of Cyprus" and is not asked for
-  again when the area moves; the pace chart also prints the API's own
-  `scope`. A block whose answer is demo data carries a "Demo data" mark. If
-  a demo fallback becomes polygon-aware, change `inside()` in
-  `SectionParts.tsx` and the hook's `demoScoped` argument.
-
-### The three cards
-
-- **Playground** (`PlaygroundSection.tsx`). "Head to head" above the tabs,
-  as the Playground's compared areas sit above its own: the two places side
-  by side and, once the visitor has redrawn the area, that area as the
-  third (three is the most the Playground compares). Title and row names
-  are the Playground's own for this matrix (`CompareMarket` in
-  `components/dashboard/MarketTab.tsx`: "Head to head", "Listings tracked",
-  "Occupancy", "Median nightly rate"); the leading figure of each row is in
-  ink at 600, the others a step back. A place's occupancy and rate are its
-  `/stats` answer for its area as first drawn: the hero's own answer for the
-  place on the map, and one request, kept, for the other; a drag asks
-  nothing here. Then the Playground's five tabs as a real tablist, each a
-  preview under the Playground's own chart titles: weekly occupancy and
-  median rate (the hero's `stats.weekly`), the forward price curve, lead
-  time by stay month, asking price beside rent by bedrooms, and a
-  two-slider revenue sum (rate × 365 × occupancy, starting from the area's
-  medians; the visitor's rate is kept inside the area's scale, so the slider
-  and the sum agree after a place switch). Charts are `SeriesChart.tsx`.
-  Its button is the page's second and last accent fill.
-- **Reports** (`ReportsSection.tsx`). A sheet to leaf through, for a
-  property or for an area, with the reports' real section titles as its
-  contents (a rail from 1024px, a select below; in the rail a title's bold
-  setting is always there unseen, so choosing a section never moves the
-  others, and a hyphen in a title does not break). The sheet has a running
-  head (the report's title, "3 of 9") and a footer line ("Opens as a web
-  page. Prints to PDF."). Every page has a body: where the visitor's area
-  has real figures, a sample block (key figures, estimated revenue by
-  month, three listings, asking price and rent); where it has none, the
-  list of what the section contains. "Key figures at a glance" describes the
-  page as the team writes it (four figures) and labels its sample as what
-  this area has today ("From this area today: occupancy and nightly rate."). The property report's five analysis
-  sections each end in a "Key finding" slot: filled where the page's figures
-  support one (the year's revenue, in the hero's own two sentences),
-  otherwise drawn empty ("Key finding: written by the team for your
-  property"). No placeholder chart or invented number. The pager's buttons
-  are `aria-disabled` at either end, not `disabled`, so focus is never
-  dropped. "Ask for a report" carries `A report on <name>` to the close.
-- **Connector** (`ConnectorSection.tsx`). Seven questions and the
-  conversation they build: each one chosen is added under the earlier ones
-  (the log scrolls to it; one already asked goes back to its exchange;
-  "Clear" returns to the first). Every answer has the connector's own
-  shape (`sectionLines.ts`): what it found, one sentence on how firm that is
-  from the listing count ("Firm: it rests on 24 listings.", "Thin: only 3
-  listings, so treat it as a rough guide."; an answer that quotes no figure
-  because the listings are too few, or states an exact count, says "Thin:
-  only 3 listings."; an answer with enough listings but no figure to state
-  has no firmness line), and the as-of date where the data carries one. The
-  short-let answers and the map answer take theirs from `/stats`' weekly
-  series. The for-sale data (`/api/dashboard/invest`, `InvestStats`) carries
-  no date at all, so the price-signals answer has none, and the card's
-  statement reads "Says how firm each answer is, and the date where the data
-  has one." With fewer than five homes for sale the price-signals answer
-  quotes no figure. The demo price-signals answer names the island-wide set
-  it rests on. "Show me on the map" answers with `AreaMiniMap.tsx` as a
-  message of its own: the hero's server-rendered basemap with the area's
-  outline and the listings inside it, in the hero's shades. The sixth
-  question is the first again in Greek (`greekQuestion`, `greekReply`,
-  `inGreek` in `compare.ts`; **the Greek strings are to be proofread by the
-  owner**), set with `lang="el"`. The seventh, "What do guests say in their
-  reviews here?" (source note "not covered"), is one the connector has no
-  tool for: its answer says so and carries no firmness or date line
-  (`REVIEWS_REPLY`). The conversation is not a live region: one
-  `role="status"` line announces the answer, once per choice, and only
-  while the card is near the viewport; a change of area is announced by the
-  hero alone. "Ask for access" carries `Access to the Claude connector` to
-  the close.
-- On one column, choosing a question brings the composer and then the new
-  exchange into view, and "Ask another question" under the conversation
-  goes back up to the list.
+- **Playground** (`PlaygroundSection.tsx`). "What any street earns, rents
+  for and sells for." The working thing is "Airbnb or a tenant?", the
+  Playground's own Buy & Rent verdict for Cyprus: the tipping point
+  (`invest.parityMedian`, scaled by the Playground's starting running costs,
+  40% of a short-let's takings and 15% of rent, exactly as `BuyRentTab.tsx`
+  does), a slider ("How booked would yours be?") that starts at the median
+  Cyprus short-let's occupancy this season (the Market snapshot, the figure
+  the Playground compares with; `stats.effOccTodate` if the snapshot is
+  missing) and says which earns more there. The Playground's year's sums
+  are not quoted (the review of 2026-10-14: they are independent medians
+  and could read as the verdict's proof while disagreeing with it). The
+  tipping point is rounded to the whole per cent printed and the slider is
+  compared with that same figure. The basis line says what it rests on
+  without a level of firmness ("It rests on the homes for sale that have
+  short-lets and long-lets of their size near them, among 3,184 for-sale
+  ads seen."), since that subset is not counted on the page. The head
+  to head, the five preview tabs and the bullets are gone; the five views
+  are named in a sentence. Its button is "Open the Playground" (no longer
+  "it's free": the free part will sit behind an account).
+- **Reports** (`ReportsSection.tsx`). "A written answer for one property or
+  one area." The working thing is the report sheet to leaf through (two text
+  tabs over it for the kind of report, pager and running head on it). The
+  contents rail and its phone select are gone. Section titles in plain words:
+  "What price and minimum stay change", "How reviews move bookings", "What we
+  recommend, and what it is worth". The sheet's bars are saffron inside an
+  ink line. Every page still shows real figures or says what the section
+  contains, never an invented one; analysis pages end in a key finding,
+  filled only where the page's figures support one.
+- **Connector** (`ConnectorSection.tsx`). "Ask Claude about any place in
+  Cyprus." Named "Plotsights Cyprus" (the connector's decided name and
+  address, cyprus.plotsights.com; "Noesis Cyprus" is gone from the page).
+  The first exchange is there from the start, answered; a question the
+  visitor chooses is typed, sent and answered as before (the composer line
+  shows only while it is typed). The conversation is as tall as its
+  exchanges and scrolls inside itself past 520px from 1024px. The questions
+  are one line each: which tool an answer drew on is in its first line. The
+  short-let answers count in short-lets ("across 3,431 short-lets", "Firm: it
+  rests on 3,431 short-lets"), never "listings". Answers keep the connector's shape (what it found, how firm,
+  the date where the data has one); the Greek question and answer are still
+  to be proofread by the owner.
 
 ## How the numbers are made (`HowSection.tsx`, styles in `app/landing-how.css`)
 
-After the product cards and before the close, coming up over the cards as
-the close does (`#how`). The owner's idea for the flow diagram that was
+After the product panels and before the close (`#how`), on the paper with no
+sheet's edge of its own (since 2026-10-14). Under its heading, what the
+database holds today as three large figures with one caption each
+("short-lets", "long-lets", "for-sale ads"), and a line saying the for-sale
+count is every ad seen (ad expiry is not tracked yet, roadmap §4). The owner's idea for the flow diagram that was
 tried as a first screen: "a better more techy diagram for how we do it and
 what we do". One listing is followed along a line with five stops, each
 showing the listing as it is at that point:
 
-1. *It is published*: an example listing as its site shows it (marked as an
-   example), and what the two sources hold today (`getStats`, `getRentals`,
-   `getInvest` with no area).
+1. *A listing goes up* (was "It is published"): an example listing as its
+   site shows it (marked as an example).
 2. *We read it, every day*: a month of its calendar, a square a night,
    booked, blocked by the owner, or free; and the time of the last sync
    (`getSummary().lastRunAt`; left out on demo data).
 3. *We put it on the map*: its dot inside three nested areas.
-4. *We measure it*: what its calendar shows taken against what was really
+4. *We count real bookings* (was "We measure it"): what its calendar shows taken against what was really
    booked (the two bars and the nights printed beside them are worked out
    from the month in stop 2), and the matching of homes for sale with nearby
    short-lets.
@@ -765,17 +675,18 @@ data team. From 1100px the stops run left to right; below it, down a rail.
 
 ## The close (`CTASection.tsx`, `Footer.tsx`)
 
-"Ask the team." on ink, with the footer, in the same face and sizes. Over
-the actions stands the brand's drawn area with its square corners, quietly
-outlined, a line joining it to them. The request is an email to
+"Ask the team." on ink: "A report, connector access, or a question about a
+place: tell us what you need." The request is an email to
 `info@plotsights.com` (`BRAND.email`), written in the visitor's own mail app
-("Email the team"); beside it, "Or open the Playground, it's free". A
-carried request ("Your request: …", `sessionStorage` key `ps-question`,
-event `ps:question`, both exported from `compare.ts`) is shown beside the
-area, fills the area in, is named in the heading ("Ask the team for a report
-on Protaras.") and becomes the email's subject. The email field that stood
-here only simulated a send and was removed on 2026-10-11. The footer links
-the address; Privacy and Terms return when their pages exist.
+("Email the team"); beside it, "Or open the Playground". A carried request
+("Your request: …", `sessionStorage` key `ps-question`, event `ps:question`,
+both exported from `compare.ts`) is shown over the actions, named in the
+heading ("Ask the team for a report on Cyprus.") and becomes the email's
+subject. The drawn area that stood on a stem over the actions was removed on
+2026-10-14 (it read as a balloon). The footer gives the wordmark, where the
+listings come from ("Listings from Airbnb and Bazaraki, read daily."), the
+map credit, the address and the year. Privacy and Terms, and the company's
+registered name and city, return when they exist (see Open).
 
 ## After the critique of 2026-10-11
 
@@ -844,6 +755,19 @@ tinted at 22% (`--th-area-tint`).
 
 ## Open
 
+
+- **Launch to-dos from the 2026-10-14 build (owner).** Privacy and Terms
+  pages, then their footer links; the company's registered name and city for
+  the footer; a reply-time promise for "Ask the team", if one is to be made;
+  the search list still counts short-lets only ("729 short-lets"), since
+  `/api/dashboard/areas` carries no long-let or for-sale counts: add them to
+  that route to show all three. The share image (`public/og.png`, 1200×630)
+  is the first screen without figures, rendered in a headless browser with
+  the tour's overlay, the hero's figure line and the nav links hidden; make
+  it again if the first screen changes.
+- **The first screen's line under the search** quotes the three counts and
+  the short-let sync time ("Read daily: … Short-let calendars last read …");
+  on demo data it says "Demo data:" and gives no time.
 - **Not yet seen on live data.** Nothing here adds a query (the first
   screen and the picked place use the stage's own three endpoints with a
   polygon), but none of today's screens has been run against the live
@@ -865,8 +789,6 @@ tinted at 22% (`--th-area-tint`).
   exceed the page's own count; otherwise the same is said without the
   number.
 - The Greek question and answer are to be proofread by the owner.
-- The covered card's recede needs CSS scroll-driven animations; browsers
-  without them get the stack with no recede.
 - `CredibilityStrip.tsx`, `ProductTabs.tsx`, `SplitHero.tsx` and
   `HeroSequence.tsx` (the earlier landing) were deleted on 2026-10-11; they
   are in git history.

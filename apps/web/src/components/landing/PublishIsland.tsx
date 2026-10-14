@@ -13,10 +13,12 @@ export default function PublishIsland({
   stats,
   rentals,
   invest,
+  occMedian,
 }: {
   stats: SelectionStats | null;
   rentals: RentalStats | null;
   invest: InvestStats | null;
+  occMedian: number | null;
 }) {
   const publish = usePublishHeroArea();
   useEffect(() => {
@@ -30,11 +32,11 @@ export default function PublishIsland({
       // No map on this page counts the listings, so the API's own counts stand for every place.
       countsFailed: true,
       dots: null,
-      figures: stats && { stats, rentals, invest },
+      figures: stats && { stats, rentals, invest, occMedian },
       pending: false,
       status: stats ? "ready" : "error",
       playgroundHref: "/dashboard",
     });
-  }, [publish, stats, rentals, invest]);
+  }, [publish, stats, rentals, invest, occMedian]);
   return null;
 }

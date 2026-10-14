@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
-import { Pause, Play } from "lucide-react";
+import { Pause, Play, SkipForward } from "lucide-react";
 import { euro, int, pct } from "@/lib/landing/areaLines";
 import { listingPoints } from "@/lib/landing/listingPoints";
 import { OPENING_TOUR_LEAD_MS, OPENING_WORDS, openingState } from "@/lib/landing/opening";
@@ -200,6 +200,11 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   // True for that first town, from when it is held until the tour leaves it: the opening's pointer is already on
   // its first corner when it is let go, so its listings and its first line start at once, with no lead-in.
   const [handed, setHanded] = useState(false);
+  // Whether the next town's map has loaded (the tour never shows areas on bare paper), and a press of "Next town"
+  // that is waiting for it: the press is kept and carried out when the map comes, never dropped.
+  const [nextReady, setNextReady] = useState(false);
+  const [wantNext, setWantNext] = useState(false);
+  const skipTimer = useRef(0);
 
   const root = useRef<HTMLDivElement>(null);
   const over = useRef<HTMLDivElement>(null);
@@ -452,6 +457,46 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stopAt, mine, stopped, toured, still, held, handed, times]);
 
+  // Whether the next town's map is in: checked whenever the next town changes or starts being fetched, and set by
+  // its image's own load (below).
+  useEffect(() => {
+    setNextReady(maps.current[next]?.complete ?? false);
+  }, [next, ahead]);
+  useEffect(() => () => window.clearTimeout(skipTimer.current), []);
+
+  /**
+   * The visitor's own step to the next town. The town showing leaves as it always does (its areas and figures go,
+   * then the map goes west and the next comes in from the east), and the tour plays on from there; a paused tour
+   * starts again. With reduced motion the next town simply replaces this one, complete. If the next map is not in
+   * yet the press waits for it (a visitor who asked for no motion has it fetched only now).
+   */
+  function skip() {
+    if (!nextReady) {
+      setAhead(true);
+      setWantNext(true);
+      return;
+    }
+    setWantNext(false);
+    if (still) {
+      const n = (stopAt + 1) % stops.length;
+      go();
+      setDrawn(stops[n].areas.length);
+      setAim(stops[n].areas.length - 1);
+      return;
+    }
+    if (leaving) return;
+    setStopped(false);
+    setLeaving(true);
+    window.clearTimeout(skipTimer.current);
+    skipTimer.current = window.setTimeout(go, OUT_MS);
+  }
+  // A press that waited for the next map is carried out once the map has come.
+  useEffect(() => {
+    if (wantNext && nextReady) skip();
+    // `skip` is this render's own.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [wantNext, nextReady]);
+
   function go() {
     setWas(stopAt);
     setStopAt((stopAt + 1) % stops.length);
@@ -545,6 +590,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               data-pan={i === stopAt ? pan : undefined}
               style={focus(s, i)}
               decoding="async"
+              onLoad={i === next ? () => setNextReady(true) : undefined}
             />
               ),
           )}
@@ -626,6 +672,18 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             {stopped ? "Play the tour" : "Pause the tour"}
           </button>
         )}
+        {/* Offered with reduced motion too: the visitor can still step from town to town. While the next map is on
+            its way the control says so and keeps the press. */}
+        <button
+          type="button"
+          className="lh-stopper"
+          onClick={skip}
+          aria-busy={wantNext || undefined}
+          data-busy={wantNext || (ahead && !nextReady) ? "" : undefined}
+        >
+          <SkipForward size={12} strokeWidth={2.4} aria-hidden="true" />
+          {wantNext ? "Loading the next town" : "Next town"}
+        </button>
         {/* Which listings the dots are, and what their shades mean, as on the stage's map. */}
         <span className="lh-key">
           <span className="lh-key-of">

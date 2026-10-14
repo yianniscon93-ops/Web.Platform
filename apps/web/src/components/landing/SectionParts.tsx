@@ -97,43 +97,44 @@ export function useArrival(ref: RefObject<Element | null>): { arrived: boolean; 
 }
 
 /**
- * One product's card in the stack: a 56px header row (icon, name, the card's one action), then its body.
- * The body's parts are in the order a phone shows them: the sentence, `lead` (what drives the object and so
- * comes before it, like the Connector's questions), the working `object`, the `notes` (the product's plain
- * statements, with `aside`, a line on what the object is), and the action again at the foot (a phone's header
- * row has room for the name only). From 1024px the sentence and the notes share the first column and the
- * object takes the rest.
+ * One product's section: a panel on its own ground, with the product's name as its heading (its icon beside it),
+ * one claim under the name, a sentence or two, the product's one action and, at most, one line of small print.
+ * Beside them, the one working thing that shows the product (`object`), and for the Connector the questions that
+ * drive it (`lead`). The panels follow one another; none covers another (owner, 2026-10-14).
  *
- * `index` is the card's place in the stack (it sets how far down it pins); `arrived` and `arriving` are its
- * arrival (useArrival), which its styles and its contents key their one moment on. A card has no entrance of
- * its own beyond that moment: pinned or not, it is fully there before it and without it.
+ * `layout` sets how the panel is composed from 1024px, so neighbours never share a composition: "split" (the words,
+ * then the object to their right), "mirror" (the object first, the words to its right), "stack" (the words across
+ * the top, the object and the lead under them). Below 1024px every panel is one column: the words, the object, the
+ * lead, and the action again at the foot (the one beside the words shows from 1024px only). `arrived` and `arriving` are its arrival (useArrival), which its contents key their one moment on.
  */
 export function Card({
   cardRef,
   id,
-  index,
+  layout,
   name,
   icon,
-  sentence,
+  claim,
+  body,
   action,
+  note,
   lead,
   object,
-  notes,
-  aside,
   arrived,
   arriving,
 }: {
   cardRef: RefObject<HTMLElement | null>;
   id: string;
-  index: number;
+  layout: "split" | "mirror" | "stack";
   name: string;
   icon: React.ReactNode;
-  sentence: string;
+  /** What the product does for the visitor, in one sentence under its name. */
+  claim: string;
+  body: React.ReactNode;
   action: React.ReactNode;
+  /** The panel's one line of small print, where it needs one. */
+  note?: React.ReactNode;
   lead?: React.ReactNode;
   object: React.ReactNode;
-  notes: string[];
-  aside: string;
   arrived: boolean;
   arriving: boolean;
 }) {
@@ -143,37 +144,29 @@ export function Card({
       id={id}
       className="ps-card"
       data-card={id}
+      data-layout={layout}
       data-arrived={arrived ? "" : undefined}
       data-arriving={arriving ? "" : undefined}
-      style={{ "--i": index } as React.CSSProperties}
       aria-labelledby={`${id}-name`}
     >
-      {/* The card's own height, whatever height it is stretched to when pinned: the stack measures this. */}
-      <div className="ps-card-in">
-        <header className="ps-card-head">
-          <span className="ps-card-icon">{icon}</span>
+      <div className="ps-card-text">
+        <div className="ps-card-intro">
           <h2 id={`${id}-name`} className="ps-card-name">
-            {/* The name is the way to the card: with other cards over it, its header row is all that shows. */}
-            <a href={`#${id}`}>{name}</a>
+            <span className="ps-card-icon">{icon}</span>
+            {name}
           </h2>
+          <p className="ps-claim">{claim}</p>
+        </div>
+        <div className="ps-card-say">
+          <div className="ps-lede">{body}</div>
           <div className="ps-card-action">{action}</div>
-        </header>
-        <div className="ps-card-body" data-lead={lead ? "" : undefined}>
-          <p className="ps-lede">{sentence}</p>
-          {lead && <div className="ps-card-lead">{lead}</div>}
-          <div className="ps-card-object">{object}</div>
-          {/* The product's statements, as plain lines, and what the object is. */}
-          <div className="ps-card-foot">
-            <ul className="ps-notes">
-              {notes.map((line) => (
-                <li key={line}>{line}</li>
-              ))}
-            </ul>
-            <p className="ps-under">{aside}</p>
-          </div>
-          <div className="ps-card-end">{action}</div>
+          {note && <p className="ps-under">{note}</p>}
         </div>
       </div>
+      <div className="ps-card-object">{object}</div>
+      {lead && <div className="ps-card-lead">{lead}</div>}
+      {/* Below 1024px the action comes after the working thing, so the visitor sees it before being asked to act. */}
+      <div className="ps-card-end">{action}</div>
     </section>
   );
 }

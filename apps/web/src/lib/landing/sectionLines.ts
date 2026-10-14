@@ -1,8 +1,6 @@
 import type { InvestStats, SelectionStats, WeeklyPoint } from "@/lib/dashboard/types";
 import {
   MIN_LISTINGS,
-  MONTHS,
-  MONTH_NAMES,
   SEASON,
   answer,
   euro,
@@ -49,29 +47,11 @@ export function weeklySeries(weekly: WeeklyPoint[], field: "effOcc" | "medianAdr
   return out;
 }
 
-/** The forward price curve as chart points; dates without a price are left out. */
-export function forwardSeries(curve: Array<{ date: string; medianPrice: number | null }>): SeriesPoint[] {
-  const out: SeriesPoint[] = [];
-  for (const d of curve) if (d.medianPrice != null) out.push(dated(d.date, d.medianPrice));
-  return out;
-}
-
 /** "6 Apr to 5 Oct 2026": what a series covers. */
 export function seriesRange(pts: SeriesPoint[]): string {
   const last = pts[pts.length - 1];
   const first = pts[0];
   return `${first.label}${first.y === last.y ? "" : ` ${first.y}`} to ${last.label} ${last.y}`;
-}
-
-/** "Oct" or, where the year matters, "Jan ’27", for a "2026-10" month. */
-export function monthLabel(ym: string, withYear = false): string {
-  const [y, m] = ym.split("-").map(Number);
-  return withYear ? `${MONTHS[m - 1]} \u2019${String(y).slice(2)}` : MONTHS[m - 1];
-}
-
-export function monthName(ym: string): string {
-  const [y, m] = ym.split("-").map(Number);
-  return `${MONTH_NAMES[m - 1]} ${y}`;
 }
 
 /** Why an area has no figure to quote, in the hero's words, or null when it has enough listings. */
@@ -109,11 +89,27 @@ export interface Reply {
  * no figure (it has already said the listings are too few), so there is
  * nothing to call a rough guide.
  */
+/** The noun the short-let answers count in: their figures are the short-lets' alone. */
+const SHORT_LET = "short-\u2060let";
+
 function firmness(n: number, { noun = "listing", figure = true, where = "" } = {}): string {
   const things = `${int(n)} ${noun}${n === 1 ? "" : "s"}${where}`;
   if (n === 0) return `Thin: there are no ${noun}s to go on.`;
   if (n < MIN_LISTINGS) return figure ? `Thin: only ${things}, so treat it as a rough guide.` : `Thin: only ${things}.`;
   return `Firm: it rests on ${things}.`;
+}
+
+/**
+ * What the Playground's "Airbnb or a tenant?" rests on, said truthfully: its medians come from the homes for sale
+ * that have short-lets and long-lets of their size near them to compare with, a part of every for-sale ad seen (the
+ * count is every ad seen, since ad expiry is not tracked yet). That part is not counted on the page, so no level of
+ * firmness is claimed for it; with almost no ads at all it is called thin.
+ */
+export function tippingBasis(invest: Pick<InvestStats, "supply">): string {
+  const n = invest.supply;
+  const ads = `${int(n)} for-sale ad${n === 1 ? "" : "s"} seen`;
+  if (n < MIN_LISTINGS) return `Thin: only ${ads}, so treat it as a rough guide.`;
+  return `It rests on the homes for sale that have short-\u2060lets and long-\u2060lets of their size near them, among ${ads}.`;
 }
 
 /** "How are short-lets doing in <area>?" The answer is the hero's own sentence for it. */
@@ -123,19 +119,19 @@ export function summaryReply(count: number, s: Pick<SelectionStats, "effOccTodat
   const stated = s.effOccTodate != null || s.medianRate != null;
   return {
     text: answer(count, s),
-    firm: quoted && !stated ? null : firmness(count, { figure: quoted }),
+    firm: quoted && !stated ? null : firmness(count, { noun: SHORT_LET, figure: quoted }),
     asOf: quoted ? asOf(s.weekly) : null,
   };
 }
 
 /** "How has it moved over the year?" The fullest and the quietest full month of the weekly series. */
 export function trendReply(count: number, weekly: WeeklyPoint[]): Reply {
-  if (count < MIN_LISTINGS) return { text: answer(count, null), firm: firmness(count, { figure: false }), asOf: null };
+  if (count < MIN_LISTINGS) return { text: answer(count, null), firm: firmness(count, { noun: SHORT_LET, figure: false }), asOf: null };
   const months = monthsOf(weekly);
   if (months.length < 2) {
     return {
-      text: "There are not enough weeks of bookings for this area to compare months yet.",
-      firm: firmness(count, { figure: false }),
+      text: "There are not enough weeks of short-\u2060let bookings for this area to compare months yet.",
+      firm: firmness(count, { noun: SHORT_LET, figure: false }),
       asOf: asOf(weekly),
     };
   }
@@ -144,9 +140,9 @@ export function trendReply(count: number, weekly: WeeklyPoint[]): Reply {
   const quietest = months.reduce((a, b) => (b.occ < a.occ ? b : a));
   return {
     text:
-      `Over the ${inWords(months.length)} full months shown, ${fullest.name} was the fullest, with ${pct(fullest.occ)} of nights occupied. ` +
-      `${quietest.name} was the quietest, at ${pct(quietest.occ)}.`,
-    firm: firmness(count),
+      `Over the ${inWords(months.length)} full months shown, short-\u2060lets here were fullest in ${fullest.name}, at ${pct(fullest.occ)} of nights, ` +
+      `and quietest in ${quietest.name}, at ${pct(quietest.occ)}.`,
+    firm: firmness(count, { noun: SHORT_LET }),
     asOf: asOf(weekly),
   };
 }
@@ -166,7 +162,7 @@ export function bedroomsReply(s: SelectionStats, inside: number | null): Reply {
   if (n === 0) {
     return {
       text: "No short-\u2060lets with two or more bedrooms sit inside this area.",
-      firm: firmness(0, { figure: false }),
+      firm: firmness(0, { noun: SHORT_LET, figure: false }),
       asOf: null,
     };
   }
@@ -175,30 +171,32 @@ export function bedroomsReply(s: SelectionStats, inside: number | null): Reply {
       text: quote
         ? `Only ${int(n)} short-\u2060let${n === 1 ? "" : "s"} with two or more bedrooms ${n === 1 ? "sits" : "sit"} inside this area, too few to quote a figure.`
         : "Too few short-\u2060lets with two or more bedrooms sit inside this area to quote a figure.",
-      firm: quote ? firmness(n, { figure: false }) : "Thin: too few listings to rest a figure on.",
+      firm: quote ? firmness(n, { noun: SHORT_LET, figure: false }) : "Thin: too few short-\u2060lets to rest a figure on.",
       asOf: null,
     };
   }
   const occ = s.effOccTodate == null ? null : pct(s.effOccTodate);
   const rate = s.medianRate == null ? null : euro(s.medianRate);
-  const firm = quote ? firmness(n) : "Firm: it rests on the listings with two or more bedrooms inside this area.";
+  const firm = quote
+    ? firmness(n, { noun: SHORT_LET })
+    : "Firm: it rests on the short-\u2060lets with two or more bedrooms inside this area.";
   const when = asOf(s.weekly);
   if (occ && rate) {
-    return { text: `Places with two or more bedrooms take a median ${rate} a night and fill ${occ} of nights ${SEASON}.`, firm, asOf: when };
+    return { text: `Short-\u2060lets with two or more bedrooms take a median ${rate} a night and fill ${occ} of nights ${SEASON}.`, firm, asOf: when };
   }
-  if (rate) return { text: `Places with two or more bedrooms take a median ${rate} a night.`, firm, asOf: when };
+  if (rate) return { text: `Short-\u2060lets with two or more bedrooms take a median ${rate} a night.`, firm, asOf: when };
   if (occ) {
     return {
-      text: `Places with two or more bedrooms fill ${occ} of nights ${SEASON}. There is no nightly rate for them yet.`,
+      text: `Short-\u2060lets with two or more bedrooms fill ${occ} of nights ${SEASON}. There is no nightly rate for them yet.`,
       firm,
       asOf: when,
     };
   }
   return {
     text: quote
-      ? `There are ${int(n)} places with two or more bedrooms here, without enough bookings to quote a figure yet.`
-      : "There are places with two or more bedrooms here, without enough bookings to quote a figure yet.",
-    firm: quote ? firmness(n, { figure: false }) : null,
+      ? `There are ${lets(n)} with two or more bedrooms here, without enough bookings to quote a figure yet.`
+      : "There are short-\u2060lets with two or more bedrooms here, without enough bookings to quote a figure yet.",
+    firm: quote ? firmness(n, { noun: SHORT_LET, figure: false }) : null,
     asOf: when,
   };
 }
@@ -268,7 +266,7 @@ export function mapReply(name: string, count: number | null, drawn: boolean, wee
   if (count == null) return { text: `Here is ${name}.`, firm: null, asOf: null };
   return {
     text: drawn ? `Here is ${name}, with ${lets(count)} inside the line.` : `Here is the outline of ${name}. It holds ${lets(count)}.`,
-    firm: firmness(count, { figure: false }),
+    firm: firmness(count, { noun: SHORT_LET, figure: false }),
     asOf: weekly && count > 0 ? asOf(weekly) : null,
   };
 }
@@ -293,7 +291,8 @@ export const REVIEWS_REPLY: Reply = {
 const MONTHS_EL = ["Ιαν", "Φεβ", "Μαρ", "Απρ", "Μαΐ", "Ιουν", "Ιουλ", "Αυγ", "Σεπ", "Οκτ", "Νοε", "Δεκ"];
 const intEl = (v: number) => Math.round(v).toLocaleString("el-GR");
 const euroEl = (v: number) => `€${intEl(v)}`;
-const staysEl = (n: number) => `${intEl(n)} ${n === 1 ? "κατάλυμα" : "καταλύματα"}`;
+// Named as short-let lodgings, as the English names them short-lets (2026-10-14).
+const staysEl = (n: number) => `${intEl(n)} ${n === 1 ? "κατάλυμα" : "καταλύματα"} βραχυχρόνιας μίσθωσης`;
 
 /** "Πώς πάνε οι βραχυχρόνιες μισθώσεις στον Πρωταρά;" */
 export function greekQuestion(place: DrawnArea, changed: boolean): string {

@@ -21,7 +21,8 @@ export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> =
     areas: [
       { name: "Old town", ring: [[730, 990], [1010, 940], [1070, 1160], [900, 1250], [720, 1190]], at: [1545, 1200], side: "right", from: 2 },
       { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1070, 455], side: "right", from: 1 },
-      { name: "Seafront", ring: [[1100, 740], [1350, 680], [1440, 860], [1260, 1010], [1090, 940]], at: [1575, 440], side: "right", from: 1 },
+      // Kept on land, on the streets behind the promenade (critique, 2026-10-14: its corners ran into the sea).
+      { name: "Seafront", ring: [[1090, 720], [1300, 650], [1370, 790], [1230, 930], [1080, 900]], at: [1575, 440], side: "right", from: 1 },
     ],
     where: [880, 400],
   },

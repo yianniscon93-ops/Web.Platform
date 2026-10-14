@@ -10,6 +10,11 @@ import Wordmark from "@/components/landing/Wordmark";
 export default function Nav() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  // True while the first screen's search is in view: it is then the screen's one filled action, and the bar's way to
+  // the Playground is a plain link beside the others (critique, 2026-10-14: one filled action per screen). It starts
+  // true, since the page opens on the search, so the first paint never shows a second filled button; the observer
+  // turns it off once the search has gone by.
+  const [quiet, setQuiet] = useState(true);
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -17,11 +22,24 @@ export default function Nav() {
     return () => window.removeEventListener("scroll", fn);
   }, []);
 
-  // The product icons are shown in the phone menu only; "Ask the team" is not a product and has none.
+  useEffect(() => {
+    const find = document.querySelector(".lh-find");
+    if (!find || typeof IntersectionObserver === "undefined") {
+      setQuiet(false);
+      return;
+    }
+    const io = new IntersectionObserver(([entry]) => setQuiet(entry.isIntersecting), { rootMargin: "-72px 0px 0px 0px" });
+    io.observe(find);
+    return () => io.disconnect();
+  }, []);
+
+  // The product icons are shown in the phone menu only; "How it works" and "Ask the team" are not products and
+  // have none. "How it works" joins the bar from 1024px, where there is room for it.
   const links = [
-    { label: "Reports", href: "#reports", Icon: ReportsIcon },
-    { label: "Connector", href: "#connector", Icon: ConnectorIcon },
-    { label: "Ask the team", href: "#access", Icon: null },
+    { label: "Reports", href: "#reports", Icon: ReportsIcon, wide: false },
+    { label: "Connector", href: "#connector", Icon: ConnectorIcon, wide: false },
+    { label: "How it works", href: "#how", Icon: null, wide: true },
+    { label: "Ask the team", href: "#access", Icon: null, wide: false },
   ];
 
   return (
@@ -55,16 +73,21 @@ export default function Nav() {
             <a
               key={l.label}
               href={l.href}
-              className="th-navlink flex min-h-11 items-center text-[length:var(--th-text-body)] font-medium"
+              className={`th-navlink ${l.wide ? "hidden lg:flex" : "flex"} min-h-11 items-center text-[length:var(--th-text-body)] font-medium`}
               style={{ color: C.ink }}
             >
               {l.label}
             </a>
           ))}
+          {/* Olive, as every way into the Playground is; a plain link while the search below is the screen's action. */}
           <a
             href="/dashboard"
-            className="th-solid inline-flex h-11 items-center rounded-full px-4 text-[length:var(--th-text-body)] font-semibold lg:px-5"
-            style={{ background: C.solid, color: C.solidInk }}
+            className={
+              quiet
+                ? "th-navlink flex min-h-11 items-center text-[length:var(--th-text-body)] font-semibold"
+                : "th-go"
+            }
+            style={quiet ? { color: C.ink } : undefined}
           >
             Open the Playground
           </a>
@@ -103,12 +126,7 @@ export default function Nav() {
                 {l.label}
               </a>
             ))}
-            <a
-              href="/dashboard"
-              onClick={() => setOpen(false)}
-              className="th-solid mt-4 flex h-12 items-center justify-center rounded-full text-[length:var(--th-text-body)] font-semibold"
-              style={{ background: C.solid, color: C.solidInk }}
-            >
+            <a href="/dashboard" onClick={() => setOpen(false)} className="th-go mt-4 flex w-full">
               Open the Playground
             </a>
           </motion.div>

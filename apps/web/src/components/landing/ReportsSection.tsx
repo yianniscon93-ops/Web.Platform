@@ -34,10 +34,11 @@ interface ReportSection {
   partial?: boolean;
 }
 
-/** A title as it is set: its hyphens do not break, so "minimum-nights" stays on one line in the narrow rail. */
+/** A title as it is set: a hyphen in it never breaks the line ("short-let"). */
 const unbroken = (title: string) => title.replace(/-/g, "-\u2060");
 
-// The two kinds of report the team writes. The section titles are the reports' own, verbatim.
+// The two kinds of report the team writes, with their sections in the order a report has them. The titles are the
+// reports' own, in plain words where the working title was jargon (owner-approved copy pass, 2026-10-14).
 const REPORTS = {
   property: {
     label: "For a property",
@@ -59,19 +60,19 @@ const REPORTS = {
         analysis: true,
       },
       {
-        title: "Price & minimum-nights levers",
+        title: "What price and minimum stay change",
         contains: ["A demand curve against nightly price", "The effect of the minimum stay"],
         analysis: true,
       },
       { title: "What each amenity is worth", contains: ["The premium each amenity carries"], analysis: true },
-      { title: "The review flywheel", contains: ["The cold start", "How the first reviews change bookings"], analysis: true },
+      { title: "How reviews move bookings", contains: ["The cold start", "How the first reviews change bookings"], analysis: true },
       { title: "From gross to net", contains: ["A cost waterfall from gross revenue to net"], analysis: true },
       {
         title: "The comparable set",
         about: "The listings the figures rest on, ranked by how alike they are.",
         sample: "comparables",
       },
-      { title: "Conclusions & revenue impact", contains: ["The scenarios side by side"] },
+      { title: "What we recommend, and what it is worth", contains: ["The scenarios side by side"] },
     ],
   },
   area: {
@@ -259,15 +260,14 @@ function keyFinding(sample: Sample | undefined, area: HeroArea): string | null {
 const LEAF_MS = 250;
 
 /**
- * The Reports card: a report to leaf through. A switch picks the kind of
- * report, a contents rail lists its real section titles, and the sheet turns
- * to the one chosen: a sample block wherever the visitor's area has real
- * figures for it, a list of what the section contains where it has none, and
- * on the analysis sections the key finding each ends in. On arrival the sheet
- * is dealt onto the card, once; leafing turns the page (out to one side, the
- * next in from the other).
+ * The Reports panel: a report to leaf through, as the one big thing on it. Two tabs over the sheet pick the kind
+ * of report, and the sheet's own pager turns its pages, each named: a sample block wherever there are real
+ * figures for it, a list of what the section contains where there are none, and on the analysis sections the key
+ * finding each ends in. On arrival the sheet is dealt onto the panel, once; leafing turns the page (out to one
+ * side, the next in from the other). Until 2026-10-14 a rail beside the sheet listed every section as well; the
+ * pager and the running head ("3 of 9") now say where the reader is, so the panel holds one thing.
  */
-export default function ReportsSection({ area, index }: { area: HeroArea; index: number }) {
+export default function ReportsSection({ area }: { area: HeroArea }) {
   const [kind, setKind] = useState<Kind>("property");
   // Each kind of report keeps its own place. Both open on a section the visitor's area has figures for: the
   // property report on its year of revenue, a chart and the key finding it ends in, which nothing else on the
@@ -279,7 +279,6 @@ export default function ReportsSection({ area, index }: { area: HeroArea; index:
   const [leaf, setLeaf] = useState<{ stage: "out" | "in"; dir: 1 | -1 } | null>(null);
   const ids = useId();
   const card = useRef<HTMLElement>(null);
-  const rail = useRef<HTMLOListElement>(null);
   const timers = useRef<number[]>([]);
   const { arrived, arriving } = useArrival(card);
   const sections: ReportSection[] = REPORTS[kind].sections;
@@ -312,10 +311,8 @@ export default function ReportsSection({ area, index }: { area: HeroArea; index:
     );
   }
 
-  const turn = (to: number, focus = false) => {
-    if (to < 0 || to >= sections.length) return;
-    if (focus) rail.current?.querySelectorAll<HTMLButtonElement>("button")[to]?.focus();
-    if (to === i) return;
+  const turn = (to: number) => {
+    if (to < 0 || to >= sections.length || to === i) return;
     setAt((a) => ({ ...a, [kind]: to }));
     show(kind, to, to > i ? 1 : -1);
   };
@@ -326,85 +323,39 @@ export default function ReportsSection({ area, index }: { area: HeroArea; index:
     show(k, at[k], k === "area" ? 1 : -1);
   };
 
-  function onKey(e: React.KeyboardEvent) {
-    const to =
-      e.key === "ArrowDown" || e.key === "ArrowRight"
-        ? i + 1
-        : e.key === "ArrowUp" || e.key === "ArrowLeft"
-          ? i - 1
-          : e.key === "Home"
-            ? 0
-            : e.key === "End"
-              ? sections.length - 1
-              : null;
-    if (to == null) return;
-    e.preventDefault();
-    turn(to, true);
-  }
-
   return (
     <Card
       cardRef={card}
       id="reports"
-      index={index}
+      layout="mirror"
       name="Reports"
-      icon={<ReportsIcon size={32} />}
-      sentence="When you need more than a map, we write it up: a report on one property or one area, built from the same listings."
+      icon={<ReportsIcon size={36} />}
+      claim="A written answer for one property or one area."
+      body={
+        <p>
+          A property report runs to nine sections, from what it could earn to what it keeps after costs; an area
+          report, to four. Written by the team from the same daily data.
+        </p>
+      }
+      note={`A sample page, from today\u2019s figures for ${area.name}.`}
       arrived={arrived}
       arriving={arriving}
-      aside={`Sample. The figures are today\u2019s for ${area.name}; a real report is written by the team.`}
-      notes={[
-        "Written by the team for your property or your area.",
-        "Each analysis section ends in one key finding.",
-        "It arrives as a single web page you can open, share, or print to PDF.",
-      ]}
       action={
         <a href="#access" className="ps-solid" onClick={() => carryRequest(`A report on ${area.name}`)}>
           Ask for a report
           <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
         </a>
       }
-      lead={
-        <div className="ps-report-nav">
+      object={
+        <div className="ps-sheet-col">
           <div className="ps-switch" role="group" aria-label="Kind of report">
             {KINDS.map((k) => (
               <button key={k} type="button" aria-pressed={kind === k} onClick={() => pick(k)}>
-                {REPORTS[k].label}
+                {/* The label keeps the width of its bold form, so choosing one does not nudge the other. */}
+                <span data-label={REPORTS[k].label}>{REPORTS[k].label}</span>
               </button>
             ))}
           </div>
-
-          {/* Narrow screens: the contents as one control above the sheet. */}
-          <label className="ps-contents-select">
-            <span>Section</span>
-            <select value={i} onChange={(e) => turn(Number(e.target.value))}>
-              {sections.map((s, n) => (
-                <option key={s.title} value={n}>
-                  {unbroken(s.title)}
-                </option>
-              ))}
-            </select>
-          </label>
-
-          <nav className="ps-contents" aria-label={`Contents of the report: ${REPORTS[kind].title}`}>
-            <ol ref={rail} onKeyDown={onKey}>
-              {sections.map((s, n) => (
-                <li key={s.title} style={{ "--n": n } as React.CSSProperties}>
-                  <button type="button" aria-current={n === i ? "true" : undefined} onClick={() => turn(n)}>
-                    {/* The title's bold setting is always there, unseen, under the one on show: the row has the
-                        height of whichever wraps to more lines, so choosing a section never moves the others. */}
-                    <span className="ps-contents-label" data-bold={unbroken(s.title)}>
-                      <span>{unbroken(s.title)}</span>
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ol>
-          </nav>
-        </div>
-      }
-      object={
-        <div className="ps-sheet-col">
           <article className="ps-sheet" aria-labelledby={`${ids}-page`}>
             {/* The running head of every page: which report, and which page of it. */}
             <p className="ps-sheet-head">

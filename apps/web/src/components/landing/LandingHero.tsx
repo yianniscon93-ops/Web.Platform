@@ -2,7 +2,8 @@ import Opening from "./Opening";
 import PlaceSearch from "./PlaceSearch";
 import TownTour from "./TownTour";
 import { DEFAULT_FILTERS } from "@/lib/dashboard/filters";
-import { MIN_LISTINGS } from "@/lib/landing/areaLines";
+import { MIN_LISTINGS, int } from "@/lib/landing/areaLines";
+import { getIsland, readOn, type Island } from "@/lib/landing/island";
 import { HERO_TOWNS, type HeroTown } from "@/lib/landing/heroTowns";
 import { DRAWN, townGround, type Drawn } from "@/lib/landing/townAreas";
 import type { TourArea, TourMarket, TourStop, TownPt } from "@/lib/landing/tour";
@@ -50,6 +51,28 @@ async function measured(town: HeroTown, area: Drawn): Promise<{ area: TourArea; 
 }
 
 /**
+ * Under the search: what the database holds, from getIsland, with each figure said for what it is. "Read daily: 3,431
+ * short-lets, 1,420 long-lets and 3,184 for-sale ads seen." The for-sale count is every ad seen (expiry is not
+ * tracked yet), so it says "seen". The one time the database gives is the short-let sync (sync_meta.last_run_at),
+ * so it is attached to the short-lets alone: "Short-let calendars last read 14 October at 06:10." On demo data
+ * there is no true time, and the line says it is demo data instead. Left out when the counts cannot be had.
+ */
+function Fresh({ island }: { island: Island }) {
+  const { stats, rentals, invest, summary } = island;
+  if (!stats || !rentals || !invest) return null;
+  const demo = stats.source === "demo";
+  const when = demo ? null : readOn(summary?.lastRunAt);
+  return (
+    <p className="lh-fresh m-0">
+      {demo ? "Demo data: " : "Read daily: "}
+      <b>{int(stats.listingCount)}</b> short-&#8288;lets, <b>{int(rentals.supply)}</b> long-&#8288;lets and{" "}
+      <b>{int(invest.supply)}</b> for-sale ads seen.
+      {when && <> Short-&#8288;let calendars last read {when}.</>}
+    </p>
+  );
+}
+
+/**
  * The landing's first screen: the headline, one sentence, and a box that asks the visitor for their own place
  * (PlaceSearch, which hands it to the figures below). Beside them a picture that moves by itself: a tour of six
  * towns, each a drawn map made from open map data (scripts/build-hero-town.mjs), on which the listings appear
@@ -57,7 +80,10 @@ async function measured(town: HeroTown, area: Drawn): Promise<{ area: TourArea; 
  * what a night in them costs pinned beside it (TownTour). The figures are asked for here, on the server.
  */
 export default async function LandingHero() {
-  const towns = await Promise.all(HERO_TOWNS.map((town) => Promise.all(DRAWN[town.key].areas.map((area) => measured(town, area)))));
+  const [island, towns] = await Promise.all([
+    getIsland(),
+    Promise.all(HERO_TOWNS.map((town) => Promise.all(DRAWN[town.key].areas.map((area) => measured(town, area))))),
+  ]);
   const stops: TourStop[] = HERO_TOWNS.map((town, i) => ({
     key: town.key,
     town: town.name,
@@ -99,6 +125,7 @@ export default async function LandingHero() {
             <span className="lh-for">Decide where to buy, what to charge and what to advise.</span>
           </p>
           <PlaceSearch />
+          <Fresh island={island} />
           {/* On the first page of a visit the name is drawn here before the words come in (lib/landing/opening.ts). */}
           <Opening />
         </div>

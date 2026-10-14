@@ -412,7 +412,7 @@ export default function ProductPanels({
         <div className="th-exchange" aria-busy={late || undefined}>
           <p className="th-asked m-0">{asked}</p>
           <p className="th-tool m-0">
-            <span>Answered through the {BRAND.name} connector, Noesis Cyprus</span>
+            <span>Answered through {BRAND.name} Cyprus, the {BRAND.name} connector</span>
             <span className="th-sample">Example answer</span>
           </p>
           <div className="th-answer">

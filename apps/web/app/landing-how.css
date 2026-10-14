@@ -2,21 +2,26 @@
 /* One listing followed along a line with five stops: published, read, placed, measured, and out three ways.
    The line and its square stops are the stage's drawing; each stop shows the listing as it is at that point.
    The section comes up over the product cards, as the close after it does. */
-/* It comes up as a sheet, as the cards do: a rounded top, the cards' fine ink edge and a shade cast up onto the
-   card it covers, so the page under it never looks cut. */
+/* A section of its own on the paper, after the product panels: nothing comes up over anything any more (owner,
+   2026-10-14), so it has no sheet's edge or shade, only the room above it. */
 .hw {
   position: relative;
-  z-index: 1;
-  border-radius: 26px 26px 0 0;
   background: var(--th-ground);
-  box-shadow: 0 0 0 1px color-mix(in srgb, var(--th-ink) 26%, transparent), 0 -20px 40px -28px color-mix(in srgb, var(--th-ink) 50%, transparent);
   color: var(--th-ink);
   scroll-margin-top: 72px;
 }
 .hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 72px 16px 64px; }
 .hw-h { font-size: var(--th-heading); }
-.hw .th-lede { margin-top: 0; }
+.hw .th-lede { margin-top: 0; color: var(--th-ink); }
 .hw .th-lede b { color: var(--th-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
+/* What the database holds today: three counts set large at the regular weight, each with its one caption (the owner's
+   "so many listings tracked", in PriceLabs' manner), and under them what the for-sale count is. */
+.hw-held { display: grid; row-gap: 14px; margin-top: 16px; }
+.hw-counts { display: flex; flex-wrap: wrap; gap: 20px 56px; }
+.hw-counts > div { display: flex; flex-direction: column-reverse; }
+.hw-counts dd { font-size: var(--th-text-figure); font-weight: 400; line-height: 1.05; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.hw-counts dt { margin-top: 2px; color: var(--th-muted); font-size: var(--th-text-body); line-height: 26px; }
+.hw-held-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; max-width: 40em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
 
 /* The line, top to bottom on phones and tablets: a rail down the left with a square at each stop. */
 .hw-line { --hw-rail: color-mix(in srgb, var(--th-a) 70%, var(--th-ground)); display: grid; margin-top: 24px; }
@@ -37,7 +42,7 @@
 /* What is counted is the light orange: the listing as it is published. */
 .hw-line > li[data-stop="source"]::after { background: var(--th-mark); }
 .hw-line h3 { font-size: var(--th-text-lead); font-weight: 600; line-height: 26px; }
-.hw-say { max-width: 34em; color: var(--th-muted); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
+.hw-say { max-width: 34em; color: var(--th-ink); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
 .hw-fact { font-size: var(--th-text-small); line-height: 24px; font-variant-numeric: tabular-nums; }
 .hw-fact b { font-weight: 600; }
 .hw-fact .th-tag { display: flex; width: fit-content; margin-top: 6px; }
@@ -52,7 +57,6 @@
   border: 1px solid var(--th-line);
   border-radius: 10px;
   background: var(--th-surface);
-  box-shadow: 0 8px 18px -12px var(--th-shadow);
   color: var(--th-muted);
   font-size: var(--th-text-small);
   line-height: 24px;
@@ -97,6 +101,7 @@
    five stops share the next, each under its square. */
 @media (min-width: 1100px) {
   .hw-in { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: end; padding: 104px 64px 96px; }
+  .hw-held { grid-column: 1 / -1; margin-top: 40px; }
   .hw-line { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.06fr) minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1.24fr) minmax(0, 1.15fr); margin-top: 48px; }
   .hw-line > li { grid-template-rows: auto 180px auto auto; padding: 34px 32px 0 0; }
   .hw-line > li::before { top: 5px; right: 0; bottom: auto; left: 6px; width: auto; height: 1.5px; }

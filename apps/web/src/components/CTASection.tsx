@@ -21,9 +21,10 @@ function asked(carried: string | null): string | null {
  * own address, written in the visitor's mail app: nothing is collected on the
  * page, so nothing can claim to have been sent that was not (the form that stood
  * here only simulated a send; critique, 2026-10-11). A request made further up
- * the page (a report on an area, the connector) is named in the heading, shown
- * beside the brand's drawn area, which is then filled in, and becomes the
- * email's subject. Beside the email, the free way in: the Playground. Its styles
+ * the page (a report on an area, the connector) is named in the heading and over
+ * the actions, and becomes the email's subject. Beside the email, the free way
+ * in: the Playground. Until 2026-10-14 a drawn area stood on a stem over the
+ * actions; it read as a balloon and is gone (critique, 2026-10-14). Its styles
  * are in app/landing-sections.css, which the page imports.
  */
 export default function CTASection() {
@@ -50,47 +51,22 @@ export default function CTASection() {
           <h2>
             Ask the team{what && <span> {what}</span>}.
           </h2>
-          <p className="ps-close-lede">
-            Tell us what you need: a report, access to the connector, or a question about a place. Email us and we
-            will write back.
-          </p>
+          <p className="ps-close-lede">A report, connector access, or a question about a place: tell us what you need.</p>
         </div>
 
-        <div>
-          <div className="ps-close-top">
-            {/* The brand's drawn area with its square corners, and the line from it to the actions. Filled once a request is carried. */}
-            <svg
-              className="ps-close-area"
-              data-on={carried ? "" : undefined}
-              width="112"
-              height="132"
-              viewBox="0 0 112 132"
-              fill="none"
-              aria-hidden="true"
-            >
-              <path className="ps-close-wire" d="M60 100V132" />
-              <path className="ps-close-shape" d="M12 26 74 12l26 52-40 36-48-24z" />
-              <g className="ps-close-nodes">
-                <circle cx="12" cy="26" r="5.5" />
-                <circle cx="74" cy="12" r="5.5" />
-                <circle cx="100" cy="64" r="5.5" />
-                <circle cx="60" cy="100" r="5.5" />
-                <circle cx="12" cy="76" r="5.5" />
-              </g>
-            </svg>
-            {carried && <p className="ps-close-carried">Your request: &ldquo;{carried}&rdquo;</p>}
-          </div>
+        <div className="ps-close-do">
+          {carried && <p className="ps-close-carried">Your request: &ldquo;{carried}&rdquo;</p>}
           <div className="ps-close-actions">
             <a href={mail} className="ps-close-mail">
               Email the team
               <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
             </a>
             <a href={playgroundHref} className="th-link ps-close-play">
-              Or open the Playground, it&apos;s free
+              Or open the Playground
             </a>
           </div>
           <p className="ps-close-small">
-            We are a small data team in Cyprus: we collect every listing on the island, short-&#8288;lets, long-&#8288;lets
+            We are a small data team in Cyprus. We read every listing on the island, short-&#8288;lets, long-&#8288;lets
             and sales, and our models turn them into the figures you have seen. Write to{" "}
             <a href={mail} className="th-link">
               {BRAND.email}

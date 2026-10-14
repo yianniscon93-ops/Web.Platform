@@ -68,7 +68,7 @@ const CSS = `
   .am-corner:first-child { animation: am-pop 360ms ${EASE} backwards, am-close 320ms ${EASE}; }
 }
 @keyframes am-draw { from { stroke-dasharray: 1; stroke-dashoffset: 1; } to { stroke-dasharray: 1; stroke-dashoffset: 0; } }
-@keyframes am-pop { 0% { transform: scale(0); } 10% { transform: scale(1.5); } 100% { transform: scale(1); } }
+@keyframes am-pop { 0% { opacity: 0; transform: scale(0.4); } 10% { opacity: 1; transform: scale(1.5); } 100% { transform: scale(1); } }
 @keyframes am-close { 0%, 100% { transform: scale(1); } 10% { transform: scale(1.45); } }
 `;
 
