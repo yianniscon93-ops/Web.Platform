@@ -4,6 +4,7 @@ import { useId, useRef, useState } from "react";
 import { ArrowRight } from "lucide-react";
 import type { HeroArea } from "@/lib/landing/areaContext";
 import { euro, pct, tippingBasis } from "@/lib/landing/sectionLines";
+import OccupancyCurve from "./OccupancyCurve";
 import { PlaygroundIcon } from "./ProductIcons";
 import { Card, Covers, NO_FIGURES, READING, Standin, UNREACHABLE, useArrival } from "./SectionParts";
 
@@ -108,6 +109,10 @@ function TippingPoint({ area }: { area: HeroArea }) {
           </button>
         )}
       </div>
+
+      {/* Where that figure sits among every short-let on the island: the slider's own value, on the listings' curve,
+          which a press or a drag along it also sets (OccupancyCurve). */}
+      <OccupancyCurve at={at} tip={tip} onPick={setMine} demo={invest.source === "demo"} />
 
       <p className="pt-firm">
         {basis.startsWith("Thin:") ? (

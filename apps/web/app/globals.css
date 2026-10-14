@@ -179,50 +179,66 @@
 }
 
 /* ── Landing (nav and hero) ─────────────────────────────────── */
-/* The landing palette by role: beige ground, ink, olive and a light orange. Olive does the working jobs (the
-   drawn area, the filled action); the light orange marks what is counted and what is ours (the listings inside
-   the line, the brand mark, the product icons). */
+/* The landing palette by role, direction G "Olive Window" (owner, 2026-10-14, chosen from ten rendered directions):
+   a paper page with olive ink and an olive action, the light map of a real town fading into the paper, and the
+   listings in an olive-to-lime scale, lime only where it can hold (inside an ink ring on light ground). Lime is
+   data, never a ground, a button or an ornament ("forest + lime" as a ground swap was rejected on 2026-10-08). The
+   owner saw the map in a deep-olive window and in a light one and chose the light one ("Prefer this one"), then
+   asked for it frameless and faded, as before G. Deep olive is now only the close and the footer. */
 :root {
-  --th-ground: #F4F1E8;
-  --th-ink: #161C11;
-  --th-muted: #3F4A35;
-  --th-line: #DDD7C6;
+  --th-ground: #F5F4EE;
+  --th-ink: #1C2116;
+  --th-muted: #4D5544;
+  --th-line: #DCDAD0;
   --th-surface: #FFFFFF;
   --th-visitor: #4A5E3A;
-  --th-visitor-ink: #F7F5EE;
+  --th-visitor-ink: #FFFFFF;
   /* The filled action: olive, with white on it (7.1:1). */
   --th-action: #4A5E3A;
   --th-action-ink: #FFFFFF;
   --th-action-hover: #3C4E2E;
-  --th-tint: #E6EBDA;
-  --th-tint-hover: #D9E0C9;
-  --th-solid: #161C11;
+  /* A step in tone, not a hue: the hover of a row or an option, the selected row of a list. */
+  --th-tint: #ECEBE3;
+  --th-tint-hover: #E2E1D7;
+  --th-solid: #1C2116;
   --th-solid-ink: #FFFFFF;
-  --th-solid-hover: #26331C;
-  /* The drawn area: its outline and fill, and the line to the open panel. */
+  --th-solid-hover: #2E3526;
+  /* The brand's olive: the wordmark's dots, "Plot" and "sights" in the headline, a drawn area's corners. */
   --th-a: #4A5E3A;
-  /* The listings, the product icons and the listing the "how" section follows: saffron, an orange that leans to
-     yellow, the side the olive sits on (owner, 2026-10-12, from six compared; it was a light orange, #F2A154).
-     It marks data only: the brand mark and the name in the headline are ink and olive. */
-  --th-mark: #E9A22B;
-  --th-map-sea: #C2DADF;
-  --th-map-shore: #6F929B;
-  --th-map-land: #FBFAF4;
-  --th-map-road: #BDB8A7;
-  --th-map-road-major: #958F7B;
-  /* Listings inside and outside the drawn line. AreaMap reads these for its canvas. */
-  --th-dot: #161C11;
-  --th-dot-out: #9AA08E;
-  /* How full a listing inside the line has been this season, in four steps of the saffron, emptier to fuller:
-     from nearly white to a deep amber, the third step the mark itself. They are the old orange steps at the same
-     lightness, turned to the saffron's hue. A pale fill would vanish on the tinted land, so every inside dot
-     wears a thin ring darker than the last step (--th-occ-ring), which carries the mark: it is 7.9:1 on plain
-     land and 5.7:1 on the sea. Ink is kept for a listing with no figure. */
-  --th-occ-1: #F8EDD2;
-  --th-occ-2: #EEC987;
-  --th-occ-3: #E9A22B;
-  --th-occ-4: #AE6800;
-  --th-occ-ring: #734300;
+  /* The listings' scale, emptier to fuller: under 60%, the 60s, the 70s, 80% and over (the page's four classes).
+     Lightness and chroma rise together, so the fullest is the brightest: lime. On the window every step holds
+     (2.5:1 to 13:1 on #1B2215); on paper or white the lighter two do not, so there a mark in them always wears a
+     ring of --th-occ-ring (The Ring Rule). */
+  --th-data-1: #4F6334;
+  --th-data-2: #6F8F31;
+  --th-data-3: #9CC13A;
+  --th-data-4: #D6F25E;
+  --th-occ-1: var(--th-data-1);
+  --th-occ-2: var(--th-data-2);
+  --th-occ-3: var(--th-data-3);
+  --th-occ-4: var(--th-data-4);
+  /* The one mark of "this is data" outside a chart: the followed listing in "How the numbers are made", a product
+     icon's one filled part. Lime, always inside an ink line on a light ground. */
+  --th-mark: var(--th-data-4);
+  /* The deep olive of the close and the footer. */
+  --th-deep: #1B2215;
+  /* The map (and the Playground's, which reads these too): the pictures' colours, baked into them by
+     scripts/build-hero-town.mjs and build-island-map.mjs, since an image cannot read a variable. */
+  --th-map-sea: #CBD9DA;
+  --th-map-shore: #8DA1A2;
+  --th-map-land: #FAF9F4;
+  --th-map-road: #D6D3C7;
+  --th-map-road-major: #BAB5A6;
+  /* A listing's ring: ink, which is what lets the two light steps hold on light land (11:1 or better against every
+     step). A listing inside a drawn area wears --th-occ-ring; one outside every area the lighter --th-dot-ring, a
+     hex with alpha so a canvas can take it. */
+  --th-occ-ring: #1C2116;
+  --th-dot-ring: #1C2116B3;
+  /* A listing with no figure (live data can have a null occupancy): not on the scale, so drawn apart as an empty
+     ring in this quiet grey (3.3:1 on the land, below the scale's own steps), and named in the key. */
+  --th-dot-none: #878B80;
+  --th-dot: var(--th-ink);
+  --th-dot-out: var(--th-muted);
   --th-focus: var(--th-ink);
   /* Hairline where the ground itself is divided (the scrolled nav, the phone menu). */
   --th-ground-line: var(--th-line);
@@ -232,17 +248,18 @@
   --th-shadow: color-mix(in srgb, var(--th-ink) 35%, transparent);
   /* The lines from the area to the panels that are not open. */
   --th-wire: color-mix(in srgb, var(--th-muted) 45%, var(--th-ground));
-  /* How strongly the drawn area tints the land inside it. At 22% the olive reads as the area without muddying
-     the streets; the shoreline, drawn darker than both, and the difference in hue keep land and sea apart. */
-  --th-area-tint: 0.22;
+  /* How strongly a drawn area tints what is inside it: light, so the streets and listings read through. */
+  --th-area-tint: 0.06;
   /* Land inside the drawn area: the halo of a place name the area covers. */
   --th-area-land: color-mix(in srgb, var(--th-a) calc(var(--th-area-tint) * 100%), var(--th-map-land));
 
   --th-font: "Google Sans", sans-serif;
-  /* The weights: 400 text, 500 quiet labels, 600 labels and figures, 700 emphasis inside text, a title inside a
-     card and the display role (the headline, the section headings, a card's name, the wordmark). 700 is Google
-     Sans's heaviest: nothing asks for 800 or 900, which the browser would fake. */
-  --th-display-weight: 700;
+  /* The weights: 400 text and every large figure, 500 the display role (the headline, the section headings, a
+     product's name, the wordmark) and quiet labels, 600 a label or figure inside text. G sets display at 500, which
+     reads as measured rather than loud (PriceLabs, Sylvera); nothing asks for 700. */
+  --th-display-weight: 500;
+  /* The wordmark keeps a step more weight than the display role, so the name holds beside its drawn "o". */
+  --th-wordmark-weight: 600;
   /* The text sizes, by role. Nothing on the landing page is set under the first of them (owner, 2026-10-12: "all
      letters should be clearly visible, big and readable to the customer"). Fine: chart ticks, a map's credit and
      its place names, bar values, tags. Small: captions, notes, units, the cards over the first screen's map.
@@ -253,7 +270,7 @@
   --th-text-small: 16px;
   --th-text-body: 18px;
   --th-text-lead: 20px;
-  --th-display-tracking: -0.025em;
+  --th-display-tracking: -0.035em;
   --th-ease: cubic-bezier(0.16, 1, 0.3, 1);
 }
 /* Landing face: Google Sans (OFL), self-hosted from public/fonts/google-sans. Latin, Latin Extended and Greek.
@@ -329,7 +346,7 @@
   gap: 8px;
   min-height: 46px;
   padding: 0 22px;
-  border-radius: 9999px;
+  border-radius: 6px;
   background: var(--th-action);
   color: var(--th-action-ink);
   font-size: var(--th-text-body);
@@ -349,14 +366,13 @@
 .th-tag {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding: 0 8px;
-  border-radius: 6px;
-  background: var(--th-solid);
-  color: var(--th-solid-ink);
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent);
+  color: var(--th-muted);
   font-size: var(--th-text-fine);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 500;
   white-space: nowrap;
 }
 /* Marks an illustration built from live numbers: text, not a badge. */

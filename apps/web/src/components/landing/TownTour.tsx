@@ -31,7 +31,7 @@ const POP_MS = 360;
 const PIN_AT = 260;
 // Once a stop's first area has closed, the listings outside every area step back to this much of their strength
 // over RECEDE_MS, so the listings caught read as the figure and the rest of the town as ground.
-const RECEDE_TO = 0.45;
+const RECEDE_TO = 0.6;
 const RECEDE_MS = 400;
 // An exponential ease-out that runs from exactly 0 to exactly 1, for the pop: quick at first, then settling.
 const SETTLE = 1 - 2 ** -6;
@@ -63,6 +63,9 @@ const stepOf = (occ: number | null | undefined) => (occ == null || Number.isNaN(
  * on a pier), unless it is inside a drawn area, whose card counts it. Answers "dry" for everything if the
  * drawing cannot be read.
  */
+// The sea's colour in the town pictures (scripts/build-hero-town.mjs, map-sea in DESIGN.md), for telling water from land.
+const SEA = [0xcb, 0xd9, 0xda] as const;
+
 async function waterOf(src: string): Promise<(x: number, y: number, size: number) => boolean> {
   const dry = () => false;
   try {
@@ -78,8 +81,9 @@ async function waterOf(src: string): Promise<(x: number, y: number, size: number
     const px = ctx.getImageData(0, 0, n, n).data;
     return (x, y, size) => {
       const i = (Math.min(n - 1, Math.floor((y / size) * n)) * n + Math.min(n - 1, Math.floor((x / size) * n))) * 4;
-      // The sea is the one colour on these maps that is clearly bluer than it is red.
-      return px[i + 2] - px[i] > 14;
+      // The sea is drawn in one flat colour (SEA, as the build script bakes it): a pixel within a few steps of it
+      // is water. The land beside it differs by more than that in both pictures.
+      return Math.abs(px[i] - SEA[0]) + Math.abs(px[i + 1] - SEA[1]) + Math.abs(px[i + 2] - SEA[2]) < 14;
     };
   } catch {
     return dry;
@@ -339,7 +343,10 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       if (!d || !side) return;
       const css = getComputedStyle(cv);
       const tone = (name: string) => css.getPropertyValue(name).trim();
-      const steps = [tone("--th-dot"), tone("--th-occ-1"), tone("--th-occ-2"), tone("--th-occ-3"), tone("--th-occ-4")];
+      // The four classes of "how full". A listing with no figure (null occupancy, which live data can have) is not
+      // on the scale: it is drawn apart, below, as an empty ring in a quiet tone, never in a colour of the scale.
+      const steps = ["", tone("--th-occ-1"), tone("--th-occ-2"), tone("--th-occ-3"), tone("--th-occ-4")];
+      const none = tone("--th-dot-none");
       const k = (side / stop.size) * dpr;
       const gone = t > times.end ? Math.max(0, 1 - (t - times.end) / OUT_MS) : 1;
       // The town steps back once the first area has closed, and comes forward again as the stop leaves.
@@ -350,29 +357,37 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const shown = (i: number) => (toured ? Math.min(1, Math.max(0, (t - (handed ? 0 : DOTS_AT) - d.late[i]) / 240)) : 1);
       // How far into its pop a listing inside an area is: below 0 the wave has not reached it, from 1 it is settled.
       const into = (i: number) => (t - times.areas[d.area[i]].closed - d.wave[i]) / POP_MS;
-      const grey = tone("--th-dot-out");
       const edge = tone("--th-occ-ring");
-      // Grey: the listings outside every area and those inside one the wave has not reached yet, all stepped
-      // back once the first area is closed, so the wave lifts each listing from the receded town into colour and
-      // nothing hints at where the next area will be before the pen gets there.
-      ctx.fillStyle = grey;
+      const ring = tone("--th-dot-ring");
+      const ringed = ring !== "" && ring !== "transparent" && ring !== "rgba(0, 0, 0, 0)";
+      // Every listing on the town's map is shaded by how full it has been this season (G, 2026-10-14: the whole
+      // town is the data, not only what an area catches). Those outside every area, and those inside one the wave
+      // has not reached yet, are small and step back once the first area is closed, so the wave lifts each listing
+      // inside the line to its full size and the rest of the town reads as ground. On a light map each wears a
+      // thin ink ring (--th-dot-ring), so the lime holds.
       for (let pass = 0; pass < 2; pass++) {
         const inside = pass === 1;
         ctx.globalAlpha = gone * (1 - (1 - RECEDE_TO) * back);
-        ctx.beginPath();
-        for (let i = 0; i < d.n; i++) {
-          if ((d.area[i] !== OUT) !== inside || (inside && into(i) >= 0)) continue;
-          const a = shown(i);
-          if (a <= 0) continue;
-          const r = 1.75 * dpr * a;
-          ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
-          ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
+        for (let layer = ringed ? -1 : 1; layer < steps.length; layer++) {
+          if (layer === 0) continue;
+          ctx.fillStyle = layer < 0 ? ring : steps[layer];
+          ctx.beginPath();
+          for (let i = 0; i < d.n; i++) {
+            if (d.step[i] === 0) continue;
+            if ((d.area[i] !== OUT) !== inside || (inside && into(i) >= 0) || (layer >= 0 && d.step[i] !== layer)) continue;
+            const a = shown(i);
+            if (a <= 0) continue;
+            const r = (2.3 + (layer < 0 ? 0.9 : 0)) * dpr * a;
+            ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
+            ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
+          }
+          ctx.fill();
         }
-        ctx.fill();
       }
       // The ring each listing sends out as the wave reaches it: it widens quickly from the dot's edge and fades.
-      // Each has its own strength, so each is a stroke of its own; only the listings mid-pop draw one.
-      ctx.strokeStyle = edge;
+      // Each has its own strength, so each is a stroke of its own; only the listings mid-pop draw one. It is drawn
+      // in the map's own ink (--th-dot), which shows on the window and on paper alike.
+      ctx.strokeStyle = tone("--th-dot");
       ctx.lineWidth = 1.2 * dpr;
       for (let i = 0; i < d.n; i++) {
         if (d.area[i] === OUT) continue;
@@ -386,22 +401,37 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       }
       ctx.globalAlpha = gone;
       // Inside an area, once lit: the dark ring first, then each shade of "how full" over it. A listing mid-pop
-      // swells to 1.7 times its size and settles back, its dark edge going with it.
+      // swells to 1.7 times its size and settles back, its ring going with it.
       for (let pass = -1; pass < steps.length; pass++) {
+        if (pass === 0) continue;
         ctx.fillStyle = pass < 0 ? edge : steps[pass];
         ctx.beginPath();
         for (let i = 0; i < d.n; i++) {
-          if (d.area[i] === OUT || (pass >= 0 && d.step[i] !== pass)) continue;
+          if (d.area[i] === OUT || d.step[i] === 0 || (pass >= 0 && d.step[i] !== pass)) continue;
           const p = into(i);
           if (p < 0) continue;
           const swell = p >= 1 ? 1 : 1 + 0.7 * Math.sin(Math.PI * outExpo(p));
-          const r = (2.8 * swell + (pass < 0 ? 1 : 0)) * dpr * shown(i);
+          const r = (3 * swell + (pass < 0 ? 1.1 : 0)) * dpr * shown(i);
           if (r <= 0) continue;
           ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
           ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
         }
         ctx.fill();
       }
+      // Listings with no figure: an empty ring, the size of the town's other listings, stepped back with them.
+      ctx.strokeStyle = none;
+      ctx.lineWidth = 1.2 * dpr;
+      ctx.globalAlpha = gone * (1 - (1 - RECEDE_TO) * back);
+      ctx.beginPath();
+      for (let i = 0; i < d.n; i++) {
+        if (d.step[i] !== 0) continue;
+        const a = shown(i);
+        if (a <= 0) continue;
+        const r = 2.3 * dpr * a;
+        ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
+        ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
+      }
+      ctx.stroke();
       ctx.globalAlpha = 1;
     };
     if (still || stopped || !toured) {
@@ -565,6 +595,9 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
 
   return (
     <div ref={root} className="lh-town">
+      {/* The map, frameless, fading into the paper (owner, 2026-10-14: "the way the previous map was deployed was
+          nicer. with the fade"). Its town and the key to its shades are in the strip under it, with the tour's
+          controls and the credit. */}
       <div className="lh-frame">
         {/* The drawings alone fade into the paper. What is drawn over them is on a sheet of its own, in the same
             square, so no corner or card fades with them. */}
@@ -624,9 +657,6 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
                   />
                 )),
               )}
-              <span className="lh-where" style={at(stop.where, stop.size)}>
-                {stop.town}
-              </span>
               {stop.areas.map(
                 (a, k) =>
                   quoted(a) && (
@@ -642,12 +672,9 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               </span>
             </div>
           </div>
-          {/* Below 1024px the band shows part of the town, so its name is in the band's corner, and the figures
-              are not pinned on the map: the last area drawn says its own here, for as long as the band stays on
-              it. When the band moves on to the next area the figures go, and that area's come once it is drawn. */}
-          <span key={stopAt} className="lh-where lh-named" data-leaving={leaving ? "" : undefined}>
-            {stop.town}
-          </span>
+          {/* Below 1024px the band shows part of the town (its name is in the window's bar), and the figures are not
+              pinned on the map: the last area drawn says its own here, for as long as the band stays on it. When the
+              band moves on to the next area the figures go, and that area's come once it is drawn. */}
           {drawn > 0 && quoted(current) && (
             <p key={`${stopAt}.${current.name}`} className="lh-pin lh-dock m-0" data-drawn="" data-leaving={leaving || aim !== now ? "" : undefined}>
               <Figures area={current} />
@@ -684,20 +711,33 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
           <SkipForward size={12} strokeWidth={2.4} aria-hidden="true" />
           {wantNext ? "Loading the next town" : "Next town"}
         </button>
-        {/* Which listings the dots are, and what their shades mean, as on the stage's map. */}
+        {/* Which town is showing, and what the shades of its listings mean. */}
+        <b key={`town-${stopAt}`} className="lh-strip-town" data-leaving={leaving ? "" : undefined}>
+          {stop.town}
+        </b>
+        {/* Which listings the dots are, and what their shades mean. */}
         <span className="lh-key">
           <span className="lh-key-of">
-            Short-&#8288;lets<span className="lh-key-when"> this season</span>:
+            Short-&#8288;lets this season
           </span>
-          emptier
-          <span className="th-key-dots" aria-hidden="true">
-            <i />
-            <i />
-            <i />
-            <i />
+          <span className="lh-key-scale">
+            <span>Under 60%</span>
+            <span className="th-key-dots" aria-hidden="true">
+              <i />
+              <i />
+              <i />
+              <i />
+            </span>
+            <span>80%+</span>
           </span>
-          fuller
-          <span className="sr-only">: the short-&#8288;lets inside an area are shaded by how full they have been this season</span>
+          <span className="lh-key-none">
+            <i aria-hidden="true" />
+            No figure
+          </span>
+          <span className="sr-only">
+            : every short-&#8288;let on the map is shaded by how full it has been this season, from under 60% to 80% and
+            over; one with no figure yet is an empty ring
+          </span>
         </span>
         {demo && <span className="th-tag">Demo data</span>}
         <span>

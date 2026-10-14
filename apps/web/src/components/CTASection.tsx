@@ -1,7 +1,7 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, Copy } from "lucide-react";
 import { BRAND } from "@/lib/brand";
 import { useHeroArea } from "@/lib/landing/areaContext";
 import { QUESTION_EVENT, QUESTION_KEY } from "@/lib/landing/compare";
@@ -29,6 +29,18 @@ function asked(carried: string | null): string | null {
  */
 export default function CTASection() {
   const [carried, setCarried] = useState<string | null>(null);
+  // The address, copied for a visitor whose mail is in a browser tab rather than an app: the button says so for a
+  // moment, as Vercel's and Linear's copy buttons do. Without a clipboard the button is not offered.
+  // "copied", "failed" (the browser refused the clipboard: the address is selected instead, for ⌘C or Ctrl+C), or null.
+  const [copied, setCopied] = useState<"copied" | "failed" | null>(null);
+  const address = useRef<HTMLAnchorElement>(null);
+  const [canCopy, setCanCopy] = useState(false);
+  useEffect(() => setCanCopy(typeof navigator !== "undefined" && !!navigator.clipboard), []);
+  useEffect(() => {
+    if (!copied) return;
+    const t = window.setTimeout(() => setCopied(null), copied === "failed" ? 5000 : 1800);
+    return () => window.clearTimeout(t);
+  }, [copied]);
   const { playgroundHref } = useHeroArea();
 
   // A request made in a product section arrives here, to go with the email.
@@ -68,11 +80,39 @@ export default function CTASection() {
           <p className="ps-close-small">
             We are a small data team in Cyprus. We read every listing on the island, short-&#8288;lets, long-&#8288;lets
             and sales, and our models turn them into the figures you have seen. Write to{" "}
-            <a href={mail} className="th-link">
+            <a ref={address} href={mail} className="th-link">
               {BRAND.email}
             </a>{" "}
             from any mail app.
           </p>
+          {canCopy && (
+            <button
+              type="button"
+              className="ps-close-copy"
+              onClick={() =>
+                navigator.clipboard.writeText(BRAND.email).then(
+                  () => setCopied("copied"),
+                  () => {
+                    // Refused: select the address on the page, so the visitor's own copy takes it.
+                    const el = address.current;
+                    const sel = window.getSelection();
+                    if (el && sel) {
+                      const range = document.createRange();
+                      range.selectNodeContents(el);
+                      sel.removeAllRanges();
+                      sel.addRange(range);
+                    }
+                    setCopied("failed");
+                  },
+                )
+              }
+            >
+              {copied === "copied" ? <Check size={16} strokeWidth={2.2} aria-hidden="true" /> : <Copy size={16} strokeWidth={2.2} aria-hidden="true" />}
+              <span aria-live="polite">
+                {copied === "copied" ? "Copied" : copied === "failed" ? "The address is selected: press ⌘C or Ctrl+C" : "Copy the address"}
+              </span>
+            </button>
+          )}
         </div>
       </div>
     </section>

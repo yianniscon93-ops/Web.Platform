@@ -87,14 +87,34 @@ export default function Opening() {
         requestAnimationFrame(step);
       });
 
-    // The words come in one after another, and the tour is told it may draw.
+    // The words come in one after another, and the tour is told it may draw. The headline's three lines each rise
+    // out of a mask at their own foot (G, 2026-10-14, a polish of the same moment: the text moves up while the
+    // part below the line's foot is cut away, so each line seems to come up from under the one above; the clip
+    // keeps a margin for ascenders and descenders). The sentence, the field and the counts follow as before.
+    const RISE = "1.1em";
     const land = () => {
       if (landed) return;
       landed = true;
       landOpening();
-      words.forEach((w, i) =>
-        running.push(w.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], { duration: 560, delay: i * 90, easing: EASE, fill: "backwards" })),
-      );
+      let k = 0;
+      words.forEach((w) => {
+        const lines = w.matches("h1") ? [...w.querySelectorAll<HTMLElement>(".lh-line")] : [];
+        if (lines.length) {
+          lines.forEach((line) =>
+            running.push(
+              line.animate(
+                [
+                  { opacity: 0, transform: `translateY(${RISE})`, clipPath: `inset(-0.3em -0.3em ${RISE} -0.3em)` },
+                  { opacity: 1, transform: "none", clipPath: "inset(-0.3em -0.3em -0.3em -0.3em)" },
+                ],
+                { duration: 620, delay: k++ * 80, easing: EASE, fill: "backwards" },
+              ),
+            ),
+          );
+          return;
+        }
+        running.push(w.animate([{ opacity: 0, transform: "translateY(14px)" }, { opacity: 1, transform: "none" }], { duration: 560, delay: k++ * 90, easing: EASE, fill: "backwards" }));
+      });
     };
     const skip = () => finish(true);
     const EVENTS = ["pointerdown", "keydown", "wheel", "touchstart", "scroll"] as const;

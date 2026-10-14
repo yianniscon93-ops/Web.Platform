@@ -19,8 +19,8 @@ export type Drawn = Pick<TourArea, "name" | "ring" | "at" | "side" | "from">;
 export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> = {
   limassol: {
     areas: [
-      { name: "Old town", ring: [[730, 990], [1010, 940], [1070, 1160], [900, 1250], [720, 1190]], at: [1545, 1200], side: "right", from: 2 },
-      { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1070, 455], side: "right", from: 1 },
+      { name: "Old town", ring: [[730, 990], [1010, 940], [1070, 1160], [900, 1250], [720, 1190]], at: [1545, 1110], side: "right", from: 2 },
+      { name: "Anexartisias Street", ring: [[870, 830], [960, 745], [1060, 795], [1055, 905], [900, 915]], at: [1050, 455], side: "right", from: 1 },
       // Kept on land, on the streets behind the promenade (critique, 2026-10-14: its corners ran into the sea).
       { name: "Seafront", ring: [[1090, 720], [1300, 650], [1370, 790], [1230, 930], [1080, 900]], at: [1575, 440], side: "right", from: 1 },
     ],
@@ -30,39 +30,39 @@ export const DRAWN: Record<HeroTown["key"], { areas: Drawn[]; where: TownPt }> =
   nicosia: {
     areas: [
       { name: "Old town", ring: [[560, 560], [1040, 550], [1080, 660], [900, 790], [690, 780]], at: [1580, 470], side: "right", from: 1 },
-      { name: "Makarios Avenue", ring: [[600, 850], [880, 840], [990, 1050], [820, 1180], [600, 1080]], at: [1580, 840], side: "right", from: 2 },
-      { name: "Agioi Omologites", ring: [[630, 1250], [960, 1180], [1020, 1290], [900, 1380], [680, 1380]], at: [1580, 1180], side: "right", from: 2 },
+      { name: "Makarios Avenue", ring: [[600, 850], [880, 840], [990, 1050], [820, 1180], [600, 1080]], at: [1580, 790], side: "right", from: 2 },
+      { name: "Agioi Omologites", ring: [[630, 1250], [960, 1180], [1020, 1290], [900, 1380], [680, 1380]], at: [1580, 1110], side: "right", from: 2 },
     ],
     where: [1340, 330],
   },
   paphos: {
     areas: [
       { name: "Tombs of the Kings", ring: [[540, 240], [740, 215], [830, 330], [760, 480], [540, 470]], at: [900, 270], side: "left", from: 2 },
-      { name: "Kato Paphos", ring: [[560, 800], [900, 770], [990, 930], [820, 1000], [560, 980]], at: [830, 1215], side: "right", from: 4 },
-      { name: "Poseidonos Avenue", ring: [[850, 1120], [990, 1000], [1110, 1180], [1080, 1400], [960, 1330]], at: [1580, 800], side: "right", from: 1 },
+      { name: "Kato Paphos", ring: [[560, 800], [900, 770], [990, 930], [820, 1000], [560, 980]], at: [1580, 700], side: "right", from: 2 },
+      { name: "Poseidonos Avenue", ring: [[850, 1120], [990, 1000], [1110, 1180], [1080, 1400], [960, 1330]], at: [1580, 1040], side: "right", from: 1 },
     ],
     where: [1180, 620],
   },
   ayianapa: {
     areas: [
-      { name: "Agias Mavris", ring: [[600, 650], [720, 570], [875, 585], [878, 765], [640, 775]], at: [870, 830], side: "right", from: 4 },
+      { name: "Agias Mavris", ring: [[600, 650], [720, 570], [875, 585], [878, 765], [640, 775]], at: [1040, 260], side: "right", from: 1 },
       { name: "Town centre", ring: [[900, 540], [1130, 530], [1230, 690], [1100, 820], [900, 780]], at: [1575, 280], side: "right", from: 1 },
-      { name: "Harbour", ring: [[990, 880], [1170, 870], [1250, 1000], [1160, 1120], [1010, 1050]], at: [940, 1180], side: "right", from: 4 },
+      { name: "Harbour", ring: [[990, 880], [1170, 870], [1250, 1000], [1160, 1120], [1010, 1050]], at: [985, 800], side: "right", from: 4 },
     ],
     where: [700, 440],
   },
   larnaca: {
     areas: [
       { name: "Finikoudes", ring: [[960, 540], [1240, 520], [1250, 760], [1130, 790], [950, 680]], at: [1570, 230], side: "right", from: 1 },
-      { name: "St Lazarus", ring: [[930, 820], [1180, 800], [1220, 980], [1080, 1110], [910, 1000]], at: [880, 900], side: "right", from: 4 },
-      { name: "Skala", ring: [[1010, 1150], [1210, 1130], [1230, 1300], [1180, 1460], [1020, 1400]], at: [990, 1220], side: "right", from: 4 },
+      { name: "St Lazarus", ring: [[930, 820], [1180, 800], [1220, 980], [1080, 1110], [910, 1000]], at: [900, 610], side: "right", from: 4 },
+      { name: "Skala", ring: [[1010, 1150], [1210, 1130], [1230, 1300], [1180, 1460], [1020, 1400]], at: [905, 930], side: "right", from: 0 },
     ],
     where: [700, 520],
   },
   protaras: {
     areas: [
       { name: "Pernera", ring: [[700, 230], [790, 170], [880, 250], [870, 490], [730, 500]], at: [1580, 270], side: "right", from: 2 },
-      { name: "Protaras centre", ring: [[900, 665], [1040, 715], [1120, 810], [1100, 940], [900, 900]], at: [870, 760], side: "right", from: 4 },
+      { name: "Protaras centre", ring: [[900, 665], [1040, 715], [1120, 810], [1100, 940], [900, 900]], at: [890, 760], side: "right", from: 4 },
       { name: "Fig Tree Bay", ring: [[1170, 700], [1260, 740], [1390, 870], [1280, 960], [1150, 840]], at: [1580, 990], side: "right", from: 3 },
     ],
     where: [600, 600],

@@ -1,97 +1,97 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-09T11:38:55Z",
+  "generatedAt": "2026-10-14T18:00:00Z",
   "title": "Design System: Plotsights landing",
   "extensions": {
     "colorMeta": {
       "ground": {
         "role": "neutral",
-        "displayName": "Beige Ground",
-        "canonical": "oklch(95.8% 0.012 92)",
-        "resolvedHex": "#F4F1E8",
+        "displayName": "Paper",
+        "canonical": "oklch(96.6% 0.008 99)",
+        "resolvedHex": "#F5F4EE",
         "cssVar": "--th-ground",
         "tonalRamp": [
-          "oklch(15.0% 0.012 92)",
-          "oklch(26.0% 0.012 92)",
-          "oklch(38.0% 0.012 92)",
-          "oklch(50.0% 0.012 92)",
-          "oklch(62.0% 0.012 92)",
-          "oklch(74.0% 0.012 92)",
-          "oklch(85.0% 0.007 92)",
-          "oklch(95.0% 0.004 92)"
+          "oklch(15.0% 0.008 99)",
+          "oklch(26.0% 0.008 99)",
+          "oklch(38.0% 0.008 99)",
+          "oklch(50.0% 0.008 99)",
+          "oklch(62.0% 0.008 99)",
+          "oklch(74.0% 0.008 99)",
+          "oklch(85.0% 0.005 99)",
+          "oklch(95.0% 0.002 99)"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "oklch(21.6% 0.023 131)",
-        "resolvedHex": "#161C11",
+        "displayName": "Olive Ink",
+        "canonical": "oklch(23.9% 0.022 128)",
+        "resolvedHex": "#1C2116",
         "cssVar": "--th-ink",
         "tonalRamp": [
-          "oklch(15.0% 0.023 131)",
-          "oklch(26.0% 0.023 131)",
-          "oklch(38.0% 0.023 131)",
-          "oklch(50.0% 0.023 131)",
-          "oklch(62.0% 0.023 131)",
-          "oklch(74.0% 0.023 131)",
-          "oklch(85.0% 0.014 131)",
-          "oklch(95.0% 0.007 131)"
+          "oklch(15.0% 0.022 128)",
+          "oklch(26.0% 0.022 128)",
+          "oklch(38.0% 0.022 128)",
+          "oklch(50.0% 0.022 128)",
+          "oklch(62.0% 0.022 128)",
+          "oklch(74.0% 0.022 128)",
+          "oklch(85.0% 0.013 128)",
+          "oklch(95.0% 0.006 128)"
         ]
       },
       "muted": {
         "role": "neutral",
         "displayName": "Muted Olive-Grey",
-        "canonical": "oklch(39.3% 0.037 130)",
-        "resolvedHex": "#3F4A35",
+        "canonical": "oklch(43.7% 0.029 128)",
+        "resolvedHex": "#4D5544",
         "cssVar": "--th-muted",
         "tonalRamp": [
-          "oklch(15.0% 0.037 130)",
-          "oklch(26.0% 0.037 130)",
-          "oklch(38.0% 0.037 130)",
-          "oklch(50.0% 0.037 130)",
-          "oklch(62.0% 0.037 130)",
-          "oklch(74.0% 0.037 130)",
-          "oklch(85.0% 0.022 130)",
-          "oklch(95.0% 0.011 130)"
+          "oklch(15.0% 0.029 128)",
+          "oklch(26.0% 0.029 128)",
+          "oklch(38.0% 0.029 128)",
+          "oklch(50.0% 0.029 128)",
+          "oklch(62.0% 0.029 128)",
+          "oklch(74.0% 0.029 128)",
+          "oklch(85.0% 0.017 128)",
+          "oklch(95.0% 0.009 128)"
         ]
       },
       "line": {
         "role": "neutral",
         "displayName": "Hairline",
-        "canonical": "oklch(87.9% 0.024 91)",
-        "resolvedHex": "#DDD7C6",
+        "canonical": "oklch(88.7% 0.014 97)",
+        "resolvedHex": "#DCDAD0",
         "cssVar": "--th-line",
         "tonalRamp": [
-          "oklch(15.0% 0.024 91)",
-          "oklch(26.0% 0.024 91)",
-          "oklch(38.0% 0.024 91)",
-          "oklch(50.0% 0.024 91)",
-          "oklch(62.0% 0.024 91)",
-          "oklch(74.0% 0.024 91)",
-          "oklch(85.0% 0.014 91)",
-          "oklch(95.0% 0.007 91)"
+          "oklch(15.0% 0.014 97)",
+          "oklch(26.0% 0.014 97)",
+          "oklch(38.0% 0.014 97)",
+          "oklch(50.0% 0.014 97)",
+          "oklch(62.0% 0.014 97)",
+          "oklch(74.0% 0.014 97)",
+          "oklch(85.0% 0.008 97)",
+          "oklch(95.0% 0.004 97)"
         ]
       },
       "surface": {
         "role": "neutral",
-        "displayName": "White Surface",
-        "canonical": "oklch(100.0% 0.000 90)",
+        "displayName": "White Sheet",
+        "canonical": "oklch(100.0% 0.000 0)",
         "resolvedHex": "#FFFFFF",
         "cssVar": "--th-surface",
         "tonalRamp": [
-          "oklch(15.0% 0.000 90)",
-          "oklch(26.0% 0.000 90)",
-          "oklch(38.0% 0.000 90)",
-          "oklch(50.0% 0.000 90)",
-          "oklch(62.0% 0.000 90)",
-          "oklch(74.0% 0.000 90)",
-          "oklch(85.0% 0.000 90)",
-          "oklch(95.0% 0.000 90)"
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.0% 0.000 0)",
+          "oklch(38.0% 0.000 0)",
+          "oklch(50.0% 0.000 0)",
+          "oklch(62.0% 0.000 0)",
+          "oklch(74.0% 0.000 0)",
+          "oklch(85.0% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
         ]
       },
       "a": {
         "role": "primary",
-        "displayName": "Working Olive (every drawn area and its lines)",
+        "displayName": "Working Olive (the brand: wordmark dots, Plot and sights, drawn corners, the rail's current mark, the How line)",
         "canonical": "oklch(45.5% 0.061 132)",
         "resolvedHex": "#4A5E3A",
         "cssVar": "--th-a",
@@ -108,7 +108,7 @@
       },
       "action": {
         "role": "primary",
-        "displayName": "Working Olive (filled action)",
+        "displayName": "Olive Action",
         "canonical": "oklch(45.5% 0.061 132)",
         "resolvedHex": "#4A5E3A",
         "cssVar": "--th-action",
@@ -124,25 +124,25 @@
         ]
       },
       "action-ink": {
-        "role": "neutral",
-        "displayName": "White on Olive",
-        "canonical": "oklch(100.0% 0.000 90)",
+        "role": "primary",
+        "displayName": "On Olive Action",
+        "canonical": "oklch(100.0% 0.000 0)",
         "resolvedHex": "#FFFFFF",
         "cssVar": "--th-action-ink",
         "tonalRamp": [
-          "oklch(15.0% 0.000 90)",
-          "oklch(26.0% 0.000 90)",
-          "oklch(38.0% 0.000 90)",
-          "oklch(50.0% 0.000 90)",
-          "oklch(62.0% 0.000 90)",
-          "oklch(74.0% 0.000 90)",
-          "oklch(85.0% 0.000 90)",
-          "oklch(95.0% 0.000 90)"
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.0% 0.000 0)",
+          "oklch(38.0% 0.000 0)",
+          "oklch(50.0% 0.000 0)",
+          "oklch(62.0% 0.000 0)",
+          "oklch(74.0% 0.000 0)",
+          "oklch(85.0% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
         ]
       },
       "action-hover": {
         "role": "primary",
-        "displayName": "Working Olive, pressed deeper",
+        "displayName": "Olive Action, hover",
         "canonical": "oklch(39.9% 0.056 132)",
         "resolvedHex": "#3C4E2E",
         "cssVar": "--th-action-hover",
@@ -157,216 +157,454 @@
           "oklch(95.0% 0.017 132)"
         ]
       },
-      "visitor": {
-        "role": "primary",
-        "displayName": "Working Olive (the visitor)",
-        "canonical": "oklch(45.5% 0.061 132)",
-        "resolvedHex": "#4A5E3A",
-        "cssVar": "--th-visitor",
-        "tonalRamp": [
-          "oklch(15.0% 0.061 132)",
-          "oklch(26.0% 0.061 132)",
-          "oklch(38.0% 0.061 132)",
-          "oklch(50.0% 0.061 132)",
-          "oklch(62.0% 0.061 132)",
-          "oklch(74.0% 0.061 132)",
-          "oklch(85.0% 0.037 132)",
-          "oklch(95.0% 0.018 132)"
-        ]
-      },
-      "visitor-ink": {
+      "tint": {
         "role": "neutral",
-        "displayName": "Paper on Olive",
-        "canonical": "oklch(97.0% 0.010 94)",
-        "resolvedHex": "#F7F5EE",
-        "cssVar": "--th-visitor-ink",
+        "displayName": "Tint (selected row, hover)",
+        "canonical": "oklch(93.9% 0.011 101)",
+        "resolvedHex": "#ECEBE3",
+        "cssVar": "--th-tint",
         "tonalRamp": [
-          "oklch(15.0% 0.010 94)",
-          "oklch(26.0% 0.010 94)",
-          "oklch(38.0% 0.010 94)",
-          "oklch(50.0% 0.010 94)",
-          "oklch(62.0% 0.010 94)",
-          "oklch(74.0% 0.010 94)",
-          "oklch(85.0% 0.006 94)",
-          "oklch(95.0% 0.003 94)"
+          "oklch(15.0% 0.011 101)",
+          "oklch(26.0% 0.011 101)",
+          "oklch(38.0% 0.011 101)",
+          "oklch(50.0% 0.011 101)",
+          "oklch(62.0% 0.011 101)",
+          "oklch(74.0% 0.011 101)",
+          "oklch(85.0% 0.006 101)",
+          "oklch(95.0% 0.003 101)"
         ]
       },
-      "mark": {
-        "role": "secondary",
-        "displayName": "Marking Orange",
-        "canonical": "oklch(77.5% 0.134 62)",
-        "resolvedHex": "#F2A154",
-        "cssVar": "--th-mark",
+      "tint-hover": {
+        "role": "neutral",
+        "displayName": "Tint, hover",
+        "canonical": "oklch(90.8% 0.013 102)",
+        "resolvedHex": "#E2E1D7",
+        "cssVar": "--th-tint-hover",
         "tonalRamp": [
-          "oklch(15.0% 0.134 62)",
-          "oklch(26.0% 0.134 62)",
-          "oklch(38.0% 0.134 62)",
-          "oklch(50.0% 0.134 62)",
-          "oklch(62.0% 0.134 62)",
-          "oklch(74.0% 0.134 62)",
-          "oklch(85.0% 0.080 62)",
-          "oklch(95.0% 0.040 62)"
-        ]
-      },
-      "occ-1": {
-        "role": "secondary",
-        "displayName": "Fullness 1, emptiest",
-        "canonical": "oklch(94.8% 0.037 75)",
-        "resolvedHex": "#FDEBD3",
-        "cssVar": "--th-occ-1",
-        "tonalRamp": [
-          "oklch(15.0% 0.037 75)",
-          "oklch(26.0% 0.037 75)",
-          "oklch(38.0% 0.037 75)",
-          "oklch(50.0% 0.037 75)",
-          "oklch(62.0% 0.037 75)",
-          "oklch(74.0% 0.037 75)",
-          "oklch(85.0% 0.022 75)",
-          "oklch(95.0% 0.011 75)"
-        ]
-      },
-      "occ-2": {
-        "role": "secondary",
-        "displayName": "Fullness 2",
-        "canonical": "oklch(85.3% 0.093 69)",
-        "resolvedHex": "#F7C48B",
-        "cssVar": "--th-occ-2",
-        "tonalRamp": [
-          "oklch(15.0% 0.093 69)",
-          "oklch(26.0% 0.093 69)",
-          "oklch(38.0% 0.093 69)",
-          "oklch(50.0% 0.093 69)",
-          "oklch(62.0% 0.093 69)",
-          "oklch(74.0% 0.093 69)",
-          "oklch(85.0% 0.056 69)",
-          "oklch(95.0% 0.028 69)"
-        ]
-      },
-      "occ-3": {
-        "role": "secondary",
-        "displayName": "Fullness 3",
-        "canonical": "oklch(75.0% 0.144 62)",
-        "resolvedHex": "#EE9740",
-        "cssVar": "--th-occ-3",
-        "tonalRamp": [
-          "oklch(15.0% 0.144 62)",
-          "oklch(26.0% 0.144 62)",
-          "oklch(38.0% 0.144 62)",
-          "oklch(50.0% 0.144 62)",
-          "oklch(62.0% 0.144 62)",
-          "oklch(74.0% 0.144 62)",
-          "oklch(85.0% 0.087 62)",
-          "oklch(95.0% 0.043 62)"
-        ]
-      },
-      "occ-4": {
-        "role": "secondary",
-        "displayName": "Fullness 4, fullest",
-        "canonical": "oklch(58.1% 0.139 53)",
-        "resolvedHex": "#B85F14",
-        "cssVar": "--th-occ-4",
-        "tonalRamp": [
-          "oklch(15.0% 0.139 53)",
-          "oklch(26.0% 0.139 53)",
-          "oklch(38.0% 0.139 53)",
-          "oklch(50.0% 0.139 53)",
-          "oklch(62.0% 0.139 53)",
-          "oklch(74.0% 0.139 53)",
-          "oklch(85.0% 0.083 53)",
-          "oklch(95.0% 0.042 53)"
-        ]
-      },
-      "occ-ring": {
-        "role": "secondary",
-        "displayName": "Fullness Ring",
-        "canonical": "oklch(43.0% 0.103 53)",
-        "resolvedHex": "#7A3D0A",
-        "cssVar": "--th-occ-ring",
-        "tonalRamp": [
-          "oklch(15.0% 0.103 53)",
-          "oklch(26.0% 0.103 53)",
-          "oklch(38.0% 0.103 53)",
-          "oklch(50.0% 0.103 53)",
-          "oklch(62.0% 0.103 53)",
-          "oklch(74.0% 0.103 53)",
-          "oklch(85.0% 0.062 53)",
-          "oklch(95.0% 0.031 53)"
+          "oklch(15.0% 0.013 102)",
+          "oklch(26.0% 0.013 102)",
+          "oklch(38.0% 0.013 102)",
+          "oklch(50.0% 0.013 102)",
+          "oklch(62.0% 0.013 102)",
+          "oklch(74.0% 0.013 102)",
+          "oklch(85.0% 0.008 102)",
+          "oklch(95.0% 0.004 102)"
         ]
       },
       "solid": {
         "role": "neutral",
-        "displayName": "Ink (solid button)",
-        "canonical": "oklch(21.6% 0.023 131)",
-        "resolvedHex": "#161C11",
+        "displayName": "Solid Ink Button",
+        "canonical": "oklch(23.9% 0.022 128)",
+        "resolvedHex": "#1C2116",
         "cssVar": "--th-solid",
         "tonalRamp": [
-          "oklch(15.0% 0.023 131)",
-          "oklch(26.0% 0.023 131)",
-          "oklch(38.0% 0.023 131)",
-          "oklch(50.0% 0.023 131)",
-          "oklch(62.0% 0.023 131)",
-          "oklch(74.0% 0.023 131)",
-          "oklch(85.0% 0.014 131)",
-          "oklch(95.0% 0.007 131)"
+          "oklch(15.0% 0.022 128)",
+          "oklch(26.0% 0.022 128)",
+          "oklch(38.0% 0.022 128)",
+          "oklch(50.0% 0.022 128)",
+          "oklch(62.0% 0.022 128)",
+          "oklch(74.0% 0.022 128)",
+          "oklch(85.0% 0.013 128)",
+          "oklch(95.0% 0.006 128)"
         ]
       },
       "solid-ink": {
         "role": "neutral",
-        "displayName": "White on Ink",
-        "canonical": "oklch(100.0% 0.000 90)",
+        "displayName": "On Solid",
+        "canonical": "oklch(100.0% 0.000 0)",
         "resolvedHex": "#FFFFFF",
         "cssVar": "--th-solid-ink",
         "tonalRamp": [
-          "oklch(15.0% 0.000 90)",
-          "oklch(26.0% 0.000 90)",
-          "oklch(38.0% 0.000 90)",
-          "oklch(50.0% 0.000 90)",
-          "oklch(62.0% 0.000 90)",
-          "oklch(74.0% 0.000 90)",
-          "oklch(85.0% 0.000 90)",
-          "oklch(95.0% 0.000 90)"
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.0% 0.000 0)",
+          "oklch(38.0% 0.000 0)",
+          "oklch(50.0% 0.000 0)",
+          "oklch(62.0% 0.000 0)",
+          "oklch(74.0% 0.000 0)",
+          "oklch(85.0% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
         ]
       },
       "solid-hover": {
         "role": "neutral",
-        "displayName": "Ink, lifted",
-        "canonical": "oklch(30.2% 0.043 132)",
-        "resolvedHex": "#26331C",
+        "displayName": "Solid, hover",
+        "canonical": "oklch(31.7% 0.027 128)",
+        "resolvedHex": "#2E3526",
         "cssVar": "--th-solid-hover",
         "tonalRamp": [
-          "oklch(15.0% 0.043 132)",
-          "oklch(26.0% 0.043 132)",
-          "oklch(38.0% 0.043 132)",
-          "oklch(50.0% 0.043 132)",
-          "oklch(62.0% 0.043 132)",
-          "oklch(74.0% 0.043 132)",
-          "oklch(85.0% 0.026 132)",
-          "oklch(95.0% 0.013 132)"
+          "oklch(15.0% 0.027 128)",
+          "oklch(26.0% 0.027 128)",
+          "oklch(38.0% 0.027 128)",
+          "oklch(50.0% 0.027 128)",
+          "oklch(62.0% 0.027 128)",
+          "oklch(74.0% 0.027 128)",
+          "oklch(85.0% 0.016 128)",
+          "oklch(95.0% 0.008 128)"
         ]
       },
-      "tint": {
-        "role": "neutral",
-        "displayName": "Olive Tint",
-        "canonical": "oklch(93.2% 0.023 120)",
-        "resolvedHex": "#E6EBDA",
-        "cssVar": "--th-tint",
+      "data-1": {
+        "role": "data",
+        "displayName": "Occupancy under 60% (dull olive)",
+        "canonical": "oklch(47.1% 0.074 128)",
+        "resolvedHex": "#4F6334",
+        "cssVar": "--th-data-1",
         "tonalRamp": [
-          "oklch(15.0% 0.023 120)",
-          "oklch(26.0% 0.023 120)",
-          "oklch(38.0% 0.023 120)",
-          "oklch(50.0% 0.023 120)",
-          "oklch(62.0% 0.023 120)",
-          "oklch(74.0% 0.023 120)",
-          "oklch(85.0% 0.014 120)",
-          "oklch(95.0% 0.007 120)"
+          "oklch(15.0% 0.074 128)",
+          "oklch(26.0% 0.074 128)",
+          "oklch(38.0% 0.074 128)",
+          "oklch(50.0% 0.074 128)",
+          "oklch(62.0% 0.074 128)",
+          "oklch(74.0% 0.074 128)",
+          "oklch(85.0% 0.045 128)",
+          "oklch(95.0% 0.022 128)"
+        ]
+      },
+      "data-2": {
+        "role": "data",
+        "displayName": "Occupancy 60s; the single series on white",
+        "canonical": "oklch(60.6% 0.127 126)",
+        "resolvedHex": "#6F8F31",
+        "cssVar": "--th-data-2",
+        "tonalRamp": [
+          "oklch(15.0% 0.127 126)",
+          "oklch(26.0% 0.127 126)",
+          "oklch(38.0% 0.127 126)",
+          "oklch(50.0% 0.127 126)",
+          "oklch(62.0% 0.127 126)",
+          "oklch(74.0% 0.127 126)",
+          "oklch(85.0% 0.076 126)",
+          "oklch(95.0% 0.038 126)"
+        ]
+      },
+      "data-3": {
+        "role": "data",
+        "displayName": "Occupancy 70s (ringed in ink)",
+        "canonical": "oklch(75.9% 0.164 124)",
+        "resolvedHex": "#9CC13A",
+        "cssVar": "--th-data-3",
+        "tonalRamp": [
+          "oklch(15.0% 0.164 124)",
+          "oklch(26.0% 0.164 124)",
+          "oklch(38.0% 0.164 124)",
+          "oklch(50.0% 0.164 124)",
+          "oklch(62.0% 0.164 124)",
+          "oklch(74.0% 0.164 124)",
+          "oklch(85.0% 0.098 124)",
+          "oklch(95.0% 0.049 124)"
+        ]
+      },
+      "data-4": {
+        "role": "data",
+        "displayName": "Occupancy 80%+ (lime; ringed in ink)",
+        "canonical": "oklch(91.3% 0.174 119)",
+        "resolvedHex": "#D6F25E",
+        "cssVar": "--th-data-4",
+        "tonalRamp": [
+          "oklch(15.0% 0.174 119)",
+          "oklch(26.0% 0.174 119)",
+          "oklch(38.0% 0.174 119)",
+          "oklch(50.0% 0.174 119)",
+          "oklch(62.0% 0.174 119)",
+          "oklch(74.0% 0.174 119)",
+          "oklch(85.0% 0.104 119)",
+          "oklch(95.0% 0.052 119)"
+        ]
+      },
+      "mark": {
+        "role": "data",
+        "displayName": "Lime Mark (the one fill in an icon, the followed listing, Cyprus today, the winning verdict)",
+        "canonical": "oklch(91.3% 0.174 119)",
+        "resolvedHex": "#D6F25E",
+        "cssVar": "--th-mark",
+        "tonalRamp": [
+          "oklch(15.0% 0.174 119)",
+          "oklch(26.0% 0.174 119)",
+          "oklch(38.0% 0.174 119)",
+          "oklch(50.0% 0.174 119)",
+          "oklch(62.0% 0.174 119)",
+          "oklch(74.0% 0.174 119)",
+          "oklch(85.0% 0.104 119)",
+          "oklch(95.0% 0.052 119)"
+        ]
+      },
+      "occ-ring": {
+        "role": "neutral",
+        "displayName": "Listing Ring on light grounds (inside a drawn area, key swatches, lime squares)",
+        "canonical": "oklch(23.9% 0.022 128)",
+        "resolvedHex": "#1C2116",
+        "cssVar": "--th-occ-ring",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 128)",
+          "oklch(26.0% 0.022 128)",
+          "oklch(38.0% 0.022 128)",
+          "oklch(50.0% 0.022 128)",
+          "oklch(62.0% 0.022 128)",
+          "oklch(74.0% 0.022 128)",
+          "oklch(85.0% 0.013 128)",
+          "oklch(95.0% 0.006 128)"
+        ]
+      },
+      "dot-ring": {
+        "role": "neutral",
+        "displayName": "Listing Ring outside the drawn areas (ink at 70%)",
+        "canonical": "oklch(23.9% 0.022 128 / 0.7)",
+        "resolvedHex": "#1C2116B3",
+        "cssVar": "--th-dot-ring",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 128)",
+          "oklch(26.0% 0.022 128)",
+          "oklch(38.0% 0.022 128)",
+          "oklch(50.0% 0.022 128)",
+          "oklch(62.0% 0.022 128)",
+          "oklch(74.0% 0.022 128)",
+          "oklch(85.0% 0.013 128)",
+          "oklch(95.0% 0.007 128)"
+        ]
+      },
+      "dot-none": {
+        "role": "data",
+        "displayName": "No Figure (empty ring of a listing whose occupancy is not known)",
+        "canonical": "oklch(62.0% 0.017 125)",
+        "resolvedHex": "#878B80",
+        "cssVar": "--th-dot-none",
+        "tonalRamp": [
+          "oklch(15.0% 0.019 121)",
+          "oklch(26.0% 0.019 121)",
+          "oklch(38.0% 0.019 121)",
+          "oklch(50.0% 0.019 121)",
+          "oklch(62.0% 0.019 121)",
+          "oklch(74.0% 0.019 121)",
+          "oklch(85.0% 0.011 121)",
+          "oklch(95.0% 0.006 121)"
+        ]
+      },
+      "deep": {
+        "role": "close",
+        "displayName": "Deep Olive (the close and the footer only)",
+        "canonical": "oklch(24.1% 0.026 131)",
+        "resolvedHex": "#1B2215",
+        "cssVar": "--th-deep",
+        "tonalRamp": [
+          "oklch(15.0% 0.026 131)",
+          "oklch(26.0% 0.026 131)",
+          "oklch(38.0% 0.026 131)",
+          "oklch(50.0% 0.026 131)",
+          "oklch(62.0% 0.026 131)",
+          "oklch(74.0% 0.026 131)",
+          "oklch(85.0% 0.016 131)",
+          "oklch(95.0% 0.008 131)"
         ]
       },
       "map-land": {
-        "role": "neutral",
-        "displayName": "Map Land",
-        "canonical": "oklch(98.4% 0.008 99)",
-        "resolvedHex": "#FBFAF4",
+        "role": "map",
+        "displayName": "Light Land",
+        "canonical": "oklch(98.2% 0.007 97)",
+        "resolvedHex": "#FAF9F4",
         "cssVar": "--th-map-land",
+        "tonalRamp": [
+          "oklch(15.0% 0.007 97)",
+          "oklch(26.0% 0.007 97)",
+          "oklch(38.0% 0.007 97)",
+          "oklch(50.0% 0.007 97)",
+          "oklch(62.0% 0.007 97)",
+          "oklch(74.0% 0.007 97)",
+          "oklch(85.0% 0.004 97)",
+          "oklch(95.0% 0.002 97)"
+        ]
+      },
+      "map-sea": {
+        "role": "map",
+        "displayName": "Light Sea (the page's only blue)",
+        "canonical": "oklch(87.5% 0.015 202)",
+        "resolvedHex": "#CBD9DA",
+        "cssVar": "--th-map-sea",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 202)",
+          "oklch(26.0% 0.015 202)",
+          "oklch(38.0% 0.015 202)",
+          "oklch(50.0% 0.015 202)",
+          "oklch(62.0% 0.015 202)",
+          "oklch(74.0% 0.015 202)",
+          "oklch(85.0% 0.009 202)",
+          "oklch(95.0% 0.005 202)"
+        ]
+      },
+      "map-shore": {
+        "role": "map",
+        "displayName": "Light Shore",
+        "canonical": "oklch(69.4% 0.023 200)",
+        "resolvedHex": "#8DA1A2",
+        "cssVar": "--th-map-shore",
+        "tonalRamp": [
+          "oklch(15.0% 0.023 200)",
+          "oklch(26.0% 0.023 200)",
+          "oklch(38.0% 0.023 200)",
+          "oklch(50.0% 0.023 200)",
+          "oklch(62.0% 0.023 200)",
+          "oklch(74.0% 0.023 200)",
+          "oklch(85.0% 0.014 200)",
+          "oklch(95.0% 0.007 200)"
+        ]
+      },
+      "map-road": {
+        "role": "map",
+        "displayName": "Light Road",
+        "canonical": "oklch(86.6% 0.017 95)",
+        "resolvedHex": "#D6D3C7",
+        "cssVar": "--th-map-road",
+        "tonalRamp": [
+          "oklch(15.0% 0.017 95)",
+          "oklch(26.0% 0.017 95)",
+          "oklch(38.0% 0.017 95)",
+          "oklch(50.0% 0.017 95)",
+          "oklch(62.0% 0.017 95)",
+          "oklch(74.0% 0.017 95)",
+          "oklch(85.0% 0.010 95)",
+          "oklch(95.0% 0.005 95)"
+        ]
+      },
+      "map-road-major": {
+        "role": "map",
+        "displayName": "Light Major Road",
+        "canonical": "oklch(77.3% 0.022 92)",
+        "resolvedHex": "#BAB5A6",
+        "cssVar": "--th-map-road-major",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 92)",
+          "oklch(26.0% 0.022 92)",
+          "oklch(38.0% 0.022 92)",
+          "oklch(50.0% 0.022 92)",
+          "oklch(62.0% 0.022 92)",
+          "oklch(74.0% 0.022 92)",
+          "oklch(85.0% 0.013 92)",
+          "oklch(95.0% 0.006 92)"
+        ]
+      },
+      "picture-green": {
+        "role": "map",
+        "displayName": "Parks in the light picture (baked into town-<key>.svg and island.svg)",
+        "canonical": "oklch(91.9% 0.025 120)",
+        "resolvedHex": "#E2E7D5",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.025 120)",
+          "oklch(26.0% 0.025 120)",
+          "oklch(38.0% 0.025 120)",
+          "oklch(50.0% 0.025 120)",
+          "oklch(62.0% 0.025 120)",
+          "oklch(74.0% 0.025 120)",
+          "oklch(85.0% 0.015 120)",
+          "oklch(95.0% 0.007 120)"
+        ]
+      },
+      "picture-sand": {
+        "role": "map",
+        "displayName": "Sand in the light picture (baked)",
+        "canonical": "oklch(94.5% 0.015 94)",
+        "resolvedHex": "#F0EDE2",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.015 94)",
+          "oklch(26.0% 0.015 94)",
+          "oklch(38.0% 0.015 94)",
+          "oklch(50.0% 0.015 94)",
+          "oklch(62.0% 0.015 94)",
+          "oklch(74.0% 0.015 94)",
+          "oklch(85.0% 0.009 94)",
+          "oklch(95.0% 0.004 94)"
+        ]
+      },
+      "picture-building": {
+        "role": "map",
+        "displayName": "Buildings in the light picture (baked)",
+        "canonical": "oklch(91.5% 0.015 94)",
+        "resolvedHex": "#E6E3D8",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.015 94)",
+          "oklch(26.0% 0.015 94)",
+          "oklch(38.0% 0.015 94)",
+          "oklch(50.0% 0.015 94)",
+          "oklch(62.0% 0.015 94)",
+          "oklch(74.0% 0.015 94)",
+          "oklch(85.0% 0.009 94)",
+          "oklch(95.0% 0.005 94)"
+        ]
+      },
+      "picture-built": {
+        "role": "map",
+        "displayName": "Built-up land in the light picture (baked)",
+        "canonical": "oklch(90.6% 0.018 93)",
+        "resolvedHex": "#E4E0D3",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.018 93)",
+          "oklch(26.0% 0.018 93)",
+          "oklch(38.0% 0.018 93)",
+          "oklch(50.0% 0.018 93)",
+          "oklch(62.0% 0.018 93)",
+          "oklch(74.0% 0.018 93)",
+          "oklch(85.0% 0.011 93)",
+          "oklch(95.0% 0.005 93)"
+        ]
+      },
+      "picture-secondary": {
+        "role": "map",
+        "displayName": "Secondary roads in the light picture (baked)",
+        "canonical": "oklch(83.2% 0.020 94)",
+        "resolvedHex": "#CCC8BA",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.020 94)",
+          "oklch(26.0% 0.020 94)",
+          "oklch(38.0% 0.020 94)",
+          "oklch(50.0% 0.020 94)",
+          "oklch(62.0% 0.020 94)",
+          "oklch(74.0% 0.020 94)",
+          "oklch(85.0% 0.012 94)",
+          "oklch(95.0% 0.006 94)"
+        ]
+      },
+      "picture-motorway": {
+        "role": "map",
+        "displayName": "Motorways in the light picture (baked)",
+        "canonical": "oklch(71.0% 0.024 90)",
+        "resolvedHex": "#A7A191",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.024 90)",
+          "oklch(26.0% 0.024 90)",
+          "oklch(38.0% 0.024 90)",
+          "oklch(50.0% 0.024 90)",
+          "oklch(62.0% 0.024 90)",
+          "oklch(74.0% 0.024 90)",
+          "oklch(85.0% 0.014 90)",
+          "oklch(95.0% 0.007 90)"
+        ]
+      },
+      "close": {
+        "role": "close",
+        "displayName": "The Close (deep olive at the page's end)",
+        "canonical": "oklch(24.1% 0.026 131)",
+        "resolvedHex": "#1B2215",
+        "cssVar": "--th-close (var(--th-deep))",
+        "tonalRamp": [
+          "oklch(15.0% 0.026 131)",
+          "oklch(26.0% 0.026 131)",
+          "oklch(38.0% 0.026 131)",
+          "oklch(50.0% 0.026 131)",
+          "oklch(62.0% 0.026 131)",
+          "oklch(74.0% 0.026 131)",
+          "oklch(85.0% 0.016 131)",
+          "oklch(95.0% 0.008 131)"
+        ]
+      },
+      "close-ink": {
+        "role": "close",
+        "displayName": "Paper on the Close",
+        "canonical": "oklch(96.6% 0.008 99)",
+        "resolvedHex": "#F5F4EE",
+        "cssVar": "--th-close-ink",
         "tonalRamp": [
           "oklch(15.0% 0.008 99)",
           "oklch(26.0% 0.008 99)",
@@ -378,671 +616,262 @@
           "oklch(95.0% 0.002 99)"
         ]
       },
-      "map-sea": {
-        "role": "tertiary",
-        "displayName": "Map Water",
-        "canonical": "oklch(87.2% 0.027 212)",
-        "resolvedHex": "#C2DADF",
-        "cssVar": "--th-map-sea",
+      "close-muted": {
+        "role": "close",
+        "displayName": "Quiet Paper on the Close",
+        "canonical": "oklch(79.6% 0.010 113)",
+        "resolvedHex": "#BCBDB6",
+        "cssVar": "--th-close-muted",
+        "source": "color-mix(in srgb, #F5F4EE 74%, #1B2215)",
         "tonalRamp": [
-          "oklch(15.0% 0.027 212)",
-          "oklch(26.0% 0.027 212)",
-          "oklch(38.0% 0.027 212)",
-          "oklch(50.0% 0.027 212)",
-          "oklch(62.0% 0.027 212)",
-          "oklch(74.0% 0.027 212)",
-          "oklch(85.0% 0.016 212)",
-          "oklch(95.0% 0.008 212)"
+          "oklch(15.0% 0.010 113)",
+          "oklch(26.0% 0.010 113)",
+          "oklch(38.0% 0.010 113)",
+          "oklch(50.0% 0.010 113)",
+          "oklch(62.0% 0.010 113)",
+          "oklch(74.0% 0.010 113)",
+          "oklch(85.0% 0.006 113)",
+          "oklch(95.0% 0.003 113)"
         ]
       },
-      "map-shore": {
-        "role": "tertiary",
-        "displayName": "Shoreline",
-        "canonical": "oklch(63.7% 0.041 215)",
-        "resolvedHex": "#6F929B",
-        "cssVar": "--th-map-shore",
+      "close-line": {
+        "role": "close",
+        "displayName": "Rule on the Close",
+        "canonical": "oklch(35.9% 0.021 126)",
+        "resolvedHex": "#3A3F33",
+        "cssVar": "--th-close-line",
+        "source": "color-mix(in srgb, #F5F4EE 14%, #1B2215)",
         "tonalRamp": [
-          "oklch(15.0% 0.041 215)",
-          "oklch(26.0% 0.041 215)",
-          "oklch(38.0% 0.041 215)",
-          "oklch(50.0% 0.041 215)",
-          "oklch(62.0% 0.041 215)",
-          "oklch(74.0% 0.041 215)",
-          "oklch(85.0% 0.025 215)",
-          "oklch(95.0% 0.012 215)"
+          "oklch(15.0% 0.021 126)",
+          "oklch(26.0% 0.021 126)",
+          "oklch(38.0% 0.021 126)",
+          "oklch(50.0% 0.021 126)",
+          "oklch(62.0% 0.021 126)",
+          "oklch(74.0% 0.021 126)",
+          "oklch(85.0% 0.013 126)",
+          "oklch(95.0% 0.006 126)"
         ]
       },
-      "map-road": {
-        "role": "neutral",
-        "displayName": "Street",
-        "canonical": "oklch(78.2% 0.024 93)",
-        "resolvedHex": "#BDB8A7",
-        "cssVar": "--th-map-road",
-        "tonalRamp": [
-          "oklch(15.0% 0.024 93)",
-          "oklch(26.0% 0.024 93)",
-          "oklch(38.0% 0.024 93)",
-          "oklch(50.0% 0.024 93)",
-          "oklch(62.0% 0.024 93)",
-          "oklch(74.0% 0.024 93)",
-          "oklch(85.0% 0.015 93)",
-          "oklch(95.0% 0.007 93)"
-        ]
-      },
-      "map-road-major": {
-        "role": "neutral",
-        "displayName": "Main Road",
-        "canonical": "oklch(65.0% 0.030 93)",
-        "resolvedHex": "#958F7B",
-        "cssVar": "--th-map-road-major",
-        "tonalRamp": [
-          "oklch(15.0% 0.030 93)",
-          "oklch(26.0% 0.030 93)",
-          "oklch(38.0% 0.030 93)",
-          "oklch(50.0% 0.030 93)",
-          "oklch(62.0% 0.030 93)",
-          "oklch(74.0% 0.030 93)",
-          "oklch(85.0% 0.018 93)",
-          "oklch(95.0% 0.009 93)"
-        ]
-      },
-      "picture-green": {
-        "role": "tertiary",
-        "displayName": "Picture Green (parks and forest)",
-        "canonical": "oklch(91.5% 0.033 122)",
-        "resolvedHex": "#DFE7CF",
-        "source": "Baked into both map pictures by their build scripts; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.033 122)",
-          "oklch(26.0% 0.033 122)",
-          "oklch(38.0% 0.033 122)",
-          "oklch(50.0% 0.033 122)",
-          "oklch(62.0% 0.033 122)",
-          "oklch(74.0% 0.033 122)",
-          "oklch(85.0% 0.020 122)",
-          "oklch(95.0% 0.010 122)"
-        ]
-      },
-      "picture-sand": {
-        "role": "tertiary",
-        "displayName": "Picture Sand (beach)",
-        "canonical": "oklch(93.8% 0.032 89)",
-        "resolvedHex": "#F3EAD3",
-        "source": "Baked into the four public/landing/town-*.svg pictures by scripts/build-hero-town.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.032 89)",
-          "oklch(26.0% 0.032 89)",
-          "oklch(38.0% 0.032 89)",
-          "oklch(50.0% 0.032 89)",
-          "oklch(62.0% 0.032 89)",
-          "oklch(74.0% 0.032 89)",
-          "oklch(85.0% 0.019 89)",
-          "oklch(95.0% 0.010 89)"
-        ]
-      },
-      "picture-building": {
-        "role": "neutral",
-        "displayName": "Picture Building (the town)",
-        "canonical": "oklch(91.6% 0.022 90)",
-        "resolvedHex": "#E9E3D3",
-        "source": "Baked into the four public/landing/town-*.svg pictures by scripts/build-hero-town.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.022 90)",
-          "oklch(26.0% 0.022 90)",
-          "oklch(38.0% 0.022 90)",
-          "oklch(50.0% 0.022 90)",
-          "oklch(62.0% 0.022 90)",
-          "oklch(74.0% 0.022 90)",
-          "oklch(85.0% 0.013 90)",
-          "oklch(95.0% 0.007 90)"
-        ]
-      },
-      "picture-built": {
-        "role": "neutral",
-        "displayName": "Picture Built-up Ground (the island)",
-        "canonical": "oklch(89.5% 0.024 88)",
-        "resolvedHex": "#E3DCCB",
-        "source": "Baked into public/landing/island.svg by scripts/build-island-map.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.024 88)",
-          "oklch(26.0% 0.024 88)",
-          "oklch(38.0% 0.024 88)",
-          "oklch(50.0% 0.024 88)",
-          "oklch(62.0% 0.024 88)",
-          "oklch(74.0% 0.024 88)",
-          "oklch(85.0% 0.014 88)",
-          "oklch(95.0% 0.007 88)"
-        ]
-      },
-      "picture-road-minor": {
-        "role": "neutral",
-        "displayName": "Picture Street",
-        "canonical": "oklch(84.5% 0.024 91)",
-        "resolvedHex": "#D2CCBB",
-        "source": "Baked into the four public/landing/town-*.svg pictures by scripts/build-hero-town.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.024 91)",
-          "oklch(26.0% 0.024 91)",
-          "oklch(38.0% 0.024 91)",
-          "oklch(50.0% 0.024 91)",
-          "oklch(62.0% 0.024 91)",
-          "oklch(74.0% 0.024 91)",
-          "oklch(85.0% 0.014 91)",
-          "oklch(95.0% 0.007 91)"
-        ]
-      },
-      "picture-road-secondary": {
-        "role": "neutral",
-        "displayName": "Picture Secondary Road",
-        "canonical": "oklch(82.3% 0.025 92)",
-        "resolvedHex": "#CBC5B3",
-        "source": "Baked into public/landing/island.svg by scripts/build-island-map.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.025 92)",
-          "oklch(26.0% 0.025 92)",
-          "oklch(38.0% 0.025 92)",
-          "oklch(50.0% 0.025 92)",
-          "oklch(62.0% 0.025 92)",
-          "oklch(74.0% 0.025 92)",
-          "oklch(85.0% 0.015 92)",
-          "oklch(95.0% 0.008 92)"
-        ]
-      },
-      "picture-road": {
-        "role": "neutral",
-        "displayName": "Picture Main Road",
-        "canonical": "oklch(75.8% 0.029 91)",
-        "resolvedHex": "#B7B09C",
-        "source": "Baked into both map pictures by their build scripts; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.029 91)",
-          "oklch(26.0% 0.029 91)",
-          "oklch(38.0% 0.029 91)",
-          "oklch(50.0% 0.029 91)",
-          "oklch(62.0% 0.029 91)",
-          "oklch(74.0% 0.029 91)",
-          "oklch(85.0% 0.017 91)",
-          "oklch(95.0% 0.009 91)"
-        ]
-      },
-      "picture-motorway": {
-        "role": "neutral",
-        "displayName": "Picture Motorway",
-        "canonical": "oklch(70.3% 0.031 92)",
-        "resolvedHex": "#A69F8A",
-        "source": "Baked into public/landing/island.svg by scripts/build-island-map.mjs; not a --th-* role.",
-        "tonalRamp": [
-          "oklch(15.0% 0.031 92)",
-          "oklch(26.0% 0.031 92)",
-          "oklch(38.0% 0.031 92)",
-          "oklch(50.0% 0.031 92)",
-          "oklch(62.0% 0.031 92)",
-          "oklch(74.0% 0.031 92)",
-          "oklch(85.0% 0.018 92)",
-          "oklch(95.0% 0.009 92)"
-        ]
-      },
-      "dot": {
-        "role": "neutral",
-        "displayName": "Listing with no figure",
-        "canonical": "oklch(21.6% 0.023 131)",
-        "resolvedHex": "#161C11",
-        "cssVar": "--th-dot",
-        "tonalRamp": [
-          "oklch(15.0% 0.023 131)",
-          "oklch(26.0% 0.023 131)",
-          "oklch(38.0% 0.023 131)",
-          "oklch(50.0% 0.023 131)",
-          "oklch(62.0% 0.023 131)",
-          "oklch(74.0% 0.023 131)",
-          "oklch(85.0% 0.014 131)",
-          "oklch(95.0% 0.007 131)"
-        ]
-      },
-      "dot-out": {
-        "role": "neutral",
-        "displayName": "Listing outside the line",
-        "canonical": "oklch(69.6% 0.027 122)",
-        "resolvedHex": "#9AA08E",
-        "cssVar": "--th-dot-out",
-        "tonalRamp": [
-          "oklch(15.0% 0.027 122)",
-          "oklch(26.0% 0.027 122)",
-          "oklch(38.0% 0.027 122)",
-          "oklch(50.0% 0.027 122)",
-          "oklch(62.0% 0.027 122)",
-          "oklch(74.0% 0.027 122)",
-          "oklch(85.0% 0.016 122)",
-          "oklch(95.0% 0.008 122)"
-        ]
-      },
-      "pending": {
-        "role": "neutral",
-        "displayName": "Pending",
-        "canonical": "oklch(51.5% 0.029 127)",
-        "resolvedHex": "#636B59",
-        "cssVar": "--th-pending",
-        "tonalRamp": [
-          "oklch(15.0% 0.029 127)",
-          "oklch(26.0% 0.029 127)",
-          "oklch(38.0% 0.029 127)",
-          "oklch(50.0% 0.029 127)",
-          "oklch(62.0% 0.029 127)",
-          "oklch(74.0% 0.029 127)",
-          "oklch(85.0% 0.018 127)",
-          "oklch(95.0% 0.009 127)"
-        ]
-      },
-      "wire": {
-        "role": "neutral",
-        "displayName": "Wire",
-        "canonical": "oklch(71.8% 0.021 116)",
-        "resolvedHex": "#A3A697",
-        "cssVar": "--th-wire",
-        "tonalRamp": [
-          "oklch(15.0% 0.021 116)",
-          "oklch(26.0% 0.021 116)",
-          "oklch(38.0% 0.021 116)",
-          "oklch(50.0% 0.021 116)",
-          "oklch(62.0% 0.021 116)",
-          "oklch(74.0% 0.021 116)",
-          "oklch(85.0% 0.013 116)",
-          "oklch(95.0% 0.006 116)"
-        ]
-      },
-      "rail": {
+      "olive-light": {
         "role": "primary",
-        "displayName": "Rail (the How line)",
-        "canonical": "oklch(61.5% 0.044 128)",
-        "resolvedHex": "#7D8A6E",
-        "source": "--hw-rail, local to .hw-line in app/landing-how.css: color-mix(in srgb, var(--th-a) 70%, var(--th-ground)). Not yet a --th-* role.",
+        "displayName": "Light Olive (wordmark dots on the close and footer)",
+        "canonical": "oklch(78.2% 0.074 130)",
+        "resolvedHex": "#A8C290",
+        "cssVar": "--olive-light",
         "tonalRamp": [
-          "oklch(15.0% 0.044 128)",
-          "oklch(26.0% 0.044 128)",
-          "oklch(38.0% 0.044 128)",
-          "oklch(50.0% 0.044 128)",
-          "oklch(62.0% 0.044 128)",
-          "oklch(74.0% 0.044 128)",
-          "oklch(85.0% 0.026 128)",
-          "oklch(95.0% 0.013 128)"
+          "oklch(15.0% 0.074 130)",
+          "oklch(26.0% 0.074 130)",
+          "oklch(38.0% 0.074 130)",
+          "oklch(50.0% 0.074 130)",
+          "oklch(62.0% 0.074 130)",
+          "oklch(74.0% 0.074 130)",
+          "oklch(85.0% 0.044 130)",
+          "oklch(95.0% 0.022 130)"
         ]
       },
       "edge": {
         "role": "neutral",
-        "displayName": "Edge",
-        "canonical": "oklch(59.0% 0.022 129)",
-        "resolvedHex": "#798072",
+        "displayName": "Control Edge (slider track, outlines; 3:1 or better)",
+        "canonical": "oklch(61.8% 0.019 129)",
+        "resolvedHex": "#82887C",
         "cssVar": "--th-edge",
+        "source": "color-mix(in srgb, #4D5544 70%, #FFFFFF)",
         "tonalRamp": [
-          "oklch(15.0% 0.022 129)",
-          "oklch(26.0% 0.022 129)",
-          "oklch(38.0% 0.022 129)",
-          "oklch(50.0% 0.022 129)",
-          "oklch(62.0% 0.022 129)",
-          "oklch(74.0% 0.022 129)",
-          "oklch(85.0% 0.013 129)",
-          "oklch(95.0% 0.007 129)"
+          "oklch(15.0% 0.019 129)",
+          "oklch(26.0% 0.019 129)",
+          "oklch(38.0% 0.019 129)",
+          "oklch(50.0% 0.019 129)",
+          "oklch(62.0% 0.019 129)",
+          "oklch(74.0% 0.019 129)",
+          "oklch(85.0% 0.011 129)",
+          "oklch(95.0% 0.006 129)"
         ]
       },
-      "area-land": {
-        "role": "primary",
-        "displayName": "Land inside the area",
-        "canonical": "oklch(87.6% 0.018 121)",
-        "resolvedHex": "#D4D8CB",
-        "cssVar": "--th-area-land",
-        "tonalRamp": [
-          "oklch(15.0% 0.018 121)",
-          "oklch(26.0% 0.018 121)",
-          "oklch(38.0% 0.018 121)",
-          "oklch(50.0% 0.018 121)",
-          "oklch(62.0% 0.018 121)",
-          "oklch(74.0% 0.018 121)",
-          "oklch(85.0% 0.011 121)",
-          "oklch(95.0% 0.005 121)"
-        ]
-      },
-      "card-playground": {
+      "pending": {
         "role": "neutral",
-        "displayName": "Playground card ground",
-        "canonical": "oklch(100.0% 0.000 90)",
-        "resolvedHex": "#FFFFFF",
-        "cssVar": "--th-card-playground",
+        "displayName": "Pending Figure",
+        "canonical": "oklch(55.3% 0.024 125)",
+        "resolvedHex": "#6F7566",
+        "cssVar": "--th-pending",
+        "source": "color-mix(in srgb, #4D5544 80%, #F5F4EE)",
         "tonalRamp": [
-          "oklch(15.0% 0.000 90)",
-          "oklch(26.0% 0.000 90)",
-          "oklch(38.0% 0.000 90)",
-          "oklch(50.0% 0.000 90)",
-          "oklch(62.0% 0.000 90)",
-          "oklch(74.0% 0.000 90)",
-          "oklch(85.0% 0.000 90)",
-          "oklch(95.0% 0.000 90)"
-        ]
-      },
-      "card-reports": {
-        "role": "neutral",
-        "displayName": "Reports card ground",
-        "canonical": "oklch(93.2% 0.023 120)",
-        "resolvedHex": "#E6EBDA",
-        "cssVar": "--th-card-reports",
-        "tonalRamp": [
-          "oklch(15.0% 0.023 120)",
-          "oklch(26.0% 0.023 120)",
-          "oklch(38.0% 0.023 120)",
-          "oklch(50.0% 0.023 120)",
-          "oklch(62.0% 0.023 120)",
-          "oklch(74.0% 0.023 120)",
-          "oklch(85.0% 0.014 120)",
-          "oklch(95.0% 0.007 120)"
-        ]
-      },
-      "card-connector": {
-        "role": "secondary",
-        "displayName": "Orange Wash (Connector card ground)",
-        "canonical": "oklch(94.4% 0.030 74)",
-        "resolvedHex": "#F9EAD7",
-        "cssVar": "--th-card-connector",
-        "tonalRamp": [
-          "oklch(15.0% 0.030 74)",
-          "oklch(26.0% 0.030 74)",
-          "oklch(38.0% 0.030 74)",
-          "oklch(50.0% 0.030 74)",
-          "oklch(62.0% 0.030 74)",
-          "oklch(74.0% 0.030 74)",
-          "oklch(85.0% 0.018 74)",
-          "oklch(95.0% 0.009 74)"
-        ]
-      },
-      "close": {
-        "role": "neutral",
-        "displayName": "The close (ink ground)",
-        "canonical": "oklch(21.6% 0.023 131)",
-        "resolvedHex": "#161C11",
-        "cssVar": "--th-close",
-        "tonalRamp": [
-          "oklch(15.0% 0.023 131)",
-          "oklch(26.0% 0.023 131)",
-          "oklch(38.0% 0.023 131)",
-          "oklch(50.0% 0.023 131)",
-          "oklch(62.0% 0.023 131)",
-          "oklch(74.0% 0.023 131)",
-          "oklch(85.0% 0.014 131)",
-          "oklch(95.0% 0.007 131)"
-        ]
-      },
-      "close-ink": {
-        "role": "neutral",
-        "displayName": "Paper on Ink",
-        "canonical": "oklch(95.8% 0.012 92)",
-        "resolvedHex": "#F4F1E8",
-        "cssVar": "--th-close-ink",
-        "tonalRamp": [
-          "oklch(15.0% 0.012 92)",
-          "oklch(26.0% 0.012 92)",
-          "oklch(38.0% 0.012 92)",
-          "oklch(50.0% 0.012 92)",
-          "oklch(62.0% 0.012 92)",
-          "oklch(74.0% 0.012 92)",
-          "oklch(85.0% 0.007 92)",
-          "oklch(95.0% 0.004 92)"
-        ]
-      },
-      "close-muted": {
-        "role": "neutral",
-        "displayName": "Quieter Paper",
-        "canonical": "oklch(78.6% 0.014 107)",
-        "resolvedHex": "#BABAB0",
-        "cssVar": "--th-close-muted",
-        "tonalRamp": [
-          "oklch(15.0% 0.014 107)",
-          "oklch(26.0% 0.014 107)",
-          "oklch(38.0% 0.014 107)",
-          "oklch(50.0% 0.014 107)",
-          "oklch(62.0% 0.014 107)",
-          "oklch(74.0% 0.014 107)",
-          "oklch(85.0% 0.008 107)",
-          "oklch(95.0% 0.004 107)"
-        ]
-      },
-      "close-edge": {
-        "role": "neutral",
-        "displayName": "Rule on Ink, strong",
-        "canonical": "oklch(58.8% 0.015 116)",
-        "resolvedHex": "#7C7E74",
-        "cssVar": "--th-close-edge",
-        "tonalRamp": [
-          "oklch(15.0% 0.015 116)",
-          "oklch(26.0% 0.015 116)",
-          "oklch(38.0% 0.015 116)",
-          "oklch(50.0% 0.015 116)",
-          "oklch(62.0% 0.015 116)",
-          "oklch(74.0% 0.015 116)",
-          "oklch(85.0% 0.009 116)",
-          "oklch(95.0% 0.005 116)"
-        ]
-      },
-      "close-line": {
-        "role": "neutral",
-        "displayName": "Rule on Ink, faint",
-        "canonical": "oklch(39.0% 0.019 127)",
-        "resolvedHex": "#42473C",
-        "cssVar": "--th-close-line",
-        "tonalRamp": [
-          "oklch(15.0% 0.019 127)",
-          "oklch(26.0% 0.019 127)",
-          "oklch(38.0% 0.019 127)",
-          "oklch(50.0% 0.019 127)",
-          "oklch(62.0% 0.019 127)",
-          "oklch(74.0% 0.019 127)",
-          "oklch(85.0% 0.012 127)",
-          "oklch(95.0% 0.006 127)"
+          "oklch(15.0% 0.024 125)",
+          "oklch(26.0% 0.024 125)",
+          "oklch(38.0% 0.024 125)",
+          "oklch(50.0% 0.024 125)",
+          "oklch(62.0% 0.024 125)",
+          "oklch(74.0% 0.024 125)",
+          "oklch(85.0% 0.014 125)",
+          "oklch(95.0% 0.007 125)"
         ]
       }
+    },
+    "dataScale": {
+      "name": "occupancy",
+      "steps": [
+        "data-1",
+        "data-2",
+        "data-3",
+        "data-4"
+      ],
+      "values": [
+        "#4F6334",
+        "#6F8F31",
+        "#9CC13A",
+        "#D6F25E"
+      ],
+      "classes": [
+        "under 60%",
+        "60s",
+        "70s",
+        "80%+"
+      ],
+      "purpose": "Ordinal olive-to-lime scale; lightness and chroma rise together. On the light land data-1 (6.5:1) and data-2 (3.8:1) hold by themselves and the lighter two do not, so every mark of the scale wears an ink ring (The Ring Rule: occ-ring inside a drawn area, the lighter dot-ring outside). A listing with no figure is not on the scale: an empty dot-none ring, \"No figure\" in the key."
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The first screen's headline only, in three lines. clamp(2.5rem, 7vw, 3.5rem) below 1024px; line-height 1.04 throughout."
+        "purpose": "The first screen's headline only, three lines, 500 at -0.035em; sized so the longest line fits the 42% column, at most 64px. Each line rises out of a mask at its own foot in the opening."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "The stage's heading, the heading of How the numbers are made and the close's heading (--th-heading); line-height 1.08 on the close."
+        "purpose": "--th-heading: a product's name beside its icon, \"How the numbers are made.\", \"Ask the team.\" 36px on a phone to 44px from 1440px, weight 500."
       },
-      "card-name": {
-        "displayName": "Card name",
-        "purpose": "A product's name in its card's 56px header row: the headline size times 0.7."
+      "figure-large": {
+        "displayName": "Figure",
+        "purpose": "--th-text-figure: the tipping point and the counts the database holds; 400, tabular, -0.04em (-0.03em on the How counts). Never counted up."
       },
-      "wordmark": {
-        "displayName": "Wordmark",
-        "purpose": "The name beside the brand mark in the nav; 18px in the footer."
+      "statement": {
+        "displayName": "Statement",
+        "purpose": "--th-text-statement: a product's claim under its name, the panels' opening sentence, the hero's sentence."
+      },
+      "lede-large": {
+        "displayName": "Lead",
+        "purpose": "--th-text-lead: the verdict (500), a report page's title, a stop's name on the How line, the titles inside a card."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "A product's name in a stage panel and a stop's name on the How line; weight 700 for a report page's title."
-      },
-      "lede": {
-        "displayName": "Lede",
-        "purpose": "The one muted sentence under a heading; 18px from 640px. The first screen's is a size up: 18px on phones, 20px from 1024px. The search field's own text is 17px in ink."
+        "purpose": "A title inside a card or a stop on the How line, at 500 (600 on the How line)."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "The report page, the conversation (17px from 640px) and form input."
+        "purpose": "--th-text-body: running text in full ink, the search field's text, list rows, the chat bubbles, and every action at 600."
       },
-      "body-small": {
-        "displayName": "Body small",
-        "purpose": "Notes, panel text, the stage's messages, list rows, a row of the place list, what a stop on the How line says."
+      "small": {
+        "displayName": "Small",
+        "purpose": "--th-text-small: captions, notes, the report's running head, the cards pinned on the map, the curve's caption."
       },
-      "figure": {
-        "displayName": "Figure",
-        "purpose": "A number, tabular, followed by its unit at 13px in muted. On a card pinned on the first screen's picture the figures are a small table at 13px/20px: count and figure in ink at weight 600, their words in muted."
+      "fine": {
+        "displayName": "Fine",
+        "purpose": "--th-text-fine: the floor. Chart ticks, the hero's strip (pause, next town, the town's name, the key, the Demo data tag) and the map credit, tags, the occupancy label on a pinned card."
       },
       "action": {
         "displayName": "Action",
-        "purpose": "Buttons, text links, switch options, the Draw an area here button; tabs and nav links at weight 500."
+        "purpose": "The label of every filled button (action, solid, paper) and text button: body size at 600."
       },
-      "caption": {
-        "displayName": "Caption",
-        "purpose": "What a figure block covers, chart captions, notes under controls, what kind of place a row is. Muted."
-      },
-      "micro": {
-        "displayName": "Micro",
-        "purpose": "Place names on a map (haloed), chart axis ticks at weight 400, the map credit and the tour's pause control, the sample and example-listing notes."
+      "wordmark": {
+        "displayName": "Wordmark",
+        "purpose": "Plotsights beside its drawn \"o\" in the nav: 600 (--th-wordmark-weight), one step above display so the name holds."
       }
     },
     "shadows": [
       {
         "name": "shadow-color",
-        "value": "color-mix(in srgb, #161C11 35%, transparent)",
-        "purpose": "--th-shadow: the one shadow colour, ink at 35%."
+        "value": "color-mix(in srgb, #1C2116 35%, transparent)",
+        "purpose": "--th-shadow: the one shadow colour on paper, ink at 35%."
       },
       {
-        "name": "sheet-on-card",
+        "name": "pinned-on-map",
+        "value": "0 10px 22px -12px rgb(0 0 0 / 0.45)",
+        "purpose": "An area's figures (a white card) floating on the light map; it also carries a 1px border of ink at 24%."
+      },
+      {
+        "name": "place-list",
+        "value": "0 0 0 1px color-mix(in srgb, #1C2116 24%, transparent), 0 18px 36px -18px color-mix(in srgb, #1C2116 45%, transparent)",
+        "purpose": "The list of places that opens under the search field and floats over the page."
+      },
+      {
+        "name": "report-sheet",
         "value": "0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow)",
-        "purpose": "The report sheet lying on the Reports card. Shortens to 0 14px 22px -16px and 0 10px 16px -12px in short windows."
+        "purpose": "The report's sheet, an object lying on its white panel."
       },
       {
-        "name": "sheet-in-panel",
-        "value": "0 10px 20px -12px var(--th-shadow)",
-        "purpose": "The sample report page in the stage's Reports panel."
-      },
-      {
-        "name": "pinned-to-map",
-        "value": "0 8px 16px -10px var(--th-shadow)",
-        "purpose": "An area's card on the first screen's picture, pinned beside its area or docked in the band's corner while the band is on that area. The card also has a 1px ink edge. It is a three-line table: short-let, long-let and for sale, each with its count and median."
-      },
-      {
-        "name": "floating-control",
-        "value": "0 8px 18px -10px var(--th-shadow)",
-        "purpose": "The zoom control on the stage map's top-right corner and the Draw an area here button on its bottom-left."
-      },
-      {
-        "name": "listing-card",
-        "value": "0 8px 18px -12px var(--th-shadow)",
-        "purpose": "The example listing's card at the first stop of the How line."
-      },
-      {
-        "name": "way-in",
-        "value": "0 2px 3px -1px color-mix(in srgb, var(--th-ink) 24%, transparent), 0 20px 32px -18px color-mix(in srgb, var(--th-ink) 50%, transparent)",
-        "purpose": "The glass search field on the first screen: a contact shadow and a deep one, with the light the glass gathers set in the middle of the deep one."
-      },
-      {
-        "name": "way-in-list",
-        "value": "0 26px 44px -22px color-mix(in srgb, var(--th-ink) 50%, transparent)",
-        "purpose": "The frosted glass list of places open under the search field."
-      },
-      {
-        "name": "knock-out-ring",
-        "value": "0 0 0 2px var(--th-surface)",
-        "purpose": "Around a chart's hover dot so it reads off the line."
+        "name": "field-edge",
+        "value": "0 0 0 1px color-mix(in srgb, #1C2116 34%, transparent)",
+        "purpose": "Not elevation: the search field's 1px ink edge (60% on hover), drawn as a spread shadow."
       }
     ],
     "motion": [
       {
         "name": "ease",
         "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "--th-ease: the one easing, for every transform and every authored moment."
+        "purpose": "--th-ease: the one exponential ease-out, for every transform and every authored moment."
       },
       {
         "name": "state",
         "value": "0.15s",
-        "purpose": "Fill and colour changes on hover, and the 0.97 press."
+        "purpose": "Fill changes on hover and the 0.97 press of a filled button; the arrow inside moves 3px over 0.2s."
       },
       {
-        "name": "nudge",
-        "value": "0.2s",
-        "purpose": "An arrow moving 3px, an underline dropping from 4px to 7px."
+        "name": "opening-line-rise",
+        "value": "620ms per line, 80ms stagger, --th-ease",
+        "purpose": "The opening (first page of a visit only, never with reduced motion): each of the headline's three lines rises from translateY with a clip-path mask at its own foot (Opening.tsx). The name's two halves rise first (0.42s, 0.08s apart) and the plot's line draws from 0.62s for 0.82s."
       },
       {
-        "name": "open",
-        "value": "0.32s",
-        "purpose": "A stage panel growing open and its chevron turning."
+        "name": "tour-pin",
+        "value": "opacity 0.3s ease-out 0.15s, translate 0.4s --th-ease 0.15s",
+        "purpose": "A pinned card arriving beside its drawn area; corners drop in 0.35s; the area traces corner by corner. One town leaves west as the next comes from the east (opacity 0.9s, a 3% slide over 1.2s)."
       },
       {
-        "name": "first-screen-tour",
-        "value": "first town complete for 3.6s; then per town: map slides in 3% over 1.2s (opacity 0.9s ease), dots from 0.4s west to east, drawing from 1.1s at 0.17s a corner (corner th-drop 0.35s, line th-trace linear), area sets on closing (tint 0.3s, card opacity 0.3s and translate 6px 0.4s, both after 0.15s) and stays 1.1s to be read (1.7s in the band), 0.5s to the next area, hold 2.2s, leave 0.45s; in the band the map pans 0.7s and the docked card goes as it moves",
-        "purpose": "The first screen's picture, which runs by itself and loops through six towns. It waits while out of view, while the tab is hidden and while the visitor types in the search field, and can be paused. With reduced motion the first town stays, complete, and there is no pause control."
+        "name": "stream-word",
+        "value": "34ms per word (+160ms), each word fading 0.28s",
+        "purpose": "The Connector's answer streams word by word; how firm it is, its date and its link follow at words x 34ms + 260ms. Every word is in the page from the start; only opacity waits."
       },
       {
-        "name": "stage-intro",
-        "value": "handles drop 0.5s (90ms stagger), outline traces 0.75s at 0.55s, fill fades at 1s, wires trace at 1.5s and 1.7s",
-        "purpose": "The stage's one moment on first load."
+        "name": "page-turn",
+        "value": "0.25s out, 0.25s in, 28px slide, --th-ease",
+        "purpose": "A report page turn (ps-leaf-out / ps-leaf-in; LEAF_MS 250), set off by the rail, the pager, arrow keys on the sheet, or a sideways swipe of 48px."
       },
       {
-        "name": "corner-cue",
-        "value": "th-cue 3.2s infinite, 2.8s delay",
-        "purpose": "One handle sends out a slow ring until a corner is first moved. Under reduced motion the corner is filled olive instead."
+        "name": "sheet-deal",
+        "value": "0.5s --th-ease, from translateX(40px) rotate(1.6deg)",
+        "purpose": "The report's sheet laid on its panel when the panel first arrives."
       },
       {
-        "name": "card-arrival",
-        "value": "chart wipe 0.9s, node pop 0.3s, bars grow 0.4s, sheet dealt 0.5s, message arrives 0.45s",
-        "purpose": "What plays once when a card is first well into view. Everything is in its final state without it."
+        "name": "how-line-fill",
+        "value": "animation-timeline: view(); linear, ranges cover 10% to 41% across, cover 35% to 60% down",
+        "purpose": "How the numbers are made: the rail fills with olive and each stop it reaches turns olive as the line is scrolled through (CSS scroll-driven animations only; across from 1100px, down below). Without scroll timelines or with reduced motion the line is simply drawn."
       },
       {
-        "name": "covered-card",
-        "value": "scale(0.97) and a 6% ink veil on animation-timeline: view()",
-        "purpose": "A pinned card's body recedes as the next card comes over it; its header row does not."
-      },
-      {
-        "name": "picture-fade",
-        "value": "mask-image: linear-gradient(90deg, transparent 0, #000 24%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 6%), intersected; below 1024px linear-gradient(180deg, transparent 0, #000 16%)",
-        "purpose": "Not motion: how the first screen's frameless picture meets the paper. On the drawing alone; what is drawn over it does not fade."
+        "name": "reduced-motion",
+        "value": "none",
+        "purpose": "No opening, no tour, no streaming, no scroll fill, no page slide: everything in its final state."
       }
     ],
     "breakpoints": [
       {
-        "name": "search-button-words",
+        "name": "search-arrow-only",
         "value": "(max-width: 479px), (min-width: 1024px) and (max-width: 1179px): the search button is its arrow alone"
       },
       {
         "name": "sm",
-        "value": "640px"
-      },
-      {
-        "name": "nav",
-        "value": "768px (the nav's links fold into a menu below it)"
+        "value": "640px (tablet gutter 32px; the map band 520px tall)"
       },
       {
         "name": "lg",
-        "value": "1024px"
+        "value": "1024px (words on the left, the frameless map over the right 58%, faded; panels go two-column)"
       },
       {
         "name": "how-line",
-        "value": "1100px (the How line runs left to right from here)"
+        "value": "1100px (the How line runs across)"
       },
       {
         "name": "xl",
-        "value": "1280px"
+        "value": "1280px (the strip's key names its season, \"short-lets this season\")"
       },
       {
-        "name": "first-screen-height",
-        "value": "(min-width: 1024px): min-height max(100svh, 720px)"
-      },
-      {
-        "name": "stage-tall",
-        "value": "(min-width: 1024px) and (min-height: 861px)"
-      },
-      {
-        "name": "stage-laptop-height",
-        "value": "(min-width: 1024px) and (max-height: 860px)"
-      },
-      {
-        "name": "stage-short",
-        "value": "(min-width: 1024px) and (max-height: 760px)"
-      },
-      {
-        "name": "cards-tall",
-        "value": "(min-width: 1024px) and (min-height: 880px)"
-      },
-      {
-        "name": "cards-laptop-height",
-        "value": "(min-width: 1024px) and (max-height: 779px)"
-      },
-      {
-        "name": "cards-short",
-        "value": "(min-width: 1024px) and (max-height: 699px)"
-      },
-      {
-        "name": "figures-wide",
-        "value": "@container (min-width: 520px) on a card's views"
+        "name": "page-max",
+        "value": "1440px (64px gutters; headline and heading at their largest)"
       },
       {
         "name": "coarse-pointer",
@@ -1055,217 +884,173 @@
       "name": "Action Button",
       "kind": "button",
       "refersTo": "button-action",
-      "description": "The olive filled button, the page's filled action: Show me in the search field, and Open the Playground on the stage and in the Playground card.",
-      "html": "<a class=\"ds-btn-action\" href=\"#\">Open the Playground, it's free<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn-action { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 9999px; font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); background: var(--th-action, #4A5E3A); color: var(--th-action-ink, #FFFFFF); } .ds-btn-action:hover { background-color: var(--th-action-hover, #3C4E2E); } .ds-btn-action:active { transform: scale(0.97); } .ds-btn-action:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; } .ds-btn-action svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover svg { transform: translateX(3px); }"
+      "description": "The olive filled action, 6px corners: Show me in the search field, Open the Playground.",
+      "html": "<a class=\"ds-btn-action\" href=\"#\">Open the Playground<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
+      "css": ".ds-btn-action { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-action, #4A5E3A); color: var(--th-action-ink, #FFFFFF); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover { background-color: var(--th-action-hover, #3C4E2E); } .ds-btn-action:active { transform: scale(0.97); } .ds-btn-action svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover svg { transform: translateX(3px); } .ds-btn-action:focus-visible { outline: 2px solid var(--th-ink, #1C2116); outline-offset: 3px; }"
     },
     {
       "name": "Solid Button",
       "kind": "button",
       "refersTo": "button-solid",
-      "description": "The ink button: the nav's button and a request to the team (Ask for a report, Ask for access).",
+      "description": "Ink filled button for the Reports and Connector panels: Ask for a report, Ask for access.",
       "html": "<a class=\"ds-btn-solid\" href=\"#\">Ask for a report<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn-solid { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 9999px; font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); } .ds-btn-solid:hover { background-color: var(--th-solid-hover, #26331C); } .ds-btn-solid:active { transform: scale(0.97); } .ds-btn-solid:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; } .ds-btn-solid svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-solid:hover svg { transform: translateX(3px); }"
+      "css": ".ds-btn-solid { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-solid, #1C2116); color: var(--th-solid-ink, #FFFFFF); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-solid:hover { background-color: var(--th-solid-hover, #2E3526); } .ds-btn-solid:active { transform: scale(0.97); } .ds-btn-solid svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-solid:hover svg { transform: translateX(3px); } .ds-btn-solid:focus-visible { outline: 2px solid var(--th-ink, #1C2116); outline-offset: 3px; }"
+    },
+    {
+      "name": "Paper Button on the Close",
+      "kind": "button",
+      "refersTo": "button-paper",
+      "description": "Email the team: paper on the deep olive at the page's end; hover goes to white, the focus ring inverts.",
+      "html": "<div class=\"ds-close\"><a class=\"ds-btn-paper\" href=\"#\">Email the team<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a><a class=\"ds-close-play\" href=\"#\">Or open the Playground</a></div>",
+      "css": ".ds-close { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 28px; background: var(--th-close, #1B2215); } .ds-btn-paper { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-close-ink, #F5F4EE); color: var(--th-close, #1B2215); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-paper:hover { background-color: var(--th-surface, #FFFFFF); } .ds-btn-paper:active { transform: scale(0.97); } .ds-btn-paper svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-paper:hover svg { transform: translateX(3px); } .ds-btn-paper:focus-visible { outline: 2px solid #F5F4EE; outline-offset: 3px; } .ds-close-play { display: inline-flex; align-items: center; min-height: 44px; color: #F5F4EE; font-size: 18px; font-weight: 600; text-decoration: underline 1.5px; text-underline-offset: 4px; }"
     },
     {
       "name": "Place Search",
       "kind": "input",
       "refersTo": "field-search",
-      "description": "The first screen's way in, and the clearest of the page's glass: a slab with a fine cut edge, a polished rim and a light along its top, the olive Show me button inside its right end, and the frosted list of places open under it. The page's other surfaces are frosted glass (app/landing-glass.css). Nothing sits under the field.",
-      "html": "<div class=\"ds-find\"><form class=\"ds-find-box\" role=\"search\" onsubmit=\"return false\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input type=\"text\" placeholder=\"Your town, resort or district\" aria-label=\"A town, resort or district in Cyprus\"><button class=\"ds-find-go\" type=\"submit\"><span>Show me</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></form><ul class=\"ds-find-list\" role=\"listbox\" aria-label=\"Places\"><li role=\"option\" aria-selected=\"true\"><span><b>Paphos</b> <span lang=\"el\">Πάφος</span></span><small>District</small><em>545 short-lets</em></li><li role=\"option\" aria-selected=\"false\"><span><b>Ayia Napa</b></span><small>Resort, Famagusta district</small><em>402 short-lets</em></li></ul></div>",
-      "css": ".ds-find { font-family: var(--th-font, 'Google Sans', sans-serif); width: 100%; max-width: 540px; padding: 16px; background: var(--th-ground, #F4F1E8); color: var(--th-ink, #161C11); } .ds-find-box { display: flex; align-items: center; gap: 10px; height: 60px; padding: 0 5px 0 18px; border: 1.5px solid transparent; border-radius: 9999px; background: linear-gradient(180deg, rgb(255 255 255 / 0.66) 0%, rgb(255 255 255 / 0.2) 24%, rgb(255 255 255 / 0) 54%) padding-box, linear-gradient(color-mix(in srgb, var(--th-ink, #161C11) 5%, transparent), color-mix(in srgb, var(--th-ink, #161C11) 5%, transparent)) padding-box, radial-gradient(150px 44px at 24% 0%, #fff, rgb(255 255 255 / 0)) border-box, radial-gradient(190px 44px at 76% 100%, #fff, rgb(255 255 255 / 0)) border-box, linear-gradient(rgb(255 255 255 / 0.5), rgb(255 255 255 / 0.5)) border-box; -webkit-backdrop-filter: blur(14px) saturate(1.6); backdrop-filter: blur(14px) saturate(1.6); box-shadow: 0 0 0 1px color-mix(in srgb, var(--th-ink, #161C11) 56%, transparent), inset 0 0 9px 1px rgb(255 255 255 / 0.5), inset 0 -1px 0 rgb(255 255 255 / 0.85), inset 0 -9px 10px -8px color-mix(in srgb, var(--th-a, #4A5E3A) 32%, transparent), 0 2px 3px -1px color-mix(in srgb, var(--th-ink, #161C11) 24%, transparent), 0 20px 32px -18px color-mix(in srgb, var(--th-ink, #161C11) 50%, transparent); } .ds-find-box:focus-within { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; } .ds-find-box > svg { flex: none; color: var(--th-muted, #3F4A35); } .ds-find-box input { flex: 1; min-width: 0; height: 100%; border: 0; outline: none; background: transparent; color: var(--th-ink, #161C11); font: inherit; font-size: 17px; } .ds-find-box input::placeholder { color: var(--th-muted, #3F4A35); opacity: 1; } .ds-find-go { flex: none; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 20px; border: 0; border-radius: 9999px; background: var(--th-action, #4A5E3A); color: var(--th-action-ink, #FFFFFF); font: inherit; font-size: 15px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-find-go:hover { background-color: var(--th-action-hover, #3C4E2E); } .ds-find-go:active { transform: scale(0.97); } .ds-find-go svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-find-go:hover svg { transform: translateX(3px); } .ds-find-list { list-style: none; margin: 10px 0 0; padding: 6px; border-radius: 18px; background: linear-gradient(180deg, rgb(255 255 255 / 0.8), rgb(255 255 255 / 0.64)); -webkit-backdrop-filter: blur(22px) saturate(1.7); backdrop-filter: blur(22px) saturate(1.7); box-shadow: 0 0 0 1px color-mix(in srgb, var(--th-ink, #161C11) 34%, transparent), inset 0 0 0 1px rgb(255 255 255 / 0.7), inset 0 1.5px 0 rgb(255 255 255), 0 26px 44px -22px color-mix(in srgb, var(--th-ink, #161C11) 50%, transparent); } .ds-find-list li { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 14px; align-items: center; min-height: 44px; padding: 8px 12px; border-radius: 10px; font-size: 15px; line-height: 21px; cursor: pointer; } .ds-find-list li[aria-selected=\"true\"], .ds-find-list li:hover { background: var(--th-tint, #E6EBDA); } .ds-find-list li > span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--th-muted, #3F4A35); } .ds-find-list b { color: var(--th-ink, #161C11); font-weight: 600; } .ds-find-list small { grid-column: 1; color: var(--th-muted, #3F4A35); font-size: 13px; line-height: 18px; } .ds-find-list em { grid-column: 2; grid-row: 1 / span 2; font-size: 13px; font-style: normal; font-variant-numeric: tabular-nums; white-space: nowrap; }"
+      "description": "The first screen's way in: an opaque glass 58px field (its glass on the form's ::before, so the list can blur too) with a 1px ink edge at 34% (60% on hover), the solid olive action inside its right end, and the list of places, glass with one soft shadow, floating under it with the selected row in tint.",
+      "html": "<div class=\"ds-find\"><form class=\"ds-find-box\" role=\"search\" onsubmit=\"return false\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input type=\"text\" placeholder=\"Your town, resort or district\" aria-label=\"A town, resort or district in Cyprus\"><button class=\"ds-find-go\" type=\"submit\"><span>Show me</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></form><ul class=\"ds-find-list\" role=\"listbox\" aria-label=\"Places\"><li role=\"option\" aria-selected=\"true\"><span><b>Paphos</b></span><em>545 short-lets</em></li><li role=\"option\" aria-selected=\"false\"><span><b>Limassol</b></span><em>1,204 short-lets</em></li></ul></div>",
+      "css": ".ds-find { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; max-width: 540px; padding-bottom: 130px; } .ds-find-box { display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 5px 0 16px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 34%, transparent); transition: box-shadow 0.2s; } .ds-find-box:hover { box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 60%, transparent); } .ds-find-box:focus-within { outline: 2px solid #1C2116; outline-offset: 3px; } .ds-find-box > svg { flex: none; color: #4D5544; } .ds-find-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: #1C2116; font: inherit; font-size: 18px; outline: none; } .ds-find-box input::placeholder { color: #4D5544; opacity: 1; } .ds-find-go { font: inherit; display: inline-flex; align-items: center; gap: 8px; flex: none; min-height: 48px; padding: 0 20px; border: 0; border-radius: 5px; background: #4A5E3A; color: #FFFFFF; font-size: 18px; font-weight: 600; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-find-go:hover { background: #3C4E2E; } .ds-find-go:active { transform: scale(0.97); } .ds-find-list { position: absolute; top: 66px; right: 0; left: 0; margin: 0; padding: 6px; list-style: none; border-radius: 8px; background: #FFFFFF; box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 24%, transparent), 0 18px 36px -18px color-mix(in srgb, #1C2116 45%, transparent); } .ds-find-list li { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 44px; padding: 8px 12px; border-radius: 4px; color: #4D5544; font-size: 18px; cursor: pointer; } .ds-find-list li:hover, .ds-find-list li[aria-selected=\"true\"] { background: #ECEBE3; } .ds-find-list b { color: #1C2116; font-weight: 500; } .ds-find-list em { color: #1C2116; font-size: 16px; font-style: normal; font-variant-numeric: tabular-nums; }"
     },
     {
-      "name": "Close Field and Paper Button",
-      "kind": "input",
-      "refersTo": "field-close",
-      "description": "The email field and its submit on the ink close: the palette turned over.",
-      "html": "<div class=\"ds-close\"><input class=\"ds-close-input\" type=\"email\" placeholder=\"your@email.com\" aria-label=\"Your email address\"><button class=\"ds-btn-paper\" type=\"button\">Send<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></div>",
-      "css": ".ds-close { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; gap: 10px; padding: 24px; background: var(--th-close, #161C11); } .ds-close-input { flex: 1; min-width: 0; min-height: 48px; padding: 0 16px; border: 1.5px solid var(--th-close-edge, #7C7E74); border-radius: 12px; background: transparent; color: var(--th-close-ink, #F4F1E8); font: inherit; font-size: 16px; caret-color: var(--th-close-ink, #F4F1E8); transition: border-color 0.15s; } .ds-close-input::placeholder { color: var(--th-close-muted, #BABAB0); opacity: 1; } .ds-close-input:hover, .ds-close-input:focus { border-color: var(--th-close-ink, #F4F1E8); } .ds-close-input:focus-visible { outline: 2px solid var(--th-close-ink, #F4F1E8); outline-offset: 3px; } .ds-btn-paper { font-family: inherit; display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-width: 120px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 9999px; font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); background: var(--th-close-ink, #F4F1E8); color: var(--th-close, #161C11); } .ds-btn-paper:hover { background-color: var(--th-surface, #FFFFFF); } .ds-btn-paper:active { transform: scale(0.97); } .ds-btn-paper:focus-visible { outline: 2px solid var(--th-close-ink, #F4F1E8); outline-offset: 3px; } .ds-btn-paper svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-paper:hover svg { transform: translateX(3px); }"
-    },
-    {
-      "name": "Text Link",
+      "name": "Town Map with Strip",
       "kind": "custom",
-      "refersTo": "link-text",
-      "description": "An ink link with a 1.5px underline that drops on hover; with a down arrow when it goes down the page.",
-      "html": "<a class=\"ds-more\" href=\"#\"><span>Find out more</span><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M12 5v14\"/><path d=\"m19 12-7 7-7-7\"/></svg></a>",
-      "css": ".ds-more { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; gap: 6px; min-height: 44px; color: var(--th-ink, #161C11); font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; } .ds-more > span { text-decoration: underline 1.5px; text-underline-offset: 4px; transition: text-underline-offset 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-more:hover > span { text-underline-offset: 7px; } .ds-more svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-more:hover svg { transform: translateY(3px); } .ds-more:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; }"
+      "refersTo": null,
+      "description": "The first screen's picture (TownTour): the light map of a real town, frameless, coming out of the paper (nothing for its first 7%, whole from 28%, faded under the nav and at its foot), so nothing lies under the words. Every short-let is a dot in its class inside an ink ring (dot-ring outside the drawn areas); an area is an ink line over a 4px edge of the land's colour, its corners olive dots ringed in ink. A strip at the hero's foot, right-aligned: Pause the tour, Next town, the town's name, the key (four ringed swatches from Under 60% to 80%+, an empty ring No figure), the Demo data tag, the credit.",
+      "html": "<div class=\"ds-hero-map\"><svg class=\"ds-map\" viewBox=\"0 0 360 200\" aria-hidden=\"true\"><rect width=\"360\" height=\"200\" fill=\"#FAF9F4\"/><path d=\"M0 160 C90 140 180 172 360 145 L360 200 L0 200 Z\" fill=\"#CBD9DA\"/><path d=\"M0 160 C90 140 180 172 360 145\" fill=\"none\" stroke=\"#8DA1A2\"/><path d=\"M30 20 L340 120\" stroke=\"#BAB5A6\" stroke-width=\"3\"/><path d=\"M70 130 L290 30\" stroke=\"#D6D3C7\" stroke-width=\"2\"/><path d=\"M200 20 L330 60\" stroke=\"#D6D3C7\" stroke-width=\"2\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"#1C2116\" fill-opacity=\"0.05\" stroke=\"#FAF9F4\" stroke-width=\"4\" stroke-linejoin=\"round\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"none\" stroke=\"#1C2116\" stroke-width=\"1.5\" stroke-linejoin=\"round\"/><g stroke=\"#1C2116\" stroke-width=\"1\"><circle cx=\"180\" cy=\"62\" r=\"4\" fill=\"#D6F25E\"/><circle cx=\"212\" cy=\"78\" r=\"4\" fill=\"#9CC13A\"/><circle cx=\"230\" cy=\"64\" r=\"4\" fill=\"#6F8F31\"/><circle cx=\"190\" cy=\"95\" r=\"4\" fill=\"#4F6334\"/><circle cx=\"242\" cy=\"92\" r=\"4\" fill=\"#D6F25E\"/></g><g stroke=\"#1C2116B3\" stroke-width=\"1\"><circle cx=\"110\" cy=\"70\" r=\"3\" fill=\"#9CC13A\"/><circle cx=\"300\" cy=\"95\" r=\"3\" fill=\"#6F8F31\"/><circle cx=\"290\" cy=\"40\" r=\"3\" fill=\"none\" stroke=\"#9FA396\" stroke-width=\"1.2\"/></g><g fill=\"#4A5E3A\" stroke=\"#1C2116\" stroke-width=\"1.5\"><circle cx=\"150\" cy=\"40\" r=\"4\"/><circle cx=\"250\" cy=\"50\" r=\"4\"/><circle cx=\"265\" cy=\"105\" r=\"4\"/><circle cx=\"165\" cy=\"112\" r=\"4\"/></g></svg><div class=\"ds-strip\"><a class=\"ds-stopper\" href=\"#\">Pause the tour</a><a class=\"ds-stopper\" href=\"#\">Next town</a><b>Limassol</b><span class=\"ds-key\"><span class=\"ds-key-scale\">Under 60% <span class=\"ds-dots\"><i style=\"background:#4F6334\"></i><i style=\"background:#6F8F31\"></i><i style=\"background:#9CC13A\"></i><i style=\"background:#D6F25E\"></i></span> 80%+</span><span class=\"ds-key-none\"><i></i>No figure</span></span><span class=\"ds-tag\">Demo data</span><span>Map: OpenStreetMap</span></div></div>",
+      "css": ".ds-hero-map { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; max-width: 560px; padding-bottom: 8px; background: var(--th-ground, #F5F4EE); } .ds-map { display: block; width: 100%; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 8%); mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 8%); -webkit-mask-composite: source-in; mask-composite: intersect; } .ds-strip { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted, #4D5544); font-size: 15px; line-height: 21px; } .ds-stopper { color: var(--th-ink, #1C2116); font-weight: 500; text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; } .ds-stopper:hover { text-decoration-color: currentColor; } .ds-strip b { color: var(--th-ink, #1C2116); font-weight: 500; } .ds-key { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; white-space: nowrap; } .ds-key-scale { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; } .ds-dots { display: inline-flex; gap: 2px; } .ds-dots i { width: 18px; height: 8px; border: 1px solid var(--th-occ-ring, #1C2116); } .ds-key-none { display: inline-flex; align-items: center; gap: 6px; } .ds-key-none i { width: 9px; height: 9px; border: 1.2px solid var(--th-dot-none, #9FA396); border-radius: 50%; } .ds-tag { display: inline-flex; align-items: center; height: 24px; padding: 0 7px; border-radius: 3px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent); font-weight: 500; }"
     },
     {
-      "name": "Navigation",
-      "kind": "nav",
-      "refersTo": "nav",
-      "description": "The fixed 72px bar in its scrolled state: brand mark and wordmark, three text links, the solid button. Over the first screen it is transparent and the picture runs up under it.",
-      "html": "<header class=\"ds-nav\"><a class=\"ds-nav-brand\" href=\"#\"><svg width=\"32\" height=\"32\" viewBox=\"0 0 34 34\" fill=\"none\" aria-hidden=\"true\"><path d=\"M7 9.5 22.5 6l6.5 13-10 9L7 22z\" fill=\"var(--th-mark, #F2A154)\" stroke=\"var(--th-ink, #161C11)\" stroke-width=\"2.2\" stroke-linejoin=\"round\"/><g fill=\"var(--th-ground, #F4F1E8)\" stroke=\"var(--th-ink, #161C11)\" stroke-width=\"1.8\"><rect x=\"4.5\" y=\"7\" width=\"5\" height=\"5\"/><rect x=\"20\" y=\"3.5\" width=\"5\" height=\"5\"/><rect x=\"26.5\" y=\"16.5\" width=\"5\" height=\"5\"/><rect x=\"16.5\" y=\"25.5\" width=\"5\" height=\"5\"/><rect x=\"4.5\" y=\"19.5\" width=\"5\" height=\"5\"/></g></svg><span>Plotsights</span></a><nav class=\"ds-nav-links\"><a class=\"ds-nav-link\" href=\"#\">Reports</a><a class=\"ds-nav-link\" href=\"#\">Connector</a><a class=\"ds-nav-link\" href=\"#\">Ask the team</a><a class=\"ds-nav-cta\" href=\"#\">Open the Playground</a></nav></header>",
-      "css": ".ds-nav { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; align-items: center; justify-content: space-between; height: 72px; padding: 0 32px; background: var(--th-ground, #F4F1E8); border-bottom: 1px solid var(--th-ground-line, #DDD7C6); color: var(--th-ink, #161C11); } .ds-nav-brand { display: flex; align-items: center; gap: 10px; color: inherit; text-decoration: none; font-size: 22px; font-weight: 700; letter-spacing: -0.035em; } .ds-nav-links { display: flex; align-items: center; gap: 36px; } .ds-nav-link { display: flex; align-items: center; min-height: 44px; color: inherit; font-size: 15px; font-weight: 500; text-decoration: underline transparent 1.5px; text-underline-offset: 6px; transition: text-decoration-color 0.2s; } .ds-nav-link:hover { text-decoration-color: currentColor; } .ds-nav-cta { display: inline-flex; align-items: center; height: 44px; padding: 0 20px; border-radius: 9999px; background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); font-size: 15px; font-weight: 600; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-cta:hover { background-color: var(--th-solid-hover, #26331C); } .ds-nav-cta:active { transform: scale(0.97); } .ds-nav a:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; }"
-    },
-    {
-      "name": "Switch",
-      "kind": "custom",
-      "refersTo": "switch",
-      "description": "Options in a white tray; the chosen one is solid ink. Used once, for the kind of report at the head of the Reports card's contents.",
-      "html": "<div class=\"ds-switch\" role=\"group\" aria-label=\"Kind of report\"><button type=\"button\" aria-pressed=\"true\">For a property</button><button type=\"button\" aria-pressed=\"false\">For an area</button></div>",
-      "css": ".ds-switch { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; flex-wrap: wrap; gap: 2px; padding: 3px; border: 1px solid var(--th-line, #DDD7C6); border-radius: 12px; background: var(--th-surface, #FFFFFF); } .ds-switch button { min-height: 44px; padding: 0 16px; border: 0; border-radius: 6px; background: transparent; color: var(--th-ink, #161C11); font: inherit; font-size: 15px; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background-color 0.15s; } .ds-switch button:hover { background: var(--th-tint, #E6EBDA); } .ds-switch button[aria-pressed=\"true\"] { background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); cursor: default; } .ds-switch button:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; }"
-    },
-    {
-      "name": "Map Controls",
-      "kind": "custom",
-      "refersTo": "map-control",
-      "description": "What floats on the stage's map: plus over minus on one white surface, Whole island under them once the map is zoomed, and Draw an area here whenever the map is zoomed in or no part of the area is in the window.",
-      "html": "<div class=\"ds-mapctl\"><div class=\"ds-mapctl-zoom\"><div class=\"ds-mapctl-steps\" role=\"group\" aria-label=\"Zoom the map\"><button type=\"button\" aria-label=\"Zoom in\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"M12 5v14\"/></svg></button><button type=\"button\" aria-label=\"Zoom out\"><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/></svg></button></div><button class=\"ds-mapctl-whole\" type=\"button\">Whole island</button></div><button class=\"ds-mapctl-draw\" type=\"button\">Draw an area here</button></div>",
-      "css": ".ds-mapctl { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; width: 320px; height: 190px; background: var(--th-map-sea, #C2DADF); color: var(--th-ink, #161C11); } .ds-mapctl-zoom { position: absolute; top: 10px; right: 10px; display: flex; flex-direction: column; align-items: flex-end; gap: 6px; } .ds-mapctl-steps, .ds-mapctl-whole, .ds-mapctl-draw { border: 1px solid var(--th-line, #DDD7C6); border-radius: 12px; background: var(--th-surface, #FFFFFF); box-shadow: 0 8px 18px -10px color-mix(in srgb, var(--th-ink, #161C11) 35%, transparent); } .ds-mapctl-steps { display: flex; flex-direction: column; } .ds-mapctl-steps button { position: relative; display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; border-radius: 11px 11px 0 0; background: transparent; color: var(--th-ink, #161C11); cursor: pointer; transition: background-color 0.15s; } .ds-mapctl-steps button + button { border-top: 1px solid var(--th-line, #DDD7C6); border-radius: 0 0 11px 11px; } .ds-mapctl-whole, .ds-mapctl-draw { color: var(--th-ink, #161C11); font: inherit; font-weight: 600; white-space: nowrap; cursor: pointer; transition: background-color 0.15s; } .ds-mapctl-whole { min-height: 36px; padding: 0 12px; font-size: 13px; } .ds-mapctl-draw { position: absolute; bottom: 10px; left: 10px; min-height: 44px; padding: 0 16px; font-size: 15px; } .ds-mapctl-steps button:hover, .ds-mapctl-whole:hover, .ds-mapctl-draw:hover, .ds-mapctl button:active { background: var(--th-tint, #E6EBDA); } .ds-mapctl button:focus-visible { z-index: 1; outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; }"
-    },
-    {
-      "name": "Square Corners",
-      "kind": "custom",
-      "refersTo": "handle",
-      "description": "The one node shape in its states: empty, hovered or held (olive), chosen (ink), and the thing being counted (light orange, the first stop of the How line).",
-      "html": "<div class=\"ds-corners\"><button class=\"ds-corner\" type=\"button\" aria-label=\"A corner of the area\"><i></i></button><button class=\"ds-corner ds-corner-chosen\" type=\"button\" aria-label=\"The chosen item\"><i></i></button><span class=\"ds-corner ds-corner-counted\"><i></i></span></div>",
-      "css": ".ds-corners { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; align-items: center; gap: 12px; padding: 12px; background: var(--th-ground, #F4F1E8); } .ds-corner { display: grid; place-items: center; width: 44px; height: 44px; padding: 0; border: 0; background: transparent; cursor: grab; } .ds-corner i { width: 12px; height: 12px; border: 2px solid var(--th-ink, #161C11); background: var(--th-surface, #FFFFFF); transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-corner:hover i { background: var(--th-a, #4A5E3A); transform: scale(1.25); } .ds-corner-chosen { cursor: default; } .ds-corner-chosen i, .ds-corner-chosen:hover i { background: var(--th-ink, #161C11); transform: none; } .ds-corner-counted { cursor: default; } .ds-corner-counted i, .ds-corner-counted:hover i { width: 11.5px; height: 11.5px; background: var(--th-mark, #F2A154); transform: none; } .ds-corner:focus-visible { outline: none; } .ds-corner:focus-visible i { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; }"
-    },
-    {
-      "name": "Pinned Figure",
+      "name": "Pin Card",
       "kind": "card",
       "refersTo": "pin-card",
-      "description": "A drawn area on the first screen's picture with its card pinned beside it: a hard-cornered olive line over a tint and a thin white edge, square white corners, an ink hairline, and a white card with a one-pixel ink edge giving the area's name and count, how full and what a night costs, and the occupancy again as a bar along its foot.",
-      "html": "<div class=\"ds-pin\"><svg viewBox=\"0 0 400 190\" aria-hidden=\"true\"><path class=\"ds-pin-fill\" d=\"M40 60 150 40 174 126 108 162 36 138Z\"/><path class=\"ds-pin-area\" d=\"M40 60 150 40 174 126 108 162 36 138Z\"/><path class=\"ds-pin-lead\" d=\"M174 126 264 87\"/></svg><i style=\"left:10%;top:31.6%\"></i><i style=\"left:37.5%;top:21.1%\"></i><i style=\"left:43.5%;top:66.3%\"></i><i style=\"left:27%;top:85.3%\"></i><i style=\"left:9%;top:72.6%\"></i><p class=\"ds-pin-card\"><b>Old town<small>9 short-lets</small></b><span><em>76%</em>occupied</span><span><em>&euro;159</em>a night</span><i style=\"--full:76%\"></i></p></div>",
-      "css": ".ds-pin { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; width: 400px; height: 190px; background: var(--th-map-land, #FBFAF4); color: var(--th-ink, #161C11); } .ds-pin svg { position: absolute; inset: 0; width: 100%; height: 100%; } .ds-pin-fill { fill: var(--th-a, #4A5E3A); fill-opacity: 0.12; stroke: var(--th-surface, #FFFFFF); stroke-width: 5px; stroke-linejoin: miter; } .ds-pin-area { fill: none; stroke: var(--th-a, #4A5E3A); stroke-width: 2.5px; stroke-linejoin: miter; } .ds-pin-lead { fill: none; stroke: var(--th-ink, #161C11); stroke-width: 1px; } .ds-pin > i { position: absolute; box-sizing: border-box; width: 8px; height: 8px; margin: -4px 0 0 -4px; border: 1.5px solid var(--th-ink, #161C11); background: var(--th-surface, #FFFFFF); } .ds-pin-card { position: absolute; left: 56%; top: 52px; display: grid; grid-template-columns: auto auto; column-gap: 16px; overflow: hidden; min-width: 148px; margin: 0; padding: 8px 12px 0; border: 1px solid var(--th-ink, #161C11); border-radius: 8px; background: var(--th-surface, #FFFFFF); box-shadow: 0 8px 16px -10px color-mix(in srgb, var(--th-ink, #161C11) 35%, transparent); white-space: nowrap; } .ds-pin-card b { display: flex; grid-column: 1 / -1; align-items: baseline; justify-content: space-between; gap: 14px; font-size: 13px; font-weight: 600; line-height: 18px; } .ds-pin-card small { color: var(--th-muted, #3F4A35); font-size: 11px; font-weight: 400; font-variant-numeric: tabular-nums; } .ds-pin-card span { display: grid; margin-top: 5px; color: var(--th-muted, #3F4A35); font-size: 13px; line-height: 16px; } .ds-pin-card em { color: var(--th-ink, #161C11); font-size: 18px; font-style: normal; font-weight: 600; line-height: 22px; font-variant-numeric: tabular-nums; } .ds-pin-card i { grid-column: 1 / -1; height: 6px; margin: 8px -12px 0; border-top: 1px solid var(--th-ink, #161C11); background: var(--th-surface, #FFFFFF); } .ds-pin-card i::before { display: block; width: var(--full); height: 100%; border-right: 1px solid var(--th-occ-ring, #7A3D0A); background: var(--th-occ-3, #EE9740); content: \"\"; }"
+      "description": "An area's figures on a white card floating on the light map: name, short-let count, a night's price, and occupancy as a bar in its class ended by an ink line; long-lets and homes for sale where the database has them. A 1px edge of ink at 24% and the map's only shadow.",
+      "html": "<div class=\"ds-map-stage\"><div class=\"ds-pin\"><b>Old Town</b><span class=\"ds-of ds-of-lit\">Short-let</span><span class=\"ds-n\">212</span><span class=\"ds-fig\"><em>€96</em> a night</span><span class=\"ds-of\">Long-let</span><span class=\"ds-n\">48</span><span class=\"ds-fig\"><em>€1,150</em> a month</span><span class=\"ds-of\">For sale</span><span class=\"ds-n\">131</span><span class=\"ds-fig\"><em>€285k</em></span><i data-occ=\"74% occupancy\" style=\"--full:74%\"></i></div></div>",
+      "css": ".ds-map-stage { font-family: var(--th-font, 'Google Sans', sans-serif); padding: 24px; background: var(--th-map-land, #FAF9F4); } .ds-pin { display: inline-grid; grid-template-columns: auto auto auto; column-gap: 10px; overflow: hidden; padding: 8px 12px 0; border: 1px solid color-mix(in srgb, #1C2116 24%, transparent); border-radius: 6px; background: var(--th-surface, #FFFFFF); box-shadow: 0 10px 22px -12px rgb(0 0 0 / 0.45); color: var(--th-muted, #4D5544); font-size: 16px; line-height: 26px; white-space: nowrap; } .ds-pin b { grid-column: 1 / -1; margin-bottom: 2px; color: #1C2116; font-weight: 500; line-height: 20px; } .ds-of { position: relative; padding-left: 13px; } .ds-of-lit::before { position: absolute; top: 8px; left: 0; width: 8px; height: 8px; border: 1px solid var(--th-occ-ring, #1C2116); border-radius: 9999px; background: #9CC13A; content: \"\"; } .ds-n, .ds-fig em { color: #1C2116; font-style: normal; font-weight: 500; font-variant-numeric: tabular-nums; } .ds-n { text-align: right; } .ds-pin i { display: block; grid-column: 1 / -1; margin: 7px -12px 0; border-top: 1px solid color-mix(in srgb, #1C2116 24%, transparent); font-style: normal; } .ds-pin i::before { display: block; padding: 3px 12px 2px; color: #4D5544; font-size: 15px; font-weight: 500; line-height: 18px; content: attr(data-occ); } .ds-pin i::after { display: block; width: var(--full); height: 5px; border-right: 1.5px solid #1C2116; background: #9CC13A; content: \"\"; }"
     },
     {
       "name": "Product Card",
       "kind": "card",
-      "refersTo": "card-reports",
-      "description": "A product's card in the stack: 26px corners, a hairline mixed from its own ground, a 56px header row with the icon, the name and the card's one action.",
-      "html": "<section class=\"ds-card\"><header class=\"ds-card-head\"><svg width=\"40\" height=\"40\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"var(--th-ink, #161C11)\" stroke-width=\"2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M6 3h12.5L26 10.5V29H6z\" fill=\"var(--th-mark, #F2A154)\"/><path d=\"M18.5 3v7.5H26z\" fill=\"var(--th-surface, #FFFFFF)\"/><path d=\"M10.5 10h4M10.5 14.5h7\" stroke=\"var(--th-surface, #FFFFFF)\"/><path d=\"M10.5 24.5l3.6-4.2 3 2.2 3.4-3.9\" stroke=\"var(--th-surface, #FFFFFF)\"/><rect x=\"18.4\" y=\"16.5\" width=\"4.2\" height=\"4.2\" fill=\"var(--th-surface, #FFFFFF)\" stroke-width=\"1.7\" stroke-linejoin=\"miter\"/></svg><h2>Reports</h2><a class=\"ds-card-action\" href=\"#\">Ask for a report<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a></header><div class=\"ds-card-body\"><p>When you need more than a map, we write it up: a report on one property or one area, built from the same listings.</p></div></section>",
-      "css": ".ds-card { font-family: var(--th-font, 'Google Sans', sans-serif); --ds-line: color-mix(in srgb, var(--th-muted, #3F4A35) 24%, var(--th-card-reports, #E6EBDA)); border: 1px solid var(--ds-line); border-radius: 26px; background: var(--th-card-reports, #E6EBDA); color: var(--th-ink, #161C11); } .ds-card-head { display: flex; align-items: center; gap: 12px; height: 56px; padding: 0 8px 0 22px; border-bottom: 1px solid var(--ds-line); } .ds-card-head h2 { margin: 0; font-size: 28px; font-weight: 700; line-height: 1; letter-spacing: -0.025em; } .ds-card-action { display: inline-flex; align-items: center; gap: 8px; min-height: 40px; margin-left: auto; padding: 0 18px; border-radius: 9999px; background: var(--th-solid, #161C11); color: var(--th-solid-ink, #FFFFFF); font-size: 15px; font-weight: 600; white-space: nowrap; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-action:hover { background-color: var(--th-solid-hover, #26331C); } .ds-card-action:active { transform: scale(0.97); } .ds-card-action svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-action:hover svg { transform: translateX(3px); } .ds-card-action:focus-visible { outline: 2px solid var(--th-ink, #161C11); outline-offset: 3px; } .ds-card-body { padding: 20px 24px 24px; } .ds-card-body p { max-width: 35em; margin: 0; color: var(--th-muted, #3F4A35); font-size: 17px; line-height: 1.5; }"
+      "refersTo": "card",
+      "description": "A product panel: a white sheet on the paper, 1px hairline, 12px corners, no shadow. Line icon (one lime fill inside an ink line) and name in the headline role, the claim as a statement, running text in full ink, one action.",
+      "html": "<section class=\"ds-card\"><h2 class=\"ds-card-name\"><svg width=\"36\" height=\"36\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"#1C2116\" stroke-width=\"1.6\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"26\" height=\"22\" rx=\"2\"/><path d=\"M3 10h26\"/><polygon points=\"9,15 21,14 23,23 11,24\"/><rect x=\"13.5\" y=\"17\" width=\"5\" height=\"5\" fill=\"#D6F25E\"/></svg>Playground</h2><p class=\"ds-claim\">See where a short-let out-earns a tenant.</p><p class=\"ds-lede\">Every short-let in Cyprus on one map, with what it earns and how booked it is this season.</p><a class=\"ds-card-go\" href=\"#\">Open the Playground<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a></section>",
+      "css": ".ds-card { font-family: var(--th-font, 'Google Sans', sans-serif); display: grid; row-gap: 20px; justify-items: start; max-width: 640px; padding: 28px; border: 1px solid var(--th-line, #DCDAD0); border-radius: 12px; background: var(--th-surface, #FFFFFF); color: var(--th-ink, #1C2116); } .ds-card-name { display: flex; align-items: center; gap: 14px; margin: 0; font-size: clamp(2.25rem, 3.05vw, 2.75rem); font-weight: 500; line-height: 1.04; letter-spacing: -0.035em; } .ds-claim { max-width: 22em; margin: 0; font-size: 24px; font-weight: 400; line-height: 1.3; letter-spacing: -0.015em; } .ds-lede { max-width: 34em; margin: 0; font-size: 18px; line-height: 1.5; } .ds-card-go { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: #4A5E3A; color: #FFFFFF; font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-go:hover { background-color: #3C4E2E; } .ds-card-go:active { transform: scale(0.97); } .ds-card-go svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-go:hover svg { transform: translateX(3px); } "
     },
     {
-      "name": "Report Sheet",
-      "kind": "card",
-      "refersTo": "sheet",
-      "description": "A sheet of white paper lying on the Reports card: the only shadowed surface in the stack. Hairline rows, tabular figures with muted units.",
-      "html": "<div class=\"ds-sheet-wrap\"><article class=\"ds-sheet\"><p class=\"ds-sheet-head\"><span>Revenue feasibility of a property</span><span>2 of 9</span></p><h3>Key figures at a glance</h3><dl><div><dt>Nights occupied <small>this season</small></dt><dd>80%</dd></div><div><dt>Median nightly rate</dt><dd>&euro;194</dd></div></dl></article></div>",
-      "css": ".ds-sheet-wrap { font-family: var(--th-font, 'Google Sans', sans-serif); padding: 24px 24px 40px; background: var(--th-card-reports, #E6EBDA); } .ds-sheet { padding: 22px 26px 16px; border-radius: 6px; background: var(--th-surface, #FFFFFF); color: var(--th-ink, #161C11); box-shadow: 0 1px 2px -1px color-mix(in srgb, var(--th-ink, #161C11) 35%, transparent), 0 20px 30px -20px color-mix(in srgb, var(--th-ink, #161C11) 35%, transparent); font-variant-numeric: tabular-nums; } .ds-sheet-head { display: flex; justify-content: space-between; gap: 16px; margin: 0; padding-bottom: 10px; border-bottom: 1px solid var(--th-line, #DDD7C6); color: var(--th-muted, #3F4A35); font-size: 13px; line-height: 18px; } .ds-sheet h3 { margin: 18px 0 12px; font-size: 18px; font-weight: 700; line-height: 24px; letter-spacing: -0.01em; } .ds-sheet dl { margin: 0; } .ds-sheet dl > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--th-line, #DDD7C6); } .ds-sheet dl > div:last-child { border-bottom: 1px solid var(--th-line, #DDD7C6); } .ds-sheet dt { font-size: 15px; line-height: 22px; } .ds-sheet dt small { margin-left: 6px; color: var(--th-muted, #3F4A35); font-size: 13px; } .ds-sheet dd { margin: 0; font-size: 16px; font-weight: 600; line-height: 22px; }"
-    },
-    {
-      "name": "Conversation",
+      "name": "Occupancy Curve",
       "kind": "custom",
-      "refersTo": "bubble-visitor",
-      "description": "The visitor's question in olive and the answer on white, each with one tight corner nearest its speaker.",
-      "html": "<div class=\"ds-chat\"><p class=\"ds-bubble-q\">How are short-lets doing in Protaras?</p><div class=\"ds-bubble-a\"><p class=\"ds-tool\">Plotsights connector &middot; area summary</p><p>About &euro;194 a night at 80% occupancy this season, across 24 listings.</p></div></div>",
-      "css": ".ds-chat { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; flex-direction: column; gap: 10px; padding: 20px; background: var(--th-card-connector, #F9EAD7); color: var(--th-ink, #161C11); font-size: 16px; line-height: 1.45; font-variant-numeric: tabular-nums; } .ds-chat p { margin: 0; } .ds-bubble-q { align-self: flex-end; max-width: 94%; padding: 10px 18px; border-radius: 26px 26px 6px 26px; background: var(--th-visitor, #4A5E3A); color: var(--th-visitor-ink, #F7F5EE); font-weight: 500; } .ds-bubble-a { align-self: flex-start; max-width: 94%; padding: 13px 18px 14px; border: 1px solid color-mix(in srgb, var(--th-muted, #3F4A35) 24%, var(--th-card-connector, #F9EAD7)); border-radius: 26px 26px 26px 6px; background: var(--th-surface, #FFFFFF); } .ds-tool { margin-bottom: 4px !important; color: var(--th-muted, #3F4A35); font-size: 13px; font-weight: 600; line-height: 18px; }"
+      "refersTo": "curve",
+      "description": "The Playground's curve on the map's light land, framed by a hairline: the share of Cyprus short-lets booked at least each share of nights, a data-2 line over a faint data-2 fill with hairline gridlines, the tipping point marked by an ink rule and a lime dot in an ink ring, \"Yours\" from the slider, and the caption reading the figures out. A press or drag along it sets the slider.",
+      "html": "<figure class=\"ds-curve\"><svg class=\"ds-curve-plot\" viewBox=\"0 0 320 140\" role=\"img\" aria-label=\"Share of short-lets by occupancy\"><g class=\"ds-grid\"><line x1=\"16\" x2=\"304\" y1=\"20\" y2=\"20\"/><line x1=\"16\" x2=\"304\" y1=\"60\" y2=\"60\"/><line x1=\"16\" x2=\"304\" y1=\"100\" y2=\"100\"/></g><line class=\"ds-base\" x1=\"16\" x2=\"304\" y1=\"112\" y2=\"112\"/><path class=\"ds-fill\" d=\"M16 22 C90 26 160 50 220 84 S290 108 304 110 L304 112 L16 112 Z\"/><path class=\"ds-line\" d=\"M16 22 C90 26 160 50 220 84 S290 108 304 110\"/><line class=\"ds-tip\" x1=\"232\" x2=\"232\" y1=\"20\" y2=\"112\"/><circle class=\"ds-dot\" cx=\"232\" cy=\"89\" r=\"5\"/><text x=\"16\" y=\"132\" class=\"ds-tick\">0%</text><text x=\"236\" y=\"16\">75%</text><text x=\"276\" y=\"132\" class=\"ds-tick\">100%</text></svg><figcaption><b>31%</b> of short-lets were booked at least <b>75%</b> of nights this season.</figcaption></figure>",
+      "css": ".ds-curve { font-family: var(--th-font, 'Google Sans', sans-serif); display: grid; row-gap: 6px; max-width: 480px; margin: 0; padding: 16px 0 14px; border-radius: 8px; background: var(--th-map-land, #FAF9F4); box-shadow: inset 0 0 0 1px var(--th-line, #DCDAD0); color: var(--th-ink, #1C2116); } .ds-curve figcaption { padding: 0 16px; color: var(--th-muted, #4D5544); font-size: 16px; line-height: 23px; } .ds-curve figcaption b { color: #1C2116; font-weight: 500; } .ds-curve-plot { display: block; width: 100%; height: auto; overflow: visible; cursor: ew-resize; } .ds-curve-plot text { fill: #1C2116; font-size: 15px; font-variant-numeric: tabular-nums; } .ds-curve-plot .ds-tick { fill: #4D5544; } .ds-grid line { stroke: var(--th-line, #DCDAD0); stroke-width: 1px; } .ds-base { stroke: #4D5544; stroke-width: 1px; } .ds-fill { fill: var(--th-data-2, #6F8F31); fill-opacity: 0.08; } .ds-line { fill: none; stroke: var(--th-data-2, #6F8F31); stroke-width: 2.25px; stroke-linejoin: round; } .ds-tip { stroke: #1C2116; stroke-width: 1px; } .ds-dot { fill: var(--th-data-4, #D6F25E); stroke: #1C2116; stroke-width: 1.5px; }"
+    },
+    {
+      "name": "Report Sheet and Rail",
+      "kind": "custom",
+      "refersTo": "sheet",
+      "description": "The report's sheet lying on its panel (6px corners, the page's only resting shadow): running head with \"3 of 9\", then a rail of one 28px button per section round a 3px mark, read in ink at 45%, current olive and taller, the rest hairline.",
+      "html": "<div class=\"ds-sheet\"><div class=\"ds-sheet-head\"><span>Limassol, short-let market</span><span>3 of 9</span></div><ol class=\"ds-rail\"><li><button aria-label=\"Section 1\" data-past></button></li><li><button aria-label=\"Section 2\" data-past></button></li><li><button aria-label=\"Section 3\" aria-current=\"step\"></button></li><li><button aria-label=\"Section 4\"></button></li><li><button aria-label=\"Section 5\"></button></li><li><button aria-label=\"Section 6\"></button></li><li><button aria-label=\"Section 7\"></button></li><li><button aria-label=\"Section 8\"></button></li><li><button aria-label=\"Section 9\"></button></li></ol><h3>What a night takes, month by month</h3><p>The median nightly rate across every short-let in the district.</p></div>",
+      "css": ".ds-sheet { font-family: var(--th-font, 'Google Sans', sans-serif); max-width: 440px; padding: 18px 18px 14px; border-radius: 6px; background: #FFFFFF; color: #1C2116; box-shadow: 0 1px 2px -1px color-mix(in srgb, #1C2116 35%, transparent), 0 20px 30px -20px color-mix(in srgb, #1C2116 35%, transparent); } .ds-sheet-head { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 2px; color: #4D5544; font-size: 16px; line-height: 22px; } .ds-rail { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; } .ds-rail li { flex: 1; min-width: 0; } .ds-rail button { position: relative; display: block; width: 100%; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; } .ds-rail button::before { content: \"\"; position: absolute; right: 0; bottom: 6px; left: 0; height: 3px; background: #DCDAD0; transform-origin: bottom; transition: background-color 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-rail button[data-past]::before { background: color-mix(in srgb, #1C2116 45%, #FFFFFF); } .ds-rail button:hover::before { background: color-mix(in srgb, #1C2116 70%, #FFFFFF); } .ds-rail button[aria-current=\"step\"]::before { background: #4A5E3A; transform: scaleY(1.67); } .ds-rail button:focus-visible { outline: 2px solid #1C2116; outline-offset: -2px; border-radius: 2px; } .ds-sheet h3 { margin: 18px 0 0; font-size: 20px; font-weight: 700; line-height: 26px; letter-spacing: -0.01em; } .ds-sheet p { margin: 6px 0 0; font-size: 18px; line-height: 1.45; }"
+    },
+    {
+      "name": "Tag",
+      "kind": "chip",
+      "refersTo": "tag",
+      "description": "\"Demo data\" and similar: a quiet outlined label, 3px corners, muted at 15px/500. Never a filled pill.",
+      "html": "<span class=\"ds-tag\">Demo data</span>",
+      "css": ".ds-tag { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; height: 24px; padding: 0 7px; border-radius: 3px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent); color: var(--th-muted, #4D5544); font-size: 15px; font-weight: 500; white-space: nowrap; }"
+    },
+    {
+      "name": "Text Button",
+      "kind": "button",
+      "refersTo": null,
+      "description": "Ink text with a 1.5px underline that drops on hover: secondary actions beside a filled one.",
+      "html": "<a class=\"ds-textbtn\" href=\"#\">See how the numbers are made</a>",
+      "css": ".ds-textbtn { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; min-height: 44px; color: var(--th-ink, #1C2116); font-size: 18px; font-weight: 600; text-decoration: underline 1.5px; text-underline-offset: 4px; transition: text-underline-offset 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-textbtn:hover { text-underline-offset: 7px; } .ds-textbtn:focus-visible { outline: 2px solid #1C2116; outline-offset: 3px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Drawn Area",
-    "overview": "**Creative North Star: \"The Drawn Area\"**\n\nThe whole page is drawn with the tool the product hands the visitor: an area with an olive outline and square white corners you can pick up. The brand mark is that area with five square handles. The first screen shows them being drawn: a tour of six drawn town maps that runs by itself, three areas a few streets wide on each, every one answered on a small white card with how full its short-lets are and what a night costs, next to a search field that asks the visitor for their own place. The second screen, the stage, is one map of the island that zooms, with one such area on it whose corners drag, joined by thin lines to three product panels. The product icons, the chart ends, the report's contents rail, the chosen question, the slider's handle and the five stops of \"How the numbers are made\" are all the same square corner. Nothing on the page is illustrated in another hand.\n\nThe ground is a warm beige on every screen and nearly everything on it is ink. Two colours carry meaning and they do not trade jobs: olive works (every drawn area, its outline and its lines, the one filled action, the visitor's own words) and a light orange marks (the brand mark, the three product icons, the listing that is being counted, a booked night, and in four steps how full each listing has been). The map pictures (six towns and the island) are generated from OpenStreetMap data in the page's own quiet map colours; they carry no labels of their own and no boundary lines, they are credited on the page, and what names appear on them are set by the page in its own type. The page ends by turning the palette over: paper on ink, for the close and the footer only.\n\nDensity rises as the visitor goes down. The first screen holds a headline, one sentence, one field and one picture. The stage and the cards are working instruments set in small, exact type with tabular figures. The system is flat: hairlines divide, and a shadow appears only under something that lies on top of something else.\n\nConfirmed rejections: teal and tangerine are both out of the palette; a dark first screen was built and rejected by the owner, and the ground stays beige; the page must not read as AI-generated (no pill or badge labels, no monospace labels, no logo tiles) and must not read as a research publication. Google Sans is pinned by the owner.",
+    "northStar": "The Olive Window",
+    "overview": "The page is paper and ink, measured and quiet, in the manner of the data products the owner takes as his anchor (PriceLabs for type and wording) and of those that use olive and lime seriously (Sylvera's deep-green band with lime as a data series; Wise and Ramp, where lime is one sharp signal and never the ground). Beside the words, the product's own map of a real Cyprus town comes out of the paper, and every short-let on it is a point whose colour says how booked it has been this season, from a dull olive to lime, each inside a fine ink ring. That map is the page's one rich thing. Everything else gives it room: one face, one ink, an olive action, white sheets on paper, hairlines where a table or list needs them, and no ornament.\n\nThe idea, in the subject's own terms: **on this page, every listing the team reads becomes a point on the town's map, and lime is what the market looks like where it is fullest.** Lime has one meaning wherever it appears: the top of the occupancy scale, which on the panels is the side of the tipping point where a short-let out-earns a tenant.",
     "keyCharacteristics": [
-      "One drawing vocabulary: an olive area outlined at 2px, and square white corners with an ink border.",
-      "Olive works, light orange marks. Ink does everything else.",
-      "Beige ground on every screen; the close alone is ink.",
-      "Maps are drawn from open data in the page's own colours, unlabelled, and fade into the paper or sit in a hairline frame.",
-      "One typeface, Google Sans; hierarchy by weight and size, never by case or a second face.",
-      "Flat surfaces divided by 1px hairlines; one soft ink shadow, kept for things that lie on top.",
-      "Every figure is tabular and exact; a stale figure steps back in colour, it never disappears.",
-      "Motion is one authored moment per surface, drawn the way the thing would be drawn; the first screen's picture alone runs on by itself, and can be paused. Under reduced motion everything is simply there."
+      "Paper ground (`#F5F4EE`), olive-black ink, an olive action; no tinted washes behind sections.",
+      "The light map of a real town, frameless, fading into the paper; the Playground's curve and the Connector's map answer sit on the same light land.",
+      "Deep olive only at the page's end: the close and the footer.",
+      "An olive-to-lime data scale, monotone in lightness, where lime is only ever data.",
+      "Google Sans at 500 for display and 400 for large figures; nothing heavier than 600.",
+      "Line icons with one lime fill inside an ink line.",
+      "Opaque glass for the surfaces (nav, search, the cards on the map, the product panels, How's listing card): 78% white, a 24px blur, a light rim; one soft shadow only on what is raised."
     ],
     "rules": [
       {
-        "name": "The Olive Works, Orange Marks Rule",
-        "body": "Olive is for what the visitor does or has drawn; light orange is for what is counted and what is the brand's. Neither does the other's job, and neither is used as decoration.",
-        "section": "colors"
-      },
-      {
-        "name": "The Beige Ground Rule",
-        "body": "Every screen the visitor works on is the beige ground. A screen does not open on ink, on a tinted wash or on a picture with a frame of its own colour.",
+        "name": "Lime Means Data",
+        "body": "Lime marks how full a listing is, at the top of the scale, and nothing else. It is never a ground, a button, a link, a headline word or an ornament (the owner rejected \"forest + lime\" as a ground swap on 2026-10-08).",
         "section": "colors"
       },
       {
         "name": "The Ring Rule",
-        "body": "A pale orange never stands alone on a pale ground. A listing dot and a booked night wear the `occ-ring`; the mark sits inside an ink line.",
+        "body": "On a light ground a mark of the scale always sits inside a ring of ink (`occ-ring`, or `dot-ring` for the listings outside the drawn areas): a listing's dot, the key's swatches, a lime square, an icon's fill.",
         "section": "colors"
       },
       {
-        "name": "The Step Back Rule",
-        "body": "A figure that no longer describes the area on screen goes to `pending` until the new one arrives. It is never hidden, blurred or replaced by a spinner.",
+        "name": "Deep Olive Ends the Page",
+        "body": "Deep olive is the close and the footer and nothing else. A section never opens on it, and the page is never dark.",
+        "section": "colors"
+      },
+      {
+        "name": "Nothing Under the Words",
+        "body": "The map fades to nothing before the words' column ends, so every text token keeps its contrast against the worst pixel behind it; no listing, area or card is drawn there.",
+        "section": "colors"
+      },
+      {
+        "name": "The Olive Works",
+        "body": "Olive is for what the visitor does and for the brand (the action, the drawn corners, the name); the scale is for what is counted. Neither does the other's job.",
         "section": "colors"
       },
       {
         "name": "The Turned Over Rule",
-        "body": "The close is the same palette inverted (`close` and `close-*`), not a second palette. The focus ring inverts with it.",
+        "body": "The close is the paper's words on deep olive, not a second palette; the focus ring inverts with it.",
         "section": "colors"
       },
       {
-        "name": "The Seven Sizes Rule",
-        "body": "Running type is 11, 13, 15, 16, 17 or 18px, plus the headline size. A new element takes one of them. The one exception is the first screen's sentence at 20px from 1024px.",
+        "name": "One Face Rule",
+        "body": "Google Sans for everything; range comes from size and two weights, never a second family.",
         "section": "typography"
       },
       {
-        "name": "The Weight Not Case Rule",
-        "body": "A label is a sentence-case word at weight 600. There is no uppercase and no monospace anywhere, and tracking is never what makes something a label; the name of a body of water on a map is spaced out (0.08em) as maps do.",
+        "name": "The Floor",
+        "body": "15px is the smallest text on the page.",
         "section": "typography"
       },
       {
-        "name": "The Tabular Rule",
-        "body": "Every surface that shows figures sets `tabular-nums`, and a figure's unit is smaller and muted beside it, never in a separate column.",
+        "name": "Figures Are Regular",
+        "body": "A large figure is 400 with tabular numerals; weight is for labels.",
         "section": "typography"
       },
       {
-        "name": "The Bold Twin Rule",
-        "body": "Where choosing an item makes it bolder (a tab, a contents entry), its bold setting is laid out invisibly under the regular one, so selecting moves nothing.",
-        "section": "typography"
-      },
-      {
-        "name": "The Card Is The Surface Rule",
-        "body": "Charts, tables, tabs and lists sit directly on their card, divided by hairlines. They do not get boxes of their own; the things that are boxed are objects in their own right (a sheet of paper, a message, a switch, a listing, a figure pinned to a map).",
-        "section": "layout"
-      },
-      {
-        "name": "The Lying On Top Rule",
-        "body": "A shadow means \"this is a separate thing resting on what is under it\": a sheet, a pinned card, a floating control, the field. Product cards, stage panels, filled buttons and bubbles are flat at rest and stay flat on hover.",
+        "name": "The Glass Rule",
+        "body": "The owner, 2026-10-14: \"bring glass back. I like opaque glassomorphism for the most parts of the website\". Professional, not consumer:\n- **Where:** the nav once scrolled (the paper at 84%), the search field and its list, the cards pinned on the map, the three product panels, How's example listing card. Everything else is solid: every button (one flat fill), the deep-olive close and footer, and anything inside a glass panel (the report's sheet and the chat bubbles take the same rim and edge on solid white: a blur inside a blurred panel only sees that panel).\n- **What:** 78% white, `blur(24px) saturate(1.4)`, a 1px light rim inside, a 1px ink edge at 12% (the search field keeps a 34% edge, which a control needs to be found). No coloured glass, no rainbow rim, no glow, no beaded buttons.\n- **Something behind it:** glass shows only where there is something to blur: the map behind the hero's cards; behind the product panels the island's own map at half strength (`.ps-panels::before`), static, which no loose text sits on. How's card lies on paper and reads as a nearly white card.\n- **Text holds:** measured against the worst pixel behind every text element on the panels (desktop and phone), every token keeps or betters its contrast on the paper (muted 7.06 → 7.42, ink 14.91 → 15.6): the glass is lighter than the paper.\n- **Cost and fallbacks:** about five blurred layers on a screen at most (nav, a panel or two, the cards); no glass in glass. Without `backdrop-filter`, or with `prefers-reduced-transparency: reduce`, every surface is its solid fill and the backdrop map is not drawn.",
         "section": "elevation"
-      },
-      {
-        "name": "The Faded Edge Rule",
-        "body": "A map with no frame meets the paper by fading into it, with a mask on the drawing alone. What is drawn over the map (areas, corners, names, pinned cards) is on a sheet of its own and never fades.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Covered Card Rule",
-        "body": "A card under another recedes by scaling its body to 0.97 and taking a 6% veil of ink, driven by scroll. Its header row does neither, because it is still a working link.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Square Corner Rule",
-        "body": "If it can be dragged, chosen, or stands for a point on a map, a line or a chart, it is a square with an ink border: white when empty, olive when hovered or held, ink when chosen, light orange when it is the thing being counted.",
-        "section": "shapes"
       }
     ],
     "dos": [
-      "Do draw anything new in the page's own hand: a 2px olive outline for an area, square nodes with an ink border, a 2px ink line for a chart or an icon, and at most one shape filled with the marking orange.",
-      "Do keep olive for what the visitor does or has drawn and light orange for what is counted or is the brand's.",
-      "Do keep the ground beige on every screen, and let a frameless map fade into it.",
-      "Do take every colour from a `--th-*` role, and mix a hairline from the card's own ground when the ground is tinted.",
-      "Do make a new map picture from open map data in the map colours recorded here, with no labels and no boundary lines of its own, and credit it on the page.",
-      "Do pin a figure to the place it describes: a white card with a one-pixel ink edge and the pinned shadow, joined to its area by an ink hairline, and say on the card what each figure is of.",
-      "Do set figures in tabular numerals at weight 600 with the unit beside them at 13px in muted, and say under each block what it covers.",
-      "Do send a stale figure to `pending` rather than hiding it, and leave out a figure that cannot be had rather than standing something in for it.",
-      "Do give every pressable thing a 44px target and a visible 2px focus ring, placed on the square itself for handles and sliders and round the whole field for the search.",
-      "Do put charts, tables and lists straight on the card, divided by hairlines.",
-      "Do make a new surface's one moment of motion the way the thing would be drawn, and leave everything in place under reduced motion."
+      "Keep the page paper; let the faded map be the rich thing.",
+      "Put lime only on data, and ring it in ink on a light ground.",
+      "Set large figures at 400 and display at 500.",
+      "Show all three markets wherever an area is summed up (\"don't mislead the customer\", owner, 2026-10-09), and say what every figure covers.",
+      "Give each section one working thing built from real data, usable with a thumb and readable without its script."
     ],
     "donts": [
-      "Don't use teal or tangerine; both were tried on this page and dropped by the owner.",
-      "Don't open a screen on a dark ground; a dark first screen was built and rejected. The close is the one ink surface, and it is the palette turned over.",
-      "Don't use the marking orange for text, for a button, or without an ink line or ring around it.",
-      "Don't add pill or badge labels, eyebrow lines above headings, monospace labels, uppercase or letter-spaced labels, or logo tiles.",
-      "Don't add a second typeface or a type size outside the seven.",
-      "Don't put a shadow on a product card, a stage panel, a filled button or a hover state; a shadow is for something lying on top of something else, as a control floating on a map is.",
-      "Don't round a handle or a node, and don't square a listing dot on a map of many listings.",
-      "Don't put a frame, a label layer or administrative boundaries on a generated map picture.",
-      "Don't use a gradient as decoration; the only gradients are the fade at the edge of something that scrolls or of a frameless map, the slider's two-colour track, and the ink hatching that means \"blocked\".",
-      "Don't let a figure count up, flash or animate on the cards; it shows its true value throughout.",
-      "Don't invent testimonials, client names, prices or plan contents."
+      "Don't make lime a ground, a button, a link or a headline word.",
+      "Don't wash a section in a tint, and don't put anything but the close and the footer on deep olive.",
+      "Don't let the map, a listing, an area or a card under the words.",
+      "Don't use pills, eyebrows, monospace labels, logo tiles, coloured or beaded glass, glass inside glass, gradients as decoration or shadows at rest.",
+      "Don't count figures up, or hide content until a scroll or a script.",
+      "Don't add a second face."
+    ],
+    "open": [
+      "**The opening:** two further ideas were storyboarded on 2026-10-14 (the plot leaving the name to become the first area; the listings lighting from the name's side); neither is built.",
+      "**The Playground** (`/dashboard`) is not yet on G."
     ]
   }
 }

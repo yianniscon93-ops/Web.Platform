@@ -2,8 +2,9 @@ import { preload } from "react-dom";
 import "./landing-sections.css";
 import "./landing-hero.css";
 import "./landing-how.css";
-// The page's glass: only what floats over the first screen's map (the nav once scrolled, the search field, the
-// cards pinned on the tour). On for the element with the class `th-glassy` below.
+// The page's glass (owner, 2026-10-14: "opaque glassomorphism for the most parts of the website"): the nav once
+// scrolled, the search field and its list, the cards on the map, the product panels, How's listing card. On for the
+// element with the class `th-glassy` below (DESIGN.md, The Glass Rule).
 import "./landing-glass.css";
 import Nav from "@/components/Nav";
 import LandingHero from "@/components/landing/LandingHero";

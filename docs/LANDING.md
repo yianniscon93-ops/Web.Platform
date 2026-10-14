@@ -14,6 +14,66 @@ Then "How the numbers are made", and the close. Product facts live in
 in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
 the stage: its component is still `DrawHero`.
 
+**2026-10-14: direction G, "Olive Window".** The owner found the beige,
+olive and saffron page "childish" and asked for a professional
+data-analytics look; from ten directions rendered on the real page he chose
+G (paper, olive ink and action, an olive-to-lime data scale; `DESIGN.md` is
+the authority). He saw the map both in a deep-olive window and light, chose
+the light one ("Prefer this one"), and then asked for it frameless and faded
+as before ("the way the previous map was deployed was nicer. with the fade
+... now it seems cut off"). What changed:
+
+- **Tokens** (`app/globals.css`): paper `#F5F4EE`, ink `#1C2116`, olive
+  action, `--th-data-1..4` (olive to lime, monotone; the old `--th-occ-*`
+  names now point at them), `--th-dot-none` for a listing with no figure,
+  `--th-deep` (the close's deep olive). Display weight 500, large figures 400.
+- **First screen:** the light town map is frameless again and fades into
+  the paper (fade A): nothing at the words' column's right edge, whole a
+  quarter of the way in, faded under the nav and at its foot; listings, areas
+  and cards fade over the same left quarter, so none is ever under the words
+  (every text token keeps its contrast against the worst pixel behind it).
+  The town's name and the key to the shades are in the strip at the hero's
+  foot with "Next town", the Demo data tag and the credit. Every short-let on
+  the map is shaded by its season occupancy, not only those inside the drawn
+  areas (`TownTour.tsx`), each in an ink ring so lime holds on light land;
+  those outside step back to 60% once an area closes; one with no figure (a
+  null occupancy, which live data can have) is an empty grey ring, named in
+  the key. The search field is glass again (below).
+- **Map pictures:** `build-hero-town.mjs` and `build-island-map.mjs` bake the
+  light palette (DESIGN.md `map-*`, `picture-*`); a deep-olive set was built
+  for the comparison and removed once the owner chose. The regenerated
+  geometry differs slightly from the 2026-10-09 set because OpenStreetMap
+  changed since (the old scripts on the same tiles give the same paths).
+- **Fade B,** for comparison only and not in the code: the map under the
+  words almost to the left edge, a whisper of streets behind them. It is a
+  CSS override (kept with the captures, not in the repo); it lowers the text's
+  worst-pixel contrast (ink 14.9 to 14.0, muted 7.1 to 6.7) and, at its
+  larger scale, puts some towns' cards in the fade or under the nav.
+- **Panels:** glass panels over the island's faint map (no tinted washes), 6px buttons
+  (no pills), outlined "Demo data" tags, line icons with one lime fill.
+- **One interaction per section, each from real content:**
+  Playground, the occupancy curve (`OccupancyCurve.tsx`, on the map's light
+  land): every short-let's season occupancy from `/api/dashboard/points` as
+  the share booked at least each share of nights, the tipping point and
+  "Yours" on it; with a tipping point over 100% it says none can pass it; a
+  press or drag
+  along it sets the slider (references: Our World in Data's chart-as-control,
+  Robinhood's scrub). Reports, a rail of one mark per section under the
+  running head, arrow keys and a sideways swipe to turn the page (Pitch's
+  slide strip, Linear's pager). Connector, a picked question's answer
+  streams in word by word, every word in the page from the start (Claude,
+  Raycast AI); the report's sheet is as tall as its page. How, the line fills
+  with olive as it is scrolled and each stop
+  turns olive as it is reached, CSS scroll-driven animations only (Linear's
+  Method, Stripe's diagrams); no count-up (Stripe's figures are final from
+  the first frame). Close, "Copy the address" beside the mailto (Rauno,
+  Vercel); where the browser refuses the clipboard it selects the address and
+  says to press ⌘C or Ctrl+C. All have a reduced-motion state that is simply
+  the final one.
+- **Opening:** kept; recoloured by the tokens; the headline's three lines
+  now each rise out of a mask at their own foot as the name goes up.
+- **Close and footer:** deep olive (`--th-deep`), the page's only dark ground.
+
 **2026-10-13: nothing stands between the first screen and the products.**
 The owner, after reading PriceLabs' site (hello.pricelabs.co) as a model for
 type and wording, found the stage's map redundant ("the map on the second
@@ -50,7 +110,7 @@ move in Cyprus property. Get the insights." Its three lines are set as
 lines, and the type is sized from the column's width so the longest always
 fits (`.lh .th-h1`, `.lh-line`). The sentence under it is two tiers: "Short-lets,
 long-lets, homes and plots for sale: the whole market in one view, updated
-every day." in ink at weight 500 (24px/32px from 1280px, 20px/28px below),
+every day." in ink at weight 400 (G; 500 until 2026-10-14) (24px/32px from 1280px, 20px/28px below),
 then "Decide where to buy, what to charge and what to advise." a size down
 in the muted tone (`.lh-what`, `.lh-for`). Google Sans stays.
 
@@ -120,30 +180,23 @@ sale; plotsights.com, .io, .cy, .com.cy and .gr were bought the same day. The `h
 `aria-label`. The olive is 6.3:1 on the ground; the light orange it replaced
 was 1.9:1, below the 3:1 asked of large text.
 
-The field is glass, the one piece of it on the page (owner, 2026-10-09:
-"a nice liquid glass search thing. crystalized"): a clear slab on the
-paper, drawn in `landing-hero.css` as the form's `::before` (the slab, its
-cut edge, rim and shadow) and `::after` (the light under it). The slab is
-a pseudo-element and the form has no `isolation`, on purpose: in Chromium
-a `backdrop-filter` or `isolation: isolate` on the form would stop the
-list inside it from blurring the page behind. The point where the rim
-catches the light is the custom property `--gx`, which `PlaceSearch` sets
-from a mouse's position and CSS moves on focus. The list is a frosted sheet
-of the same glass. `prefers-reduced-transparency`, no `backdrop-filter`,
-forced colours and reduced motion each have their own rules there.
-
-**Glass everywhere (2026-10-09).** The owner then asked to "try glass
-everywhere to see how it shows", and of the result said "great I prefer
-it". It is one sheet, `app/landing-glass.css`, laid over the components'
-own flat styles, every rule of it under the class `th-glassy` on the
-page's outer element (`app/page.tsx`): the nav once the page has moved
-under it (`data-solid` on the header), the cards on the first screen's
-map and the stage map's controls are frosted glass. Since 2026-10-14 that
-is all (the Glass Rule in DESIGN.md: glass only where something floats over
-the map): the product panels, report sheets, tabs, answer bubbles, example
-listing and every button are flat. Taking the class off gives the flat page
-back, with the search field still glass. Known: the nav's blur could not be
-confirmed at 2x pixel density in the test browser, which draws it at 1x.
+**Glass (2026-10-09; again from 2026-10-14).** The owner, after G: "bring
+glass back. I like opaque glassomorphism for the most parts of the
+website". `app/landing-glass.css`, every rule under the class `th-glassy` on
+the page's outer element: the nav once scrolled, the search field and its
+list, the cards pinned on the map, the three product panels and How's
+listing card are frosted, mostly opaque glass (78% white, a 24px blur, a 1px
+light rim, a 12% ink edge; one soft shadow only on what is raised). Buttons
+stay one solid fill, the close stays solid deep olive, and nothing inside a
+glass panel is glass again (the report's sheet and the chat bubbles are solid
+white with the same rim). Behind the panels is something to blur: the
+island's own map at half strength (`.ps-panels::before` in
+`landing-sections.css`). Measured against the worst pixel behind each text
+element, every token keeps or betters its paper contrast on the glass. With
+no `backdrop-filter` or with reduced transparency asked for, every surface is
+its solid fill and the backdrop map is not drawn. From 2026-10-09 to
+2026-10-14 the search was a clear slab with a light that followed the
+pointer and the buttons were beaded; neither came back.
 
 `PlaceSearch` is a combobox over `GET /api/dashboard/areas` (the
 Playground's own list of places). Focused, it lists the six places with the
@@ -239,10 +292,9 @@ function of the clock, so pause holds a frame; the first town still arrives
 complete and reduced motion still paints once. Built by a builder agent and
 reviewed line by line the same day.
 
-**The cards (2026-10-10).** Each area's card is the roundest frost on the
-page (14px, the map token; owner: "glassomorphism with smooth edges"): the
-map shows through a 66-to-42% white, the edge is ink at 30% with the white
-rim inside, and the shade falls away from it. Its foot is the occupancy
+**The cards (2026-10-10; G, 2026-10-14).** Each area's card is opaque glass
+with 6px corners, a light rim and an edge of ink at 12%, the only thing on
+the map with a shadow. Its foot is the occupancy
 meter, labelled "43% occupancy" on a line of its own above the bar (owner:
 "instead of x% full lets say occupancy"); the figure left the short-let row
 because the longer word made neighbouring cards overlap in Limassol. In the
@@ -279,7 +331,7 @@ map, the prices go without "a night" and "a month", which the market's name
 already says. A card with all three markets is about 270px by 158px from
 1440px and 225px by 147px below it, and every card's place in `DRAWN` is set
 for that size (no two overlap and none leaves the picture at 1280, 1400 and
-1500px). The town's name is the largest word on the map (20px). The credit row under
+1500px). The town's name was the largest word on the map (20px) until 2026-10-14; it is now in the strip. The credit row under
 the picture carries the pause control, the key ("Short-lets this season:
 emptier", four dots, "fuller"; "this season" is left out below 1440px and
 the whole key between 1024 and 1279px, where the row has one line's room)
@@ -289,7 +341,7 @@ figures are this season's.
 Below 1024px the picture is a band under the words, 860px or more of map
 behind a window, so it shows a few streets at a time: it is centred on the
 area being drawn and moves on with the pointer (never so far that the
-map's own edge shows), and the town's name is in its corner. Cards are not
+map's own edge shows), and (until 2026-10-14) the town's name was in its corner. Cards are not
 pinned on the map there. One card is docked at the band's foot, for the
 area the band is on: it comes when that area closes and goes when the band
 moves on, so it never speaks for an area out of sight, and that area alone
@@ -314,11 +366,12 @@ arrow alone, so the field has room for its placeholder.
   the next town simply replaces this one, complete.
 - Limassol's "Seafront" area was redrawn on the streets behind the
   promenade; its corners ran into the sea.
-- Below 1024px the docked card sits near the band's top and the town's name
-  at its foot, so a phone shows a card on its first screen.
-- Glass is only what floats over this screen's map: the scrolled nav, the
-  search field and its list, the pinned cards (DESIGN.md, The Glass Rule).
-  "Show me" is a flat olive fill.
+- Below 1024px the docked card sits near the band's top, so a phone shows a
+  card on its first screen; between 1024 and 1279px it is docked at the map
+  column's top right instead of three pinned cards. The town's name is only in
+  the strip under the map (since 2026-10-14; it was also a label on the map).
+- Opaque glass on the search field, its list, the cards on the map and the
+  scrolled nav (DESIGN.md, The Glass Rule); "Show me" is a flat olive fill.
 - The nav: "How it works" (to `#how`) from 1024px; "Open the Playground" is
   a plain link while the search is in view and the olive button after.
 
@@ -725,9 +778,8 @@ registered name and city, return when they exist (see Open).
   its key finding), not on the key figures, which repeated the stage's two
   numbers on a half-empty sheet. The line under the stage no longer repeats
   the count the map's bar gives.
-- The product cards' glass is near solid (97% to 93%), so the words of a
-  covered card never read through the card over it, and the How section
-  comes up as a sheet with a rounded, edged top.
+- The product cards were glass near solid until G, and stacked; since
+  2026-10-14 they are white sheets that follow one another.
 - Words that must not break at a hyphen use a hyphen and a word joiner
   (U+2060): Google Sans has no non-breaking hyphen.
 - Type is four role tokens, 15, 16, 18 and 20px, under the display sizes;
@@ -735,27 +787,33 @@ registered name and city, return when they exist (see Open).
 
 ## Palette
 
-Every landing colour is a role-named `--th-*` custom property. The hero's
-roles are defined once in the "Landing (nav and hero)" block of
-`app/globals.css`; `tokens.ts` exports the roles components need as
-`var(--th-…)` strings. `app/landing-sections.css` adds the roles the hero has
-no job for: `--th-heading` (the section-heading size, the one addition to
-the hero's six type sizes), the three card grounds, `--th-edge` (a control's
-outline, a slider's empty track) and the close's `--th-close-*` (the palette
-turned over: paper on ink). The palette is beige, ink, olive and a light
-orange. Olive (`--th-a`, `--th-action`, with white on it for the filled
-button) is the drawn area, its line to the open panel and the page's filled
-action: "Show me" in the first screen's search field, and "Open the
-Playground, it's free" (stage panel, Playground card). The nav's "Open the Playground", "Ask for a report" and
-"Ask for access" are ink. Saffron (`--th-mark`, #E9A22B since 2026-10-12) is
-what is counted: the product icons, the
-four shades of "how full" (`--th-occ-1` to `--th-occ-4`, with a darker ring;
-the "how the numbers are made" calendar uses the third) and, as a light tint, the Connector card's ground. The land inside the area is
-tinted at 22% (`--th-area-tint`).
+Direction G (2026-10-14); `DESIGN.md` has every role and rule. Every landing
+colour is a role-named `--th-*` custom property, defined once in the
+"Landing (nav and hero)" block of `app/globals.css`; `tokens.ts` exports the
+roles components need as `var(--th-…)` strings, and
+`app/landing-sections.css` adds the section heading, the statement and
+figure sizes, `--th-edge` and the close's `--th-close-*` (the paper's words
+on deep olive, `--th-deep`). Olive (`--th-a`, `--th-action`) is the action,
+the brand's dots, the name in the headline and a drawn area's corners. The
+data scale is `--th-data-1` to `--th-data-4`, olive to lime; lime is only
+data and wears an ink ring on any light ground; `--th-dot-none` is the empty
+ring of a listing with no figure. The map roles (`--th-map-*`) are the light
+map's, which the first screen, the occupancy curve and the Connector's map
+answer share. Ink is the solid button ("Ask for a report", "Ask for access").
+The surfaces' glass is `app/landing-glass.css` (DESIGN.md, The Glass Rule).
+The beige and saffron system before G is in git history.
 
 ## Open
 
 
+- **Launch to-dos from the G build (2026-10-14).** See the first screen
+  and the curve on the live database (both draw every listing from
+  `/api/dashboard/points`, about 14.5k short-lets live; the tour thins what
+  it draws outside the areas to 600 per town; null occupancies are drawn as
+  empty rings, which demo data never has). Remake `public/og.png`, which
+  still shows the beige first screen. Move the Playground (`/dashboard`,
+  `components/dashboard/mapStyle.ts`) onto G. Open with the owner: whether to build one of the two opening
+  ideas storyboarded on 2026-10-14.
 - **Launch to-dos from the 2026-10-14 build (owner).** Privacy and Terms
   pages, then their footer links; the company's registered name and city for
   the footer; a reply-time promise for "Ask the team", if one is to be made;

@@ -7,25 +7,24 @@
    heading (a product's name, "How the numbers are made.", "Ask the team.") and the statement (a product's claim,
    the sentence that opens the panels). */
 :root {
-  /* The section heading: a product's name, and the other sections' headings. 36px on a phone, 40px from 1440px. */
-  --th-heading: clamp(2.25rem, 2.8vw, 2.5rem);
+  /* The section heading: a product's name, and the other sections' headings. 36px on a phone, 44px from 1440px. */
+  --th-heading: clamp(2.25rem, 3.05vw, 2.75rem);
   /* A statement: a product's claim under its name, the panels' opening sentence. The hero's sentence is this size too. */
   --th-text-statement: 24px;
-  /* A figure that is the point (the tipping point, the counts the database holds), set large at the regular weight:
-     the section heading's size on a phone, the headline's at 1440px, so it adds no size of its own. */
-  --th-text-figure: clamp(2.25rem, 4.16vw, 3.75rem);
-  /* The three panels' grounds: the plain surface, the olive tint, and a light tint of the saffron on the map's land. */
+  /* A figure that is the point (the tipping point, the counts the database holds), set large at the regular weight. */
+  --th-text-figure: clamp(2.5rem, 4.4vw, 4rem);
+  /* The three panels' solid fill, under their glass (landing-glass.css) and where glass is not drawn (G, 2026-10-14:
+     no pastel washes). Each is its own section by its edge and by the one working thing on it, not by a tint. */
   --th-card-playground: var(--th-surface);
-  --th-card-reports: var(--th-tint);
-  --th-card-connector: color-mix(in srgb, var(--th-mark) 18%, var(--th-map-land));
   /* The outline of a control drawn on a surface, and a slider's empty track: 3:1 or better on white and on the ground. */
   --th-edge: color-mix(in srgb, var(--th-muted) 70%, var(--th-surface));
-  /* The close: the palette turned over. Paper on ink, a quieter paper for secondary lines, two weights of rule. */
-  --th-close: var(--th-ink);
-  --th-close-ink: var(--th-ground);
-  --th-close-muted: color-mix(in srgb, var(--th-ground) 74%, var(--th-ink));
-  --th-close-line: color-mix(in srgb, var(--th-ground) 20%, var(--th-ink));
-  --th-close-edge: color-mix(in srgb, var(--th-ground) 46%, var(--th-ink));
+  /* The close: deep olive, with the paper's words on it. A quieter paper for secondary lines, two
+     weights of rule. */
+  --th-close: var(--th-deep);
+  --th-close-ink: #F5F4EE;
+  --th-close-muted: color-mix(in srgb, #F5F4EE 74%, #1B2215);
+  --th-close-line: color-mix(in srgb, #F5F4EE 14%, #1B2215);
+  --th-close-edge: color-mix(in srgb, #F5F4EE 46%, #1B2215);
 }
 
 .ps-sections { background: var(--th-ground); color: var(--th-ink); font-variant-numeric: tabular-nums; }
@@ -54,13 +53,31 @@
 .ps-reply-link .th-link { display: inline-block; margin: -11px 0; padding: 11px 0; }
 
 /* ── The panels ── */
-/* Each product is a panel: a rounded surface in its own ground with a hairline, flat (no glass, no shadow). On it,
+/* Each product is a panel of opaque glass over a faint map of the island (landing-glass.css), no shadow, no tinted wash. On it,
    the product's name and claim, a sentence or two, its one action, and the one working thing that shows it.
    Nothing boxed sits on a panel but the report's sheet of paper. Below 1024px a panel is one column. */
-.ps-panels { display: grid; row-gap: 32px; padding-bottom: 32px; }
+.ps-panels { position: relative; display: grid; row-gap: 32px; padding-bottom: 32px; }
+/* What the panels' glass blurs (landing-glass.css), from 1024px: the island's own map behind them, at half strength,
+   as tall as the panels, so between and beside them Cyprus shows and through them it is a soft wash. It fades in
+   under the sentence above and out before "How the numbers are made", and no loose text lies on it. Below 1024px
+   the panels fill the width and there is nothing to show, so the picture is not fetched. */
+@media (min-width: 1024px) {
+  .ps-panels::before {
+    content: "";
+    position: absolute;
+    inset: -24px 0 0;
+    z-index: 0;
+    background: url(/landing/island.svg) 50% 0 / auto 100% no-repeat;
+    opacity: 0.5;
+    pointer-events: none;
+    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 120px, #000 calc(100% - 160px), transparent);
+    mask-image: linear-gradient(180deg, transparent 0, #000 120px, #000 calc(100% - 160px), transparent);
+  }
+}
 .ps-card {
   --ps-ground: var(--th-card-playground);
   position: relative;
+  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
   grid-template-areas: "text" "object" "lead" "end";
@@ -70,13 +87,10 @@
   margin: 0 auto;
   padding: 28px 18px 28px;
   border: 1px solid var(--th-line);
-  border-radius: 26px;
+  border-radius: 12px;
   background: var(--ps-ground);
   scroll-margin-top: 88px;
 }
-/* On a tinted ground the hairlines are mixed from that ground, so they hold on it. */
-.ps-card[data-card="reports"] { --ps-ground: var(--th-card-reports); --th-line: color-mix(in srgb, var(--th-muted) 24%, var(--ps-ground)); }
-.ps-card[data-card="connector"] { --ps-ground: var(--th-card-connector); --th-line: color-mix(in srgb, var(--th-muted) 24%, var(--ps-ground)); }
 .ps-card > * { min-width: 0; }
 .ps-card-text { grid-area: text; display: grid; row-gap: 20px; align-content: start; }
 .ps-card-object { grid-area: object; }
@@ -94,7 +108,7 @@
   letter-spacing: var(--th-display-tracking);
 }
 .ps-card-icon { display: flex; flex: none; }
-.ps-claim { max-width: 22em; font-size: var(--th-text-lead); font-weight: 500; line-height: 1.3; letter-spacing: -0.01em; text-wrap: balance; }
+.ps-claim { max-width: 22em; font-size: var(--th-text-statement); font-weight: 400; line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; }
 .ps-card-say { display: grid; row-gap: 20px; align-content: start; justify-items: start; }
 /* Running text in the full ink: grey is for notes (critique, 2026-10-14). */
 .ps-lede { display: grid; row-gap: 10px; max-width: 34em; color: var(--th-ink); font-size: var(--th-text-body); line-height: 1.5; text-wrap: pretty; }
@@ -103,7 +117,7 @@
 .ps-card-text .ps-card-action { display: none; }
 /* A plain word beside an action, on what it does for now. */
 .ps-action-note { color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
-.ps-h3 { margin-bottom: 8px; font-size: var(--th-text-body); font-weight: 600; line-height: 26px; }
+.ps-h3 { margin-bottom: 8px; font-size: var(--th-text-body); font-weight: 500; line-height: 26px; }
 
 .ps-solid {
   display: inline-flex;
@@ -112,7 +126,7 @@
   gap: 8px;
   min-height: 46px;
   padding: 0 22px;
-  border-radius: 9999px;
+  border-radius: 6px;
   background: var(--th-solid);
   color: var(--th-solid-ink);
   font-size: var(--th-text-body);
@@ -125,17 +139,17 @@
 .ps-solid svg { transition: transform 0.2s var(--th-ease); }
 .ps-solid:hover svg { transform: translateX(3px); }
 .ps-under { margin-top: 12px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
+/* "Demo data": a quiet outlined label, never a filled pill. */
 .ps-tag {
   display: inline-flex;
   align-items: center;
-  height: 22px;
-  padding: 0 8px;
-  border-radius: 6px;
-  background: var(--th-solid);
-  color: var(--th-solid-ink);
+  height: 24px;
+  padding: 0 7px;
+  border-radius: 3px;
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent);
+  color: var(--th-muted);
   font-size: var(--th-text-fine);
-  font-weight: 600;
-  letter-spacing: 0.02em;
+  font-weight: 500;
   white-space: nowrap;
 }
 /* Under a figure block: whether it is demo data, and what it covers. */
@@ -160,14 +174,14 @@
 /* The Buy & Rent verdict, worked: the tipping point as a large figure at the regular weight, the scale with the
    brand's square handle, the verdict, the year's two sums and how firm they are. It sits on the panel itself. */
 .pt { display: grid; row-gap: 18px; align-content: start; }
-.pt-h { font-size: var(--th-text-lead); font-weight: 600; line-height: 26px; }
+.pt-h { font-size: var(--th-text-lead); font-weight: 500; line-height: 26px; }
 .pt-tip { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 6px; align-items: center; }
-.pt-big { font-size: var(--th-text-figure); font-weight: 400; line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.pt-big { font-size: var(--th-text-figure); font-weight: 400; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
 .pt-tip > span:last-child { max-width: 24em; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 .pt-field { margin-top: 4px; }
 .pt-field output { font-variant-numeric: tabular-nums; }
 /* The scale: the slider, the tipping point marked above it in olive, where Cyprus is today marked under it in the
-   saffron the page marks data with. The marks sit where the handle's middle would be: its 16px travels inside. */
+   data's lime, inside an ink square. The marks sit where the handle's middle would be: its 16px travels inside. */
 .pt-scale { position: relative; grid-column: 1 / -1; padding: 28px 0 34px; }
 .pt-scale input[type="range"] { display: block; }
 .pt-mark-tip {
@@ -183,9 +197,9 @@
   bottom: 100%;
   left: 0;
   padding-bottom: 2px;
-  color: var(--th-a);
+  color: var(--th-ink);
   font-size: var(--th-text-small);
-  font-weight: 600;
+  font-weight: 500;
   line-height: 20px;
   white-space: nowrap;
   transform: translateX(-50%);
@@ -208,8 +222,9 @@
 }
 .pt-mark-today i { flex: none; width: 10px; height: 10px; border: 1.5px solid var(--th-ink); background: var(--th-mark); }
 .pt-scale[data-today-at="end"] .pt-mark-today { flex-direction: row-reverse; transform: translateX(calc(-100% + 5px)); }
-.pt-verdict { display: flex; grid-column: 1 / -1; gap: 10px; align-items: baseline; font-size: var(--th-text-lead); font-weight: 600; line-height: 1.35; text-wrap: pretty; }
-.pt-verdict i { flex: none; width: 11px; height: 11px; border: 2px solid var(--th-ink); background: var(--th-a); transform: translateY(-1px); }
+.pt-verdict { display: flex; grid-column: 1 / -1; gap: 10px; align-items: baseline; font-size: var(--th-text-lead); font-weight: 500; line-height: 1.35; text-wrap: pretty; }
+/* The verdict's mark is lime when the short-let wins, past the tipping point: what lime means on this page. */
+.pt-verdict i { flex: none; width: 11px; height: 11px; border: 1.5px solid var(--th-ink); background: var(--th-mark); transform: translateY(-1px); }
 .pt-verdict[data-win="long"] i { background: var(--th-surface); }
 .pt-back { grid-column: 1 / -1; justify-self: start; }
 .pt-year { max-width: 36em; font-size: var(--th-text-body); line-height: 1.5; text-wrap: pretty; }
@@ -217,6 +232,29 @@
 .pt-firm { max-width: 40em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
 .pt-firm b { color: var(--th-ink); }
 .pt .ps-covers { padding-top: 0; }
+/* The listings' curve (OccupancyCurve): every short-let on the island by the share of its nights booked this
+   season, the tipping point on it, and the visitor's own figure, which a press or a drag along the chart sets as
+   the slider does (Our World in Data's chart-as-control, Robinhood's scrub). It sits on the map's own light land,
+   framed by a hairline, so it reads as the product's chart; the plot is as wide as the slider's travel, so the
+   two line up. The line is the scale's second step, which holds on light land (3.8:1); lime marks only the
+   tipping point's dot, inside an ink ring. */
+.pt-curve { display: grid; row-gap: 6px; margin-top: 4px; padding: 16px 0 14px; border-radius: 8px; background: var(--th-map-land); box-shadow: inset 0 0 0 1px var(--th-line); color: var(--th-ink); }
+.pt-curve figcaption { padding: 0 16px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 23px; text-wrap: pretty; }
+.pt-curve figcaption b { color: var(--th-ink); font-weight: 500; }
+.pt-curve-plot { display: block; width: 100%; height: auto; overflow: visible; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.pt-curve-plot text { fill: var(--th-ink); font-family: var(--th-font); font-size: 15px; font-variant-numeric: tabular-nums; }
+.pt-curve-plot .pt-curve-tick { fill: var(--th-muted); }
+.pt-curve-grid { stroke: var(--th-line); stroke-width: 1px; }
+.pt-curve-base { stroke: var(--th-muted); stroke-width: 1px; }
+.pt-curve-fill { fill: var(--th-data-2); fill-opacity: 0.08; }
+.pt-curve-line { fill: none; stroke: var(--th-data-2); stroke-width: 2.25px; stroke-linejoin: round; }
+.pt-curve-tip path { stroke: var(--th-ink); stroke-width: 1px; }
+.pt-curve-tip circle { fill: var(--th-data-4); stroke: var(--th-ink); stroke-width: 1.5px; }
+.pt-curve-you path { stroke: var(--th-muted); stroke-width: 1px; stroke-dasharray: 2 3; }
+.pt-curve-you circle { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.75px; }
+.pt-curve-you text { font-weight: 500; }
+.pt-curve[data-held] .pt-curve-you circle { fill: var(--th-ink); }
+.pt-curve-note { padding: 0 16px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
 
 /* A chart in the hero chart's style: one 2px line, the value axis's two ends, up to three ticks. */
 .ps-chart { --ps-chart-h: 132px; margin-top: 2px; }
@@ -387,9 +425,9 @@
 /* Over the sheet, a two-way switch choosing the kind of report; the sheet's own pager turns its pages. */
 .ps-sheet-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
 .ps-sheet-col > .ps-switch { align-self: stretch; }
-/* On the sheet a chart's bars are data, so they are the saffron the page marks data with, inside an ink line, as the
-   booked nights of "How the numbers are made" are (critique, 2026-10-14: they were heavy blocks of ink). */
-.ps-sheet .ps-bar i { box-sizing: border-box; border: 1.5px solid var(--th-ink); background: var(--th-mark); }
+/* On the sheet a chart's bars are data: the scale's second step, the olive that holds on white (3.9:1). Lime is
+   kept for what passes the tipping point; a single series of months has no such meaning. */
+.ps-sheet .ps-bar i { box-sizing: border-box; background: var(--th-data-2); }
 
 /* The kind of report: two words as tabs on a hairline, the page's own tab idiom (no tray, no filled pill; the owner
    reads pills as machine-made, 2026-10-14). The chosen one is ink at 600 with a 2px ink underline on the row's rule;
@@ -427,10 +465,9 @@
 /* The sheet: a sheet of white paper lying on the card, with one soft shadow under it and no outline of its own. */
 .ps-sheet {
   display: flex;
-  flex: 1;
+  flex: none;
   flex-direction: column;
   min-width: 0;
-  min-height: 380px;
   padding: 18px 18px 14px;
   overflow: clip;
   border-radius: 6px;
@@ -439,22 +476,33 @@
   transform-origin: 100% 100%;
   container-type: inline-size;
 }
-.ps-sheet-col { display: flex; flex-direction: column; min-width: 0; height: 100%; }
+.ps-sheet-col { display: flex; flex-direction: column; min-width: 0; }
 /* The running head of every page: which report on the left, which page of it on the right. */
 .ps-sheet-head {
   display: flex;
   align-items: baseline;
   justify-content: space-between;
   gap: 16px;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--th-line);
+  padding-bottom: 2px;
   color: var(--th-muted);
   font-size: var(--th-text-small);
   line-height: 22px;
 }
 .ps-sheet-head > :last-child { flex: none; }
-/* The page itself: its title and sentence, its sample or its contents, and at its foot the key finding where it has one. */
-.ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding-top: 18px; }
+/* The sections, one mark each, under the running head: the page showing in olive, those read in ink, the rest a
+   hairline. Each is a button 28px tall round a 3px mark, so a thumb can take one. */
+.ps-rail { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; }
+.ps-rail li { flex: 1; min-width: 0; }
+.ps-rail button { position: relative; display: block; width: 100%; height: 28px; cursor: pointer; }
+.ps-rail button::before { content: ""; position: absolute; right: 0; bottom: 6px; left: 0; height: 3px; background: var(--th-line); transform-origin: bottom; transition: background-color 0.2s, transform 0.2s var(--th-ease); }
+.ps-rail button[data-past]::before { background: color-mix(in srgb, var(--th-ink) 45%, var(--th-surface)); }
+.ps-rail button[aria-current="step"]::before { background: var(--th-a); transform: scaleY(1.67); }
+.ps-rail button:hover::before { background: color-mix(in srgb, var(--th-ink) 70%, var(--th-surface)); }
+.ps-rail button[aria-current="step"]:hover::before { background: var(--th-a); }
+.th-landing .ps-rail button:focus-visible { outline-offset: -2px; border-radius: 2px; }
+/* The page itself: its title and sentence, its sample or its contents, and the key finding where it has one. A
+   sideways swipe across it turns it, so only vertical moves are left to the page's scroll. */
+.ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding-top: 18px; touch-action: pan-y; }
 .ps-sheet-page h3 { font-size: var(--th-text-lead); font-weight: 700; line-height: 26px; letter-spacing: -0.01em; text-wrap: balance; }
 .ps-sheet-page p { max-width: 32em; margin-top: 6px; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 .ps-sample { min-width: 0; }
@@ -475,11 +523,12 @@
   background: var(--th-surface);
 }
 .ps-contains li::before { top: 16px; }
-/* The key finding an analysis section ends in, at the foot of its page. Written, it stands between two rules behind a
+/* The key finding an analysis section ends in, after what the page shows (the sheet is as tall as its page, so a
+   short page leaves no empty space above it). Written, it stands between two rules behind a
    filled corner; not yet written (it is the team's to write) the slot is drawn empty: dashed rules, an empty corner. */
 .ps-finding {
   position: relative;
-  margin-top: auto;
+  margin-top: 4px;
   padding: 11px 0 12px 24px;
   border-top: 1px solid var(--th-line);
   border-bottom: 1px solid var(--th-line);
@@ -624,7 +673,7 @@
 .ps-bubble-q {
   align-self: flex-end;
   padding: 10px 18px;
-  border-radius: 26px 26px 6px 26px;
+  border-radius: 14px 14px 4px 14px;
   background: var(--th-visitor);
   color: var(--th-visitor-ink);
   font-weight: 500;
@@ -634,11 +683,11 @@
   align-self: flex-start;
   padding: 13px 18px 14px;
   border: 1px solid var(--th-line);
-  border-radius: 26px 26px 26px 6px;
+  border-radius: 14px 14px 14px 4px;
   background: var(--th-surface);
   transform-origin: 0 100%;
 }
-.ps-tool { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 600; line-height: 22px; }
+.ps-tool { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 500; line-height: 22px; }
 .ps-reply { margin-top: 4px; text-wrap: pretty; }
 .ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 600; }
 .ps-reply-link small { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; line-height: 22px; }
@@ -659,15 +708,15 @@
   width: 332px;
   aspect-ratio: 4 / 3;
   border: 1px solid var(--th-line);
-  border-radius: 26px 26px 26px 6px;
+  border-radius: 12px 12px 12px 4px;
   background: var(--th-map-land);
   transform-origin: 0 100%;
 }
 /* The basemap's own parts (AreaBasemap) expect the hero's map view around them: this stands in for it, uncropped. */
 .ps-minimap-view { --th-crop-x: 0px; --th-crop-y: 0px; position: absolute; inset: 0; }
 .ps-minimap-view > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ps-minimap-fill { fill: var(--th-a); fill-opacity: var(--th-area-tint); }
-.ps-minimap-line { fill: none; stroke: var(--th-a); stroke-width: 2px; stroke-linejoin: round; }
+.ps-minimap-fill { fill: var(--th-ink); fill-opacity: 0.06; }
+.ps-minimap-line { fill: none; stroke: var(--th-ink); stroke-width: 1.5px; stroke-linejoin: round; }
 /* The listings inside the line, as the hero's map paints them: each shade inside a thin ring of the darkest. */
 .ps-minimap-dots { fill: var(--th-dot); stroke: var(--th-occ-ring); stroke-width: 2.8px; paint-order: stroke; }
 .ps-minimap-dots[data-step="1"] { fill: var(--th-occ-1); }
@@ -677,7 +726,7 @@
 .ps-minimap-node { position: absolute; z-index: 3; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border: 2px solid var(--th-ink); background: var(--th-surface); }
 
 
-/* ── The close: "Ask the team", and the footer, on ink ── */
+/* ── The close: "Ask the team", and the footer, on the window's deep olive ── */
 .ps-close { --th-focus: var(--th-close-ink); position: relative; background: var(--th-close); color: var(--th-close-ink); scroll-margin-top: 72px; }
 .ps-close ::selection { background: var(--th-close-ink); color: var(--th-close); }
 .ps-close-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 28px; max-width: 1440px; margin: 0 auto; padding: 64px 16px 56px; }
@@ -702,7 +751,7 @@
   gap: 8px;
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 9999px;
+  border-radius: 6px;
   background: var(--th-close-ink);
   color: var(--th-close);
   font-size: var(--th-text-body);
@@ -717,6 +766,9 @@
 .ps-close-play { display: inline-flex; align-items: center; min-height: 44px; color: var(--th-close-ink); font-size: var(--th-text-body); font-weight: 600; }
 .ps-close-small { max-width: 34em; color: var(--th-close-muted); font-size: var(--th-text-small); line-height: 24px; text-wrap: pretty; }
 .ps-close-small a { color: var(--th-close-ink); }
+.ps-close-copy { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; color: var(--th-close-ink); font-size: var(--th-text-small); font-weight: 500; cursor: pointer; }
+.ps-close-copy span { text-decoration: underline transparent 1.5px; text-underline-offset: 4px; transition: text-decoration-color 0.2s; }
+.ps-close-copy:hover span { text-decoration-color: currentColor; }
 .ps-foot { --th-focus: var(--th-close-ink); border-top: 1px solid var(--th-close-line); background: var(--th-close); color: var(--th-close-ink); }
 .ps-foot ::selection { background: var(--th-close-ink); color: var(--th-close); }
 .ps-foot-in {
@@ -757,7 +809,7 @@
   .ps-card { width: calc(100% - 64px); padding: 36px 32px 32px; row-gap: 32px; }
   .ps-claim { font-size: var(--th-text-statement); }
   .pt-tip { grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; }
-  .ps-sheet { min-height: 440px; padding: 22px 26px 16px; }
+  .ps-sheet { padding: 22px 26px 16px; }
   .ps-chat-log { padding: 22px 0 24px; }
   .ps-close-in { padding: 88px 32px 80px; }
   .ps-foot-in { padding: 22px 32px 26px; }
@@ -803,7 +855,6 @@
     /* An exchange scrolled up out of the conversation fades at its top edge, not cut by it. */
     mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
   }
-  .ps-sheet { min-height: 560px; }
   .ps-sample .ps-chart { --ps-chart-h: 112px; }
   .ps-close-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: end; padding: 112px 64px 104px; }
   .ps-foot-in { grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 40px; padding: 22px 64px 26px; }
@@ -868,6 +919,9 @@
   }
   .ps-bubble[data-play] { animation: ps-arrive 0.45s var(--th-ease) both; }
   .ps-bubble-q[data-play] { animation: ps-send 0.4s var(--th-ease) both; }
+  /* A played answer streams in word by word, and what follows it (how firm, the date, the link) once it has. */
+  .ps-bubble-a[data-play] .ps-stream > span { animation: ps-fade 0.28s ease-out backwards; animation-delay: calc(var(--w) * 34ms + 160ms); }
+  .ps-bubble-a[data-play] :is(.ps-firm, .ps-meta, .ps-reply-link) { animation: ps-fade 0.35s ease-out backwards; animation-delay: calc(var(--words, 0) * 34ms + 260ms); }
   .ps-typing-dots i { animation: ps-typing 1.1s ease-in-out infinite; }
   .ps-typing-dots i:nth-child(2) { animation-delay: 0.16s; }
   .ps-typing-dots i:nth-child(3) { animation-delay: 0.32s; }

@@ -23,7 +23,7 @@ export const WORDMARK_PLOT = { strokeWidth: 2.1, cornerRadius: 3.2 } as const;
    the eye alone. It is kept inline (not lifted out of the flow), since a block in the middle of a word is read
    as a gap. */
 const CSS = `
-.wm { display: inline-block; font-weight: var(--th-display-weight, 700); letter-spacing: -0.035em; white-space: nowrap; }
+.wm { display: inline-block; font-weight: var(--th-wordmark-weight, 600); letter-spacing: -0.035em; white-space: nowrap; }
 .wm-letter { font-size: 0; }
 .wm-o { display: inline-block; flex: none; vertical-align: -0.125em; margin: 0 -0.01em 0 0.03em; }
 `;

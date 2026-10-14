@@ -10,7 +10,7 @@
   color: var(--th-ink);
   scroll-margin-top: 72px;
 }
-.hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 72px 16px 64px; }
+.hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 56px 16px 64px; }
 .hw-h { font-size: var(--th-heading); }
 .hw .th-lede { margin-top: 0; color: var(--th-ink); }
 .hw .th-lede b { color: var(--th-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
@@ -24,7 +24,8 @@
 .hw-held-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; max-width: 40em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
 
 /* The line, top to bottom on phones and tablets: a rail down the left with a square at each stop. */
-.hw-line { --hw-rail: color-mix(in srgb, var(--th-a) 70%, var(--th-ground)); display: grid; margin-top: 24px; }
+/* The rail is a quiet line until the listing travels it (below), when it fills with olive. */
+.hw-line { --hw-rail: color-mix(in srgb, var(--th-muted) 38%, var(--th-ground)); display: grid; margin-top: 24px; }
 .hw-line > li { position: relative; display: grid; row-gap: 12px; align-content: start; padding: 0 0 36px 30px; }
 .hw-line > li::before { content: ""; position: absolute; top: 6px; bottom: -6px; left: 5px; width: 1.5px; background: var(--hw-rail); }
 .hw-line > li:last-child { padding-bottom: 0; }
@@ -39,7 +40,7 @@
   border: 2px solid var(--th-ink);
   background: var(--th-surface);
 }
-/* What is counted is the light orange: the listing as it is published. */
+/* What is counted is the data's lime, inside its ink square: the listing as it is published. */
 .hw-line > li[data-stop="source"]::after { background: var(--th-mark); }
 .hw-line h3 { font-size: var(--th-text-lead); font-weight: 600; line-height: 26px; }
 .hw-say { max-width: 34em; color: var(--th-ink); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
@@ -95,12 +96,14 @@
 .hw-out a { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
 
 @media (min-width: 640px) {
-  .hw-in { padding: 88px 32px 80px; }
+  .hw-in { padding: 72px 32px 80px; }
 }
 /* From 1100px the line runs left to right: the heading and its sentence share a row, as on the stage, and the
    five stops share the next, each under its square. */
 @media (min-width: 1100px) {
-  .hw-in { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: end; padding: 104px 64px 96px; }
+  /* The heading and its sentence start level: set to their foot, the one-line heading left an empty band above it. */
+  .hw-in { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: start; padding: 72px 64px 96px; }
+  .hw-in > :is(.hw-h, .th-lede) { align-self: start; }
   .hw-held { grid-column: 1 / -1; margin-top: 40px; }
   .hw-line { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.06fr) minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1.24fr) minmax(0, 1.15fr); margin-top: 48px; }
   .hw-line > li { grid-template-rows: auto 180px auto auto; padding: 34px 32px 0 0; }
@@ -113,3 +116,44 @@
   .hw-line > li[data-stop="out"]::before { display: block; top: 5px; bottom: 23px; left: 0; width: 1.5px; height: auto; }
   .hw-out { margin-top: 4px; }
 }
+
+/* The listing travels the line as the section is read (G, 2026-10-14): each length of rail fills with olive as the
+   reader scrolls past it and each stop it reaches turns olive, so the line is read in the order the listing takes
+   it (scroll-linked, as Linear's Method and Stripe's diagrams draw their lines; CSS scroll-driven animations only,
+   no script). Where a browser has no scroll timelines, or the visitor asks for less motion, the line is simply as
+   above: nothing is ever hidden waiting for a scroll. The fill is a solid colour sized from nothing to the whole
+   segment (a gradient of one colour is how CSS sizes a fill). */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .hw-line { view-timeline: --hw-line block; }
+    .hw-line > li::before {
+      background: linear-gradient(var(--th-a), var(--th-a)) no-repeat top / 100% 0%, var(--hw-rail); /* taste-skill-ignore: one colour, sized by the scroll */
+      animation: hw-fill-down linear both;
+      animation-timeline: view();
+      animation-range: cover 35% cover 60%;
+    }
+    .hw-line > li:not([data-stop="source"])::after {
+      animation: hw-reach linear both;
+      animation-timeline: view();
+      animation-range: cover 34% cover 36%;
+    }
+  }
+  @media (prefers-reduced-motion: no-preference) and (min-width: 1100px) {
+    /* Across: one timeline for the whole line, each length's turn set by where it lies along it (the columns are
+       1.06, 1.12, 1 and 1.24 parts wide), then the turn down to the products. The line is travelled while it
+       rises from the foot of the window to a little under its middle. */
+    .hw-line > li::before { background-position: left; background-size: 0% 100%, auto; animation-name: hw-fill-across; animation-timeline: --hw-line; }
+    .hw-line > li:nth-child(1)::before { animation-range: cover 10% cover 16.7%; }
+    .hw-line > li:nth-child(2)::before { animation-range: cover 16.7% cover 23.7%; }
+    .hw-line > li:nth-child(3)::before { animation-range: cover 23.7% cover 30.2%; }
+    .hw-line > li:nth-child(4)::before { animation-range: cover 30.2% cover 38%; }
+    .hw-line > li[data-stop="out"]::before { background-position: top; background-size: 100% 0%, auto; animation-name: hw-fill-down; animation-range: cover 38% cover 41%; }
+    .hw-line > li:not([data-stop="source"])::after { animation-timeline: --hw-line; }
+    .hw-line > li:nth-child(2)::after { animation-range: cover 16.3% cover 17.1%; }
+    .hw-line > li:nth-child(3)::after { animation-range: cover 23.3% cover 24.1%; }
+    .hw-line > li:nth-child(4)::after { animation-range: cover 29.8% cover 30.6%; }
+  }
+}
+@keyframes hw-fill-down { to { background-size: 100% 100%, auto; } }
+@keyframes hw-fill-across { to { background-size: 100% 100%, auto; } }
+@keyframes hw-reach { to { border-color: var(--th-a); background: var(--th-a); } }

@@ -317,6 +317,10 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
     show(kind, to, to > i ? 1 : -1);
   };
 
+  // A swipe across the page turns it, as a finger expects of a page (Pitch's deck, a book on a phone): a sideways
+  // move of 48px or more that is clearly more across than down. A vertical move is left to scroll the page.
+  const swipe = useRef<{ x: number; y: number } | null>(null);
+
   const pick = (k: Kind) => {
     if (k === kind) return;
     setKind(k);
@@ -356,7 +360,17 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
               </button>
             ))}
           </div>
-          <article className="ps-sheet" aria-labelledby={`${ids}-page`}>
+          <article
+            className="ps-sheet"
+            aria-labelledby={`${ids}-page`}
+            // The arrow keys turn the page wherever the focus is on the sheet, as they would in a document viewer.
+            onKeyDown={(e) => {
+              if (e.key === "ArrowRight") turn(i + 1);
+              else if (e.key === "ArrowLeft") turn(i - 1);
+              else return;
+              e.preventDefault();
+            }}
+          >
             {/* The running head of every page: which report, and which page of it. */}
             <p className="ps-sheet-head">
               <span>{report.title}</span>
@@ -365,8 +379,34 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
                 {shown.i + 1} of {report.sections.length}
               </span>
             </p>
+            {/* The report's sections as a row of marks, one to a section, the page showing filled: where you are in it
+                at a glance, and a way to go straight to any section (Pitch's slide strip, a story's progress). */}
+            <ol className="ps-rail" aria-label="Sections">
+              {sections.map((sec, j) => (
+                <li key={sec.title}>
+                  <button
+                    type="button"
+                    onClick={() => turn(j)}
+                    aria-current={j === i ? "step" : undefined}
+                    aria-label={`Section ${j + 1}: ${sec.title}`}
+                    data-past={j < i ? "" : undefined}
+                  />
+                </li>
+              ))}
+            </ol>
             <div
               className="ps-sheet-body"
+              onPointerDown={(e) => {
+                if (e.pointerType !== "mouse") swipe.current = { x: e.clientX, y: e.clientY };
+              }}
+              onPointerUp={(e) => {
+                const from = swipe.current;
+                swipe.current = null;
+                if (!from) return;
+                const dx = e.clientX - from.x;
+                if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(e.clientY - from.y) * 1.5) turn(dx < 0 ? i + 1 : i - 1);
+              }}
+              onPointerCancel={() => (swipe.current = null)}
               data-leaf={leaf?.stage}
               style={leaf ? ({ "--dir": leaf.dir } as React.CSSProperties) : undefined}
             >

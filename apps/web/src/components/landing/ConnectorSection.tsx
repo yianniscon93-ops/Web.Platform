@@ -69,6 +69,33 @@ type Turn =
 
 const CANNOT = "I can\u2019t reach the listings just now, so I have no figure to give you.";
 
+/**
+ * An answer's words. For an exchange the visitor has just played they come in one after another, as a streamed
+ * reply does in Claude (and in Raycast's and Vercel's AI demos): every word is in the page from the start, and only
+ * its opacity waits its turn (landing-sections.css), so nothing is hidden from a reader, a screen reader or a page
+ * whose script has stopped. With reduced motion the answer is simply there.
+ */
+function Streamed({ text, on }: { text: string; on: boolean }) {
+  if (!on) return <>{text}</>;
+  const words = text.split(/(\s+)/);
+  let n = 0;
+  return (
+    <span className="ps-stream">
+      {words.map((w, k) =>
+        /^\s+$/.test(w) || w === "" ? (
+          w
+        ) : (
+          <span key={k} style={{ "--w": n++ } as React.CSSProperties}>
+            {w}
+          </span>
+        ),
+      )}
+    </span>
+  );
+}
+/** How many words an answer streams, so what follows it can wait for it. */
+const wordsIn = (text: string) => text.split(/\s+/).filter(Boolean).length;
+
 /** "Firm: it rests on 24 listings." with the level set apart from what it rests on. */
 function Firmness({ line, lang }: { line: string; lang?: string }) {
   const at = line.indexOf(":");
@@ -413,14 +440,18 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                       </p>
                     )}
                     {answered && (
-                      <div className="ps-bubble ps-bubble-a" data-play={lively}>
+                      <div
+                        className="ps-bubble ps-bubble-a"
+                        data-play={lively}
+                        style={turn.state === "ready" ? ({ "--words": wordsIn(turn.reply.text) } as React.CSSProperties) : undefined}
+                      >
                         <p className="ps-tool">
                           {BRAND.name} connector · {q.draws}
                         </p>
                         {turn.state === "ready" ? (
                           <>
                             <p className="ps-reply" lang={lang} data-pending={turn.pending ? "" : undefined}>
-                              {turn.reply.text}
+                              <Streamed text={turn.reply.text} on={lively != null} />
                             </p>
                             {id === "map" && (
                               <p className="ps-reply-link">

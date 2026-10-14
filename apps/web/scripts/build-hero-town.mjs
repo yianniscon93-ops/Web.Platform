@@ -22,7 +22,10 @@
 // build-landing-maps.mjs uses). The page itself never requests a tile.
 //
 // The colours are the page's tokens, baked in: an SVG shown as an image cannot
-// read CSS variables. If a token changes, change it here and rerun.
+// read CSS variables. If a token changes, change it here and rerun. The palette
+// is the light map of direction G (owner, 2026-10-14: of the deep-olive map and
+// this one, "Prefer this one"); PALETTES can hold more than one, each written to
+// its own file, should a second ever be wanted again.
 //
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -62,16 +65,15 @@ const TOWNS = [
 const VIEW = 1600; // each view is VIEW × VIEW units, about 2.1 m to a unit
 const MAX_BYTES = 450_000;
 
-const COLOUR = {
-  land: "#FBFAF4",
-  green: "#DFE7CF",
-  sand: "#F3EAD3",
-  water: "#C2DADF",
-  shore: "#6F929B",
-  building: "#E9E3D3",
-  minor: "#D2CCBB",
-  major: "#B7B09C",
-};
+// The palette each map is written in, and the ending of its file name: the light map (DESIGN.md, map-* and
+// picture-*).
+const PALETTES = [
+  {
+    name: "paper",
+    suffix: ".svg",
+    colour: { land: "#FAF9F4", green: "#E2E7D5", sand: "#F0EDE2", water: "#CBD9DA", shore: "#8DA1A2", building: "#E6E3D8", minor: "#D6D3C7", major: "#BAB5A6" },
+  },
+];
 const SHORE_WIDTH = 1.2;
 const MINOR_WIDTH = 2.2;
 const MAJOR_WIDTH = 5;
@@ -544,7 +546,7 @@ async function fetchTile(template, x, y) {
 
 const { tiles: [template] } = await (await fetch(TILEJSON)).json();
 
-/** One town's map and its entry in heroTowns.ts: { file, svg, entry }. Throws if a check fails; logs what it found and drew. */
+/** One town's maps, one in each palette, and its entry in heroTowns.ts: { files: [{ file, svg }], entry }. Throws if a check fails; logs what it found and drew. */
 async function build(town) {
   const { west, east, south, north, perLng, perLat, project } = projection(town);
 
@@ -666,21 +668,22 @@ async function build(town) {
 
   const line = (colour, width) => `fill="none" stroke="${colour}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"`;
   const path = (attrs, parts, close) => (parts.length ? `<path ${attrs} d="${toPath(parts, close)}"/>\n` : "");
-  const svg =
+  /** The map in one palette. */
+  const draw = (colour) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW} ${VIEW}">\n` +
     `<!-- Written by scripts/build-hero-town.mjs; do not edit by hand. Map data © OpenStreetMap contributors (ODbL), tiles © OpenMapTiles via OpenFreeMap. -->\n` +
-    `<rect width="${VIEW}" height="${VIEW}" fill="${COLOUR.land}"/>\n` +
-    path(`fill="${COLOUR.green}"`, layersOut.green, true) +
-    path(`fill="${COLOUR.sand}"`, layersOut.sand, true) +
-    path(`fill="${COLOUR.water}"`, layersOut.water, true) +
+    `<rect width="${VIEW}" height="${VIEW}" fill="${colour.land}"/>\n` +
+    path(`fill="${colour.green}"`, layersOut.green, true) +
+    path(`fill="${colour.sand}"`, layersOut.sand, true) +
+    path(`fill="${colour.water}"`, layersOut.water, true) +
     // Piers are land: areas under the shoreline, which runs round them, and lines cased to match it.
-    path(`fill="${COLOUR.land}"`, layersOut.pierArea, true) +
-    path(line(COLOUR.shore, SHORE_WIDTH), layersOut.shore, false) +
-    path(line(COLOUR.shore, MINOR_WIDTH + 2 * SHORE_WIDTH), layersOut.pier, false) +
-    path(line(COLOUR.land, MINOR_WIDTH), layersOut.pier, false) +
-    path(`fill="${COLOUR.building}"`, layersOut.building, true) +
-    path(line(COLOUR.minor, MINOR_WIDTH), layersOut.minor, false) +
-    path(line(COLOUR.major, MAJOR_WIDTH), layersOut.major, false) +
+    path(`fill="${colour.land}"`, layersOut.pierArea, true) +
+    path(line(colour.shore, SHORE_WIDTH), layersOut.shore, false) +
+    path(line(colour.shore, MINOR_WIDTH + 2 * SHORE_WIDTH), layersOut.pier, false) +
+    path(line(colour.land, MINOR_WIDTH), layersOut.pier, false) +
+    path(`fill="${colour.building}"`, layersOut.building, true) +
+    path(line(colour.minor, MINOR_WIDTH), layersOut.minor, false) +
+    path(line(colour.major, MAJOR_WIDTH), layersOut.major, false) +
     `</svg>\n`;
 
   console.log(`\n${town.name}: ${tiles} tiles (z${Z}, x ${x0} to ${x1}, y ${y0} to ${y1})`);
@@ -692,12 +695,16 @@ async function build(town) {
     console.log(`  ${key}: ${parts.length} ${["shore", "pier", "minor", "major"].includes(key) ? "lines" : "rings"}, ${parts.reduce((n, p) => n + p.length, 0)} points`);
   }
   if (NAMES) console.log(`named in the view (x,y in view units):\n${[...named].sort().map((n) => "  " + n).join("\n")}`);
-  const bytes = Buffer.byteLength(svg);
-  console.log(`svg: ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
-  if (bytes > MAX_BYTES) throw new Error(`${town.name}: the map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise BUILDING_TOLERANCE or MIN_BUILDING_AREA`);
+  const files = PALETTES.map(({ name, suffix, colour }) => {
+    const svg = draw(colour);
+    const bytes = Buffer.byteLength(svg);
+    console.log(`svg (${name}): ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
+    if (bytes > MAX_BYTES) throw new Error(`${town.name}: the ${name} map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise BUILDING_TOLERANCE or MIN_BUILDING_AREA`);
+    return { file: join(OUT_DIR, `town-${town.key}${suffix}`), svg };
+  });
 
   const entry = `{ key: "${town.key}", name: "${town.name}", src: "/landing/town-${town.key}.svg", width: ${VIEW}, height: ${VIEW}, west: ${west}, north: ${north}, perLng: ${perLng}, perLat: ${perLat} }`;
-  return { file: join(OUT_DIR, `town-${town.key}.svg`), svg, entry };
+  return { files, entry };
 }
 
 // Every town is built and checked before anything is written, so a failed check leaves the last good set in place.
@@ -726,7 +733,7 @@ export const townXY = (town: HeroTown, lat: number, lng: number): [number, numbe
 
 mkdirSync(OUT_DIR, { recursive: true });
 console.log("");
-for (const { file, svg } of built) {
+for (const { file, svg } of built.flatMap((b) => b.files)) {
   writeFileSync(file, svg);
   console.log(`wrote ${file}`);
 }

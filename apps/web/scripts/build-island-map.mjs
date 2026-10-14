@@ -4,8 +4,8 @@
 //   public/landing/island.svg   the map: sea, woodland, built-up ground, inland
 //                               water, the main roads and the coast. The land
 //                               itself is left clear, so what the page draws
-//                               under the picture shows through. No text and
-//                               no boundary of any kind.
+//                               under the picture shows through. No text and no
+//                               boundary of any kind.
 //
 // The picture's 800 × 600 view is the stage's own: every coordinate in it is
 // project(viewOf(ISLAND_AREA), lat, lng) of the real place, to a tenth of a
@@ -23,7 +23,9 @@
 // itself never requests a tile.
 //
 // The colours are the page's tokens, baked in: an SVG shown as an image cannot
-// read CSS variables. If a token changes, change it here and rerun.
+// read CSS variables. If a token changes, change it here and rerun. The palette
+// is the light map of direction G (owner, 2026-10-14: "Prefer this one", over a
+// deep-olive one); PALETTES can hold more than one, each to its own file.
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -35,7 +37,7 @@ import { VIEW_H, VIEW_W, project, unproject, viewOf } from "../src/lib/landing/a
 const TILEJSON = "https://tiles.openfreemap.org/planet";
 const Z = 10;
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
-const OUT_SVG = join(ROOT, "public/landing/island.svg");
+const OUT_DIR = join(ROOT, "public/landing"); // island.svg
 const CACHE = process.env.LANDING_MAPS_CACHE;
 const MAX_BYTES = 520_000;
 
@@ -48,15 +50,14 @@ const GROUND_MARGIN = 0.03; // degrees
 const CYPRUS = { north: 35.78, west: 32.2, east: 34.7 };
 const CYPRUS_KM2 = 9251;
 
-const COLOUR = {
-  water: "#C2DADF",
-  shore: "#6F929B",
-  green: "#DFE7CF",
-  built: "#E3DCCB",
-  motorway: "#A69F8A",
-  primary: "#B7B09C",
-  secondary: "#CBC5B3",
-};
+// The two palettes the map is written in, and each one's file.
+const PALETTES = [
+  {
+    name: "paper",
+    file: "island.svg",
+    colour: { water: "#CBD9DA", shore: "#8DA1A2", green: "#E2E7D5", built: "#E4E0D3", motorway: "#A7A191", primary: "#B9B4A5", secondary: "#CCC8BA" },
+  },
+];
 const GREEN_OPACITY = 0.8;
 const BUILT_OPACITY = 0.85;
 // Line widths are in the picture's own pixels however large it is shown (non-scaling strokes).
@@ -796,25 +797,33 @@ for (const name of LINES) {
 
 const stroke = (colour, width) => `fill="none" stroke="${colour}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"`;
 const path = (attrs, parts, close, lead = "") => (parts.length ? `<path ${attrs} d="${lead}${toPath(parts, close)}"/>\n` : "");
-const svg =
+/** The map in one palette. */
+const draw = (colour) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none">\n` +
   `<!-- Written by scripts/build-island-map.mjs; do not edit by hand. Map data © OpenStreetMap contributors (ODbL), tiles © OpenMapTiles via OpenFreeMap. -->\n` +
   // The sea is the whole view with the island's rings as holes: the land is left clear.
-  path(`fill="${COLOUR.water}" fill-rule="evenodd"`, layersOut.land, true, `M0 0H${VIEW_W}V${VIEW_H}H0z`) +
-  path(`fill="${COLOUR.green}" fill-opacity="${GREEN_OPACITY}"`, layersOut.green, true) +
-  path(`fill="${COLOUR.built}" fill-opacity="${BUILT_OPACITY}"`, layersOut.built, true) +
-  path(`fill="${COLOUR.water}"`, layersOut.water, true) +
-  path(stroke(COLOUR.shore, LAKE_EDGE_WIDTH), layersOut.lakeEdge, false) +
-  path(stroke(COLOUR.secondary, SECONDARY_WIDTH), layersOut.secondary, false) +
-  path(stroke(COLOUR.primary, PRIMARY_WIDTH), layersOut.primary, false) +
-  path(stroke(COLOUR.motorway, MOTORWAY_WIDTH), layersOut.motorway, false) +
-  path(stroke(COLOUR.shore, COAST_WIDTH), layersOut.land, true) +
+  path(`fill="${colour.water}" fill-rule="evenodd"`, layersOut.land, true, `M0 0H${VIEW_W}V${VIEW_H}H0z`) +
+  path(`fill="${colour.green}" fill-opacity="${GREEN_OPACITY}"`, layersOut.green, true) +
+  path(`fill="${colour.built}" fill-opacity="${BUILT_OPACITY}"`, layersOut.built, true) +
+  path(`fill="${colour.water}"`, layersOut.water, true) +
+  path(stroke(colour.shore, LAKE_EDGE_WIDTH), layersOut.lakeEdge, false) +
+  path(stroke(colour.secondary, SECONDARY_WIDTH), layersOut.secondary, false) +
+  path(stroke(colour.primary, PRIMARY_WIDTH), layersOut.primary, false) +
+  path(stroke(colour.motorway, MOTORWAY_WIDTH), layersOut.motorway, false) +
+  path(stroke(colour.shore, COAST_WIDTH), layersOut.land, true) +
   `</svg>\n`;
 
-const bytes = Buffer.byteLength(svg);
-console.log(`svg: ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
-if (bytes > MAX_BYTES) throw new Error(`the map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise AREA_TOLERANCE or MIN_AREA, then drop the shortest secondary roads`);
+// Both are drawn and checked before either is written, so a failed check leaves the last good pair in place.
+const out = PALETTES.map(({ name, file, colour }) => {
+  const svg = draw(colour);
+  const bytes = Buffer.byteLength(svg);
+  console.log(`svg (${name}): ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
+  if (bytes > MAX_BYTES) throw new Error(`the ${name} map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise AREA_TOLERANCE or MIN_AREA, then drop the shortest secondary roads`);
+  return { file: join(OUT_DIR, file), svg };
+});
 
-mkdirSync(dirname(OUT_SVG), { recursive: true });
-writeFileSync(OUT_SVG, svg);
-console.log(`wrote ${OUT_SVG}`);
+mkdirSync(OUT_DIR, { recursive: true });
+for (const { file, svg } of out) {
+  writeFileSync(file, svg);
+  console.log(`wrote ${file}`);
+}
