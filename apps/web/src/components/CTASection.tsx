@@ -17,7 +17,7 @@ function asked(carried: string | null): string | null {
 }
 
 /**
- * The page's close, "Ask the team", on ink. A request is an email to the team's
+ * The page's close, "Ask the team", back in night (Blue Night: it shares one navy card with the footer, app/page.tsx). A request is an email to the team's
  * own address, written in the visitor's mail app: nothing is collected on the
  * page, so nothing can claim to have been sent that was not (the form that stood
  * here only simulated a send; critique, 2026-10-11). A request made further up
@@ -60,13 +60,23 @@ export default function CTASection() {
     <section id="access" className="th-landing ps-close">
       <div className="ps-close-in">
         <div>
-          <h2>
-            Ask the team{what && <span> {what}</span>}.
+          <p className="bn-eb" data-rv="eb">
+            Contact
+          </p>
+          {/* The main action is "Email the team" (owner, 2026-10-17: "the team should stay there"), so the heading leads
+              with it; its second tone is the second way in, the Playground. */}
+          <h2 data-rv="">
+            Ask the team{what && <span className="ps-close-what"> {what}</span>}.{" "}
+            <span data-rv="pay" style={{ "--i": 2 } as React.CSSProperties}>
+              Or start with your street.
+            </span>
           </h2>
-          <p className="ps-close-lede">A report, connector access, or a question about a place: tell us what you need.</p>
+          <p className="ps-close-lede" data-rv="" style={{ "--i": 2 } as React.CSSProperties}>
+            Tell us what you need: a report, connector access, or a number you can’t&nbsp;find.
+          </p>
         </div>
 
-        <div className="ps-close-do">
+        <div className="ps-close-do" data-rv="" style={{ "--i": 3 } as React.CSSProperties}>
           {carried && <p className="ps-close-carried">Your request: &ldquo;{carried}&rdquo;</p>}
           <div className="ps-close-actions">
             <a href={mail} className="ps-close-mail">
@@ -78,8 +88,7 @@ export default function CTASection() {
             </a>
           </div>
           <p className="ps-close-small">
-            We are a small data team in Cyprus. We read every listing on the island, short-&#8288;lets, long-&#8288;lets
-            and sales, and our models turn them into the figures you have seen. Write to{" "}
+            We are a small data team in Cyprus, building property intelligence from the island’s own listings. Write to{" "}
             <a ref={address} href={mail} className="th-link">
               {BRAND.email}
             </a>{" "}

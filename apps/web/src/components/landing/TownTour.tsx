@@ -63,8 +63,12 @@ const stepOf = (occ: number | null | undefined) => (occ == null || Number.isNaN(
  * on a pier), unless it is inside a drawn area, whose card counts it. Answers "dry" for everything if the
  * drawing cannot be read.
  */
-// The sea's colour in the town pictures (scripts/build-hero-town.mjs, map-sea in DESIGN.md), for telling water from land.
-const SEA = [0xcb, 0xd9, 0xda] as const;
+// The sea in the town pictures (scripts/build-hero-town.mjs, map-sea in DESIGN.md), for telling water from land: the
+// night maps leave the land clear and wash the sea in a dark colour at 55%, so water is the only part of the picture
+// that is both well opaque and dark (the streets and the coast are light lines, the land is not painted at all, and the
+// piers are cut out of the sea's wash, so they read as land).
+const SEA_ALPHA = 100;
+const SEA_DARK = 120;
 
 async function waterOf(src: string): Promise<(x: number, y: number, size: number) => boolean> {
   const dry = () => false;
@@ -81,9 +85,7 @@ async function waterOf(src: string): Promise<(x: number, y: number, size: number
     const px = ctx.getImageData(0, 0, n, n).data;
     return (x, y, size) => {
       const i = (Math.min(n - 1, Math.floor((y / size) * n)) * n + Math.min(n - 1, Math.floor((x / size) * n))) * 4;
-      // The sea is drawn in one flat colour (SEA, as the build script bakes it): a pixel within a few steps of it
-      // is water. The land beside it differs by more than that in both pictures.
-      return Math.abs(px[i] - SEA[0]) + Math.abs(px[i + 1] - SEA[1]) + Math.abs(px[i + 2] - SEA[2]) < 14;
+      return px[i + 3] >= SEA_ALPHA && px[i] + px[i + 1] + px[i + 2] < SEA_DARK;
     };
   } catch {
     return dry;
@@ -100,19 +102,50 @@ const at = ([x, y]: TownPt, size: number) => ({ "--x": pc(x, size), "--y": pc(y,
 const path = (ring: TownPt[]) => "M" + ring.map((p) => p.join(" ")).join("L") + "Z";
 const middle = (ring: TownPt[]): TownPt => [ring.reduce((s, p) => s + p[0], 0) / ring.length, ring.reduce((s, p) => s + p[1], 0) / ring.length];
 
+/**
+ * A listing's light (Blue Night, 2026-10-17): over its solid dot in the class's colour, a soft halo of the same colour,
+ * added to its neighbours' so a town's lights gather into a glow; a fuller listing's is brighter and wider, as its dot
+ * is brighter. One sprite per colour, made once.
+ */
+const halos = new Map<string, HTMLCanvasElement>();
+function halo(colour: string): HTMLCanvasElement | null {
+  const made = halos.get(colour);
+  if (made) return made;
+  const c = document.createElement("canvas");
+  c.width = c.height = 64;
+  const g = c.getContext("2d");
+  if (!g || !colour) return null;
+  // The sprite is drawn in the colour at full strength and faded by its own alpha mask, so any CSS colour works.
+  g.fillStyle = colour;
+  g.fillRect(0, 0, 64, 64);
+  const fade = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  fade.addColorStop(0, "rgba(0,0,0,1)");
+  fade.addColorStop(0.25, "rgba(0,0,0,0.35)");
+  fade.addColorStop(1, "rgba(0,0,0,0)");
+  g.globalCompositeOperation = "destination-in";
+  g.fillStyle = fade;
+  g.fillRect(0, 0, 64, 64);
+  halos.set(colour, c);
+  return c;
+}
+// Each class's halo: how strong and how wide, in screen px; a listing lit inside a drawn area takes a wider one.
+const HALO_ALPHA = [0, 0.1, 0.13, 0.17, 0.24];
+const HALO_PX = [0, 12, 14, 17, 21];
+const HALO_LIT = 1.5;
+
 /** An area with too few listings to quote is drawn, with no figures. */
 const quoted = (a: TourArea): a is TourArea & { occupied: number; rate: number } => a.occupied != null && a.rate != null;
 
-/** One market's line on a card: what it is, how many listings, and what they come to. `mark` is the shade its listings wear on the map, for the market that is drawn there. */
+/** One market's line on a card: what it is, how many listings, and what they come to. `mark` is the shade its listings wear on the map, for the market that is drawn there. A row of the card's grid, so the counts line up. */
 function Line({ of, n, mark, children }: { of: string; n: number; mark?: number; children?: React.ReactNode }) {
   return (
-    <>
+    <span className="lh-row">
       <span className="lh-of" data-step={mark}>
         {of}
       </span>
       <span className="lh-n">{int(n)}</span>
       <span className="lh-fig">{children}</span>
-    </>
+    </span>
   );
 }
 
@@ -128,12 +161,13 @@ const median = (m: TourMarket, unit?: string) =>
   ) : null;
 
 /**
- * An area's figures, a line to a market: the short-lets inside (a night's price and how full they are), the
- * long-lets (a month's rent) and the homes for sale (the asking price), each with how many there are. The
- * short-lets are the dots on the map, so their line carries the dots' shade, and how full they are is drawn
- * again as a bar in it along the card's foot.
+ * An area's figures, a line to a market: the short-lets inside (a night's price, and under it how full they are this
+ * season, said and drawn as a bar in their shade), the long-lets (a month's rent) and the homes for sale (the asking
+ * price), each with how many there are, so the card gives all three markets (owner, 2026-10-09: "dont mislead the
+ * customer"). The short-lets are the lights on the map, so their line carries the lights' shade. On sample data the
+ * card says so at its foot.
  */
-function Figures({ area }: { area: TourArea }) {
+function Figures({ area, demo }: { area: TourArea; demo: boolean }) {
   if (!quoted(area)) return null;
   const step = stepOf(area.occupied);
   return (
@@ -143,6 +177,9 @@ function Figures({ area }: { area: TourArea }) {
         <em>{euro(area.rate)}</em>
         <small> a night</small>
       </Line>
+      <i className="lh-occ" data-step={step} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties}>
+        {pct(area.occupied)} occupancy this season
+      </i>
       {area.rent && (
         <Line of={"Long-\u2060let"} n={area.rent.count}>
           {median(area.rent, "a month")}
@@ -153,7 +190,7 @@ function Figures({ area }: { area: TourArea }) {
           {median(area.sale)}
         </Line>
       )}
-      <i data-step={step} data-occ={`${pct(area.occupied)} occupancy`} style={{ "--full": `${Math.round(area.occupied)}%` } as React.CSSProperties} />
+      {demo && <small className="lh-sample">Sample figures</small>}
     </>
   );
 }
@@ -360,11 +397,28 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       const edge = tone("--th-occ-ring");
       const ring = tone("--th-dot-ring");
       const ringed = ring !== "" && ring !== "transparent" && ring !== "rgba(0, 0, 0, 0)";
+      // The lights' halos first, added to one another, so a town glows where its short-lets are many and full (Blue
+      // Night: the listings are the town's lights). They step back with the town, and a listing the wave has lit
+      // inside an area takes a wider one.
+      ctx.globalCompositeOperation = "lighter";
+      for (let i = 0; i < d.n; i++) {
+        const st = d.step[i];
+        if (st === 0) continue;
+        const a = shown(i);
+        if (a <= 0) continue;
+        const lit = d.area[i] !== OUT && into(i) >= 0;
+        const sprite = halo(steps[st]);
+        if (!sprite) continue;
+        ctx.globalAlpha = gone * a * HALO_ALPHA[st] * (lit ? 1 : 1 - (1 - RECEDE_TO) * back);
+        const size = HALO_PX[st] * (lit ? HALO_LIT : 1) * dpr;
+        ctx.drawImage(sprite, d.x[i] * k - size / 2, d.y[i] * k - size / 2, size, size);
+      }
+      ctx.globalCompositeOperation = "source-over";
       // Every listing on the town's map is shaded by how full it has been this season (G, 2026-10-14: the whole
       // town is the data, not only what an area catches). Those outside every area, and those inside one the wave
       // has not reached yet, are small and step back once the first area is closed, so the wave lifts each listing
-      // inside the line to its full size and the rest of the town reads as ground. On a light map each wears a
-      // thin ink ring (--th-dot-ring), so the lime holds.
+      // inside the line to its full size and the rest of the town reads as ground. On night every step of the scale
+      // holds by itself, so --th-dot-ring is transparent there and they are drawn without a ring.
       for (let pass = 0; pass < 2; pass++) {
         const inside = pass === 1;
         ctx.globalAlpha = gone * (1 - (1 - RECEDE_TO) * back);
@@ -386,7 +440,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       }
       // The ring each listing sends out as the wave reaches it: it widens quickly from the dot's edge and fades.
       // Each has its own strength, so each is a stroke of its own; only the listings mid-pop draw one. It is drawn
-      // in the map's own ink (--th-dot), which shows on the window and on paper alike.
+      // in the map's own ink (--th-dot), ice on the night map.
       ctx.strokeStyle = tone("--th-dot");
       ctx.lineWidth = 1.2 * dpr;
       for (let i = 0; i < d.n; i++) {
@@ -461,6 +515,16 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
     let out = false;
     let done = -1;
     let aimed = -1;
+    // The canvas is only repainted when something on it can have changed: the clock moved, the tour started or
+    // stopped waiting (out of view, the tab hidden, the visitor typing in the search box), or the canvas was resized.
+    // While it waits, the clock stands still and the frame on the canvas is already the right one.
+    let painted = Number.NaN;
+    let paintedWaiting: boolean | null = null;
+    let resized = true;
+    const ro = new ResizeObserver(() => {
+      resized = true;
+    });
+    if (canvas.current) ro.observe(canvas.current);
     const tick = (now: number) => {
       const typing = document.activeElement?.matches(".lh-box input") ?? false;
       const waiting = !seen.current || document.hidden || typing;
@@ -468,8 +532,14 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       last = now;
       over.current?.toggleAttribute("data-waiting", waiting);
       const t = clock.current;
-      paint(t);
-      if (drawing.current) drawing.current.currentTime = t;
+      if (resized || t !== painted || waiting !== paintedWaiting) {
+        paint(t);
+        painted = t;
+        paintedWaiting = waiting;
+        resized = false;
+      }
+      // The pointer's animation is the stop's own and may be made after this frame was painted, so it is set apart.
+      if (drawing.current && drawing.current.currentTime !== t) drawing.current.currentTime = t;
       const n = times.areas.filter((a) => t >= a.closed + PIN_AT).length;
       if (n !== done) setDrawn((done = n));
       const going = times.areas.filter((a, k) => k === 0 || t >= times.areas[k - 1].closed + times.set).length - 1;
@@ -482,7 +552,10 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      cancelAnimationFrame(raf);
+      ro.disconnect();
+    };
     // `go` and `paint` are the stop's own: the effect is the stop's.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [stopAt, mine, stopped, toured, still, held, handed, times]);
@@ -595,11 +668,11 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
 
   return (
     <div ref={root} className="lh-town">
-      {/* The map, frameless, fading into the paper (owner, 2026-10-14: "the way the previous map was deployed was
-          nicer. with the fade"). Its town and the key to its shades are in the strip under it, with the tour's
+      {/* The map, frameless, fading into the night at the words' side, under the nav and at its foot (the fade the
+          owner asked for on 2026-10-14, kept for Blue Night). Its town and the key to its shades are in the strip under it, with the tour's
           controls and the credit. */}
       <div className="lh-frame">
-        {/* The drawings alone fade into the paper. What is drawn over them is on a sheet of its own, in the same
+        {/* The drawings alone fade into the night. What is drawn over them is on a sheet of its own, in the same
             square, so no corner or card fades with them. */}
         <div className="lh-sheet">
           {/* Three maps at most are in the page: the town showing, the one it took over from, which is still
@@ -661,7 +734,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
                 (a, k) =>
                   quoted(a) && (
                     <p key={a.name} className="lh-pin m-0" data-side={a.side} data-drawn={k < drawn ? "" : undefined} style={at(a.at, stop.size)}>
-                      <Figures area={a} />
+                      <Figures area={a} demo={demo} />
                     </p>
                   ),
               )}
@@ -677,7 +750,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               band moves on to the next area the figures go, and that area's come once it is drawn. */}
           {drawn > 0 && quoted(current) && (
             <p key={`${stopAt}.${current.name}`} className="lh-pin lh-dock m-0" data-drawn="" data-leaving={leaving || aim !== now ? "" : undefined}>
-              <Figures area={current} />
+              <Figures area={current} demo={demo} />
             </p>
           )}
         </div>
@@ -739,16 +812,19 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             over; one with no figure yet is an empty ring
           </span>
         </span>
-        {demo && <span className="th-tag">Demo data</span>}
-        <span>
-          Map data ©&nbsp;
-          <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
-            OpenStreetMap contributors
-          </a>
-          , ©&nbsp;
-          <a href="https://openmaptiles.org/" target="_blank" rel="noopener noreferrer">
-            OpenMapTiles
-          </a>
+        {/* Where the figures and the map come from: a line of their own under the controls and the key. */}
+        <span className="lh-src">
+          {demo && <span className="th-tag">Sample data</span>}
+          <span>
+            Map data ©&nbsp;
+            <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">
+              OpenStreetMap contributors
+            </a>
+            , ©&nbsp;
+            <a href="https://openmaptiles.org/" target="_blank" rel="noopener noreferrer">
+              OpenMapTiles
+            </a>
+          </span>
         </span>
       </p>
     </div>

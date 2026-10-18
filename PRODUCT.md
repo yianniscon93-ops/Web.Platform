@@ -84,7 +84,19 @@ Open decisions:
   land, the shape drawn on the map and the chart, and the word Cypriots use
   for land for sale; it works in Athens too. plotsights.com, .io, .cy,
   .com.cy and .gr are owned. Written as one word, one capital.
-- Headline in use since 2026-10-13: "Plot your next move in Cyprus
+- Headline in use since 2026-10-17 (plan 3, option A, "Use recommended
+  one"): "Plot your next move / in Cyprus property. / Insights backed by
+  data.", three lines; the headline is mist but for "Plot" and "sights" in
+  the night's ink, so the name is read out of it, and the opening strikes
+  the name in two ("Plot" drawn, then "sights") so its origin is plain
+  (owner: "make sure the plot and sights strike differently so that the
+  user immidiately understands where the name comes from"). The eyebrow
+  over it is "Cyprus property intelligence"; the sentence under it is "We
+  track short-lets, long-lets, homes and plots for sale across Cyprus, and
+  model what any street earns, rents for and sells for. Decide where to
+  buy, what to charge and what to advise." Nothing on the page says
+  "daily": calendars are read every two days, prices and ads weekly.
+- Headline from 2026-10-13 to 2026-10-17: "Plot your next move in Cyprus
   property. Get the insights.", with "Plot" and "sights" in olive. The
   owner chose it from four, after finding the earlier one undersold the
   work ("plot an area and get insights is basically underestimating what

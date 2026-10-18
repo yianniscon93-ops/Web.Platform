@@ -196,7 +196,8 @@ export default function PlaceSearch() {
           aria-activedescendant={shown && found[taken] ? `${listId}-${taken}` : undefined}
           autoComplete="off"
           spellCheck={false}
-          placeholder="Your town, resort or district"
+          // An example in both scripts says the search takes English or Greek; the label names what it takes.
+          placeholder="Try Limassol, or Λεμεσός"
           value={q}
           onChange={(e) => {
             setQ(e.target.value);

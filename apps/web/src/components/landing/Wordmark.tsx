@@ -6,9 +6,14 @@ import AreaMark from "./AreaMark";
 const AT = BRAND.name.indexOf("o");
 const BEFORE = BRAND.name.slice(0, AT);
 const AFTER = BRAND.name.slice(AT + 1);
-/* The two halves and the plot's weights, for the opening (Opening.tsx), which sets the same name large. */
+/* The two halves and the plot's weights, for the opening (Opening.tsx), which sets the same name large. The opening
+   strikes the name in two (owner, 2026-10-17: "make sure the plot and sights strike differently so that the user
+   immidiately understands where the name comes from"): "Pl", the plot, "t", then "sights"; so the half after the plot
+   is split at its first letter too. */
 export const NAME_BEFORE = BEFORE;
 export const NAME_AFTER = AFTER;
+export const NAME_T = AFTER.slice(0, 1);
+export const NAME_SIGHTS = AFTER.slice(1);
 export const WORDMARK_PLOT = { strokeWidth: 2.1, cornerRadius: 3.2 } as const;
 
 /* The plot is set as a letter: in its tight frame, a touch larger than the round letters since an outline with

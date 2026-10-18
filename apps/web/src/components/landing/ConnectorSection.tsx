@@ -21,7 +21,7 @@ import {
 import { useAreaAnswer, useNear } from "@/lib/landing/useAreaAnswer";
 import AreaMiniMap from "./AreaMiniMap";
 import { ConnectorIcon } from "./ProductIcons";
-import { Card, READING, carryRequest, inside, stillPreferred, useArrival } from "./SectionParts";
+import { Card, READING, carryRequest, inside, stillPreferred } from "./SectionParts";
 
 // What a visitor can ask, and which of the connector's abilities each one draws on. The sixth is the first
 // again in Greek: the connector takes place names in both languages. The last is one the connector has no
@@ -42,8 +42,8 @@ const langOf = (id: QuestionId) => (id === "greek" ? "el" : undefined);
 /** The questions in the visitor's own voice. The first is the one the hero's Connector panel asks, in its words. */
 function ask(id: QuestionId, area: HeroArea): string {
   if (id === "summary") return question(area.place.name, area.changed, area.place.frame != null);
-  if (id === "trend") return "How has it moved over the year?";
-  if (id === "bedrooms") return "What do places with two or more bedrooms take here?";
+  if (id === "trend") return "Which months fill up, and which go quiet?";
+  if (id === "bedrooms") return "What do 2+ bedroom short-\u2060lets take a night here?";
   if (id === "cuts") return "Are sellers cutting prices here?";
   if (id === "greek") return greekQuestion(area.place, area.changed);
   if (id === "reviews") return "What do guests say in their reviews here?";
@@ -132,8 +132,6 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
   // What assistive tech is told: one thing per choice, the answer.
   const [said, setSaid] = useState<{ text: string; lang?: string }>({ text: "" });
   const ids = useId();
-  const card = useRef<HTMLElement>(null);
-  const { arrived, arriving } = useArrival(card);
   const objectRef = useRef<HTMLDivElement>(null);
   const list = useRef<HTMLDivElement>(null);
   const log = useRef<HTMLDivElement>(null);
@@ -345,20 +343,18 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
 
   return (
     <Card
-      cardRef={card}
       id="connector"
       layout="stack"
+      eyebrow="In Claude"
       name="Connector"
-      icon={<ConnectorIcon size={36} />}
-      claim="Ask Claude about any place in Cyprus."
+      icon={<ConnectorIcon size={40} />}
+      claim="Ask Claude about any place, in Greek too."
       body={
         <p>
-          Add {BRAND.name} Cyprus to Claude and ask in English or Greek. Every answer says how firm it is, and says so
-          when it cannot answer.
+          Add {BRAND.name} Cyprus to Claude and ask about any town, resort or district in plain words. Answers come from our
+          data, say what they rest on, and say so when they cannot answer.
         </p>
       }
-      arrived={arrived}
-      arriving={arriving}
       action={
         <>
           <a href="#access" className="ps-solid" onClick={() => carryRequest("Access to the Claude connector")}>
@@ -369,9 +365,10 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
         </>
       }
       lead={
-        <>
+        // The questions on a pale cloud tile beside the conversation's navy card.
+        <div className="bn-tile bn-cloud ps-asks">
           <h3 id={`${ids}-ask`} className="ps-h3">
-            What you can ask
+            Try a question
           </h3>
           <div ref={list} className="ps-questions" role="radiogroup" aria-labelledby={`${ids}-ask`} onKeyDown={onKey}>
             {QUESTIONS.map((q) => (
@@ -390,14 +387,15 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
               </button>
             ))}
           </div>
-        </>
+          <p className="ps-asks-note">Pick one to see how it is answered, from the figures on this page.</p>
+        </div>
       }
       object={
-        <div ref={objectRef}>
+        <div ref={objectRef} className="bn-card bn-night ps-convo">
           <div className="ps-chat">
             <div className="ps-chat-head">
               {/* The connector is named as the hero's panel names it. */}
-              <p>An example conversation in Claude, answered by {BRAND.name} Cyprus from today&apos;s figures</p>
+              <p>An example conversation in Claude, answered by {BRAND.name} Cyprus from the latest figures</p>
               {thread.length > 1 && (
                 <button type="button" className="ps-chat-clear" onClick={clear}>
                   Clear
@@ -411,6 +409,9 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                 const lang = langOf(id);
                 const stage = playing?.id === id ? playing.stage : null;
                 const lively = played.current.has(id) ? "" : undefined;
+                // The first exchange is in place from the start; as the section arrives its answer streams in once
+                // (plan 3), which the stylesheet plays from its words (landing-motion.css).
+                const first = id === FIRST && lively == null;
                 // While an exchange plays, the answer waits its turn; after that it waits only for figures.
                 const typing = stage === "typing" || (stage == null && turn.state === "waiting");
                 const answered = stage == null && turn.state !== "waiting";
@@ -419,6 +420,7 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                     key={id}
                     className="ps-exchange"
                     data-x={id}
+                    data-first={first ? "" : undefined}
                     aria-busy={typing || (turn.state === "ready" && turn.pending) || undefined}
                   >
                     <p className="ps-bubble ps-bubble-q" data-play={lively}>
@@ -451,7 +453,7 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                         {turn.state === "ready" ? (
                           <>
                             <p className="ps-reply" lang={lang} data-pending={turn.pending ? "" : undefined}>
-                              <Streamed text={turn.reply.text} on={lively != null} />
+                              <Streamed text={turn.reply.text} on={lively != null || first} />
                             </p>
                             {id === "map" && (
                               <p className="ps-reply-link">
@@ -466,7 +468,7 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                             {(turn.reply.asOf || turn.demo) && (
                               <p className="ps-meta">
                                 {turn.reply.asOf && <span lang={lang}>{turn.reply.asOf}</span>}
-                                {turn.demo && <span className="ps-tag">Demo data</span>}
+                                {turn.demo && <span className="ps-tag">Sample data</span>}
                               </p>
                             )}
                           </>

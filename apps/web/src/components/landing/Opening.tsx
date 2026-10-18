@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import { OPENING_LATEST_MS, OPENING_TOUR_LEAD_MS, endOpening, landOpening, openingState } from "@/lib/landing/opening";
 import { CORNERS, PLOT, TIGHT } from "./AreaMark";
 import { LANDING } from "./tokens";
-import { NAME_AFTER, NAME_BEFORE, WORDMARK_PLOT } from "./Wordmark";
+import { NAME_BEFORE, NAME_SIGHTS, NAME_T, WORDMARK_PLOT } from "./Wordmark";
 
 /* The opening's times. Up to the closed "o" it is the stylesheet's, so it plays from the first paint whether or
    not the page's script has arrived (app/landing-hero.css has the keyframes; the two times below are theirs, for
@@ -12,13 +12,18 @@ import { NAME_AFTER, NAME_BEFORE, WORDMARK_PLOT } from "./Wordmark";
 const DRAW_AT_MS = 620;
 /** The line takes as long as the mark's own intro (AreaMark). */
 const DRAW_MS = 820;
-/* The whole name stays to be read before it leaves (owner, 2026-10-12: "can we keep it for some more time?"). In
-   that time the pointer rests on the corner it closed, then crosses to the map and waits on the first area's
-   first corner (owner, 2026-10-13: "the pointer walks to the map"). */
-const HOLD_MS = 1200;
-const REST_MS = 250;
-const WALK_MS = 760;
-const LIFT_MS = 620;
+/* The name is struck in two (owner, 2026-10-17: "make sure the plot and sights strike differently"): "Plot" is
+   drawn, its "o" by the pointer; then, a beat after the line closes, "sights" comes into focus in the second tone
+   (the stylesheet's op-strike, 1.56s in). While it does, the pointer leaves the plot for the map and waits on
+   the first area's first corner (owner, 2026-10-13: "the pointer walks to the map"). The whole name then stays to
+   be read (owner, 2026-10-12: "can we keep it for some more time?"): at least HOLD_MS after the "o" closed and
+   SIGHTS_HOLD_MS after "sights" has settled, whichever is later. It then goes up, "sights" turning to the name's ink
+   on the way, so it lies on the nav's as one word. */
+const HOLD_MS = 1100;
+const SIGHTS_HOLD_MS = 480;
+const REST_MS = 120;
+const WALK_MS = 700;
+const LIFT_MS = 640;
 /** The words come in when the name has cleared the headline; this is only how long to wait if that cannot be read. */
 const WORDS_LATEST_MS = 360;
 /** The tour's own pointer shows on its first corner this long before it moves (TownTour's POINTER_IN). */
@@ -63,6 +68,7 @@ export default function Opening() {
     const plot = el.querySelector<SVGSVGElement>(".wm-o");
     const pen = el.querySelector<SVGGElement>(".op-pen");
     const pointer = el.querySelector<HTMLElement>(".op-pointer");
+    const sights = el.querySelector<HTMLElement>(".op-sights");
     if (!name || !plot || !pen || !pointer) return;
     const words = [...document.querySelectorAll<HTMLElement>(".lh-copy > :not(.op)")];
 
@@ -141,12 +147,16 @@ export default function Opening() {
     EVENTS.forEach((type) => window.addEventListener(type, skip, { passive: true }));
 
     (async () => {
-      // The name and its "o" are the stylesheet's: wait for the line to close, and see how long ago it did.
-      const drawn = name.getAnimations({ subtree: true });
+      // The name and its "o" are the stylesheet's: wait for the line to close, and see how long ago it did. "sights"
+      // is the second strike and is waited for later, so the pointer can set off while it comes in.
+      const struck = sights ? sights.getAnimations() : [];
+      const drawn = name.getAnimations({ subtree: true }).filter((a) => !struck.includes(a));
+      const endOf = (list: Animation[]) => Math.max(0, ...list.map((a) => Number(a.startTime ?? 0) + Number(a.effect?.getComputedTiming().endTime ?? 0)));
       await Promise.all(drawn.map((a) => a.finished)).catch(() => {});
       if (!live) return;
-      const closedAt = Math.max(0, ...drawn.map((a) => Number(a.startTime ?? 0) + Number(a.effect?.getComputedTiming().endTime ?? 0)));
-      const since = () => Number(document.timeline.currentTime ?? 0) - closedAt;
+      const closedAt = endOf(drawn);
+      const now = () => Number(document.timeline.currentTime ?? 0);
+      const since = () => now() - closedAt;
 
       // The pointer leaves the plot for the map. The one that drew the "o" is part of the name and would go up
       // with it, so the tour's own pointer (in this box, not in the name) takes its place, at its size.
@@ -176,7 +186,9 @@ export default function Opening() {
       } else {
         running.push(pen.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 200, fill: "forwards" }));
       }
-      await wait(Math.max(0, HOLD_MS - since()));
+      await Promise.all(struck.map((a) => a.finished)).catch(() => {});
+      if (!live) return;
+      await wait(Math.max(0, HOLD_MS - since(), struck.length ? endOf(struck) + SIGHTS_HOLD_MS - now() : 0));
       if (!live) return;
 
       // The name goes up to the nav's, shrinking about its own top left corner, so it ends lying on it. It leaves
@@ -192,6 +204,12 @@ export default function Opening() {
         fill: "forwards",
       });
       running.push(lift);
+      // "sights" takes the name's own ink as it goes up: in the nav the name is one word, in one colour.
+      if (sights) {
+        const from = getComputedStyle(sights).color;
+        const to = getComputedStyle(name).color;
+        running.push(sights.animate([{ color: from }, { color: to }], { duration: LIFT_MS, easing: EASE, fill: "forwards" }));
+      }
       const lifted = performance.now();
       const clear = () => {
         if (!live || landed) return;
@@ -265,7 +283,9 @@ export default function Opening() {
             <path transform={`scale(${PEN_SCALE}) translate(-4 -2.5)`} d="M4 2.5v15l4.2-3.9 2.9 6 2.7-1.3-2.9-5.9h5.6z" />
           </g>
         </svg>
-        <span className="op-half">{NAME_AFTER}</span>
+        {/* "t" closes the first strike, "Plot"; "sights" is the second, in the second tone. */}
+        <span className="op-half op-t">{NAME_T}</span>
+        <span className="op-sights">{NAME_SIGHTS}</span>
       </span>
       {/* The same pointer once it has left the name for the map. */}
       <span className="lh-pointer op-pointer">

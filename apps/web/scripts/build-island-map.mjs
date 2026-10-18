@@ -24,8 +24,11 @@
 //
 // The colours are the page's tokens, baked in: an SVG shown as an image cannot
 // read CSS variables. If a token changes, change it here and rerun. The palette
-// is the light map of direction G (owner, 2026-10-14: "Prefer this one", over a
-// deep-olive one); PALETTES can hold more than one, each to its own file.
+// is Blue Night's (owner, 2026-10-17; DESIGN.md): the island at night, its land
+// left clear for the navy the page puts under it, a darker sea, the built-up
+// ground a step lighter and the main roads in the night blues. It is shown in
+// the Connector's map answer, on a night card. PALETTES can hold more than one,
+// each to its own file (the light map of direction G is in git history).
 
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -51,15 +54,16 @@ const CYPRUS = { north: 35.78, west: 32.2, east: 34.7 };
 const CYPRUS_KM2 = 9251;
 
 // The two palettes the map is written in, and each one's file.
+// `green` and `built` are drawn at their own opacity; an opacity of 0 leaves the layer out (at night the woods are not seen).
 const PALETTES = [
   {
-    name: "paper",
+    name: "night",
     file: "island.svg",
-    colour: { water: "#CBD9DA", shore: "#8DA1A2", green: "#E2E7D5", built: "#E4E0D3", motorway: "#A7A191", primary: "#B9B4A5", secondary: "#CCC8BA" },
+    colour: { water: "#0F141A", shore: "#8996A5", green: "#18202B", built: "#2E3D50", motorway: "#4E6A88", primary: "#3D5E7F", secondary: "#2A3B55" },
+    greenOpacity: 0,
+    builtOpacity: 0.9,
   },
 ];
-const GREEN_OPACITY = 0.8;
-const BUILT_OPACITY = 0.85;
 // Line widths are in the picture's own pixels however large it is shown (non-scaling strokes).
 const COAST_WIDTH = 1;
 const LAKE_EDGE_WIDTH = 0.6;
@@ -798,13 +802,13 @@ for (const name of LINES) {
 const stroke = (colour, width) => `fill="none" stroke="${colour}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"`;
 const path = (attrs, parts, close, lead = "") => (parts.length ? `<path ${attrs} d="${lead}${toPath(parts, close)}"/>\n` : "");
 /** The map in one palette. */
-const draw = (colour) =>
+const draw = (colour, greenOpacity, builtOpacity) =>
   `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW_W} ${VIEW_H}" preserveAspectRatio="none">\n` +
   `<!-- Written by scripts/build-island-map.mjs; do not edit by hand. Map data © OpenStreetMap contributors (ODbL), tiles © OpenMapTiles via OpenFreeMap. -->\n` +
   // The sea is the whole view with the island's rings as holes: the land is left clear.
   path(`fill="${colour.water}" fill-rule="evenodd"`, layersOut.land, true, `M0 0H${VIEW_W}V${VIEW_H}H0z`) +
-  path(`fill="${colour.green}" fill-opacity="${GREEN_OPACITY}"`, layersOut.green, true) +
-  path(`fill="${colour.built}" fill-opacity="${BUILT_OPACITY}"`, layersOut.built, true) +
+  (greenOpacity > 0 ? path(`fill="${colour.green}" fill-opacity="${greenOpacity}"`, layersOut.green, true) : "") +
+  (builtOpacity > 0 ? path(`fill="${colour.built}" fill-opacity="${builtOpacity}"`, layersOut.built, true) : "") +
   path(`fill="${colour.water}"`, layersOut.water, true) +
   path(stroke(colour.shore, LAKE_EDGE_WIDTH), layersOut.lakeEdge, false) +
   path(stroke(colour.secondary, SECONDARY_WIDTH), layersOut.secondary, false) +
@@ -814,8 +818,8 @@ const draw = (colour) =>
   `</svg>\n`;
 
 // Both are drawn and checked before either is written, so a failed check leaves the last good pair in place.
-const out = PALETTES.map(({ name, file, colour }) => {
-  const svg = draw(colour);
+const out = PALETTES.map(({ name, file, colour, greenOpacity, builtOpacity }) => {
+  const svg = draw(colour, greenOpacity, builtOpacity);
   const bytes = Buffer.byteLength(svg);
   console.log(`svg (${name}): ${bytes} bytes, ${gzipSync(svg, { level: 9 }).length} gzipped`);
   if (bytes > MAX_BYTES) throw new Error(`the ${name} map is ${bytes} bytes, over the ${MAX_BYTES} budget: raise AREA_TOLERANCE or MIN_AREA, then drop the shortest secondary roads`);

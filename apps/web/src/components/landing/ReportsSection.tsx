@@ -6,7 +6,7 @@ import type { HeroArea } from "@/lib/landing/areaContext";
 import { MIN_LISTINGS, SEASON, estimate, reading, revenueByMonth, seriesFacts } from "@/lib/landing/areaLines";
 import { euro, pct, tooThin, weeklySeries } from "@/lib/landing/sectionLines";
 import { ReportsIcon } from "./ProductIcons";
-import { Card, Covers, NO_FIGURES, READING, Standin, UNREACHABLE, carryRequest, inside, stillPreferred, useArrival } from "./SectionParts";
+import { Card, Covers, NO_FIGURES, READING, Standin, UNREACHABLE, carryRequest, inside, stillPreferred } from "./SectionParts";
 import { BarChart, LineChart } from "./SeriesChart";
 
 /** The sample blocks a section of the report can carry. Each is built from figures for the visitor's area or not at all. */
@@ -263,9 +263,9 @@ const LEAF_MS = 250;
  * The Reports panel: a report to leaf through, as the one big thing on it. Two tabs over the sheet pick the kind
  * of report, and the sheet's own pager turns its pages, each named: a sample block wherever there are real
  * figures for it, a list of what the section contains where there are none, and on the analysis sections the key
- * finding each ends in. On arrival the sheet is dealt onto the panel, once; leafing turns the page (out to one
- * side, the next in from the other). Until 2026-10-14 a rail beside the sheet listed every section as well; the
- * pager and the running head ("3 of 9") now say where the reader is, so the panel holds one thing.
+ * finding each ends in. On arrival the page is laid down on the band, once (plan 3: the mirror of the field's
+ * alternating row, on an ice band); leafing turns the page (out to one side, the next in from the other). The rail
+ * of marks under the running head says where the reader is, with "3 of 9".
  */
 export default function ReportsSection({ area }: { area: HeroArea }) {
   const [kind, setKind] = useState<Kind>("property");
@@ -278,9 +278,7 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
   // A page-turn under way: the old page leaving, or the new one coming in, and which way.
   const [leaf, setLeaf] = useState<{ stage: "out" | "in"; dir: 1 | -1 } | null>(null);
   const ids = useId();
-  const card = useRef<HTMLElement>(null);
   const timers = useRef<number[]>([]);
-  const { arrived, arriving } = useArrival(card);
   const sections: ReportSection[] = REPORTS[kind].sections;
   const i = at[kind];
   const first = i === 0;
@@ -329,21 +327,19 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
 
   return (
     <Card
-      cardRef={card}
       id="reports"
       layout="mirror"
+      eyebrow="Written by the team"
       name="Reports"
-      icon={<ReportsIcon size={36} />}
-      claim="A written answer for one property or one area."
+      icon={<ReportsIcon size={40} />}
+      claim="The full case for one property or one area."
       body={
         <p>
-          A property report runs to nine sections, from what it could earn to what it keeps after costs; an area
-          report, to four. Written by the team from the same daily data.
+          Nine sections for a property, from what it could earn to what it keeps after costs and what we would do with
+          it; four for an area. Written by the team from the same data as the Playground, with what each figure rests on.
         </p>
       }
-      note={`A sample page, from today\u2019s figures for ${area.name}.`}
-      arrived={arrived}
-      arriving={arriving}
+      note={`A sample page, from the latest figures for ${area.name}.`}
       action={
         <a href="#access" className="ps-solid" onClick={() => carryRequest(`A report on ${area.name}`)}>
           Ask for a report
@@ -351,6 +347,8 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
         </a>
       }
       object={
+        // The report lies as a sheet of paper on the ice band: a paper thing, where the navy cards hold live data. As
+        // the section arrives the page is laid down on it, its rail fills to the section showing and its bars grow.
         <div className="ps-sheet-col">
           <div className="ps-switch" role="group" aria-label="Kind of report">
             {KINDS.map((k) => (

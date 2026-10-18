@@ -6,31 +6,26 @@ import PlaygroundSection from "./PlaygroundSection";
 import ReportsSection from "./ReportsSection";
 
 /**
- * The three products under the hero: one sentence that names the three ways in, then Playground, Reports and
- * Connector, each a section of its own on its own ground. All three are about the whole island, which they read
- * from HeroAreaProvider (IslandSource publishes it).
- *
- * Until 2026-10-14 the three were a stack of cards that pinned under the nav and slid over one another. The owner
- * approved ending that (critique, 2026-10-14: no card may be covered before it has had its full screen): each
- * panel now holds one working thing and needs no pinning, nothing is ever covered, and on a phone the panels
- * simply follow one another. A link to a panel (#playground, #reports, #connector) lands it under the nav by its
- * own scroll margin.
+ * The three products' chapters, after their overview tiles (ProductsOverview), each on a band of its own so the page
+ * alternates grounds (plan 3, owner 2026-10-17: "I see a lot of white in the background"): the Playground on night,
+ * Reports on ice, the Connector on night. A band is a card inset in the white page like the hero, so each chapter is
+ * visibly its own. All three are about the whole island, which they read from HeroAreaProvider (IslandSource
+ * publishes it). Nothing pins or covers (owner, 2026-10-14). A link to a chapter (#playground, #reports, #connector)
+ * lands it under the bar by its own scroll margin.
  */
 export default function ProductSections() {
   const area = useHeroArea();
   return (
-    <div className="th-landing ps-sections">
-      <div className="ps-in">
-        <p className="ps-tie">
-          Three ways to use it: explore it yourself, ask us for a report, or ask Claude. The figures below are for all
-          of {area.name}, today.
-        </p>
-      </div>
-      <div className="ps-panels">
+    <>
+      <div className="th-landing ps-sections bn-band bn-band-night bn-night">
         <PlaygroundSection area={area} />
+      </div>
+      <div className="th-landing ps-sections bn-band bn-band-ice">
         <ReportsSection area={area} />
+      </div>
+      <div className="th-landing ps-sections bn-band bn-band-night bn-night">
         <ConnectorSection area={area} />
       </div>
-    </div>
+    </>
   );
 }

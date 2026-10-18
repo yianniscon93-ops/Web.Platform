@@ -14,7 +14,158 @@ Then "How the numbers are made", and the close. Product facts live in
 in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
 the stage: its component is still `DrawHero`.
 
-**2026-10-14: direction G, "Olive Window".** The owner found the beige,
+**2026-10-17, plan 3 build (owner: "Yes I like it", with changes).** The
+plan (https://claude.ai/artifact/8ujmJHBF5LTs7yaWUWs3QT) is built, with the
+owner's answers. What changed, in brief (DESIGN.md has the system):
+
+- **Order and grounds.** Hero (night card) → "How it works" / "Backed by
+  data" (`HowSection.tsx`, ice band) → the products' tiles
+  (`ProductsOverview.tsx`, white) → Playground (night band) → Reports (ice
+  band) → Connector (night band) → Questions (`QuestionsSection.tsx`, white)
+  → close (night card). Bands are `.bn-band` in `landing-sections.css`,
+  inset like the hero; "too much white" was the owner's note, so white is
+  only the tiles and the questions. Night after the night hero merged into
+  one slab in an A/B screenshot, so the band after it is ice. The nav's links
+  follow the page ("How it works" first).
+- **Headline A**: "Plot your next move / in Cyprus property. / Insights
+  backed by data.", sized by its longest line (the column over 10.85). The
+  headline is mist but for "Plot" and "sights" in ink, so the name is read
+  out of it. The **opening** strikes the name in two: "Pl·t" with the plot
+  drawn as its "o", then "sights" coming into focus in mist; it turns to ink
+  as it rises to the nav (`Opening.tsx`, `.op-sights` in `landing-hero.css`).
+  Eyebrow "Cyprus property intelligence"; sentence "We track short-lets,
+  long-lets, homes and plots for sale across Cyprus, and model what any
+  street earns, rents for and sells for."; counts line "Backed by …" and
+  "Short-let calendars last read …" (live only).
+- **The method story**: four steps, each picture right before its step in
+  the DOM (read together; above it on a phone, beside it from 1024px). With
+  motion, once `Reveal.tsx` sets `data-framed`, the four pictures hold one
+  over another in one sticky night frame (each sticky in the same grid area)
+  and only fade (never `visibility`), so all stay in the accessibility tree;
+  without script or with reduced motion all four stay beside their steps.
+  The pictures: the island with every short-let a light (`StoryLights.tsx`,
+  canvas over `island.svg`), the zoom to Kato Paphos (the tour's own area),
+  an example listing's booked-against-blocked month with Cyprus's raw and
+  effective occupancy, and an example home matched with the short-lets
+  nearest it (real positions) and four drawn long-lets (the listings API
+  places short-lets only; the caption says it is an example). The matched
+  card quotes the island's invest medians. Each step is about three-quarters
+  of a window, so the story is four short screens.
+- **Motion** (`Reveal.tsx`, `app/landing-motion.css`): arrivals and moments
+  once on arrival, count-ups on the true counts, the story and the curve
+  tied to the scroll where scroll timelines exist (else in time). Guards:
+  only what is below the window after load is hidden; nothing without
+  script, with reduced motion, or in print (the motion CSS is
+  `@media screen`); a waiting part that takes keyboard focus is shown at
+  once (`:focus-within`, then settled by `Reveal.tsx`). The per-card `useArrival`
+  observers are gone; `Card` carries `data-moment`.
+- **Questions** are a compact data sheet of seven native disclosures. The
+  answers are true as the code and docs stand; two are hedged in the copy:
+  the Playground is open now "without an account" (no auth on `/dashboard`)
+  and "accounts and plans are not settled yet" (PRODUCT.md open decision);
+  Greek is "Claude answers a question asked in Greek in Greek" (Claude's
+  behaviour; the connector reads Greek place names). "Keep what they show
+  over time" rests on the serving layer keeping weekly rows (POSTGRES.md).
+- **Close**: "Ask the team. Or start with your street.", "Email the team"
+  stays the main button (owner), "Or open the Playground" second.
+- **The cadence** is now said in step 1 ("Each short-let's calendar every two
+  days …") and the questions' second row; the hero gives the last read time
+  only. If the crons change, change those two places.
+- `public/og.png` was remade with headline A (the recipe below).
+
+**2026-10-17, later: copy pass.** The owner asked for words that "draw the
+attention", after AirROI, Ask Wire (the Cypriot property-data firm,
+ask-wire.com) and other property and short-let data sites. Layout, palette
+and type are unchanged; the headline is the owner's and stays. The rules the
+words now follow:
+
+- **No "daily".** The data repos' crontabs read short-let calendars every
+  two days (Data.STR `run_availability`), prices weekly, and Bazaraki's sale,
+  rent and land ads weekly (Data.Property, Mondays). Every "read daily" and
+  "updated every day" is gone; the cadence is said exactly where it is said
+  at all: under the search ("Short-let calendars re-read every two days, most
+  recently …", with the database's own time), in How's sentence and its
+  second stop. If the crons change, change those three places.
+- **Plots are "tracked", never "shown".** Plots of land are scraped weekly
+  since 2026-10-12 but live in DuckDB only (not synced to Postgres), so the
+  hero says the four kinds of listing are tracked, not that they are in one
+  view.
+- **Counts are what they are.** "In the database: … for-sale ads" under the
+  search; "short-lets tracked", "long-lets tracked", "for-sale ads seen" in
+  How (sale expiry is not tracked yet).
+- **The words.** Eyebrow "The whole island, street by street"; the sentence
+  "Short-lets, long-lets, homes and plots for sale, tracked all year from
+  Paphos to Protaras." over "Decide where to buy, what to charge and what to
+  advise."; the search's placeholder "Try Limassol, or Λεμεσός" (the search
+  takes either). Products: "Three ways in. Draw it yourself, have it written
+  up, or ask Claude."; the Playground's eyebrow "Draw it yourself" and "Put up
+  to three places side by side"; Reports "The full case for one property or
+  one area."; Connector "Ask about any place, in Greek too.", its questions
+  "Which months fill up, and which go quiet?" and "What do 2+ bedroom
+  short-lets take a night here?" under "Try a question"; How's eyebrow is the
+  bar's "How it works"; the close "A report, connector access, or a number you
+  can't find"; the footer names which listings come from which site.
+
+**2026-10-17: Blue Night (current).** The owner reopened the look (he did not
+like the end result of G) and asked for his own saved idea,
+`docs/design/ideas/blue-night/`; a standalone concept was shown and he picked
+Google Sans in its Flex cut (for the light 300), eyebrows and pill buttons on
+(the search a pill too), and the town-tour hero. Built the same day;
+`DESIGN.md` is the authority. What changed:
+
+- **Roles scoped to the landing** (`app/globals.css`): every landing role is
+  set under `.bn` (the white body) and set again under `.bn-night` (the hero,
+  the navy cards, the close, the bar while it lies over the hero). The `:root`
+  `--th-*` roles are still G's and are read only by the Playground, which
+  follows later; nothing on `/dashboard` changed.
+- **Face:** Google Sans Flex 300 to 700, self-hosted
+  (`public/fonts/google-sans-flex/`, Latin and Latin Extended; OFL). It has no
+  Greek, so Greek falls through to the self-hosted Google Sans.
+- **First screen:** a night card inset 12px (8px on a phone) with 20px
+  corners, a blue glow rising behind the town, the eyebrow "Cyprus property
+  data, read daily", the headline thin and two-tone ("Plot your next move" in
+  ink, the rest in mist; the olive "Plot" and "sights" are gone), the search a
+  pill with the reference's dark "Show me" pill. The tour and its timing are
+  unchanged; the pictures are night maps (below) and every short-let is a
+  light: a dot in its class's colour with a halo added to its neighbours',
+  brighter where fuller (`TownTour.tsx`). A card is night glass and now reads
+  name; short-lets with "77% occupancy this season" and its bar under them;
+  long-lets and for sale where live; "Sample figures" on demo data. The strip
+  is two lines at the card's foot.
+- **Map pictures:** `build-hero-town.mjs` and `build-island-map.mjs` bake the
+  night palette (land clear, the sea a dark wash, streets and coast in faint
+  dotted ice, main roads faint solid; no buildings, so the six town files fell
+  from 46 to 332 KB each to 14 to 36 KB). Rebuilt from the same cached
+  tiles, so the geometry and `heroTowns.ts` are unchanged. The tour reads the
+  sea back off the picture as the well-opaque dark pixels.
+- **Bar:** night over the hero (inside the card's top, the tagline "Property
+  data for Cyprus" from 1280px, the ice pill), white frosted by day; it turns
+  once the hero's foot is within 200px of the top. The phone menu is a night
+  sheet behind a "Menu" pill.
+- **Body:** white, 136px between sections (88px on a phone). "Products" and a
+  two-tone heading open the three; each section's heading is the product's
+  name and claim in two tones under an eyebrow ("Explore it yourself", "Written
+  by the team", "In Claude"). The Playground's verdict and the conversation
+  sit on navy cards; the report's sheet, the five views (back as a tile, from
+  the concept) and the questions on pale tiles. The actions sit with the words
+  at every width (the duplicate at the foot below 1024px is gone, as in the
+  concept); on a phone the Connector's questions come before the conversation.
+  The island's faint map behind the panels and every frosted panel are gone.
+- **How:** an eyebrow "Method", thin counts under hairlines, round stops, the
+  listing as a navy card with its light; the line fills with glow-500.
+- **Close:** "Ask the team" and the footer share one night card, the glow
+  falling from its top, the wordmark at the card's full width.
+- **Words:** "Demo data" reads "Sample data" on the landing (the concept's
+  word; the same honesty, clearer for a visitor).
+- **Left out from the concept:** the drifting light streaks (the tour is the
+  hero's one moving thing; the streaks were the most generic part of the
+  reference), the "Reply to Claude" composer at rest (the conversation is as
+  tall as its exchanges, per the critique of 2026-10-14), and sample long-let
+  and for-sale lines on demo cards (demo data answers those two for the whole
+  island, so the card leaves them out until the live database answers).
+- `app/landing-glass.css` is deleted.
+
+**2026-10-14: direction G, "Olive Window" (replaced by Blue Night).** The owner found the beige,
 olive and saffron page "childish" and asked for a professional
 data-analytics look; from ten directions rendered on the real page he chose
 G (paper, olive ink and action, an olive-to-lime data scale; `DESIGN.md` is
@@ -787,21 +938,15 @@ registered name and city, return when they exist (see Open).
 
 ## Palette
 
-Direction G (2026-10-14); `DESIGN.md` has every role and rule. Every landing
-colour is a role-named `--th-*` custom property, defined once in the
-"Landing (nav and hero)" block of `app/globals.css`; `tokens.ts` exports the
-roles components need as `var(--th-…)` strings, and
-`app/landing-sections.css` adds the section heading, the statement and
-figure sizes, `--th-edge` and the close's `--th-close-*` (the paper's words
-on deep olive, `--th-deep`). Olive (`--th-a`, `--th-action`) is the action,
-the brand's dots, the name in the headline and a drawn area's corners. The
-data scale is `--th-data-1` to `--th-data-4`, olive to lime; lime is only
-data and wears an ink ring on any light ground; `--th-dot-none` is the empty
-ring of a listing with no figure. The map roles (`--th-map-*`) are the light
-map's, which the first screen, the occupancy curve and the Connector's map
-answer share. Ink is the solid button ("Ask for a report", "Ask for access").
-The surfaces' glass is `app/landing-glass.css` (DESIGN.md, The Glass Rule).
-The beige and saffron system before G is in git history.
+Blue Night (2026-10-17); `DESIGN.md` has every role and rule. Every landing
+colour is a role-named `--th-*` custom property set under `.bn` (day) and
+`.bn-night` (night) in `app/globals.css`, with the night palette by name as
+`--bn-*`; `tokens.ts` exports roles as `var(--th-…)` strings, so components
+read the ground they sit on. The data scale is `--th-data-1` to `--th-data-4`,
+one blue from #5A7DA6 to #EDF3F9: on night the fullest is the brightest light;
+on white a mark of it wears a navy ring. The map pictures are baked in the
+night palette by the build scripts. G's paper, olive and lime roles stay in
+`:root` for the Playground only.
 
 ## Open
 
@@ -824,8 +969,10 @@ The beige and saffron system before G is in git history.
   the tour's overlay, the hero's figure line and the nav links hidden; make
   it again if the first screen changes.
 - **The first screen's line under the search** quotes the three counts and
-  the short-let sync time ("Read daily: … Short-let calendars last read …");
-  on demo data it says "Demo data:" and gives no time.
+  the short-let sync time ("In the database: … Short-let calendars re-read
+  every two days, most recently …"); on demo data it says "Sample data:" and
+  gives no time. PRODUCT.md still says the team reads listings daily; that is
+  the owner's to settle (run the crons daily, or change the words there).
 - **Not yet seen on live data.** Nothing here adds a query (the first
   screen and the picked place use the stage's own three endpoints with a
   polygon), but none of today's screens has been run against the live

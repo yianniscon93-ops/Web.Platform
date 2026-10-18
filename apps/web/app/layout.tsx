@@ -16,12 +16,12 @@ const barlowCondensed = Barlow_Condensed({
   display: "swap",
 });
 
-const TITLE = "Plotsights: plot your next move in Cyprus property";
+const TITLE = "Plotsights: Cyprus property intelligence, backed by data";
 const DESCRIPTION =
-  "Short-lets, long-lets, homes and plots for sale across Cyprus, read every day. Search a place and see what it earns, rents for and sells for.";
+  "Short-lets, long-lets, homes and plots for sale across Cyprus, tracked and modelled street by street. Search a place and see what it earns, rents for and sells for.";
 // The share image is the first screen itself, its headline beside a drawn town (public/og.png; docs/LANDING.md says how
 // it is made). It carries no figures, so it never goes stale.
-const SHARE = { url: "/og.png", width: 1200, height: 630, alt: "Plot your next move in Cyprus property. Get the insights." };
+const SHARE = { url: "/og.png", width: 1200, height: 630, alt: "Plot your next move in Cyprus property. Insights backed by data." };
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://plotsights.com"),

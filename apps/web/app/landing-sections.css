@@ -1,36 +1,125 @@
-/* ── Landing: the product panels, the close and the footer ─ */
-/* Everything under the hero: one sentence naming the three ways in, then Playground, Reports and Connector, each
-   a panel of its own on its own ground, then the close and the footer on ink. Until 2026-10-14 the three were a
-   stack of cards that pinned and covered one another; the owner approved ending that (critique, 2026-10-14).
-   Colours are the --th-* roles from the "Landing (nav and hero)" block of globals.css; the roles added here are
-   for jobs the hero does not have. Type is the text roles of that block and two display steps: the section
-   heading (a product's name, "How the numbers are made.", "Ask the team.") and the statement (a product's claim,
-   the sentence that opens the panels). */
-:root {
-  /* The section heading: a product's name, and the other sections' headings. 36px on a phone, 44px from 1440px. */
-  --th-heading: clamp(2.25rem, 3.05vw, 2.75rem);
-  /* A statement: a product's claim under its name, the panels' opening sentence. The hero's sentence is this size too. */
-  --th-text-statement: 24px;
-  /* A figure that is the point (the tipping point, the counts the database holds), set large at the regular weight. */
-  --th-text-figure: clamp(2.5rem, 4.4vw, 4rem);
-  /* The three panels' solid fill, under their glass (landing-glass.css) and where glass is not drawn (G, 2026-10-14:
-     no pastel washes). Each is its own section by its edge and by the one working thing on it, not by a tint. */
-  --th-card-playground: var(--th-surface);
-  /* The outline of a control drawn on a surface, and a slider's empty track: 3:1 or better on white and on the ground. */
-  --th-edge: color-mix(in srgb, var(--th-muted) 70%, var(--th-surface));
-  /* The close: deep olive, with the paper's words on it. A quieter paper for secondary lines, two
-     weights of rule. */
-  --th-close: var(--th-deep);
-  --th-close-ink: #F5F4EE;
-  --th-close-muted: color-mix(in srgb, #F5F4EE 74%, #1B2215);
-  --th-close-line: color-mix(in srgb, #F5F4EE 14%, #1B2215);
-  --th-close-edge: color-mix(in srgb, #F5F4EE 46%, #1B2215);
+/* ── Landing: the bands, the products, the questions, the close and the footer (Blue Night) ─ */
+/* Under the night hero the page alternates grounds (plan 3, owner 2026-10-17: "I see a lot of white in the
+   background"): bands of night and ice, each a card inset in the white page like the hero, with white only between
+   some of them and never two white sections together. "How it works" on ice (landing-how.css); the three products'
+   tiles on white; the Playground's chapter on night, Reports' on ice, the Connector's on night; the questions on
+   white; the close back in night. A chapter's one working thing is a navy card (live data: the tipping point, the
+   conversation) or paper on ice (the report's sheet), its list to choose from a cloud tile.
+   Colours are the --th-* roles (globals.css: `.bn` for day, `.bn-night` for night) and the night palette by name
+   (--bn-*). Type is the roles' sizes; headings and large figures are thin (300), two-tone. */
+
+/* ── The surfaces that carry the night down the page ── */
+/* A navy card: the night's ink on night-800, the glow rising inside it from below, no edge, no shadow. */
+.bn-card {
+  position: relative;
+  overflow: hidden;
+  padding: 22px 18px;
+  border-radius: var(--bn-r-tile);
+  background: var(--bn-night-800);
+  color: var(--th-ink);
+}
+.bn-card::before {
+  position: absolute;
+  inset: auto -20% -60% -20%;
+  height: 90%;
+  background: radial-gradient(closest-side, rgb(61 94 127 / 0.55), rgb(61 94 127 / 0)); /* taste-skill-ignore: Blue Night's glow, pinned by the owner */
+  pointer-events: none;
+  content: "";
+}
+.bn-card > * { position: relative; }
+/* A pale tile: ice for a paper thing (the report, the views), cloud for a list to choose from. A step in tone, no edge. */
+.bn-tile { padding: 22px 18px; border-radius: var(--bn-r-tile); color: var(--th-ink); }
+.bn-ice { background: var(--bn-ice-tile); }
+.bn-cloud { background: var(--bn-cloud-100); }
+@media (min-width: 641px) {
+  .bn-card { padding: 32px; }
+  .bn-tile { padding: 32px; }
 }
 
-.ps-sections { background: var(--th-ground); color: var(--th-ink); font-variant-numeric: tabular-nums; }
-.ps-in { position: relative; max-width: 1440px; margin: 0 auto; padding: 0 16px; }
-.ps-sections b { font-weight: 600; }
-/* A figure whose area has moved and whose new value has not arrived: still there, a step back from ink. */
+/* The page's buttons on white: the navy pill (the action and the solid share it on Blue Night's white). */
+.bn .ps-solid {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: var(--bn-r-pill);
+  background: var(--th-solid);
+  color: var(--th-solid-ink);
+  font-size: var(--th-text-body);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+}
+.bn .ps-solid:hover { background-color: var(--th-solid-hover); }
+.bn .ps-solid:active { transform: scale(0.97); }
+.bn .ps-solid svg { transition: transform 0.2s var(--th-ease); }
+.bn .ps-solid:hover svg { transform: translateX(3px); }
+/* A link in running text: underlined, the line lifting away on hover. */
+.bn .th-link { text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+/* "Sample data": an outlined pill, never a filled one. */
+.ps-tag {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: var(--bn-r-pill);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 40%, transparent); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+  color: var(--th-muted);
+  font-size: var(--th-text-fine);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+/* ── The bands ── */
+/* A band: a card of night or ice inset in the white page, 8px from its edges on a phone and 12px from 1024px (the
+   hero's own inset), 20px corners (16px on a phone). Two bands that meet are 12px apart, so the page reads as a stack
+   of cards on white; a white section between bands keeps the page's own spacing. Night bands are the hero's night,
+   the glow rising inside from below; ice bands are flat. */
+.bn-band {
+  --lh-m: 8px;
+  position: relative;
+  margin: var(--lh-m) var(--lh-m) 0;
+  padding: 72px 0;
+  border-radius: var(--bn-r-card);
+  isolation: isolate;
+}
+/* On ice and cloud the second tone is a step darker than on white, so small text in it holds 4.5:1 (4.8:1). */
+.bn-band-ice, .po-rp, .po-cn { --th-pay: #566476; }
+.bn-band-ice { background: var(--bn-ice-tile); color: var(--th-ink); }
+.bn-band-night { overflow: clip; background: linear-gradient(180deg, var(--bn-night-950), var(--bn-night-900)); color: var(--th-ink); } /* taste-skill-ignore: Blue Night's night, pinned by the owner */
+.bn-band-night::before {
+  position: absolute;
+  inset: auto -10% -45% -10%;
+  z-index: -1;
+  height: 70%;
+  background: radial-gradient(closest-side, rgb(61 94 127 / 0.5), rgb(46 61 80 / 0.22) 55%, rgb(20 25 31 / 0)); /* taste-skill-ignore: the Blue Night glow, pinned by the owner */
+  pointer-events: none;
+  content: "";
+}
+/* A pale tile inside night keeps the day's roles: ink on cloud, never white on a pale tile (Night Carries Data). */
+.bn-night .bn-tile {
+  --th-ink: #1A1F26;
+  --th-muted: #4A5563;
+  --th-pay: #566476;
+  --th-line: #DCE2E9;
+  --th-surface: #FFFFFF;
+  --th-focus: #213047;
+  --th-a: #3D5E7F;
+  color: var(--th-ink);
+}
+@media (min-width: 641px) { .bn-band { padding: 96px 0; } }
+@media (min-width: 1024px) { .bn-band { --lh-m: 12px; padding: 120px 0; } }
+
+/* ── The product chapters, in their bands ── */
+.ps-sections { color: var(--th-ink); }
+/* One container for the white page and the close: 1312px of content between the page's gutters, so every left edge
+   on it is the hero's and the bar's. */
+.ps-in, .ps-card { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut)); margin: 0 auto; padding-right: var(--bn-gut); padding-left: var(--bn-gut); }
+.ps-sections b { font-weight: 500; }
+.ps-pay { color: var(--th-pay); }
+/* A figure whose area has moved and whose new value has not arrived: still there, a step back. */
 .ps-sections [data-pending],
 .ps-sections [data-pending] :is(b, dd, dt, td, th, p, figcaption) { color: var(--th-pending); }
 .ps-sections [data-pending] .ps-chart-line { stroke: var(--th-pending); }
@@ -38,123 +127,37 @@
 .ps-sections [data-pending] .ps-bar i { background: var(--th-pending); }
 .ps-sections [data-pending] .ps-finding::before { border-color: var(--th-pending); background: var(--th-pending); }
 
-/* The sentence that opens the panels: what the three are, and that their figures are the whole island's. A
-   statement, set as a paragraph: the products' names are the headings. */
-.ps-tie {
-  max-width: 44em;
-  padding: 56px 0 32px;
-  font-size: var(--th-text-lead);
-  font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: -0.005em;
-  text-wrap: balance;
-}
-/* A link in a line of text: its target reaches 44px without moving the line. */
-.ps-reply-link .th-link { display: inline-block; margin: -11px 0; padding: 11px 0; }
-
-/* ── The panels ── */
-/* Each product is a panel of opaque glass over a faint map of the island (landing-glass.css), no shadow, no tinted wash. On it,
-   the product's name and claim, a sentence or two, its one action, and the one working thing that shows it.
-   Nothing boxed sits on a panel but the report's sheet of paper. Below 1024px a panel is one column. */
-.ps-panels { position: relative; display: grid; row-gap: 32px; padding-bottom: 32px; }
-/* What the panels' glass blurs (landing-glass.css), from 1024px: the island's own map behind them, at half strength,
-   as tall as the panels, so between and beside them Cyprus shows and through them it is a soft wash. It fades in
-   under the sentence above and out before "How the numbers are made", and no loose text lies on it. Below 1024px
-   the panels fill the width and there is nothing to show, so the picture is not fetched. */
-@media (min-width: 1024px) {
-  .ps-panels::before {
-    content: "";
-    position: absolute;
-    inset: -24px 0 0;
-    z-index: 0;
-    background: url(/landing/island.svg) 50% 0 / auto 100% no-repeat;
-    opacity: 0.5;
-    pointer-events: none;
-    -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 120px, #000 calc(100% - 160px), transparent);
-    mask-image: linear-gradient(180deg, transparent 0, #000 120px, #000 calc(100% - 160px), transparent);
-  }
-}
 .ps-card {
-  --ps-ground: var(--th-card-playground);
-  position: relative;
-  z-index: 1;
   display: grid;
   grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "text" "object" "lead" "end";
+  grid-template-areas: "text" "object" "lead";
   row-gap: 28px;
-  width: calc(100% - 32px);
-  max-width: 1312px;
-  margin: 0 auto;
-  padding: 28px 18px 28px;
-  border: 1px solid var(--th-line);
-  border-radius: 12px;
-  background: var(--ps-ground);
+  align-items: start;
   scroll-margin-top: 88px;
 }
 .ps-card > * { min-width: 0; }
-.ps-card-text { grid-area: text; display: grid; row-gap: 20px; align-content: start; }
+.ps-card-text { grid-area: text; display: grid; row-gap: 22px; align-content: start; }
 .ps-card-object { grid-area: object; }
 .ps-card-lead { grid-area: lead; }
-.ps-card-end { grid-area: end; }
-.ps-card-intro { display: grid; row-gap: 12px; }
-/* The product's name is the panel's heading, its icon beside it; under it the claim, a statement. */
-.ps-card-name {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  font-size: var(--th-heading);
-  font-weight: var(--th-display-weight);
-  line-height: 1.04;
-  letter-spacing: var(--th-display-tracking);
-}
-.ps-card-icon { display: flex; flex: none; }
-.ps-claim { max-width: 22em; font-size: var(--th-text-statement); font-weight: 400; line-height: 1.3; letter-spacing: -0.015em; text-wrap: balance; }
-.ps-card-say { display: grid; row-gap: 20px; align-content: start; justify-items: start; }
-/* Running text in the full ink: grey is for notes (critique, 2026-10-14). */
-.ps-lede { display: grid; row-gap: 10px; max-width: 34em; color: var(--th-ink); font-size: var(--th-text-body); line-height: 1.5; text-wrap: pretty; }
-.ps-card-action, .ps-card-end { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
-/* The action has two homes, one showing at a time: at the panel's foot below 1024px, beside the words from there. */
-.ps-card-text .ps-card-action { display: none; }
-/* A plain word beside an action, on what it does for now. */
-.ps-action-note { color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
-.ps-h3 { margin-bottom: 8px; font-size: var(--th-text-body); font-weight: 500; line-height: 26px; }
-
-.ps-solid {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  min-height: 46px;
-  padding: 0 22px;
-  border-radius: 6px;
-  background: var(--th-solid);
-  color: var(--th-solid-ink);
-  font-size: var(--th-text-body);
-  font-weight: 600;
-  white-space: nowrap;
-  transition: background-color 0.15s, transform 0.15s var(--th-ease);
-}
-.ps-solid:hover { background-color: var(--th-solid-hover); }
-.ps-solid:active { transform: scale(0.97); }
-.ps-solid svg { transition: transform 0.2s var(--th-ease); }
-.ps-solid:hover svg { transform: translateX(3px); }
-.ps-under { margin-top: 12px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
-/* "Demo data": a quiet outlined label, never a filled pill. */
-.ps-tag {
-  display: inline-flex;
-  align-items: center;
-  height: 24px;
-  padding: 0 7px;
-  border-radius: 3px;
-  box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent);
-  color: var(--th-muted);
-  font-size: var(--th-text-fine);
-  font-weight: 500;
-  white-space: nowrap;
-}
-/* Under a figure block: whether it is demo data, and what it covers. */
-.ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 26px; }
-/* Words where a figure block has no figures. */
+/* Below 1024px a stacked section (the Connector) puts its questions before the conversation: pick, then watch. */
+/* What the Playground shows, in three lines, each after a small dot of the night's second blue. */
+.ps-proof { display: grid; row-gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.45; }
+.ps-proof li { display: flex; gap: 12px; align-items: baseline; }
+.ps-proof li::before { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--th-a); transform: translateY(-2px); content: ""; }
+@media (max-width: 1023px) { .ps-card[data-layout="stack"] { grid-template-areas: "text" "lead" "object"; } }
+/* The icon, then the label over the heading, then the heading: the name in ink, its claim in the second tone. */
+.ps-card-intro { display: grid; justify-items: start; }
+.ps-card-icon { display: flex; margin-bottom: 18px; }
+.ps-card-intro .bn-eb { margin-bottom: 10px; }
+.ps-card-name { font-size: var(--th-heading); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.ps-card-say { display: grid; row-gap: 22px; align-content: start; justify-items: start; }
+.ps-lede { display: grid; row-gap: 10px; max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+.ps-lede strong { color: var(--th-ink); font-weight: 500; }
+.ps-card-action { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
+.ps-action-note { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.ps-under { margin-top: -8px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.ps-h3 { font-size: var(--th-text-small); font-weight: 500; line-height: 24px; }
+.ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 24px; }
 .ps-standin { padding: 6px 0; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 .ps-textbtn {
   display: inline-flex;
@@ -162,34 +165,35 @@
   min-height: 44px;
   color: var(--th-ink);
   font-size: var(--th-text-body);
-  font-weight: 600;
+  font-weight: 500;
   text-decoration: underline 1.5px;
   text-underline-offset: 4px;
   cursor: pointer;
-  transition: text-underline-offset 0.2s var(--th-ease);
+  transition: text-decoration-color 0.2s;
 }
-.ps-textbtn:hover { text-underline-offset: 7px; }
+.ps-textbtn:hover { text-decoration-color: transparent; }
 
-/* ── Playground: "Airbnb or a tenant?" ── */
-/* The Buy & Rent verdict, worked: the tipping point as a large figure at the regular weight, the scale with the
-   brand's square handle, the verdict, the year's two sums and how firm they are. It sits on the panel itself. */
+
+/* ── Playground: "Airbnb or a tenant?", on a navy card ── */
+/* The Buy & Rent verdict, worked: the tipping point as a large thin figure, the scale with the visitor's handle, the
+   verdict, and every short-let's curve under it. */
 .pt { display: grid; row-gap: 18px; align-content: start; }
-.pt-h { font-size: var(--th-text-lead); font-weight: 500; line-height: 26px; }
-.pt-tip { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 6px; align-items: center; }
-.pt-big { font-size: var(--th-text-figure); font-weight: 400; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
-.pt-tip > span:last-child { max-width: 24em; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
-.pt-field { margin-top: 4px; }
+.pt-h { color: var(--th-muted); font-size: 20px; font-weight: 400; line-height: 26px; }
+.pt-tip { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 8px; align-items: start; margin-top: -6px; }
+.pt-big { font-size: var(--th-text-figure); font-weight: var(--th-display-weight); line-height: 0.95; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.pt-tip > span:last-child { max-width: 25rem; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
+.pt-field { margin-top: 8px; }
 .pt-field output { font-variant-numeric: tabular-nums; }
-/* The scale: the slider, the tipping point marked above it in olive, where Cyprus is today marked under it in the
-   data's lime, inside an ink square. The marks sit where the handle's middle would be: its 16px travels inside. */
-.pt-scale { position: relative; grid-column: 1 / -1; padding: 28px 0 34px; }
+/* The scale: the slider, the tipping point marked above it, where Cyprus is today marked under it in the scale's
+   brightest step. The marks sit where the handle's middle would be: its 18px travels inside. */
+.pt-scale { position: relative; grid-column: 1 / -1; padding: 30px 0 32px; }
 .pt-scale input[type="range"] { display: block; }
 .pt-mark-tip {
   position: absolute;
-  top: 22px;
-  left: calc(8px + (100% - 16px) * var(--pt-tip));
-  height: 36px;
-  border-left: 2px solid var(--th-a);
+  top: 26px;
+  left: calc(9px + (100% - 18px) * var(--pt-tip));
+  height: 30px;
+  border-left: 1px solid rgb(245 247 250 / 0.45); /* taste-skill-ignore: a chart's own mark */
   pointer-events: none;
 }
 .pt-mark-tip span {
@@ -197,9 +201,8 @@
   bottom: 100%;
   left: 0;
   padding-bottom: 2px;
-  color: var(--th-ink);
-  font-size: var(--th-text-small);
-  font-weight: 500;
+  color: var(--th-muted);
+  font-size: var(--th-text-fine);
   line-height: 20px;
   white-space: nowrap;
   transform: translateX(-50%);
@@ -208,171 +211,63 @@
 .pt-scale[data-tip-at="end"] .pt-mark-tip span { transform: translateX(calc(-100% + 4px)); }
 .pt-mark-today {
   position: absolute;
-  top: 64px;
-  left: calc(8px + (100% - 16px) * var(--pt-today));
+  top: 66px;
+  left: calc(9px + (100% - 18px) * var(--pt-today));
   display: flex;
   align-items: center;
   gap: 6px;
   color: var(--th-muted);
-  font-size: var(--th-text-small);
-  line-height: 22px;
+  font-size: var(--th-text-fine);
+  line-height: 20px;
   white-space: nowrap;
   transform: translateX(-5px);
   pointer-events: none;
 }
-.pt-mark-today i { flex: none; width: 10px; height: 10px; border: 1.5px solid var(--th-ink); background: var(--th-mark); }
+.pt-mark-today i { flex: none; width: 9px; height: 9px; border-radius: 1px; background: var(--th-data-4); box-shadow: 0 0 8px rgb(237 243 249 / 0.7); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
 .pt-scale[data-today-at="end"] .pt-mark-today { flex-direction: row-reverse; transform: translateX(calc(-100% + 5px)); }
-.pt-verdict { display: flex; grid-column: 1 / -1; gap: 10px; align-items: baseline; font-size: var(--th-text-lead); font-weight: 500; line-height: 1.35; text-wrap: pretty; }
-/* The verdict's mark is lime when the short-let wins, past the tipping point: what lime means on this page. */
-.pt-verdict i { flex: none; width: 11px; height: 11px; border: 1.5px solid var(--th-ink); background: var(--th-mark); transform: translateY(-1px); }
-.pt-verdict[data-win="long"] i { background: var(--th-surface); }
-.pt-back { grid-column: 1 / -1; justify-self: start; }
-.pt-year { max-width: 36em; font-size: var(--th-text-body); line-height: 1.5; text-wrap: pretty; }
-.pt-year b { font-variant-numeric: tabular-nums; }
-.pt-firm { max-width: 40em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
+.pt-verdict { display: flex; grid-column: 1 / -1; gap: 12px; align-items: baseline; margin-top: 4px; font-size: var(--th-text-lead); font-weight: 400; line-height: 1.35; text-wrap: pretty; }
+/* The verdict's square is the scale's brightest step, lit, when the short-let wins past the tipping point. */
+.pt-verdict i { flex: none; width: 12px; height: 12px; border: 1.5px solid var(--th-ink); border-radius: 2px; transform: translateY(-1px); }
+.pt-verdict[data-win="short"] i { border-color: var(--th-data-4); background: var(--th-data-4); box-shadow: 0 0 10px rgb(237 243 249 / 0.8); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.pt-back { grid-column: 1 / -1; justify-self: start; min-height: 36px; color: var(--th-a); font-size: var(--th-text-fine); }
+/* The two halves of the frame: the verdict and its slider, then every short-let's curve (side by side from 1024px). */
+.pt-main, .pt-side { display: grid; row-gap: 18px; align-content: start; min-width: 0; }
+/* What the verdict rests on: closed under the card until asked for, the night band's second tone. */
+.pt-rests { max-width: 38rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 1.5; }
+.pt-rests summary { display: inline-flex; gap: 10px; align-items: center; min-height: 44px; color: var(--th-ink); font-size: var(--th-text-small); font-weight: 500; list-style: none; cursor: pointer; }
+.pt-rests summary::-webkit-details-marker { display: none; }
+.pt-rests summary::before { display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; box-shadow: inset 0 0 0 1px var(--th-edge); content: "+"; font-weight: 400; transition: transform 0.25s var(--th-ease); } /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+.pt-rests[open] summary::before { transform: rotate(45deg); }
+.pt-firm { max-width: 36rem; margin-top: 4px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 1.5; text-wrap: pretty; }
 .pt-firm b { color: var(--th-ink); }
-.pt .ps-covers { padding-top: 0; }
-/* The listings' curve (OccupancyCurve): every short-let on the island by the share of its nights booked this
-   season, the tipping point on it, and the visitor's own figure, which a press or a drag along the chart sets as
-   the slider does (Our World in Data's chart-as-control, Robinhood's scrub). It sits on the map's own light land,
-   framed by a hairline, so it reads as the product's chart; the plot is as wide as the slider's travel, so the
-   two line up. The line is the scale's second step, which holds on light land (3.8:1); lime marks only the
-   tipping point's dot, inside an ink ring. */
-.pt-curve { display: grid; row-gap: 6px; margin-top: 4px; padding: 16px 0 14px; border-radius: 8px; background: var(--th-map-land); box-shadow: inset 0 0 0 1px var(--th-line); color: var(--th-ink); }
-.pt-curve figcaption { padding: 0 16px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 23px; text-wrap: pretty; }
+.pt-firm .ps-tag { margin-left: 4px; vertical-align: 1px; }
+/* Every short-let on the island by the share of its nights booked this season (OccupancyCurve), the tipping point on
+   it, and the visitor's own figure, which a press or a drag along it sets as the slider does. On the card, under a
+   hairline: ice line, faint fill, the tipping point the scale's brightest step, lit. */
+.pt-curve { display: grid; row-gap: 6px; margin-top: 10px; padding-top: 18px; border-top: 1px solid var(--th-line); color: var(--th-ink); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.pt-curve figcaption { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
 .pt-curve figcaption b { color: var(--th-ink); font-weight: 500; }
-.pt-curve-plot { display: block; width: 100%; height: auto; overflow: visible; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
+.pt-curve-plot { display: block; width: 100%; height: auto; margin-top: 8px; overflow: visible; cursor: ew-resize; touch-action: pan-y; user-select: none; -webkit-user-select: none; }
 .pt-curve-plot text { fill: var(--th-ink); font-family: var(--th-font); font-size: 15px; font-variant-numeric: tabular-nums; }
 .pt-curve-plot .pt-curve-tick { fill: var(--th-muted); }
-.pt-curve-grid { stroke: var(--th-line); stroke-width: 1px; }
-.pt-curve-base { stroke: var(--th-muted); stroke-width: 1px; }
-.pt-curve-fill { fill: var(--th-data-2); fill-opacity: 0.08; }
-.pt-curve-line { fill: none; stroke: var(--th-data-2); stroke-width: 2.25px; stroke-linejoin: round; }
-.pt-curve-tip path { stroke: var(--th-ink); stroke-width: 1px; }
-.pt-curve-tip circle { fill: var(--th-data-4); stroke: var(--th-ink); stroke-width: 1.5px; }
-.pt-curve-you path { stroke: var(--th-muted); stroke-width: 1px; stroke-dasharray: 2 3; }
-.pt-curve-you circle { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.75px; }
+.pt-curve-grid { stroke: rgb(245 247 250 / 0.1); stroke-width: 1px; }
+.pt-curve-base { stroke: rgb(245 247 250 / 0.35); stroke-width: 1px; }
+.pt-curve-fill { fill: var(--bn-ice-200); fill-opacity: 0.08; }
+.pt-curve-line { fill: none; stroke: var(--bn-ice-200); stroke-width: 2px; stroke-linejoin: round; }
+.pt-curve-tip path { stroke: rgb(245 247 250 / 0.4); stroke-width: 1px; }
+.pt-curve-tip circle { fill: var(--th-data-4); stroke: var(--bn-night-800); stroke-width: 2px; filter: drop-shadow(0 0 6px rgb(237 243 249 / 0.6)); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.pt-curve-you path { stroke: rgb(245 247 250 / 0.75); stroke-width: 1px; stroke-dasharray: 3 3; }
+.pt-curve-you circle { fill: var(--bn-night-800); stroke: var(--th-ink); stroke-width: 2px; }
 .pt-curve-you text { font-weight: 500; }
 .pt-curve[data-held] .pt-curve-you circle { fill: var(--th-ink); }
-.pt-curve-note { padding: 0 16px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
+.pt-curve-note { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
 
-/* A chart in the hero chart's style: one 2px line, the value axis's two ends, up to three ticks. */
-.ps-chart { --ps-chart-h: 132px; margin-top: 2px; }
-.ps-pair .ps-chart { --ps-chart-h: 156px; }
-/* The caption, and over it in the same place the readout of the point under the pointer (SeriesChart): the longer
-   of the two sets the height, so a caption that takes two lines on a phone is never cut and nothing moves. */
-.ps-chart-cap { display: grid; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
-.ps-chart-cap > span { grid-area: 1 / 1; }
-.ps-chart-cap > span[data-off] { visibility: hidden; }
-.ps-chart-cap b { color: var(--th-ink); }
-.ps-chart-body {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  grid-template-rows: var(--ps-chart-h) 21px;
-  column-gap: 8px;
-  margin-top: 10px;
-}
-.ps-chart-y {
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  margin: -6px 0;
-  color: var(--th-muted);
-  font-size: var(--th-text-fine);
-  line-height: 15px;
-  text-align: right;
-}
-.ps-chart-plot {
-  position: relative;
-  border-top: 1px solid var(--th-line);
-  border-bottom: 1px solid var(--th-line);
-  cursor: crosshair;
-  touch-action: pan-y;
-}
-/* The line's own box: clear of the frame by half the end node, so the node is never cut. */
-.ps-chart-area { position: absolute; inset: 5px 6px 5px 0; }
-.ps-chart-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
-.ps-chart-line { fill: none; stroke: var(--th-ink); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
-/* The series ends in the brand's square node. */
-.ps-chart-end {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  margin: -4.5px 0 0 -4.5px;
-  border: 2px solid var(--th-ink);
-  background: var(--th-surface);
-}
-.ps-chart-cross { position: absolute; top: -5px; bottom: -5px; width: 1px; margin-left: -0.5px; background: var(--th-muted); }
-.ps-chart-dot {
-  position: absolute;
-  width: 9px;
-  height: 9px;
-  margin: -4.5px 0 0 -4.5px;
-  border-radius: 9999px;
-  background: var(--th-ink);
-  box-shadow: 0 0 0 2px var(--th-surface);
-}
-.ps-chart-x { position: relative; grid-column: 2; margin-right: 6px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 15px; }
-.ps-chart-x span { position: absolute; top: 6px; transform: translateX(-50%); }
-.ps-chart-x span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 4px; background: var(--th-map-road-major); }
-/* Bars: each named beneath and valued above. With a value axis the top rule is its upper end and a value may
-   stand above it; without one the bars stand on the baseline alone, each with room for its value inside the plot. */
-.ps-bars[data-axis] .ps-chart-body { margin-top: 30px; }
-.ps-bars:not([data-axis]) .ps-chart-body { grid-template-columns: minmax(0, 1fr); }
-.ps-bars:not([data-axis]) .ps-chart-plot { border-top: 0; }
-.ps-bars:not([data-axis]) .ps-bars-x { grid-column: 1; }
-.ps-bars .ps-chart-plot { cursor: default; }
-/* The two lines over the plot: what the bars are, and how the figures were arrived at. */
-.ps-bars-cap { display: grid; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
-.ps-bars-cap b { color: var(--th-ink); font-weight: 600; }
-.ps-bars-cap :is(b, span) { text-wrap: balance; }
-.ps-bars-row { position: absolute; inset: 0; display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; align-items: end; padding: 0 4px; }
-.ps-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
-.ps-bar i { flex: none; width: min(24px, 50%); height: calc(var(--ps-bar) * 100%); min-height: 2px; background: var(--th-ink); }
-.ps-bars:not([data-axis]) .ps-bar i { height: calc(var(--ps-bar) * (100% - 20px)); }
-/* A bar's value is a chart label, at the fine size. Six of them are wider than a phone's plot: there every other
-   one is left out (`data-quiet`, set by BarChart, which measures them), and the same for the names under the bars. */
-.ps-bar b { padding-bottom: 5px; color: var(--th-ink); font-size: var(--th-text-fine); font-weight: 600; line-height: 15px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.ps-bars-x {
-  display: grid;
-  grid-column: 2;
-  grid-auto-columns: minmax(0, 1fr);
-  grid-auto-flow: column;
-  padding: 6px 4px 0;
-  color: var(--th-muted);
-  font-size: var(--th-text-fine);
-  line-height: 15px;
-  text-align: center;
-  white-space: nowrap;
-}
-.ps-bars [data-quiet] { visibility: hidden; }
-
-/* A table of figures: hairline rows, each column saying what it covers. */
-.ps-table { width: 100%; border-collapse: collapse; text-align: left; }
-.ps-table thead th { padding: 0 12px 8px 0; font-size: var(--th-text-body); font-weight: 600; line-height: 26px; vertical-align: top; }
-.ps-table thead small { display: block; color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; line-height: 22px; }
-.ps-table tbody :is(th, td) {
-  padding: 7px 12px 7px 0;
-  border-top: 1px solid var(--th-line);
-  color: var(--th-muted);
-  font-size: var(--th-text-small);
-  line-height: 28px;
-  vertical-align: top;
-}
-.ps-table tbody th { color: var(--th-ink); font-size: var(--th-text-body); font-weight: 500; white-space: nowrap; }
-.ps-table td { white-space: nowrap; }
-.ps-table td b { color: var(--th-ink); font-size: var(--th-text-body); }
-.ps-table td b.ps-none { color: var(--th-muted); font-weight: 400; }
-.ps-table :is(th, td):last-child { padding-right: 0; }
-
-
-/* A slider: the brand's square handle on a track filled in ink up to it. */
+/* A slider: a hairline track filled in the action's colour up to a round handle. */
 .ps-field { display: grid; grid-template-columns: minmax(0, 1fr) auto; align-items: baseline; margin-top: 12px; }
-.ps-field label { font-size: var(--th-text-body); font-weight: 500; line-height: 26px; }
-.ps-field output { font-size: var(--th-text-body); font-weight: 600; line-height: 26px; }
+.ps-field label { font-size: var(--th-text-small); font-weight: 400; line-height: 24px; }
+.ps-field output { font-size: var(--th-text-small); font-weight: 500; line-height: 24px; }
 .ps-field input, .ps-field-note { grid-column: 1 / -1; }
 .ps-field-note { margin-top: -4px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
-/* The slider: a hairline track filled in ink up to the thumb, and the brand's square handle to hold. */
 .ps-field input[type="range"] {
   --ps-fill: 50%;
   width: 100%;
@@ -388,548 +283,617 @@
 .ps-field input[type="range"]:active { cursor: grabbing; }
 .ps-field input[type="range"]::-webkit-slider-runnable-track {
   height: 2px;
-  background: linear-gradient(to right, var(--th-ink) var(--ps-fill), var(--th-edge) var(--ps-fill));
+  border-radius: 1px;
+  background: linear-gradient(to right, var(--th-action) var(--ps-fill), var(--th-edge) var(--ps-fill)); /* taste-skill-ignore: a slider's fill, two flat colours */
 }
 .ps-field input[type="range"]::-moz-range-track { height: 2px; background: var(--th-edge); }
-.ps-field input[type="range"]::-moz-range-progress { height: 2px; background: var(--th-ink); }
+.ps-field input[type="range"]::-moz-range-progress { height: 2px; background: var(--th-action); }
 .ps-field input[type="range"]::-webkit-slider-thumb {
-  width: 16px;
-  height: 16px;
-  margin-top: -7px;
-  border: 2px solid var(--th-ink);
-  border-radius: 0;
-  background: var(--th-surface);
-  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+  width: 18px;
+  height: 18px;
+  margin-top: -8px;
+  border: 2px solid var(--bn-night-800);
+  border-radius: 50%;
+  background: var(--th-action);
+  box-shadow: 0 0 0 1px var(--th-action); /* taste-skill-ignore: the handle's ring */
+  transition: transform 0.15s var(--th-ease);
   -webkit-appearance: none;
   appearance: none;
 }
 .ps-field input[type="range"]::-moz-range-thumb {
   box-sizing: border-box;
-  width: 16px;
-  height: 16px;
-  border: 2px solid var(--th-ink);
-  border-radius: 0;
-  background: var(--th-surface);
-  transition: background-color 0.15s, transform 0.15s var(--th-ease);
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--bn-night-800);
+  border-radius: 50%;
+  background: var(--th-action);
+  box-shadow: 0 0 0 1px var(--th-action); /* taste-skill-ignore: the handle's ring */
+  transition: transform 0.15s var(--th-ease);
 }
 .ps-field input[type="range"]:hover::-webkit-slider-thumb,
-.ps-field input[type="range"]:active::-webkit-slider-thumb { background: var(--th-a); transform: scale(1.2); }
+.ps-field input[type="range"]:active::-webkit-slider-thumb { transform: scale(1.15); }
 .ps-field input[type="range"]:hover::-moz-range-thumb,
-.ps-field input[type="range"]:active::-moz-range-thumb { background: var(--th-a); transform: scale(1.2); }
-/* The ring goes on the handle, as on the map's corners. */
-.th-landing .ps-field input[type="range"]:focus-visible { outline: none; }
+.ps-field input[type="range"]:active::-moz-range-thumb { transform: scale(1.15); }
+.bn .ps-field input[type="range"]:focus-visible { outline: none; }
 .ps-field input[type="range"]:focus-visible::-webkit-slider-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
 .ps-field input[type="range"]:focus-visible::-moz-range-thumb { outline: 2px solid var(--th-focus); outline-offset: 3px; }
 
-/* ── Reports: a report to leaf through ── */
-/* Over the sheet, a two-way switch choosing the kind of report; the sheet's own pager turns its pages. */
-.ps-sheet-col { display: flex; flex-direction: column; gap: 16px; min-width: 0; }
-.ps-sheet-col > .ps-switch { align-self: stretch; }
-/* On the sheet a chart's bars are data: the scale's second step, the olive that holds on white (3.9:1). Lime is
-   kept for what passes the tipping point; a single series of months has no such meaning. */
-.ps-sheet .ps-bar i { box-sizing: border-box; background: var(--th-data-2); }
+/* ── Charts (on the report's sheet) ── */
+.ps-chart { --ps-chart-h: 132px; margin-top: 2px; }
+.ps-chart-cap { display: grid; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-wrap: pretty; }
+.ps-chart-cap > span { grid-area: 1 / 1; }
+.ps-chart-cap > span[data-off] { visibility: hidden; }
+.ps-chart-cap b { color: var(--th-ink); }
+.ps-chart-body { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-rows: var(--ps-chart-h) 21px; column-gap: 8px; margin-top: 10px; }
+.ps-chart-y { display: flex; flex-direction: column; justify-content: space-between; margin: -6px 0; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 15px; text-align: right; }
+.ps-chart-plot { position: relative; border-top: 1px solid var(--th-line); border-bottom: 1px solid var(--th-line); cursor: crosshair; touch-action: pan-y; } /* taste-skill-ignore: a chart's own mark */
+.ps-chart-area { position: absolute; inset: 5px 6px 5px 0; }
+.ps-chart-area svg { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+.ps-chart-line { fill: none; stroke: var(--bn-night-800); stroke-width: 2px; stroke-linecap: round; stroke-linejoin: round; }
+.ps-chart-end { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border: 2px solid var(--bn-night-800); border-radius: 50%; background: var(--th-surface); }
+.ps-chart-cross { position: absolute; top: -5px; bottom: -5px; width: 1px; margin-left: -0.5px; background: var(--th-muted); }
+.ps-chart-dot { position: absolute; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border-radius: 9999px; background: var(--bn-night-800); box-shadow: 0 0 0 2px var(--th-surface); } /* taste-skill-ignore: the handle's ring */
+.ps-chart-x { position: relative; grid-column: 2; margin-right: 6px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 15px; }
+.ps-chart-x span { position: absolute; top: 6px; transform: translateX(-50%); }
+.ps-chart-x span::before { content: ""; position: absolute; top: -6px; left: 50%; width: 1px; height: 4px; background: var(--th-line); }
+.ps-bars[data-axis] .ps-chart-body { margin-top: 30px; }
+.ps-bars:not([data-axis]) .ps-chart-body { grid-template-columns: minmax(0, 1fr); }
+.ps-bars:not([data-axis]) .ps-chart-plot { border-top: 0; }
+.ps-bars:not([data-axis]) .ps-bars-x { grid-column: 1; }
+.ps-bars .ps-chart-plot { border-bottom-color: var(--th-ink); cursor: default; }
+.ps-bars-cap { display: grid; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
+.ps-bars-cap b { color: var(--th-ink); font-weight: 500; }
+.ps-bars-cap :is(b, span) { text-wrap: balance; }
+.ps-bars-row { position: absolute; inset: 0; display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; align-items: end; padding: 0 4px; }
+.ps-bar { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; min-width: 0; }
+/* A month's bar: the glow's blue, rounded at its top. */
+.ps-bar i { flex: none; width: min(64%, 68px); height: calc(var(--ps-bar) * 100%); min-height: 2px; border-radius: 2px 2px 0 0; background: var(--bn-glow-500); }
+.ps-bars:not([data-axis]) .ps-bar i { height: calc(var(--ps-bar) * (100% - 20px)); }
+.ps-bar b { padding-bottom: 6px; color: var(--th-ink); font-size: var(--th-text-fine); font-weight: 400; line-height: 15px; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ps-bars-x { display: grid; grid-column: 2; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; padding: 6px 4px 0; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 15px; text-align: center; white-space: nowrap; }
+.ps-bars [data-quiet] { visibility: hidden; }
 
-/* The kind of report: two words as tabs on a hairline, the page's own tab idiom (no tray, no filled pill; the owner
-   reads pills as machine-made, 2026-10-14). The chosen one is ink at 600 with a 2px ink underline on the row's rule;
-   the other is muted until hovered. Its bold setting lies unseen under the label, so choosing moves nothing. */
-.ps-switch { display: flex; flex-wrap: wrap; gap: 0 28px; border-bottom: 1px solid var(--th-line); }
+/* A table of figures: hairline rows, each column saying what it covers. */
+.ps-table { width: 100%; border-collapse: collapse; text-align: left; }
+.ps-table thead th { padding: 0 12px 8px 0; font-size: var(--th-text-small); font-weight: 500; line-height: 24px; vertical-align: top; }
+.ps-table thead small { display: block; color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; }
+.ps-table tbody :is(th, td) { padding: 9px 12px 9px 0; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-small); line-height: 26px; vertical-align: top; }
+.ps-table tbody th { color: var(--th-ink); font-weight: 400; white-space: nowrap; }
+.ps-table td { white-space: nowrap; font-variant-numeric: tabular-nums; }
+.ps-table td b { color: var(--th-ink); font-weight: 500; }
+.ps-table td b.ps-none { color: var(--th-muted); font-weight: 400; }
+.ps-table :is(th, td):last-child { padding-right: 0; }
+
+/* ── Reports: a report to leaf through, on the ice band ── */
+.ps-sheet-col { display: flex; flex-direction: column; gap: 18px; min-width: 0; }
+/* The kind of report: two options in a pale tray, the chosen one a white pill (Blue Night's segmented control). The
+   bold setting of each label lies unseen under it, so choosing moves nothing. */
+.ps-switch { display: inline-flex; flex-wrap: wrap; align-self: flex-start; gap: 4px; padding: 4px; border-radius: var(--bn-r-pill); background: rgb(255 255 255 / 0.55); }
 .ps-switch button {
-  position: relative;
-  min-height: 44px;
-  padding: 0;
-  color: var(--th-muted);
-  font-size: var(--th-text-body);
-  font-weight: 500;
+  min-height: 40px;
+  padding: 0 18px;
+  border-radius: var(--bn-r-pill);
+  color: var(--th-ink);
+  font-size: var(--th-text-small);
+  font-weight: 400;
   white-space: nowrap;
   cursor: pointer;
-  transition: color 0.15s;
+  transition: background-color 0.15s, box-shadow 0.15s;
 }
-.ps-switch button span::after { content: attr(data-label); display: block; height: 0; overflow: hidden; font-weight: 600; visibility: hidden; }
-.ps-switch button::after {
-  content: "";
-  position: absolute;
-  right: 0;
-  bottom: -1px;
-  left: 0;
-  height: 2px;
-  background: var(--th-ink);
-  transform: scaleX(0);
-  transform-origin: 0 50%;
-  transition: transform 0.25s var(--th-ease);
-}
-.ps-switch button:hover { color: var(--th-ink); }
-.ps-switch button:not([aria-pressed="true"]):hover::after { transform: scaleX(1); background: var(--th-line); }
-.ps-switch button[aria-pressed="true"] { color: var(--th-ink); font-weight: 600; cursor: default; }
-.ps-switch button[aria-pressed="true"]::after { transform: scaleX(1); }
-.th-landing .ps-switch button:focus-visible { outline-offset: 2px; border-radius: 4px; }
-/* The sheet: a sheet of white paper lying on the card, with one soft shadow under it and no outline of its own. */
+.ps-switch button span::after { content: attr(data-label); display: block; height: 0; overflow: hidden; font-weight: 500; visibility: hidden; }
+.ps-switch button:not([aria-pressed="true"]):hover { background: rgb(255 255 255 / 0.6); }
+.ps-switch button[aria-pressed="true"] { background: var(--bn-paper); font-weight: 500; cursor: default; }
+/* The sheet: white paper lying on the tile, raised off it by one soft shade, no edge. */
 .ps-sheet {
   display: flex;
   flex: none;
   flex-direction: column;
   min-width: 0;
-  padding: 18px 18px 14px;
+  padding: 20px 18px 14px;
   overflow: clip;
-  border-radius: 6px;
-  background: var(--th-surface);
-  box-shadow: 0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow);
+  border-radius: 10px;
+  background: var(--bn-paper);
+  box-shadow: 0 1px 0 rgb(26 31 38 / 0.06), 0 24px 40px -28px rgb(33 48 71 / 0.5); /* taste-skill-ignore: it floats (the map, the page, a tile) */
   transform-origin: 100% 100%;
   container-type: inline-size;
 }
-.ps-sheet-col { display: flex; flex-direction: column; min-width: 0; }
-/* The running head of every page: which report on the left, which page of it on the right. */
-.ps-sheet-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 2px;
-  color: var(--th-muted);
-  font-size: var(--th-text-small);
-  line-height: 22px;
-}
+.ps-sheet-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 2px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.ps-sheet-head > :first-child { color: var(--th-ink); font-weight: 500; }
 .ps-sheet-head > :last-child { flex: none; }
-/* The sections, one mark each, under the running head: the page showing in olive, those read in ink, the rest a
-   hairline. Each is a button 28px tall round a 3px mark, so a thumb can take one. */
-.ps-rail { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; }
+/* The sections, one mark each, under the running head: read sections in navy, the page showing in the glow's blue,
+   the rest pale. Each is a button 28px tall round a 4px mark, so a thumb can take one. */
+.ps-rail { display: flex; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; }
 .ps-rail li { flex: 1; min-width: 0; }
 .ps-rail button { position: relative; display: block; width: 100%; height: 28px; cursor: pointer; }
-.ps-rail button::before { content: ""; position: absolute; right: 0; bottom: 6px; left: 0; height: 3px; background: var(--th-line); transform-origin: bottom; transition: background-color 0.2s, transform 0.2s var(--th-ease); }
-.ps-rail button[data-past]::before { background: color-mix(in srgb, var(--th-ink) 45%, var(--th-surface)); }
-.ps-rail button[aria-current="step"]::before { background: var(--th-a); transform: scaleY(1.67); }
-.ps-rail button:hover::before { background: color-mix(in srgb, var(--th-ink) 70%, var(--th-surface)); }
-.ps-rail button[aria-current="step"]:hover::before { background: var(--th-a); }
-.th-landing .ps-rail button:focus-visible { outline-offset: -2px; border-radius: 2px; }
-/* The page itself: its title and sentence, its sample or its contents, and the key finding where it has one. A
-   sideways swipe across it turns it, so only vertical moves are left to the page's scroll. */
-.ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 18px; padding-top: 18px; touch-action: pan-y; }
-.ps-sheet-page h3 { font-size: var(--th-text-lead); font-weight: 700; line-height: 26px; letter-spacing: -0.01em; text-wrap: balance; }
-.ps-sheet-page p { max-width: 32em; margin-top: 6px; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
+.ps-rail button::before { content: ""; position: absolute; right: 0; bottom: 12px; left: 0; height: 4px; border-radius: 2px; background: var(--th-line); transition: background-color 0.25s; }
+.ps-rail button[data-past]::before { background: var(--bn-night-800); }
+.ps-rail button[aria-current="step"]::before { background: var(--bn-glow-500); }
+.ps-rail button:hover::before { background: color-mix(in srgb, var(--bn-night-800) 55%, var(--th-surface)); }
+.ps-rail button[aria-current="step"]:hover::before { background: var(--bn-glow-500); }
+.bn .ps-rail button:focus-visible { outline-offset: -2px; border-radius: 4px; }
+.ps-sheet-body { display: flex; flex: 1; flex-direction: column; gap: 16px; padding-top: 12px; touch-action: pan-y; }
+.ps-sheet-page h3 { font-size: clamp(1.25rem, 1.1rem + 0.5vw, 1.5rem); font-weight: 400; line-height: 1.25; letter-spacing: -0.015em; text-wrap: balance; }
+.ps-sheet-page p { max-width: 32em; margin-top: 6px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
 .ps-sample { min-width: 0; }
 .ps-sample-words { color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.45; }
-.ps-sample-cap { margin-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
+.ps-sample-cap { margin-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
 .ps-sample .ps-chart { --ps-chart-h: 112px; }
 .ps-sample .ps-covers { padding-top: 10px; }
-/* What a section contains, where the page has no figures of its own for it: hairline rows, each behind an empty corner. */
-.ps-contains li { position: relative; padding: 9px 0 9px 24px; border-top: 1px solid var(--th-line); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
-.ps-contains li:last-child { border-bottom: 1px solid var(--th-line); }
-.ps-contains li::before, .ps-finding::before {
-  content: "";
-  position: absolute;
-  left: 0;
-  width: 9px;
-  height: 9px;
-  border: 2px solid var(--th-ink);
-  background: var(--th-surface);
-}
-.ps-contains li::before { top: 16px; }
-/* The key finding an analysis section ends in, after what the page shows (the sheet is as tall as its page, so a
-   short page leaves no empty space above it). Written, it stands between two rules behind a
-   filled corner; not yet written (it is the team's to write) the slot is drawn empty: dashed rules, an empty corner. */
-.ps-finding {
-  position: relative;
-  margin-top: 4px;
-  padding: 11px 0 12px 24px;
-  border-top: 1px solid var(--th-line);
-  border-bottom: 1px solid var(--th-line);
-  font-size: var(--th-text-body);
-  line-height: 1.45;
-  text-wrap: pretty;
-}
-.ps-finding::before { top: 17px; background: var(--th-ink); }
-.ps-finding[data-empty] { border-top: 1px dashed var(--th-edge); border-bottom: 1px dashed var(--th-edge); color: var(--th-muted); }
+/* What a section contains, where the page has no figures of its own for it: hairline rows, each after a small ring. */
+.ps-contains li { position: relative; padding: 10px 0 10px 22px; border-top: 1px solid var(--th-line); font-size: var(--th-text-small); line-height: 24px; text-wrap: pretty; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-contains li:last-child { border-bottom: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-contains li::before, .ps-finding::before { content: ""; position: absolute; left: 0; width: 9px; height: 9px; border: 1.5px solid var(--bn-night-800); border-radius: 50%; background: var(--th-surface); }
+.ps-contains li::before { top: 18px; }
+/* The key finding an analysis section ends in: written, it stands between two rules behind a filled mark; not yet
+   written (it is the team's to write) the slot is drawn empty: dashed rules, an empty mark. */
+.ps-finding { position: relative; margin-top: 2px; padding: 11px 0 12px 22px; border-top: 1px solid var(--th-line); border-bottom: 1px solid var(--th-line); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-finding::before { top: 18px; background: var(--bn-night-800); }
+.ps-finding[data-empty] { border-top: 1px dashed var(--th-edge); border-bottom: 1px dashed var(--th-edge); color: var(--th-muted); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
 .ps-finding[data-empty]::before { background: var(--th-surface); }
 .ps-finding[data-empty] b { color: var(--th-ink); }
-.ps-facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 8px 0; border-top: 1px solid var(--th-line); }
-.ps-facts > div:last-child { border-bottom: 1px solid var(--th-line); }
-.ps-facts dt { font-size: var(--th-text-body); line-height: 26px; }
-.ps-facts dt small { margin-left: 6px; color: var(--th-muted); font-size: var(--th-text-small); white-space: nowrap; }
-.ps-facts dd { font-size: var(--th-text-body); font-weight: 600; line-height: 26px; white-space: nowrap; }
-.ps-facts dd span { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; }
-.ps-comps caption { padding-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; text-align: left; }
-.ps-comps thead th { padding-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; line-height: 22px; }
-.ps-comps tbody th { font-size: var(--th-text-body); white-space: normal; }
+.ps-facts > div { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 9px 0; border-top: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-facts > div:last-child { border-bottom: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-facts dt { font-size: var(--th-text-small); line-height: 24px; }
+.ps-facts dt small { margin-left: 6px; color: var(--th-muted); font-size: var(--th-text-fine); white-space: nowrap; }
+.ps-facts dd { font-size: 24px; font-weight: var(--th-display-weight); line-height: 28px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.ps-facts dd span { color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; letter-spacing: 0; }
+.ps-comps caption { padding-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-align: left; }
+.ps-comps thead th { padding-bottom: 6px; color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; }
+.ps-comps tbody th { white-space: normal; }
 .ps-comps :is(th, td):not(:first-child) { width: 1%; text-align: right; white-space: nowrap; }
 .ps-comps tbody tr:last-child :is(th, td) { border-bottom: 1px solid var(--th-line); }
-.ps-sheet-foot { padding-top: 20px; }
-.ps-pager { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-top: 1px solid var(--th-line); }
+.ps-sheet-foot { display: grid; row-gap: 10px; padding-top: 18px; }
+/* The pager: two cloud pills, back and on, the next section's title in the second where there is room. */
+.ps-pager { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 14px; border-top: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
 .ps-pager button {
   display: inline-flex;
   align-items: center;
-  justify-content: flex-end;
+  justify-content: center;
   gap: 8px;
   min-width: 44px;
-  min-height: 48px;
+  min-height: 44px;
+  max-width: 100%;
+  padding: 0 14px;
+  border-radius: var(--bn-r-pill);
+  background: var(--bn-cloud-100);
   color: var(--th-ink);
-  font-size: var(--th-text-body);
-  font-weight: 600;
-  line-height: 26px;
-  text-align: right;
+  font-size: var(--th-text-fine);
+  font-weight: 500;
+  line-height: 22px;
   cursor: pointer;
+  transition: background-color 0.15s;
 }
-.ps-pager button:first-child { justify-content: flex-start; }
+.ps-pager button:not([aria-disabled]):hover { background: color-mix(in srgb, var(--bn-cloud-100) 70%, var(--bn-ice-200)); }
 .ps-pager button svg { flex: none; transition: transform 0.2s var(--th-ease); }
 .ps-pager button:not([aria-disabled]):last-child:hover svg { transform: translateX(3px); }
 .ps-pager button:not([aria-disabled]):first-child:hover svg { transform: translateX(-3px); }
-/* At either end the button keeps the keyboard (it is not `disabled`) and steps back. */
-.ps-pager button[aria-disabled] { color: var(--th-pending); font-weight: 500; cursor: default; }
-.ps-pager-next { color: var(--th-muted); font-weight: 400; }
+.ps-pager button[aria-disabled] { background: transparent; color: var(--th-pending); font-weight: 400; cursor: default; }
+.ps-pager-next { font-weight: 400; color: var(--th-muted); }
 .ps-pager-next::after { content: ":"; }
-.ps-pager-title { margin-left: -4px; white-space: nowrap; }
+.ps-pager-title { margin-left: -4px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 @container (max-width: 400px) {
-  /* On a phone's sheet the comparables' last heading ("Occupied this season") takes two lines, not the table's width. */
   .ps-comps thead th:last-child { min-width: 6em; white-space: normal; text-wrap: balance; }
   .ps-pager-title { display: none; }
   .ps-pager-next { color: inherit; font-weight: inherit; }
   .ps-pager-next::after { content: none; }
 }
-/* The page's footer: how a real report is delivered. */
-.ps-sheet-line { padding-top: 10px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
+.ps-sheet-line { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
 
-
-/* ── Connector: what you can ask, and the conversation ── */
-/* The questions: a list to choose one from. The square beside the chosen one is filled. */
-.ps-questions { display: grid; }
+/* ── Connector: the questions on a cloud tile, the conversation on a navy card ── */
+.ps-asks { display: grid; align-content: start; }
+.ps-questions { display: grid; gap: 6px; margin-top: 12px; }
 .ps-questions button {
-  display: grid;
-  grid-template-columns: 12px minmax(0, 1fr);
-  column-gap: 14px;
-  align-items: start;
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
   min-height: 44px;
-  padding: 12px 0;
-  border-top: 1px solid var(--th-line);
+  padding: 11px 16px;
+  border-radius: 22px;
+  background: rgb(255 255 255 / 0.55);
   color: var(--th-ink);
-  font-size: var(--th-text-body);
-  font-weight: 500;
+  font-size: var(--th-text-small);
+  font-weight: 400;
   line-height: 1.35;
   text-align: left;
   text-wrap: pretty;
   cursor: pointer;
+  transition: background-color 0.2s;
 }
-.ps-questions button:last-child { border-bottom: 1px solid var(--th-line); }
-.ps-questions i { width: 12px; height: 12px; margin-top: 6px; border: 2px solid var(--th-ink); background: var(--th-surface); transition: background-color 0.15s, transform 0.15s var(--th-ease); }
-.ps-questions button:hover i { background: var(--th-a); transform: scale(1.2); }
-.ps-questions button[aria-checked="true"] { font-weight: 600; cursor: default; }
-.ps-questions button[aria-checked="true"] i { background: var(--th-ink); transform: none; }
-.ps-questions small { display: block; margin-top: 1px; color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; line-height: 22px; }
-.th-landing .ps-questions button:focus-visible { outline-offset: -2px; border-radius: 6px; }
-/* The conversation: the hero's two bubbles, the visitor's in olive and the answer on white. Each question asked
-   adds an exchange under the earlier ones. */
+.ps-questions button:hover { background: rgb(255 255 255 / 0.9); }
+.ps-questions i { flex: none; width: 8px; height: 8px; margin-top: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
+.ps-questions button[aria-checked="true"] { background: var(--bn-night-800); color: var(--bn-ink-night); cursor: default; }
+.ps-questions button[aria-checked="true"] i { border-color: var(--th-data-4); background: var(--th-data-4); }
+.bn .ps-questions button:focus-visible { outline-offset: 2px; }
+.ps-asks-note { margin-top: 14px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+/* The conversation: Claude's own idiom on the night, the visitor's question an ice pill, the answer a deeper navy. */
+.ps-convo { display: flex; flex-direction: column; }
 .ps-chat { display: flex; flex-direction: column; min-height: 0; }
-.ps-chat-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  min-height: 44px;
-  border-bottom: 1px solid var(--th-line);
-  color: var(--th-muted);
-  font-size: var(--th-text-small);
-  line-height: 22px;
-}
-.ps-chat-head p { padding: 12px 0; text-wrap: pretty; }
-/* Back to the first exchange: a small text control whose target is the head's full height. */
+.ps-chat-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; border-bottom: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-chat-head p { padding: 0 0 14px; text-wrap: pretty; }
 .ps-chat-clear {
   flex: none;
   min-width: 44px;
   min-height: 44px;
-  color: var(--th-ink);
-  font-size: var(--th-text-small);
-  font-weight: 600;
+  margin-top: -14px;
+  color: var(--th-a);
+  font-size: var(--th-text-fine);
+  font-weight: 500;
   text-align: right;
   text-decoration: underline 1.5px;
   text-underline-offset: 4px;
   cursor: pointer;
-  transition: text-underline-offset 0.2s var(--th-ease);
+  transition: text-decoration-color 0.2s;
 }
-.ps-chat-clear:hover { text-underline-offset: 7px; }
-.ps-chat-log { position: relative; display: flex; flex-direction: column; gap: 24px; padding: 18px 0 20px; }
-/* A short conversation sits at the foot of its space, next to the composer, as conversations do. */
+.ps-chat-clear:hover { text-decoration-color: transparent; }
+.ps-chat-log { position: relative; display: flex; flex-direction: column; gap: 22px; padding: 18px 2px 8px; }
 .ps-chat-log > :first-child { margin-top: auto; }
-/* A question and what came back. On a phone the page scrolls to it, clear of the fixed nav. */
 .ps-exchange { display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 88px; }
-/* The composer: one line at the foot of the conversation where the chosen question is typed and sent. It is a
-   display, not a field: no box, no caret at rest, and the brand's corner where a field would have its edge. */
+/* The composer: shown only while a chosen question is typed into it, an outlined pill at the conversation's foot. */
 .ps-composer {
   display: grid;
   flex: none;
-  grid-template-columns: 12px minmax(0, 1fr);
+  grid-template-columns: 8px minmax(0, 1fr);
   column-gap: 12px;
   align-items: center;
-  min-height: 48px;
-  border-top: 1px solid var(--th-line);
-  font-size: var(--th-text-body);
-  line-height: 26px;
+  min-height: 52px;
+  margin-top: 10px;
+  padding: 6px 18px;
+  border-radius: var(--bn-r-pill);
+  box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.22); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+  color: var(--th-ink);
+  font-size: var(--th-text-small);
+  line-height: 24px;
 }
-.ps-composer i { width: 12px; height: 12px; border: 2px solid var(--th-ink); background: var(--th-surface); }
-.ps-composer[data-on] i { background: var(--th-ink); }
+.ps-composer i { width: 8px; height: 8px; border-radius: 50%; background: var(--th-muted); }
+.ps-composer[data-on] i { background: var(--th-a); }
 .ps-composer > span { grid-row: 1; grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.ps-composer-text { font-weight: 500; }
-/* The hint is not cut: on the narrowest phones it takes a second line. */
-/* At rest there is no composer: it shows only while a chosen question is being typed (critique, 2026-10-14: a
-   placeholder line stood at the foot of an empty pane). */
+.ps-composer-text { font-weight: 400; }
 .ps-composer:not([data-on]) { display: none; }
-.ps-bubble { max-width: min(94%, 35em); font-size: var(--th-text-body); line-height: 1.45; }
-.ps-bubble-q {
-  align-self: flex-end;
-  padding: 10px 18px;
-  border-radius: 14px 14px 4px 14px;
-  background: var(--th-visitor);
-  color: var(--th-visitor-ink);
-  font-weight: 500;
-  transform-origin: 100% 100%;
-}
-.ps-bubble-a {
-  align-self: flex-start;
-  padding: 13px 18px 14px;
-  border: 1px solid var(--th-line);
-  border-radius: 14px 14px 14px 4px;
-  background: var(--th-surface);
-  transform-origin: 0 100%;
-}
-.ps-tool { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 500; line-height: 22px; }
-.ps-reply { margin-top: 4px; text-wrap: pretty; }
-.ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 600; }
-.ps-reply-link small { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; line-height: 22px; }
-/* How firm the answer is, in the connector's words, then the date it refers to. */
-.ps-firm { margin-top: 8px; font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
-.ps-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; margin-top: 4px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 26px; }
-/* The wait before an answer: three of the brand's squares. Without motion, words instead. */
+.ps-bubble { max-width: min(92%, 35em); font-size: var(--th-text-body); line-height: 1.5; }
+.ps-bubble-q { align-self: flex-end; padding: 10px 18px; border-radius: 22px; background: var(--th-visitor); color: var(--th-visitor-ink); transform-origin: 100% 100%; }
+.ps-bubble-a { align-self: flex-start; padding: 14px 18px; border-radius: 14px; background: var(--bn-night-700); box-shadow: inset 0 0 0 1px var(--th-line); transform-origin: 0 100%; } /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+.ps-tool { color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; }
+.ps-reply { margin-top: 6px; text-wrap: pretty; }
+.ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 500; }
+.ps-reply-link .th-link { display: inline-block; margin: -11px 0; padding: 11px 0; color: var(--th-a); }
+.ps-reply-link small { color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; }
+.ps-firm { margin-top: 10px; font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
+.ps-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; margin-top: 8px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 26px; }
+/* The wait before an answer: three dots. Without motion, words instead. */
 .ps-typing { display: flex; align-items: center; min-height: 48px; padding: 0 20px; }
-.ps-typing-dots { display: flex; gap: 6px; }
-.ps-typing-dots i { width: 6px; height: 6px; background: var(--th-muted); }
+.ps-typing-dots { display: flex; gap: 5px; }
+.ps-typing-dots i { width: 6px; height: 6px; border-radius: 50%; background: var(--th-muted); }
 .ps-typing-words { display: none; color: var(--th-muted); font-size: var(--th-text-body); }
-/* The area on its street map, as a message of its own: the map takes the answer bubble's corners and hairline. */
+/* The area on the night island, as a message of its own: the map takes the answer bubble's corners and edge. */
 .ps-minimap {
   position: relative;
   flex: none;
   align-self: flex-start;
   overflow: hidden;
-  width: 332px;
+  width: min(332px, 100%);
   aspect-ratio: 4 / 3;
-  border: 1px solid var(--th-line);
-  border-radius: 12px 12px 12px 4px;
+  border-radius: 14px;
   background: var(--th-map-land);
+  box-shadow: inset 0 0 0 1px var(--th-line); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
   transform-origin: 0 100%;
 }
-/* The basemap's own parts (AreaBasemap) expect the hero's map view around them: this stands in for it, uncropped. */
 .ps-minimap-view { --th-crop-x: 0px; --th-crop-y: 0px; position: absolute; inset: 0; }
 .ps-minimap-view > svg { position: absolute; inset: 0; width: 100%; height: 100%; }
-.ps-minimap-fill { fill: var(--th-ink); fill-opacity: 0.06; }
-.ps-minimap-line { fill: none; stroke: var(--th-ink); stroke-width: 1.5px; stroke-linejoin: round; }
-/* The listings inside the line, as the hero's map paints them: each shade inside a thin ring of the darkest. */
-.ps-minimap-dots { fill: var(--th-dot); stroke: var(--th-occ-ring); stroke-width: 2.8px; paint-order: stroke; }
+.ps-minimap-fill { fill: var(--th-a); fill-opacity: 0.08; }
+.ps-minimap-line { fill: none; stroke: var(--th-a); stroke-width: 1.5px; stroke-linejoin: round; }
+/* The listings inside the line, as the hero's lights: each its shade, inside a thin ring of the night. */
+.ps-minimap-dots { fill: var(--th-dot-out); stroke: var(--th-occ-ring); stroke-width: 2.4px; paint-order: stroke; }
 .ps-minimap-dots[data-step="1"] { fill: var(--th-occ-1); }
 .ps-minimap-dots[data-step="2"] { fill: var(--th-occ-2); }
 .ps-minimap-dots[data-step="3"] { fill: var(--th-occ-3); }
 .ps-minimap-dots[data-step="4"] { fill: var(--th-occ-4); }
-.ps-minimap-node { position: absolute; z-index: 3; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border: 2px solid var(--th-ink); background: var(--th-surface); }
+/* The towns named offshore on the night island: mist, regular, haloed in the sea. */
+.ps-minimap .th-place { color: var(--th-muted); font-weight: 400; }
+.ps-minimap-node { position: absolute; z-index: 3; width: 9px; height: 9px; margin: -4.5px 0 0 -4.5px; border: 1.2px solid var(--bn-night-950); border-radius: 50%; background: var(--th-a); }
 
-
-/* ── The close: "Ask the team", and the footer, on the window's deep olive ── */
-.ps-close { --th-focus: var(--th-close-ink); position: relative; background: var(--th-close); color: var(--th-close-ink); scroll-margin-top: 72px; }
-.ps-close ::selection { background: var(--th-close-ink); color: var(--th-close); }
-.ps-close-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 28px; max-width: 1440px; margin: 0 auto; padding: 64px 16px 56px; }
-.ps-close h2 {
-  font-size: var(--th-heading);
-  font-weight: var(--th-display-weight);
-  line-height: 1.08;
-  letter-spacing: var(--th-display-tracking);
-  text-wrap: balance;
+/* ── The close: "Ask the team" and the footer, back in night, one card ── */
+.bn-close {
+  --lh-m: 8px;
+  position: relative;
+  margin: 0 var(--lh-m) var(--lh-m);
+  overflow: hidden;
+  border-radius: var(--bn-r-card);
+  background: linear-gradient(0deg, var(--bn-night-950), var(--bn-night-900)); /* taste-skill-ignore: Blue Night's night, pinned by the owner */
 }
-.ps-close-lede { max-width: 26em; margin-top: 14px; color: var(--th-close-ink); font-size: var(--th-text-lead); line-height: 1.45; text-wrap: pretty; }
-/* A request carried down from a section is named in the heading, a step back from the heading's own words. */
-.ps-close h2 span { color: var(--th-close-muted); }
+/* The glow falls from the top here, the hero's turned over. */
+.bn-close > .bn-glow { top: -55%; bottom: auto; opacity: 0.7; animation-duration: 11s; }
+.bn-close::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+}
+.ps-close { position: relative; z-index: 1; color: var(--th-ink); scroll-margin-top: 72px; }
+.ps-close-in, .ps-foot-in { max-width: calc(1312px + 2 * var(--bn-gut) - 2 * var(--lh-m)); margin: 0 auto; padding-right: 16px; padding-left: 16px; }
+.ps-close-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 32px; padding-top: 72px; }
+.ps-close .bn-eb { margin-bottom: 14px; }
+.ps-close h2 { font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem); font-weight: var(--th-display-weight); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
+.ps-close h2 span { color: var(--th-pay); }
+.ps-close-lede { max-width: 30rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-lead); font-weight: 300; line-height: 1.5; text-wrap: pretty; }
 .ps-close-do { display: grid; row-gap: 18px; align-content: end; }
 .ps-close-carried { font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
-/* The actions: the email in solid paper with ink text, and beside it the free way in, a text link. */
-.ps-close-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; }
+.ps-close-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
+/* "Email the team": the ice pill, the action on night. */
 .ps-close-mail {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 10px;
   min-height: 48px;
   padding: 0 22px;
-  border-radius: 6px;
-  background: var(--th-close-ink);
-  color: var(--th-close);
+  border-radius: var(--bn-r-pill);
+  background: var(--th-action);
+  color: var(--th-action-ink);
   font-size: var(--th-text-body);
-  font-weight: 600;
+  font-weight: 500;
   white-space: nowrap;
   transition: background-color 0.15s, transform 0.15s var(--th-ease);
 }
-.ps-close-mail:hover { background: var(--th-surface); }
+.ps-close-mail:hover { background: var(--th-action-hover); }
 .ps-close-mail:active { transform: scale(0.97); }
 .ps-close-mail svg { transition: transform 0.2s var(--th-ease); }
 .ps-close-mail:hover svg { transform: translateX(3px); }
-.ps-close-play { display: inline-flex; align-items: center; min-height: 44px; color: var(--th-close-ink); font-size: var(--th-text-body); font-weight: 600; }
-.ps-close-small { max-width: 34em; color: var(--th-close-muted); font-size: var(--th-text-small); line-height: 24px; text-wrap: pretty; }
-.ps-close-small a { color: var(--th-close-ink); }
-.ps-close-copy { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; color: var(--th-close-ink); font-size: var(--th-text-small); font-weight: 500; cursor: pointer; }
-.ps-close-copy span { text-decoration: underline transparent 1.5px; text-underline-offset: 4px; transition: text-decoration-color 0.2s; }
-.ps-close-copy:hover span { text-decoration-color: currentColor; }
-.ps-foot { --th-focus: var(--th-close-ink); border-top: 1px solid var(--th-close-line); background: var(--th-close); color: var(--th-close-ink); }
-.ps-foot ::selection { background: var(--th-close-ink); color: var(--th-close); }
-.ps-foot-in {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  row-gap: 14px;
-  align-items: center;
-  max-width: 1440px;
-  margin: 0 auto;
-  padding: 22px 16px 26px;
-}
-.ps-foot-brand { display: flex; align-items: center; gap: 8px; font-size: var(--th-text-lead); font-weight: var(--th-display-weight); letter-spacing: -0.035em; }
-.ps-foot-src { color: var(--th-close-muted); font-size: var(--th-text-small); line-height: 24px; text-wrap: pretty; }
-.ps-foot-src a { color: var(--th-close-ink); text-decoration: underline transparent 1.5px; text-underline-offset: 4px; transition: text-decoration-color 0.2s; }
-.ps-foot-src a:hover { text-decoration-color: currentColor; }
-.ps-foot-rights { color: var(--th-close-muted); }
-.ps-foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 0 20px; font-size: var(--th-text-small); }
-.ps-foot-links a {
-  display: inline-flex;
-  align-items: center;
-  min-height: 44px;
-  text-decoration: underline transparent 1.5px;
-  text-underline-offset: 5px;
-  transition: text-decoration-color 0.2s;
-}
-.ps-foot-links a:hover { text-decoration-color: currentColor; }
+.ps-close-play { display: inline-flex; align-items: center; min-height: 44px; color: var(--th-ink); font-size: var(--th-text-body); font-weight: 500; }
+.ps-close-small { max-width: 34em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
+.ps-close-small a { color: var(--th-ink); font-weight: 500; }
+.ps-close-copy { display: inline-flex; align-items: center; gap: 8px; justify-self: start; min-height: 44px; color: var(--th-a); font-size: var(--th-text-fine); font-weight: 500; cursor: pointer; }
+.ps-close-copy span { text-decoration: underline 1.5px; text-underline-offset: 4px; transition: text-decoration-color 0.2s; }
+.ps-close-copy:hover span { text-decoration-color: transparent; }
+/* The footer: the name at the card's full width, then a hairline and one row of where it all comes from. */
+.ps-foot { position: relative; z-index: 1; color: var(--th-ink); }
+.ps-foot-in { padding-top: 72px; padding-bottom: 28px; }
+.ps-foot-name .wm { display: block; font-size: clamp(64px, 15.2vw, 236px); font-weight: 400; line-height: 0.9; letter-spacing: -0.05em; }
+.ps-foot-name .am-line { stroke-width: 1.3; }
+.ps-foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 28px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-foot-src { max-width: 38rem; text-wrap: pretty; }
+.ps-foot-row a { color: var(--th-ink); text-decoration: underline 1px; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); text-underline-offset: 3px; transition: text-decoration-color 0.2s; }
+.ps-foot-row a:hover { text-decoration-color: currentColor; }
+.ps-foot-links { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.ps-foot-links a { display: inline-flex; align-items: center; min-height: 44px; }
+.ps-foot-rights { color: var(--th-muted); }
 
-/* A panel's action on the narrowest phones: its side padding gives a little, so the button stays inside. */
-@media (max-width: 374px) {
-  .ps-card { padding-right: 12px; padding-left: 12px; }
-  :is(.ps-card-action, .ps-card-end) :is(.th-go, .ps-solid) { gap: 6px; padding: 0 14px; }
-}
-
-@media (min-width: 640px) {
-  .ps-in { padding: 0 32px; }
-  .ps-tie { padding: 72px 0 40px; font-size: var(--th-text-statement); line-height: 1.35; }
-  .ps-panels { row-gap: 32px; padding-bottom: 32px; }
-  .ps-card { width: calc(100% - 64px); padding: 36px 32px 32px; row-gap: 32px; }
-  .ps-claim { font-size: var(--th-text-statement); }
-  .pt-tip { grid-template-columns: auto minmax(0, 1fr); column-gap: 18px; }
-  .ps-sheet { padding: 22px 26px 16px; }
-  .ps-chat-log { padding: 22px 0 24px; }
-  .ps-close-in { padding: 88px 32px 80px; }
-  .ps-foot-in { padding: 22px 32px 26px; }
+@media (min-width: 641px) {
+  .ps-card { row-gap: 32px; }
+  .pt-tip { grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; }
+  .pt-tip > span:last-child { padding-top: 6px; }
+  .ps-sheet { padding: 26px 28px 20px; }
+  .ps-close-in, .ps-foot-in { padding-right: calc(var(--bn-gut) - var(--lh-m)); padding-left: calc(var(--bn-gut) - var(--lh-m)); }
+  .ps-close-in { padding-top: 96px; }
+  .ps-foot-in { padding-top: 88px; }
 }
 
 @media (min-width: 1024px) {
-  .ps-in { padding: 0 64px; }
-  .ps-tie { padding: 88px 0 48px; }
-  .ps-panels { row-gap: 40px; padding-bottom: 40px; }
-  .ps-card { width: calc(100% - 128px); column-gap: 48px; row-gap: 32px; padding: 48px 44px 44px; }
-  /* Three compositions, so no two neighbours share one: the words then the object; the object then the words; the
-     words across the top and, under them, the object beside what drives it. */
-  .ps-card-text .ps-card-action { display: flex; }
-  .ps-card-end { display: none; }
-  .ps-card[data-layout="split"] { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); grid-template-areas: "text object"; }
-  .ps-card[data-layout="mirror"] { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "object text"; }
-  .ps-card[data-layout="stack"] { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); grid-template-areas: "text text" "object lead"; }
-  /* Stacked: the name, the claim and the sentence on the left, the action on the right at the sentence's foot, as a
-     section's head with its one action; under them the object beside its lead. */
-  .ps-card[data-layout="stack"] .ps-card-text {
-    grid-template-columns: minmax(0, 7fr) minmax(0, 5fr);
-    grid-template-areas: "intro ." "lede act";
-    column-gap: 48px;
-    align-items: end;
-  }
-  .ps-card[data-layout="stack"] .ps-card-intro { grid-area: intro; }
-  .ps-card[data-layout="stack"] .ps-card-say { display: contents; }
-  .ps-card[data-layout="stack"] .ps-lede { grid-area: lede; }
-  .ps-card[data-layout="stack"] .ps-card-text .ps-card-action { grid-area: act; }
-  /* The conversation reads from the top: the first exchange is there, and the next one comes under it. */
+  .bn-close { --lh-m: 12px; }
+  .ps-card { column-gap: 32px; }
+  /* Three compositions, so no two neighbours share one: the chapter (the heading on the left, the words on the right,
+     the frame the full width under them); the mirror (the object, then the words); the stack (the words across the
+     top and, under them, the conversation beside its questions). */
+  .ps-card[data-layout="chapter"] { grid-template-areas: "text" "object"; row-gap: 48px; }
+  .ps-card[data-layout="mirror"] { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); grid-template-areas: "object text"; align-items: center; }
+  .ps-card[data-layout="stack"] { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: "text text" "object lead"; column-gap: 24px; row-gap: 44px; }
+  .ps-card[data-layout="mirror"] .ps-card-text { padding-top: 8px; }
+  /* Chapter: the heading on the left at the top; the sentence, the three lines and the action on the right. */
+  .ps-card[data-layout="chapter"] .ps-card-text { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 48px; align-items: start; }
+  .ps-card[data-layout="chapter"] .ps-card-say { padding-top: 58px; }
+  /* Stacked: the heading on the left, the sentence and the action on the right at its foot. */
+  .ps-card[data-layout="stack"] .ps-card-text { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: calc(32px + (100% - 11 * 32px) / 12); align-items: end; }
+  .ps-card[data-layout="stack"] .ps-card-say { row-gap: 18px; }
+  /* The conversation as tall as the questions beside it, so the two read as one pair. */
+  .ps-card[data-layout="stack"] { align-items: stretch; }
+  .ps-card[data-layout="stack"] .ps-convo { height: 100%; }
+  /* The frame, the chapter's full width: the verdict on the left, the curve on the right. */
+  .ps-card[data-layout="chapter"] .pt { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 48px; padding: 40px; }
+  .ps-card[data-layout="chapter"] .pt-curve { margin-top: 0; padding-top: 0; border-top: 0; }
+  /* The conversation reads from the top, is as tall as what is in it (no empty pane, critique 2026-10-14), and
+     scrolls inside itself past 470px. */
   .ps-card[data-layout="stack"] .ps-chat-log > :first-child { margin-top: 0; }
-  /* The conversation is as tall as what is in it, and scrolls inside itself once it is longer than the questions'
-     column; nothing stretches it into an empty pane. */
-  .ps-card[data-layout="stack"] .ps-card-object { align-self: start; }
-  /* The words stay one block, at the top beside a taller object (critique, 2026-10-14: stretched to the object's
-     height they split into a heading at the top and the rest at the foot). */
-  .ps-card:is([data-layout="split"], [data-layout="mirror"]) .ps-card-text { align-self: start; }
   .ps-chat-log {
-    max-height: 520px;
+    max-height: 470px;
     overflow-y: auto;
     scrollbar-width: thin;
-    scrollbar-color: var(--th-edge) transparent;
-    /* An exchange scrolled up out of the conversation fades at its top edge, not cut by it. */
-    mask-image: linear-gradient(to bottom, transparent 0, #000 16px);
+    scrollbar-color: var(--bn-glow-500) transparent;
+    mask-image: linear-gradient(to bottom, transparent 0, #000 16px); /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
   }
-  .ps-sample .ps-chart { --ps-chart-h: 112px; }
-  .ps-close-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: end; padding: 112px 64px 104px; }
-  .ps-foot-in { grid-template-columns: auto minmax(0, 1fr) auto; column-gap: 40px; padding: 22px 64px 26px; }
+  .ps-close-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 32px; align-items: end; padding-top: 112px; }
+  .ps-foot-in { padding-top: 96px; }
 }
-
 @media (min-width: 1280px) {
-  .ps-card { column-gap: 64px; padding: 56px 56px 52px; }
-  .ps-card[data-layout="stack"] .ps-card-text { column-gap: 64px; }
+  .ps-card[data-layout="mirror"] { column-gap: 56px; }
+}
+@media (max-width: 374px) {
+  .bn .ps-card-action :is(.th-go, .ps-solid) { gap: 6px; padding: 0 16px; }
 }
 
-/* What plays on a panel, once. Everything is in its final state before it and without it (nothing waits hidden for
-   an observer, and a panel has no entrance of its own); under reduced motion none of it runs.
-   `data-arrived` is set for good the first time the card is well into view and `data-arriving` only for the short
-   while after, so what plays at full length on arrival plays briefly, or not at all, afterwards. */
-@keyframes ps-ic-reach { from { transform: translate(4px, 4px); } }
-@keyframes ps-ic-seat { from { transform: translate(2.5px, 4px); } }
-@keyframes ps-trace { from { stroke-dashoffset: 1; } }
-@keyframes ps-fade { from { opacity: 0; } }
-/* A chart line draws from the left; its end node and a rail's corners pop; bars grow from the baseline. */
-@keyframes ps-wipe { from { clip-path: inset(-8px 100% -8px -8px); } to { clip-path: inset(-8px -8px -8px -8px); } }
-@keyframes ps-pop { from { opacity: 0; transform: scale(0.5); } }
-@keyframes ps-grow { from { transform: scaleY(0); } }
-/* The sheet is dealt onto the card from the right, with a slight turn that settles flat. */
-@keyframes ps-deal { from { opacity: 0; transform: translateX(40px) rotate(1.6deg); } to { opacity: 1; transform: translateX(0) rotate(0deg); } }
-/* A page leaves the sheet to one side and the next comes in from the other; `--dir` is 1 forwards, -1 back. */
-@keyframes ps-leaf-out { to { opacity: 0; transform: translateX(calc(var(--dir, 1) * -28px)); } }
-@keyframes ps-leaf-in { from { opacity: 0; transform: translateX(calc(var(--dir, 1) * 28px)); } }
-/* A message arriving in the conversation; the visitor's comes up from the composer it was typed in. */
-@keyframes ps-arrive { from { opacity: 0; transform: translateY(10px) scale(0.96); } }
-@keyframes ps-send { from { opacity: 0.3; transform: translateY(44px) scale(0.98); } }
-@keyframes ps-typing { 0%, 60%, 100% { opacity: 0.3; } 30% { opacity: 1; } }
-@keyframes ps-caret { 50% { opacity: 0; } }
-/* The scale's marks settle in as the panel arrives: the tipping point's line rises from the track, today's square lands. */
-@keyframes pt-rise { from { opacity: 0; transform: scaleY(0.4); } }
-@media (prefers-reduced-motion: no-preference) {
-  /* The panel's icon makes its one small move: the pointer reaches its corner, the chart line draws, the cable seats. */
-  .ps-card[data-arriving] .th-ic-pointer { animation: ps-ic-reach 0.5s var(--th-ease) 0.1s both; }
-  .ps-card[data-arriving] .th-ic-line { stroke-dasharray: 1; animation: ps-trace 0.5s var(--th-ease) 0.1s both; }
-  .ps-card[data-arriving] .th-ic-node { animation: ps-fade 0.15s ease-out 0.4s both; }
-  .ps-card[data-arriving] .th-ic-cable { animation: ps-ic-seat 0.5s var(--th-ease) 0.1s both; }
-  /* Playground: the tipping point's mark rises and today's square lands. No figure counts up. */
-  .ps-card[data-arriving] .pt-mark-tip { transform-origin: 0 100%; animation: pt-rise 0.5s var(--th-ease) 0.2s both; }
-  .ps-card[data-arriving] .pt-mark-today i { animation: ps-pop 0.3s var(--th-ease) 0.45s both; }
-  /* Reports: the sheet is dealt, its chart's bars grow, and leafing turns the page. */
-  .ps-card[data-arrived] .ps-chart-area svg { animation: ps-wipe 0.4s var(--th-ease) both; }
-  .ps-card[data-arriving] .ps-chart-area svg { animation-duration: 0.9s; }
-  .ps-card[data-arrived] .ps-chart-end { animation: ps-pop 0.3s var(--th-ease) 0.3s both; }
-  .ps-card[data-arrived] .ps-bar i { transform-origin: 50% 100%; animation: ps-grow 0.4s var(--th-ease) both; }
-  .ps-card[data-arriving] .ps-sheet { animation: ps-deal 0.5s var(--th-ease) both; }
-  .ps-sheet-body[data-leaf="out"] { animation: ps-leaf-out 0.25s var(--th-ease) both; }
-  .ps-sheet-body[data-leaf="in"] { animation: ps-leaf-in 0.25s var(--th-ease) both; }
-  /* Connector: a chosen question is typed in the composer (script), goes up as the visitor's bubble, and is answered. */
-  .ps-composer[data-on] .ps-composer-text::after {
-    content: "";
-    display: inline-block;
-    width: 2px;
-    height: 1.05em;
-    margin-left: 2px;
-    vertical-align: -0.16em;
-    background: var(--th-ink);
-    animation: ps-caret 0.9s steps(1) infinite;
-  }
-  .ps-bubble[data-play] { animation: ps-arrive 0.45s var(--th-ease) both; }
-  .ps-bubble-q[data-play] { animation: ps-send 0.4s var(--th-ease) both; }
-  /* A played answer streams in word by word, and what follows it (how firm, the date, the link) once it has. */
-  .ps-bubble-a[data-play] .ps-stream > span { animation: ps-fade 0.28s ease-out backwards; animation-delay: calc(var(--w) * 34ms + 160ms); }
-  .ps-bubble-a[data-play] :is(.ps-firm, .ps-meta, .ps-reply-link) { animation: ps-fade 0.35s ease-out backwards; animation-delay: calc(var(--words, 0) * 34ms + 260ms); }
-  .ps-typing-dots i { animation: ps-typing 1.1s ease-in-out infinite; }
-  .ps-typing-dots i:nth-child(2) { animation-delay: 0.16s; }
-  .ps-typing-dots i:nth-child(3) { animation-delay: 0.32s; }
-}
+/* What plays in a section, once, is in app/landing-motion.css with the rest of the page's motion. */
+
 @media (prefers-reduced-motion: reduce) {
   .ps-typing-dots { display: none; }
   .ps-typing-words { display: inline; }
-  .ps-solid, .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-switch button, .ps-pager button svg, .ps-questions i,
-  .ps-close-mail, .ps-close-mail svg, .ps-foot-links a, .ps-foot-src a,
+  .bn .ps-solid, .bn .ps-solid svg, .ps-textbtn, .ps-chat-clear, .ps-switch button, .ps-pager button, .ps-pager button svg, .ps-questions button,
+  .ps-close-mail, .ps-close-mail svg, .ps-foot-row a,
   .ps-field input[type="range"]::-webkit-slider-thumb, .ps-field input[type="range"]::-moz-range-thumb { transition: none; }
+}
+@media (forced-colors: active) {
+  .bn-card, .bn-tile, .ps-sheet, .ps-bubble-a, .ps-questions button { border: 1px solid CanvasText; } /* taste-skill-ignore: forced-colors fallback */
+}
+
+/* ── The products, at a glance (ProductsOverview) ── */
+/* On white, after "How it works": a heading, then three tiles of different sizes, each its product's own output. The
+   Playground on a navy tile (live data), Reports on ice (a page of a report), the Connector on cloud (a question and its
+   answer). */
+.po { padding: 88px 0; color: var(--th-ink); }
+.po-in, .qs-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut)); margin: 0 auto; padding-right: var(--bn-gut); padding-left: var(--bn-gut); }
+.po-head .bn-eb { margin-bottom: 14px; }
+.po-h { max-width: 30ch; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.po-say { max-width: 34rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
+.po-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 40px; }
+.po-tile { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 22px 18px; overflow: hidden; border-radius: var(--bn-r-tile); isolation: isolate; }
+.po-eb { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 21px; letter-spacing: 0.01em; }
+.po-tile h3 { font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem); font-weight: var(--th-display-weight); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; }
+.po-tsay { max-width: 30rem; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
+.po-link { align-self: flex-start; margin-top: auto; padding-top: 8px; color: var(--th-ink); font-size: var(--th-text-body); font-weight: 500; }
+/* The Playground's tile: navy, the glow rising inside it from below, Cyprus in three markets as a small table. */
+.po-pg { background: var(--bn-night-800); }
+.po-pg::before {
+  position: absolute;
+  inset: auto -20% -65% -20%;
+  z-index: -1;
+  height: 90%;
+  background: radial-gradient(closest-side, rgb(61 94 127 / 0.55), rgb(61 94 127 / 0)); /* taste-skill-ignore: Blue Night's glow, pinned by the owner */
+  pointer-events: none;
+  content: "";
+}
+.po-mkt { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: var(--th-text-small); line-height: 1.45; }
+.po-mkt tr { border-top: 1px solid var(--th-line); }
+.po-mkt tr:last-child { border-bottom: 1px solid var(--th-line); }
+.po-mkt :is(th, td) { padding: 14px 12px 14px 0; text-align: left; vertical-align: baseline; }
+.po-mkt td:last-child { padding-right: 0; }
+.po-mkt th { color: var(--th-muted); font-weight: 400; white-space: nowrap; }
+.po-mkt th i { display: inline-block; margin-right: 9px; vertical-align: 1px; }
+.po-mkt td { color: var(--th-ink); }
+.po-mkt td b { font-weight: 500; }
+.po-n { font-size: 24px; font-weight: var(--th-display-weight); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.po-light { width: 9px; height: 9px; border-radius: 50%; background: var(--th-data-3); box-shadow: 0 0 8px 2px rgb(175 197 220 / 0.5); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.po-sq { width: 9px; height: 9px; border-radius: 2px; background: var(--bn-ice-200); }
+.po-sq-o { background: transparent; box-shadow: inset 0 0 0 1.5px var(--bn-ice-200); } /* taste-skill-ignore: a chart's own mark */
+.po-bar { display: block; max-width: 220px; height: 3px; margin-top: 8px; overflow: hidden; border-radius: 2px; background: rgb(245 247 250 / 0.14); }
+.po-bar i { display: block; width: 100%; height: 100%; background: var(--th-data-3); transform: scaleX(var(--w, 0.7)); transform-origin: 0 50%; }
+.po-act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: auto; padding-top: 10px; }
+.po-go {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 48px;
+  padding: 0 22px;
+  border-radius: var(--bn-r-pill);
+  background: var(--th-action);
+  color: var(--th-action-ink);
+  font-size: var(--th-text-body);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.18s, transform 0.15s var(--th-ease);
+}
+.po-go:hover { background: var(--th-action-hover); }
+.po-go:active { transform: scale(0.97); }
+.po-go svg { transition: transform 0.2s var(--th-ease); }
+.po-go:hover svg { transform: translateX(3px); }
+/* Reports' tile: ice, a page of the property report lying on it, raised by one soft shade. */
+.po-rp { background: var(--bn-ice-tile); }
+.po-sheet { display: grid; row-gap: 10px; width: 100%; max-width: 380px; margin-top: 4px; padding: 16px 18px 14px; border-radius: 10px; background: var(--bn-paper); box-shadow: 0 1px 0 rgb(26 31 38 / 0.06), 0 22px 36px -26px rgb(33 48 71 / 0.5); } /* taste-skill-ignore: it floats (the map, the page, a tile) */
+.po-sheet-h { display: flex; justify-content: space-between; gap: 12px; font-size: var(--th-text-fine); line-height: 21px; }
+.po-sheet-h span:first-child { font-weight: 500; }
+.po-sheet-h span:last-child { flex: none; color: var(--th-pay); font-variant-numeric: tabular-nums; }
+.po-rail { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; }
+.po-rail i { height: 4px; border-radius: 2px; background: var(--th-line); }
+.po-rail i[data-at="read"] { background: var(--bn-night-800); }
+.po-rail i[data-at="now"] { background: var(--bn-glow-500); }
+.po-bars { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 8px; align-items: end; height: 92px; padding-top: 6px; }
+.po-bars > span { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
+.po-bars i { display: block; width: 100%; height: calc(var(--h, 0.5) * (100% - 22px)); border-radius: 2px 2px 0 0; background: var(--bn-glow-500); transform-origin: 50% 100%; }
+.po-bars small { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 18px; }
+/* The Connector's tile: cloud, a question asked in Greek and the answer it gets. */
+.po-cn { background: var(--bn-cloud-100); }
+.po-chat { display: flex; flex-direction: column; gap: 10px; margin-top: 2px; }
+.po-chat > .ps-tag { align-self: flex-start; }
+.po-q { align-self: flex-end; max-width: 92%; padding: 10px 18px; border-radius: 22px; background: var(--bn-ice-200); color: var(--bn-night-950); font-size: var(--th-text-small); line-height: 1.45; }
+.po-a { max-width: 96%; padding: 14px 18px; border-radius: 14px; background: var(--bn-night-700); color: var(--bn-ink-night); font-size: var(--th-text-small); line-height: 1.5; }
+.po-chat [lang="el"] { font-family: "Google Sans", var(--th-font); }
+@media (min-width: 641px) {
+  .po { padding: 120px 0; }
+  .po-tile { padding: 32px; }
+  .po-grid { gap: 16px; margin-top: 48px; }
+}
+@media (min-width: 1024px) {
+  .po { padding: 136px 0 120px; }
+  .po-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
+  /* The Playground's tile the full width, its words on the left and Cyprus in three markets on the right; Reports and
+     the Connector side by side under it. Each tile is as tall as what is on it. */
+  .po-pg {
+    display: grid;
+    grid-column: 1 / -1;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    grid-template-rows: auto auto auto 1fr;
+    grid-template-areas: "eb mkt" "h3 mkt" "say mkt" "act mkt";
+    column-gap: 56px;
+    row-gap: 12px;
+    padding: 40px;
+  }
+  .po-pg > .po-eb { grid-area: eb; }
+  .po-pg > h3 { grid-area: h3; }
+  .po-pg > .po-tsay { grid-area: say; }
+  .po-pg > .po-mkt { grid-area: mkt; align-self: center; margin-top: 0; }
+  .po-pg > .po-act { grid-area: act; align-self: end; }
+  .po-rp, .po-cn { grid-column: span 6; }
+}
+@media (max-width: 480px) {
+  .po-mkt tr { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; padding: 12px 0; }
+  .po-mkt :is(th, td) { padding: 0; }
+  .po-mkt td:last-child { grid-column: 1 / -1; margin-top: 6px; }
+  .po-mkt th { align-self: baseline; }
+  .po-n { text-align: right; }
+}
+
+/* ── The questions: a data sheet (QuestionsSection) ── */
+/* On white, compact (owner, 2026-10-17: "more techy and not get so much space"): a header row under a firm rule, then
+   one row a question, each its short question, its answer in one line with its figures in tabular numerals, a dot for
+   in place now or not yet, and a toggle that opens the whole answer. Hairlines between rows, as in a table. */
+.qs { padding: 88px 0 72px; color: var(--th-ink); }
+.qs-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+.qs-head .bn-eb { margin-bottom: 14px; }
+.qs-h { max-width: 22ch; font-size: clamp(2rem, 1.6rem + 0.9vw, 2.375rem); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.qs-sheet { min-width: 0; }
+.qs-cols { display: none; padding-bottom: 10px; border-bottom: 1px solid var(--th-ink); color: var(--th-pay); font-size: var(--th-text-fine); line-height: 21px; } /* taste-skill-ignore: a table's header rule (owner: hairlines allowed, DESIGN.md) */
+.qs-row { border-bottom: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.qs-row summary {
+  display: grid;
+  grid-template-columns: 12px minmax(0, 1fr) 28px;
+  grid-template-areas: "dot q tog" ". a tog";
+  column-gap: 12px;
+  row-gap: 2px;
+  align-items: baseline;
+  padding: 14px 0;
+  list-style: none;
+  cursor: pointer;
+}
+.qs-row summary::-webkit-details-marker { display: none; }
+.qs-dot { grid-area: dot; display: inline-block; width: 8px; height: 8px; border-radius: 50%; }
+.qs-dot[data-state="yes"] { background: var(--bn-night-800); box-shadow: 0 0 0 3px rgb(61 94 127 / 0.18); } /* taste-skill-ignore: the dot's own ring, a status mark */
+.qs-dot[data-state="not-yet"] { box-shadow: inset 0 0 0 1.5px var(--th-pay); } /* taste-skill-ignore: a hollow status mark */
+.qs-q { grid-area: q; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.qs-a { grid-area: a; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.45; font-variant-numeric: tabular-nums; text-wrap: pretty; }
+.qs-a b { font-weight: 500; }
+.qs-dim { color: var(--th-pay); font-size: var(--th-text-fine); white-space: nowrap; }
+.qs-a [lang="el"], .qs-more [lang="el"] { font-family: "Google Sans", var(--th-font); }
+.qs-tog { grid-area: tog; align-self: center; position: relative; width: 28px; height: 28px; border-radius: 50%; background: var(--bn-cloud-100); transition: background-color 0.2s, transform 0.28s var(--th-ease); }
+.qs-tog::before, .qs-tog::after { position: absolute; top: 50%; left: 50%; width: 11px; height: 1.6px; margin: -0.8px 0 0 -5.5px; border-radius: 1px; background: var(--bn-night-800); content: ""; }
+.qs-tog::after { transform: rotate(90deg); }
+.qs-row summary:hover .qs-tog { background: var(--bn-ice-tile); }
+.qs-row[open] .qs-tog { transform: rotate(45deg); }
+.bn .qs-row summary:focus-visible { outline-offset: 2px; border-radius: 4px; }
+.qs-more p { max-width: 40rem; padding: 0 40px 16px 24px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.55; text-wrap: pretty; }
+/* Under the heading: where a question not on the sheet goes. */
+.qs-ask { margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; }
+.qs-ask a { color: var(--th-ink); font-weight: 500; }
+.qs-legend { display: flex; flex-wrap: wrap; gap: 6px 20px; padding-top: 12px; color: var(--th-pay); font-size: var(--th-text-fine); line-height: 21px; }
+.qs-legend span { display: inline-flex; align-items: center; gap: 8px; }
+@media (min-width: 641px) {
+  .qs { padding: 120px 0 96px; }
+  .qs-cols { display: grid; grid-template-columns: 12px minmax(10rem, 13rem) minmax(0, 1fr) 28px; column-gap: 16px; }
+  .qs-cols span:first-child { grid-column: 2; }
+  .qs-row summary { grid-template-columns: 12px minmax(10rem, 13rem) minmax(0, 1fr) 28px; grid-template-areas: "dot q a tog"; column-gap: 16px; padding: 15px 0; }
+  /* The whole answer lines up under the one-line answer. */
+  .qs-more { display: grid; grid-template-columns: 12px minmax(10rem, 13rem) minmax(0, 1fr) 28px; column-gap: 16px; }
+  .qs-more p { grid-column: 3; padding: 0 0 16px; }
+}
+@media (min-width: 1024px) {
+  .qs { padding: 136px 0 112px; }
+  .qs-in { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 48px; align-items: start; }
 }

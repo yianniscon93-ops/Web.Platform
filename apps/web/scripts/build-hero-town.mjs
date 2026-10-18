@@ -23,9 +23,13 @@
 //
 // The colours are the page's tokens, baked in: an SVG shown as an image cannot
 // read CSS variables. If a token changes, change it here and rerun. The palette
-// is the light map of direction G (owner, 2026-10-14: of the deep-olive map and
-// this one, "Prefer this one"); PALETTES can hold more than one, each written to
-// its own file, should a second ever be wanted again.
+// is Blue Night's (owner, 2026-10-17; DESIGN.md): the town at night, drawn on
+// the hero's own navy, which shows through wherever there is land. The land is
+// left clear, the sea is a darker wash, the coast and the streets are faint
+// dotted lines of ice-blue and the main roads faint solid ones; no buildings,
+// parks or sand. The listings are the town's lights, painted over it by the
+// page. PALETTES can hold more than one, each written to its own file, should a
+// second ever be wanted again (the light map of direction G is in git history).
 //
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
@@ -65,18 +69,22 @@ const TOWNS = [
 const VIEW = 1600; // each view is VIEW × VIEW units, about 2.1 m to a unit
 const MAX_BYTES = 450_000;
 
-// The palette each map is written in, and the ending of its file name: the light map (DESIGN.md, map-* and
-// picture-*).
+// The palette each map is written in, and the ending of its file name: the night map (DESIGN.md, map-*). `sea` is
+// the wash over open water (TownTour reads it back off the picture to keep listings off the sea: a pixel at least
+// SEA_OPACITY opaque and dark is water); `line` is the one colour every street, road and the coast are drawn in,
+// each at its own strength.
 const PALETTES = [
   {
-    name: "paper",
+    name: "night",
     suffix: ".svg",
-    colour: { land: "#FAF9F4", green: "#E2E7D5", sand: "#F0EDE2", water: "#CBD9DA", shore: "#8DA1A2", building: "#E6E3D8", minor: "#D6D3C7", major: "#BAB5A6" },
+    colour: { sea: "#0A0E13", line: "#B7C9DD" },
   },
 ];
-const SHORE_WIDTH = 1.2;
-const MINOR_WIDTH = 2.2;
-const MAJOR_WIDTH = 5;
+const SEA_OPACITY = 0.55;
+const SHORE = { width: 2.6, gap: 6.5, opacity: 0.72 }; // the coast in dots
+const STREET = { width: 2.2, gap: 5.6, opacity: 0.28 }; // every street in dots
+const ROAD = { width: 2.6, opacity: 0.34 }; // the main roads, solid
+const MINOR_WIDTH = 2.2; // the width the streets were cut and simplified for
 
 // What is taken from the tiles (OpenMapTiles layer → classes).
 const GREEN_LANDCOVER = new Set(["grass", "wood"]);
@@ -666,24 +674,31 @@ async function build(town) {
     }
   }
 
-  const line = (colour, width) => `fill="none" stroke="${colour}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"`;
+  // A line of the town, in the palette's one line colour at its own strength; `gap` makes it a row of dots (a dash
+  // of almost nothing with round caps is a dot the line's width across).
+  const line = (colour, { width, opacity, gap }) =>
+    `fill="none" stroke="${colour}" stroke-opacity="${opacity}" stroke-width="${width}" stroke-linecap="round" stroke-linejoin="round"` +
+    (gap ? ` stroke-dasharray="0.01 ${gap}"` : "");
   const path = (attrs, parts, close) => (parts.length ? `<path ${attrs} d="${toPath(parts, close)}"/>\n` : "");
-  /** The map in one palette. */
+  // Piers are land: the land of the night map is left clear, so their areas are cut out of the sea's wash (a mask,
+  // white where the sea shows, black over the piers) rather than painted. The night's own ground shows through them
+  // as through the rest of the land, and TownTour's water test reads them as dry, so a listing on a pier stays.
+  const pierMask = layersOut.pierArea.length
+    ? `<mask id="piers" maskUnits="userSpaceOnUse" x="${-MARGIN}" y="${-MARGIN}" width="${VIEW + 2 * MARGIN}" height="${VIEW + 2 * MARGIN}">\n` +
+      `<rect x="${-MARGIN}" y="${-MARGIN}" width="${VIEW + 2 * MARGIN}" height="${VIEW + 2 * MARGIN}" fill="#fff"/>\n` +
+      path(`fill="#000"`, layersOut.pierArea, true) +
+      `</mask>\n`
+    : "";
+  /** The map in one palette: the town at night, on whatever ground the page puts under it. The land is left clear. */
   const draw = (colour) =>
     `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${VIEW} ${VIEW}">\n` +
     `<!-- Written by scripts/build-hero-town.mjs; do not edit by hand. Map data © OpenStreetMap contributors (ODbL), tiles © OpenMapTiles via OpenFreeMap. -->\n` +
-    `<rect width="${VIEW}" height="${VIEW}" fill="${colour.land}"/>\n` +
-    path(`fill="${colour.green}"`, layersOut.green, true) +
-    path(`fill="${colour.sand}"`, layersOut.sand, true) +
-    path(`fill="${colour.water}"`, layersOut.water, true) +
-    // Piers are land: areas under the shoreline, which runs round them, and lines cased to match it.
-    path(`fill="${colour.land}"`, layersOut.pierArea, true) +
-    path(line(colour.shore, SHORE_WIDTH), layersOut.shore, false) +
-    path(line(colour.shore, MINOR_WIDTH + 2 * SHORE_WIDTH), layersOut.pier, false) +
-    path(line(colour.land, MINOR_WIDTH), layersOut.pier, false) +
-    path(`fill="${colour.building}"`, layersOut.building, true) +
-    path(line(colour.minor, MINOR_WIDTH), layersOut.minor, false) +
-    path(line(colour.major, MAJOR_WIDTH), layersOut.major, false) +
+    pierMask +
+    path(`fill="${colour.sea}" fill-opacity="${SEA_OPACITY}"${pierMask ? ` mask="url(#piers)"` : ""}`, layersOut.water, true) +
+    path(line(colour.line, SHORE), layersOut.shore, false) +
+    // Piers are drawn as streets are: in the dark they read as the walkways they are.
+    path(line(colour.line, STREET), [...layersOut.minor, ...layersOut.pier], false) +
+    path(line(colour.line, ROAD), layersOut.major, false) +
     `</svg>\n`;
 
   console.log(`\n${town.name}: ${tiles} tiles (z${Z}, x ${x0} to ${x1}, y ${y0} to ${y1})`);

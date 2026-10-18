@@ -1,11 +1,11 @@
 import { LANDING as C } from "./tokens";
 
-// The three product icons, line drawings in the brand mark's vocabulary (AreaMark): one ink line of a single weight
-// with round joins, small square white nodes stroked in ink, and exactly one element filled with the data's lime
-// (--th-mark), always inside an ink line, since lime alone does not hold on a light ground (G, 2026-10-14; they were
-// filled with saffron until then, which the owner found childish). Drawn on a 32px grid; shown at 36px beside a
-// product's name and 24px in the phone menu. The th-ic-* classes name the one part of each that moves as its panel
-// arrives (landing-sections.css).
+// The three product icons, line drawings in the brand mark's vocabulary (AreaMark): one line of a single weight in
+// the ink of where they sit (navy-black on white, the night's ink in the phone menu), small square nodes in that
+// ground's surface, and exactly one element filled with --th-mark (ice on white, the scale's brightest step on night),
+// always inside the line (Blue Night, 2026-10-17; lime in direction G, saffron before it). Drawn on a 32px grid; shown
+// at 40px over a product's heading and 24px in the phone menu. The th-ic-* classes name the one part of each that
+// moves as its section arrives (landing-sections.css).
 
 type IconProps = { size?: number; className?: string };
 

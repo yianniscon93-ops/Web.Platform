@@ -1,159 +1,286 @@
-/* ── Landing: how the numbers are made ─────────────────────── */
-/* One listing followed along a line with five stops: published, read, placed, measured, and out three ways.
-   The line and its square stops are the stage's drawing; each stop shows the listing as it is at that point.
-   The section comes up over the product cards, as the close after it does. */
-/* A section of its own on the paper, after the product panels: nothing comes up over anything any more (owner,
-   2026-10-14), so it has no sheet's edge or shade, only the room above it. */
-.hw {
+/* ── Landing: how it works, "Backed by data" (Blue Night, plan 3) ─────────── */
+/* Right after the night hero, on an ice band (landing-sections.css `.bn-band`): the heading and its sentence, what the
+   database holds as three thin counts under hairlines, then one listing followed in four steps, each with its picture
+   (on a wide window with motion, one held night frame whose picture changes with the step), and a last line that hands
+   on to the products. The frame is night, so
+   the story's pictures read as windows onto the night map in the pale band. Motion is in landing-motion.css for the
+   arrivals and here for the story, whose picture follows the scroll where scroll timelines exist. */
+.mt { scroll-margin-top: 64px; }
+.mt-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut) - 2 * var(--lh-m)); margin: 0 auto; padding: 0 16px; }
+.mt-head { display: grid; row-gap: 18px; }
+.mt-head .bn-eb { margin-bottom: 14px; }
+.mt-h { max-width: 17em; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.mt-lede { max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+
+/* What the database holds: three counts, each under its own hairline with its one caption (PriceLabs' manner). */
+.mt-held { display: grid; row-gap: 14px; margin-top: 36px; }
+.mt-counts { display: grid; grid-template-columns: minmax(0, 1fr); }
+.mt-counts > div { display: flex; flex-direction: row-reverse; align-items: baseline; justify-content: space-between; padding: 14px 0; border-top: 1px solid rgb(33 48 71 / 0.18); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.mt-counts dd { font-size: 40px; font-weight: var(--th-display-weight); line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.mt-counts dt { color: var(--th-muted); font-size: var(--th-text-small); line-height: 24px; }
+.mt-held-note { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; max-width: 40rem; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.ct { font-variant-numeric: tabular-nums; }
+
+/* ── The story ── */
+/* Each picture stands right before its step in the page, so it is read with it. On a phone and a tablet: each picture
+   above its step, one column. The night frame is only a backdrop for the held frame of wide windows (below). */
+.mt-story { display: grid; grid-template-columns: minmax(0, 1fr); margin-top: 48px; }
+.mt-frame, .mt-rail { display: none; }
+.mt-pic {
   position: relative;
-  background: var(--th-ground);
-  color: var(--th-ink);
-  scroll-margin-top: 72px;
+  height: 300px;
+  margin: 0;
+  overflow: hidden;
+  border-radius: var(--bn-r-tile);
+  background: linear-gradient(180deg, var(--bn-night-950), var(--bn-night-900)); /* taste-skill-ignore: Blue Night's night, pinned by the owner */
+  color: var(--bn-ink-night);
+  container-type: size;
+  isolation: isolate;
 }
-.hw-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 16px; max-width: 1440px; margin: 0 auto; padding: 56px 16px 64px; }
-.hw-h { font-size: var(--th-heading); }
-.hw .th-lede { margin-top: 0; color: var(--th-ink); }
-.hw .th-lede b { color: var(--th-ink); font-weight: 600; font-variant-numeric: tabular-nums; }
-/* What the database holds today: three counts set large at the regular weight, each with its one caption (the owner's
-   "so many listings tracked", in PriceLabs' manner), and under them what the for-sale count is. */
-.hw-held { display: grid; row-gap: 14px; margin-top: 16px; }
-.hw-counts { display: flex; flex-wrap: wrap; gap: 20px 56px; }
-.hw-counts > div { display: flex; flex-direction: column-reverse; }
-.hw-counts dd { font-size: var(--th-text-figure); font-weight: 400; line-height: 1.05; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
-.hw-counts dt { margin-top: 2px; color: var(--th-muted); font-size: var(--th-text-body); line-height: 26px; }
-.hw-held-note { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; max-width: 40em; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
+/* The picture's drawing (all but its caption): no box of its own except in the held frame, where it carries the
+   picture's small rise as the scroll changes it. */
+.mt-pic-in { display: contents; }
+.mt-pic[data-pic="3"] { height: auto; min-height: 300px; container-type: normal; }
+.mt-pic[data-pic="4"] { height: 400px; }
+.mt-step { display: grid; row-gap: 10px; align-content: start; padding: 18px 0 40px; }
+.mt-step:last-of-type { padding-bottom: 0; }
+.mt-step h3 { font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem); font-weight: var(--th-display-weight); line-height: 1.15; letter-spacing: -0.02em; text-wrap: balance; }
+.mt-step p { max-width: 30rem; color: var(--th-ink); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+.mt-step .mt-fact { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.mt-fact b { color: var(--th-ink); font-weight: 500; }
 
-/* The line, top to bottom on phones and tablets: a rail down the left with a square at each stop. */
-/* The rail is a quiet line until the listing travels it (below), when it fills with olive. */
-.hw-line { --hw-rail: color-mix(in srgb, var(--th-muted) 38%, var(--th-ground)); display: grid; margin-top: 24px; }
-.hw-line > li { position: relative; display: grid; row-gap: 12px; align-content: start; padding: 0 0 36px 30px; }
-.hw-line > li::before { content: ""; position: absolute; top: 6px; bottom: -6px; left: 5px; width: 1.5px; background: var(--hw-rail); }
-.hw-line > li:last-child { padding-bottom: 0; }
-.hw-line > li:last-child::before { display: none; }
-.hw-line > li::after {
-  content: "";
+/* The hand-off: the story's last line, the three products named, each a link to its chapter below. */
+.mt-end { position: relative; display: block; margin-top: 40px; font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+.mt-end a { color: var(--th-ink); font-weight: 500; white-space: nowrap; }
+.mt-end-dot { display: none; }
+
+/* ── The pictures ── */
+/* Steps 1 and 2: the island at night (island.svg) in its own 4:3 window, covering the picture whatever its shape,
+   with every short-let a light on a canvas laid exactly over it (StoryLights). */
+.mt-isl { position: absolute; top: 50%; left: 50%; width: max(100%, 133.34cqh); aspect-ratio: 4 / 3; transform: translate(-50%, -50%); }
+.mt-isl-zoom { position: absolute; inset: 0; transform-origin: var(--mt-zx, 20%) var(--mt-zy, 70%); }
+.mt-isl img, .mt-lights { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.mt-big { position: absolute; top: 18px; left: 22px; z-index: 2; display: grid; row-gap: 2px; margin: 0; }
+.mt-big b { font-size: 40px; font-weight: var(--th-display-weight); line-height: 1; letter-spacing: -0.03em; }
+.mt-big > span { color: var(--bn-mist-300); font-size: var(--th-text-fine); line-height: 21px; }
+.mt-cap { position: absolute; right: 18px; bottom: 14px; left: 18px; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 6px 14px; color: var(--bn-mist-300); font-size: var(--th-text-fine); line-height: 21px; }
+.mt-pic .ps-tag { color: var(--bn-mist-300); }
+
+/* Step 2: the island zooms to Kato Paphos and the town's own night map takes over, the area the tour draws there
+   drawn on it in ice, and the areas it sits in named outermost first. At rest (and with reduced motion) the picture is
+   its end: the town, the area drawn, the names. */
+.mt-pic-place .mt-isl-zoom { opacity: 0; transform: translate(calc(50% - var(--mt-zx)), calc(50% - var(--mt-zy))) scale(4.6); }
+.mt-pic-place .mt-lights { opacity: 0; }
+.mt-town { position: absolute; inset: 0; transform-origin: 50% 50%; }
+.mt-town svg, .mt-match-map { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.mt-ring-edge { fill: none; stroke: var(--bn-night-950); stroke-width: 9px; stroke-linejoin: round; opacity: 0.8; }
+.mt-ring { fill: rgb(183 201 221 / 0.08); stroke: var(--bn-ice-200); stroke-width: 3.5px; stroke-linejoin: round; }
+.mt-corner { fill: var(--bn-ice-200); stroke: var(--bn-night-950); stroke-width: 4px; transform-box: fill-box; transform-origin: center; }
+/* The areas it sits in: small night-glass pills over the map (it floats, so it may be glass), the last the visitor's
+   own, in ice. */
+.mt-nest { position: absolute; top: 16px; left: 16px; z-index: 2; display: flex; flex-wrap: wrap; align-items: center; gap: 6px; max-width: calc(100% - 32px); margin: 0; padding: 0; list-style: none; }
+.mt-nest li {
+  display: inline-flex;
+  align-items: center;
+  height: 30px;
+  padding: 0 12px;
+  border-radius: var(--bn-r-pill);
+  background: rgb(24 32 43 / 0.86);
+  -webkit-backdrop-filter: blur(12px); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  backdrop-filter: blur(12px); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  color: var(--bn-mist-300);
+  font-size: var(--th-text-fine);
+  white-space: nowrap;
+}
+.mt-nest li:not(:last-child) { box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.14); } /* taste-skill-ignore: the glass's own rim (Blue Night) */
+.mt-nest li:last-child { background: var(--bn-ice-200); color: var(--bn-night-950); font-weight: 500; }
+.mt-nest li + li::before { width: 5px; height: 5px; margin: 0 9px 0 -3px; border-top: 1.5px solid currentColor; border-right: 1.5px solid currentColor; transform: rotate(45deg); opacity: 0.7; content: ""; }
+
+/* Step 3: an example listing's month, booked told from blocked. */
+.mt-cal { position: relative; display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 18px; padding: 18px; }
+.mt-cal-l { display: grid; row-gap: 10px; align-content: start; }
+.mt-lst { display: grid; row-gap: 2px; margin: 0; padding: 12px 14px; border-radius: 12px; background: var(--bn-night-800); color: var(--bn-mist-300); font-size: var(--th-text-fine); line-height: 21px; }
+.mt-lst b { display: flex; align-items: center; justify-content: space-between; gap: 8px; color: var(--bn-ink-night); font-size: var(--th-text-small); font-weight: 500; }
+.mt-lst i { width: 9px; height: 9px; border-radius: 50%; background: var(--th-data-3); box-shadow: 0 0 8px 2px rgb(175 197 220 / 0.55); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.mt-eg { color: var(--bn-mist-300); } /* 5.96:1 on night-800 (mist-dim was 4.42:1) */
+.mt-days { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 5px; max-width: 320px; margin: 0; }
+.mt-days i { position: relative; aspect-ratio: 1; overflow: hidden; border-radius: 3px; box-shadow: inset 0 0 0 1.5px rgb(183 201 221 / 0.45); } /* taste-skill-ignore: a chart's own mark */
+.mt-days i::before, .mt-days i::after { position: absolute; inset: 0; content: ""; }
+.mt-days i[data-night="b"]::before { background: var(--th-data-3); }
+/* A blocked night is hatched: the owner's, not a booking. Under the hatch it looks booked, as a calendar shows it. */
+.mt-days i[data-night="o"]::before { background: var(--th-data-3); opacity: 0; }
+.mt-days i[data-night="o"]::after { background: repeating-linear-gradient(135deg, rgb(183 201 221 / 0.6) 0 2px, transparent 2px 5px); } /* taste-skill-ignore: a hatch, which says "blocked" */
+.mt-key { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; color: var(--bn-mist-300); font-size: var(--th-text-fine); line-height: 21px; }
+.mt-key span { display: inline-flex; align-items: center; gap: 6px; }
+.mt-key span::before { width: 10px; height: 10px; border-radius: 2px; content: ""; }
+.mt-key [data-night="b"]::before { background: var(--th-data-3); }
+.mt-key [data-night="o"]::before { background: repeating-linear-gradient(135deg, rgb(183 201 221 / 0.6) 0 2px, transparent 2px 4px); box-shadow: inset 0 0 0 1.5px rgb(183 201 221 / 0.45); } /* taste-skill-ignore: a hatch, which says "blocked" */
+.mt-key [data-night="f"]::before { box-shadow: inset 0 0 0 1.5px rgb(183 201 221 / 0.6); } /* taste-skill-ignore: a chart's own mark */
+.mt-occ { display: grid; row-gap: 14px; align-content: center; }
+.mt-occ p { display: grid; row-gap: 6px; margin: 0; color: var(--bn-mist-300); font-size: var(--th-text-fine); line-height: 21px; }
+.mt-occ b { color: var(--bn-ink-night); font-weight: 500; font-variant-numeric: tabular-nums; }
+.mt-occ i { position: relative; height: 6px; overflow: hidden; border-radius: 3px; background: rgb(245 247 250 / 0.1); }
+.mt-occ i::after { position: absolute; inset: 0; border-radius: 3px; background: var(--bn-mist-dim); transform: scaleX(var(--w, 0.8)); transform-origin: 0 50%; content: ""; }
+.mt-occ p[data-ours] i::after { background: var(--th-data-3); box-shadow: 0 0 10px rgb(175 197 220 / 0.6); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.mt-occ .mt-occ-all { display: block; margin-top: 4px; }
+
+/* Step 4: one home for sale matched with the lets of its size near it; what that comes to across Cyprus on a glass
+   card over the map (it floats). */
+.mt-faint { fill: var(--th-data-1); opacity: 0.45; }
+.mt-mline { fill: none; stroke: var(--bn-ice-200); stroke-width: 3px; stroke-linecap: round; }
+.mt-mline-lt { stroke: var(--bn-mist-300); opacity: 0.75; }
+.mt-lt { fill: var(--bn-ice-200); }
+.mt-home { fill: var(--bn-paper); stroke: var(--bn-night-950); stroke-width: 5px; }
+.mt-matched {
   position: absolute;
-  top: 6px;
-  left: 0;
-  width: 11.5px;
-  height: 11.5px;
-  border: 2px solid var(--th-ink);
-  background: var(--th-surface);
-}
-/* What is counted is the data's lime, inside its ink square: the listing as it is published. */
-.hw-line > li[data-stop="source"]::after { background: var(--th-mark); }
-.hw-line h3 { font-size: var(--th-text-lead); font-weight: 600; line-height: 26px; }
-.hw-say { max-width: 34em; color: var(--th-ink); font-size: var(--th-text-body); line-height: 26px; text-wrap: pretty; }
-.hw-fact { font-size: var(--th-text-small); line-height: 24px; font-variant-numeric: tabular-nums; }
-.hw-fact b { font-weight: 600; }
-.hw-fact .th-tag { display: flex; width: fit-content; margin-top: 6px; }
-.hw-spec { display: flex; flex-direction: column; align-items: flex-start; gap: 10px; }
-
-/* Stop 1: the listing, as its site shows it. */
-.hw-card {
+  top: 16px;
+  right: 16px;
+  z-index: 2;
   display: grid;
-  grid-template-columns: 44px auto;
-  column-gap: 12px;
-  padding: 10px 16px 11px 10px;
-  border: 1px solid var(--th-line);
-  border-radius: 10px;
-  background: var(--th-surface);
-  color: var(--th-muted);
-  font-size: var(--th-text-small);
-  line-height: 24px;
+  row-gap: 8px;
+  width: min(300px, calc(100% - 32px));
+  padding: 14px 16px;
+  border-radius: 12px;
+  background: rgb(24 32 43 / 0.92);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  backdrop-filter: blur(18px) saturate(1.3); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.14), 0 18px 36px -22px rgb(0 0 0 / 0.85); /* taste-skill-ignore: it floats (the map, the page, a tile) */
+  color: var(--bn-mist-300);
+  font-size: var(--th-text-fine);
+  line-height: 21px;
 }
-.hw-card i { grid-row: 1 / span 3; align-self: start; width: 44px; height: 44px; border: 1.5px solid var(--th-ink); background: var(--th-mark); }
-.hw-card b { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
-/* Stop 2: a month of its calendar, a square a night. */
-.hw-month { display: grid; grid-template-columns: repeat(10, 17px); gap: 4px; }
-.hw-month i, .hw-key span::before { width: 17px; height: 17px; border: 1.5px solid var(--th-occ-ring); background: var(--th-occ-3); }
-.hw-month i[data-night="o"], .hw-key span[data-night="o"]::before {
-  border-color: var(--th-ink);
-  background: repeating-linear-gradient(135deg, var(--th-ink) 0 1.5px, var(--th-surface) 1.5px 4px);
-}
-.hw-month i[data-night="f"], .hw-key span[data-night="f"]::before { border-color: var(--th-line); background: var(--th-surface); }
-.hw-key { display: flex; flex-wrap: wrap; gap: 4px 10px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 24px; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.hw-key span { display: inline-flex; align-items: center; gap: 4px; }
-.hw-key span::before { content: ""; width: 9px; height: 9px; border-width: 1px; }
-/* Stop 3: where it is, inside the areas that hold it. */
-.hw-map { width: 204px; height: 125px; overflow: visible; }
-.hw-map path { fill: none; stroke-linejoin: round; }
-.hw-map-far { stroke: var(--th-wire); stroke-width: 1.1px; }
-.hw-map-mid { stroke: var(--hw-rail); stroke-width: 1.1px; }
-.hw-map path.hw-map-near { fill: var(--th-a); fill-opacity: var(--th-area-tint); stroke: var(--th-a); stroke-width: 1.5px; }
-.hw-map-nodes rect { fill: var(--th-surface); stroke: var(--th-ink); stroke-width: 1.1px; }
-.hw-map-dot { fill: var(--th-mark); stroke: var(--th-ink); stroke-width: 1.1px; }
-.hw-crumb { color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; }
-/* Stop 4: what its calendar shows against what we count. */
-.hw-bars { display: grid; row-gap: 12px; width: 100%; max-width: 300px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 22px; font-variant-numeric: tabular-nums; }
-.hw-bars > span { display: grid; row-gap: 5px; }
-.hw-bars > span > span { text-wrap: balance; }
-.hw-bars i { width: var(--w); height: 13px; border: 1.5px solid var(--th-ink); background: repeating-linear-gradient(135deg, var(--th-ink) 0 1.5px, var(--th-surface) 1.5px 4px); }
-.hw-bars span[data-ours] i { border-color: var(--th-occ-ring); background: var(--th-occ-3); }
-.hw-bars em { color: var(--th-ink); font-size: var(--th-text-body); font-style: normal; font-weight: 600; }
-/* Stop 5: the three products. */
-/* Stop 5: the products, named in one sentence, each a link to its card. */
-.hw-out a { color: var(--th-ink); font-weight: 600; white-space: nowrap; }
+.mt-matched p { display: grid; margin: 0; }
+.mt-matched b { color: var(--bn-ink-night); font-weight: 500; font-variant-numeric: tabular-nums; }
+.mt-matched-h { color: var(--bn-ink-night); }
+.mt-matched .ps-tag { justify-self: start; }
+.mt-cap-key { justify-content: flex-start; }
+.mt-cap-key span { display: inline-flex; align-items: center; gap: 7px; }
+.mt-cap-key i { display: inline-block; flex: none; }
+.mt-k-light { width: 9px; height: 9px; border-radius: 50%; background: var(--th-data-3); box-shadow: 0 0 8px 2px rgb(175 197 220 / 0.5); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.mt-k-sq { width: 9px; height: 9px; border-radius: 2px; background: var(--bn-ice-200); }
+.mt-k-home { width: 10px; height: 10px; border-radius: 50%; background: var(--bn-paper); }
 
-@media (min-width: 640px) {
-  .hw-in { padding: 72px 32px 80px; }
-}
-/* From 1100px the line runs left to right: the heading and its sentence share a row, as on the stage, and the
-   five stops share the next, each under its square. */
-@media (min-width: 1100px) {
-  /* The heading and its sentence start level: set to their foot, the one-line heading left an empty band above it. */
-  .hw-in { grid-template-columns: 7fr 5fr; column-gap: 56px; align-items: start; padding: 72px 64px 96px; }
-  .hw-in > :is(.hw-h, .th-lede) { align-self: start; }
-  .hw-held { grid-column: 1 / -1; margin-top: 40px; }
-  .hw-line { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.06fr) minmax(0, 1.12fr) minmax(0, 1fr) minmax(0, 1.24fr) minmax(0, 1.15fr); margin-top: 48px; }
-  .hw-line > li { grid-template-rows: auto 180px auto auto; padding: 34px 32px 0 0; }
-  .hw-line > li::before { top: 5px; right: 0; bottom: auto; left: 6px; width: auto; height: 1.5px; }
-  .hw-line > li::after { top: 0; }
-  .hw-spec { align-self: center; }
-  /* The line ends by turning down to the sentence that names the three products. */
-  .hw-line > li[data-stop="out"] { align-self: start; grid-template-rows: auto auto; padding: 34px 0 0 30px; }
-  .hw-line > li[data-stop="out"]::after { display: none; }
-  .hw-line > li[data-stop="out"]::before { display: block; top: 5px; bottom: 23px; left: 0; width: 1.5px; height: auto; }
-  .hw-out { margin-top: 4px; }
+@media (min-width: 641px) {
+  .mt-in { padding: 0 calc(var(--bn-gut) - var(--lh-m)); }
+  .mt-counts { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 24px; }
+  .mt-counts > div { flex-direction: column-reverse; align-items: flex-start; justify-content: flex-start; padding: 16px 0 0; }
+  .mt-counts dd { font-size: var(--th-text-figure); }
+  .mt-counts dt { margin-top: 8px; }
+  .mt-pic { height: 420px; }
+  .mt-pic[data-pic="4"] { height: 440px; }
+  .mt-cal { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1fr); column-gap: 26px; align-content: center; min-height: 300px; padding: 26px; }
 }
 
-/* The listing travels the line as the section is read (G, 2026-10-14): each length of rail fills with olive as the
-   reader scrolls past it and each stop it reaches turns olive, so the line is read in the order the listing takes
-   it (scroll-linked, as Linear's Method and Stripe's diagrams draw their lines; CSS scroll-driven animations only,
-   no script). Where a browser has no scroll timelines, or the visitor asks for less motion, the line is simply as
-   above: nothing is ever hidden waiting for a scroll. The fill is a solid colour sized from nothing to the whole
-   segment (a gradient of one colour is how CSS sizes a fill). */
-@supports (animation-timeline: view()) {
-  @media (prefers-reduced-motion: no-preference) {
-    .hw-line { view-timeline: --hw-line block; }
-    .hw-line > li::before {
-      background: linear-gradient(var(--th-a), var(--th-a)) no-repeat top / 100% 0%, var(--hw-rail); /* taste-skill-ignore: one colour, sized by the scroll */
-      animation: hw-fill-down linear both;
-      animation-timeline: view();
-      animation-range: cover 35% cover 60%;
-    }
-    .hw-line > li:not([data-stop="source"])::after {
-      animation: hw-reach linear both;
-      animation-timeline: view();
-      animation-range: cover 34% cover 36%;
-    }
+/* ── From 1024px: each picture beside its step ── */
+/* The pictures in the left seven columns, the steps on the right, each step about three-quarters of a window tall, so
+   the story is four short screens (owner, 2026-10-17: "visitors must reach the products without a slog"). This is the
+   story as sent, and as it stays without script and with reduced motion: every picture is there, beside its step. */
+@media (min-width: 1024px) {
+  .mt-head { grid-template-columns: minmax(0, 8fr) minmax(0, 4fr); column-gap: 64px; align-items: end; }
+  .mt-held { margin-top: 48px; }
+  .mt-story { --mt-fh: min(520px, calc(100vh - 230px)); --mt-step: max(560px, 76vh); grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 64px; margin-top: 40px; }
+  .mt-pic, .mt-pic[data-pic="3"], .mt-pic[data-pic="4"] { grid-column: 1; align-self: center; height: var(--mt-fh); min-height: 0; container-type: size; }
+  .mt-pic[data-pic="1"], .mt-step[data-st="1"] { grid-row: 1; }
+  .mt-pic[data-pic="2"], .mt-step[data-st="2"] { grid-row: 2; }
+  .mt-pic[data-pic="3"], .mt-step[data-st="3"] { grid-row: 3; }
+  .mt-pic[data-pic="4"], .mt-step[data-st="4"] { grid-row: 4; }
+  .mt-cal { position: absolute; inset: 0; min-height: 0; padding: 32px; }
+  .mt-step { grid-column: 2; min-height: var(--mt-step); align-content: center; padding: 0; }
+  /* The last line sits in the steps' column, so the story ends on the products. */
+  .mt-end { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 64px; margin-top: 8px; }
+  .mt-end > span:last-child { position: relative; grid-column: 2; }
+}
+
+/* ── From 1024px, with motion, once the script has the story (`data-framed`, Reveal.tsx): one held frame ── */
+/* The four pictures hold one over another (each sticky in the same grid area, over the night backdrop) while the steps
+   pass on the right; which shows is the step at the window's middle: by the scroll itself where scroll timelines exist
+   (below), else by `data-step`. The others are only faded out, so every picture stays in the accessibility tree. A rail
+   runs down beside the steps and fills as they are read; each step's dot fills as it is reached. Rows keep the same
+   heights as the story beside its steps, so taking it over moves nothing on the page. */
+@media screen and (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  .mt-story[data-framed] { --mt-top: calc(36px + 50vh - var(--mt-fh) / 2); }
+  .mt-story[data-framed] .mt-frame {
+    position: sticky;
+    top: var(--mt-top);
+    display: block;
+    grid-row: 1 / span 4;
+    grid-column: 1;
+    align-self: start;
+    height: var(--mt-fh);
+    border-radius: var(--bn-r-tile);
+    background: linear-gradient(180deg, var(--bn-night-950), var(--bn-night-900)); /* taste-skill-ignore: Blue Night's night, pinned by the owner */
   }
-  @media (prefers-reduced-motion: no-preference) and (min-width: 1100px) {
-    /* Across: one timeline for the whole line, each length's turn set by where it lies along it (the columns are
-       1.06, 1.12, 1 and 1.24 parts wide), then the turn down to the products. The line is travelled while it
-       rises from the foot of the window to a little under its middle. */
-    .hw-line > li::before { background-position: left; background-size: 0% 100%, auto; animation-name: hw-fill-across; animation-timeline: --hw-line; }
-    .hw-line > li:nth-child(1)::before { animation-range: cover 10% cover 16.7%; }
-    .hw-line > li:nth-child(2)::before { animation-range: cover 16.7% cover 23.7%; }
-    .hw-line > li:nth-child(3)::before { animation-range: cover 23.7% cover 30.2%; }
-    .hw-line > li:nth-child(4)::before { animation-range: cover 30.2% cover 38%; }
-    .hw-line > li[data-stop="out"]::before { background-position: top; background-size: 100% 0%, auto; animation-name: hw-fill-down; animation-range: cover 38% cover 41%; }
-    .hw-line > li:not([data-stop="source"])::after { animation-timeline: --hw-line; }
-    .hw-line > li:nth-child(2)::after { animation-range: cover 16.3% cover 17.1%; }
-    .hw-line > li:nth-child(3)::after { animation-range: cover 23.3% cover 24.1%; }
-    .hw-line > li:nth-child(4)::after { animation-range: cover 29.8% cover 30.6%; }
+  .mt-story[data-framed] .mt-pic { position: sticky; top: var(--mt-top); grid-row: 1 / span 4; align-self: start; background: none; opacity: 0; transition: opacity 0.6s ease; }
+  .mt-story[data-framed][data-step="1"] .mt-pic[data-pic="1"],
+  .mt-story[data-framed][data-step="2"] .mt-pic[data-pic="2"],
+  .mt-story[data-framed][data-step="3"] .mt-pic[data-pic="3"],
+  .mt-story[data-framed][data-step="4"] .mt-pic[data-pic="4"] { opacity: 1; }
+  .mt-story[data-framed] .mt-pic-in { position: absolute; inset: 0; display: block; }
+  .mt-story[data-framed] .mt-step { padding-left: 44px; }
+  .mt-story[data-framed] .mt-step h3 { position: relative; }
+  /* Each step's dot, on the rail: ringed until it is reached, then filled. */
+  .mt-story[data-framed] .mt-step h3::before {
+    position: absolute;
+    top: 0.32em;
+    left: -44px;
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--bn-ice-tile);
+    box-shadow: inset 0 0 0 2px var(--bn-night-800); /* taste-skill-ignore: the step's own ring, a status mark */
+    transition: background-color 0.4s ease;
+    content: "";
+  }
+  .mt-story[data-framed][data-step="1"] .mt-step[data-st="1"] h3::before,
+  .mt-story[data-framed]:is([data-step="2"], [data-step="3"], [data-step="4"]) .mt-step:is([data-st="1"], [data-st="2"]) h3::before,
+  .mt-story[data-framed]:is([data-step="3"], [data-step="4"]) .mt-step[data-st="3"] h3::before,
+  .mt-story[data-framed][data-step="4"] .mt-step[data-st="4"] h3::before { background: var(--bn-night-800); }
+  .mt-story[data-framed] .mt-rail { position: relative; z-index: 0; display: block; grid-row: 1 / span 4; grid-column: 2; justify-self: start; width: 2px; margin: calc(var(--mt-step) / 2 - 24px) 0 calc(var(--mt-step) / 2 + 12px) 6px; border-radius: 1px; background: rgb(33 48 71 / 0.16); }
+  .mt-story[data-framed] .mt-rail i { position: absolute; inset: 0; border-radius: inherit; background: var(--bn-glow-500); transform: scaleY(0); transform-origin: 50% 0; transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1); }
+  .mt-story[data-framed][data-step="2"] .mt-rail i { transform: scaleY(0.3333); }
+  .mt-story[data-framed][data-step="3"] .mt-rail i { transform: scaleY(0.6667); }
+  .mt-story[data-framed][data-step="4"] .mt-rail i { transform: scaleY(1); }
+  .mt-story[data-framed] .mt-step > * { position: relative; z-index: 1; }
+  /* The last line on the rail's last dot. */
+  .mt-story[data-framed] + .mt-end > span:last-child { padding-left: 44px; }
+  .mt-story[data-framed] + .mt-end .mt-end-dot { position: absolute; display: block; grid-column: 2; width: 14px; height: 14px; margin-top: 0.34em; border-radius: 50%; background: var(--bn-glow-500); }
+}
+
+/* Where scroll timelines exist, the picture in the held frame follows the scroll itself: each step's picture comes in
+   as its step reaches the window's lower middle and goes as the next one comes, a short crossfade (the picture) with a
+   small rise (its drawing and caption, clipped by the picture); the first is there from the start and the last stays to
+   the end. The rail fills with the reading. The same support test is in Reveal.tsx. */
+@supports (animation-timeline: view()) and (timeline-scope: --a) {
+  @media screen and (prefers-reduced-motion: no-preference) and (min-width: 1024px) {
+    .mt-story[data-framed] { timeline-scope: --mt-1, --mt-2, --mt-3, --mt-4; view-timeline: --mt-story block; }
+    .mt-story[data-framed] .mt-step[data-st="1"] { view-timeline: --mt-1 block; }
+    .mt-story[data-framed] .mt-step[data-st="2"] { view-timeline: --mt-2 block; }
+    .mt-story[data-framed] .mt-step[data-st="3"] { view-timeline: --mt-3 block; }
+    .mt-story[data-framed] .mt-step[data-st="4"] { view-timeline: --mt-4 block; }
+    .mt-story[data-framed] .mt-pic { transition: none; animation: mt-swap linear both; animation-range: cover 0% cover 100%; }
+    .mt-story[data-framed] .mt-pic > :is(.mt-pic-in, figcaption) { animation: mt-rise linear both; animation-range: cover 0% cover 100%; }
+    .mt-story[data-framed] .mt-pic[data-pic="1"] { animation-name: mt-swap-first; animation-timeline: --mt-1; }
+    .mt-story[data-framed] .mt-pic[data-pic="1"] > :is(.mt-pic-in, figcaption) { animation-name: mt-rise-first; animation-timeline: --mt-1; }
+    .mt-story[data-framed] .mt-pic[data-pic="2"],
+    .mt-story[data-framed] .mt-pic[data-pic="2"] > :is(.mt-pic-in, figcaption) { animation-timeline: --mt-2; }
+    .mt-story[data-framed] .mt-pic[data-pic="3"],
+    .mt-story[data-framed] .mt-pic[data-pic="3"] > :is(.mt-pic-in, figcaption) { animation-timeline: --mt-3; }
+    .mt-story[data-framed] .mt-pic[data-pic="4"] { animation-name: mt-swap-last; animation-timeline: --mt-4; }
+    .mt-story[data-framed] .mt-pic[data-pic="4"] > :is(.mt-pic-in, figcaption) { animation-name: mt-rise-last; animation-timeline: --mt-4; }
+    .mt-story[data-framed] .mt-rail i { transition: none; animation: mt-rail linear both; animation-timeline: --mt-story; animation-range: cover 21% cover 78%; }
   }
 }
-@keyframes hw-fill-down { to { background-size: 100% 100%, auto; } }
-@keyframes hw-fill-across { to { background-size: 100% 100%, auto; } }
-@keyframes hw-reach { to { border-color: var(--th-a); background: var(--th-a); } }
+@keyframes mt-swap-first { 0%, 68% { opacity: 1; } 76%, 100% { opacity: 0; } }
+@keyframes mt-swap { 0%, 24% { opacity: 0; } 32%, 68% { opacity: 1; } 76%, 100% { opacity: 0; } }
+@keyframes mt-swap-last { 0%, 24% { opacity: 0; } 32%, 100% { opacity: 1; } }
+@keyframes mt-rise-first { 0%, 68% { translate: 0 0; } 76%, 100% { translate: 0 -8px; } }
+@keyframes mt-rise { 0%, 24% { translate: 0 12px; } 32%, 68% { translate: 0 0; } 76%, 100% { translate: 0 -8px; } }
+@keyframes mt-rise-last { 0%, 24% { translate: 0 12px; } 32%, 100% { translate: 0 0; } }
+@keyframes mt-rail { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .mt-pic, .mt-rail i, .mt-step h3::before { transition: none !important; }
+}
+@media (forced-colors: active) {
+  .mt-pic, .mt-frame { border: 1px solid CanvasText; } /* taste-skill-ignore: forced-colors fallback */
+}

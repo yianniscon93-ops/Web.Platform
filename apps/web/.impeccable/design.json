@@ -1,709 +1,638 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-14T18:00:00Z",
+  "generatedAt": "2026-10-17T21:00:00Z",
   "title": "Design System: Plotsights landing",
   "extensions": {
     "colorMeta": {
-      "ground": {
-        "role": "neutral",
-        "displayName": "Paper",
-        "canonical": "oklch(96.6% 0.008 99)",
-        "resolvedHex": "#F5F4EE",
-        "cssVar": "--th-ground",
+      "night-950": {
+        "role": "night",
+        "displayName": "Night 950 (the hero and close cards' top; the night ground, --th-ground on .bn-night)",
+        "canonical": "oklch(21.1% 0.014 253)",
+        "resolvedHex": "#14191F",
+        "cssVar": "--bn-night-950",
         "tonalRamp": [
-          "oklch(15.0% 0.008 99)",
-          "oklch(26.0% 0.008 99)",
-          "oklch(38.0% 0.008 99)",
-          "oklch(50.0% 0.008 99)",
-          "oklch(62.0% 0.008 99)",
-          "oklch(74.0% 0.008 99)",
-          "oklch(85.0% 0.005 99)",
-          "oklch(95.0% 0.002 99)"
+          "oklch(15.0% 0.014 253)",
+          "oklch(26.0% 0.014 253)",
+          "oklch(38.0% 0.014 253)",
+          "oklch(50.0% 0.014 253)",
+          "oklch(62.0% 0.014 253)",
+          "oklch(74.0% 0.014 253)",
+          "oklch(85.0% 0.008 253)",
+          "oklch(95.0% 0.004 253)"
+        ]
+      },
+      "night-900": {
+        "role": "night",
+        "displayName": "Night 900 (the night cards' foot; the solid fill under dark glass)",
+        "canonical": "oklch(24.1% 0.024 256)",
+        "resolvedHex": "#18202B",
+        "cssVar": "--bn-night-900",
+        "tonalRamp": [
+          "oklch(15.0% 0.024 256)",
+          "oklch(26.0% 0.024 256)",
+          "oklch(38.0% 0.024 256)",
+          "oklch(50.0% 0.024 256)",
+          "oklch(62.0% 0.024 256)",
+          "oklch(74.0% 0.024 256)",
+          "oklch(85.0% 0.015 256)",
+          "oklch(95.0% 0.007 256)"
+        ]
+      },
+      "night-800": {
+        "role": "night",
+        "displayName": "Night 800 (navy cards on white, the action on white, a read section on the report's rail, booked nights)",
+        "canonical": "oklch(30.7% 0.046 259)",
+        "resolvedHex": "#213047",
+        "cssVar": "--bn-night-800",
+        "tonalRamp": [
+          "oklch(15.0% 0.046 259)",
+          "oklch(26.0% 0.046 259)",
+          "oklch(38.0% 0.046 259)",
+          "oklch(50.0% 0.046 259)",
+          "oklch(62.0% 0.046 259)",
+          "oklch(74.0% 0.046 259)",
+          "oklch(85.0% 0.028 259)",
+          "oklch(95.0% 0.014 259)"
+        ]
+      },
+      "night-700": {
+        "role": "night",
+        "displayName": "Night 700 (the answer bubble, the action's hover on white)",
+        "canonical": "oklch(35.0% 0.051 259)",
+        "resolvedHex": "#2A3B55",
+        "cssVar": "--bn-night-700",
+        "tonalRamp": [
+          "oklch(15.0% 0.051 259)",
+          "oklch(26.0% 0.051 259)",
+          "oklch(38.0% 0.051 259)",
+          "oklch(50.0% 0.051 259)",
+          "oklch(62.0% 0.051 259)",
+          "oklch(74.0% 0.051 259)",
+          "oklch(85.0% 0.031 259)",
+          "oklch(95.0% 0.015 259)"
+        ]
+      },
+      "glow-600": {
+        "role": "night",
+        "displayName": "Glow 600 (the glow's outer ring)",
+        "canonical": "oklch(35.5% 0.039 255)",
+        "resolvedHex": "#2E3D50",
+        "cssVar": "--bn-glow-600",
+        "tonalRamp": [
+          "oklch(15.0% 0.039 255)",
+          "oklch(26.0% 0.039 255)",
+          "oklch(38.0% 0.039 255)",
+          "oklch(50.0% 0.039 255)",
+          "oklch(62.0% 0.039 255)",
+          "oklch(74.0% 0.039 255)",
+          "oklch(85.0% 0.023 255)",
+          "oklch(95.0% 0.012 255)"
+        ]
+      },
+      "glow-500": {
+        "role": "primary",
+        "displayName": "Glow 500 (the glow's core; the brand's dots on white, the rail's current mark, the report's bars, the How line as it fills)",
+        "canonical": "oklch(47.1% 0.066 249)",
+        "resolvedHex": "#3D5E7F",
+        "cssVar": "--bn-glow-500 (and --th-a on day)",
+        "tonalRamp": [
+          "oklch(15.0% 0.066 249)",
+          "oklch(26.0% 0.066 249)",
+          "oklch(38.0% 0.066 249)",
+          "oklch(50.0% 0.066 249)",
+          "oklch(62.0% 0.066 249)",
+          "oklch(74.0% 0.066 249)",
+          "oklch(85.0% 0.040 249)",
+          "oklch(95.0% 0.020 249)"
+        ]
+      },
+      "mist-300": {
+        "role": "night",
+        "displayName": "Mist (secondary text and payoff words on night; 7.9:1 on night-950)",
+        "canonical": "oklch(74.8% 0.022 248)",
+        "resolvedHex": "#A3AFBB",
+        "cssVar": "--bn-mist-300 (--th-muted / --th-pay on .bn-night)",
+        "tonalRamp": [
+          "oklch(15.0% 0.022 248)",
+          "oklch(26.0% 0.022 248)",
+          "oklch(38.0% 0.022 248)",
+          "oklch(50.0% 0.022 248)",
+          "oklch(62.0% 0.022 248)",
+          "oklch(74.0% 0.022 248)",
+          "oklch(85.0% 0.013 248)",
+          "oklch(95.0% 0.007 248)"
+        ]
+      },
+      "mist-dim": {
+        "role": "night",
+        "displayName": "Mist Dim (the key's empty ring, \"Sample figures\" on a map card)",
+        "canonical": "oklch(66.8% 0.027 252)",
+        "resolvedHex": "#8996A5",
+        "cssVar": "--bn-mist-dim (--th-dot-none)",
+        "tonalRamp": [
+          "oklch(15.0% 0.027 252)",
+          "oklch(26.0% 0.027 252)",
+          "oklch(38.0% 0.027 252)",
+          "oklch(50.0% 0.027 252)",
+          "oklch(62.0% 0.027 252)",
+          "oklch(74.0% 0.027 252)",
+          "oklch(85.0% 0.016 252)",
+          "oklch(95.0% 0.008 252)"
+        ]
+      },
+      "ice-200": {
+        "role": "night",
+        "displayName": "Ice (the action on night, a drawn area's line and corners, the brand's dots on night, the visitor's bubble, the slider)",
+        "canonical": "oklch(82.9% 0.034 251)",
+        "resolvedHex": "#B7C9DD",
+        "cssVar": "--bn-ice-200",
+        "tonalRamp": [
+          "oklch(15.0% 0.034 251)",
+          "oklch(26.0% 0.034 251)",
+          "oklch(38.0% 0.034 251)",
+          "oklch(50.0% 0.034 251)",
+          "oklch(62.0% 0.034 251)",
+          "oklch(74.0% 0.034 251)",
+          "oklch(85.0% 0.021 251)",
+          "oklch(95.0% 0.010 251)"
+        ]
+      },
+      "ice-tile": {
+        "role": "neutral",
+        "displayName": "Ice Tile (pale tile for paper things: the report, the five views)",
+        "canonical": "oklch(92.1% 0.018 251)",
+        "resolvedHex": "#DCE6F1",
+        "cssVar": "--bn-ice-tile",
+        "tonalRamp": [
+          "oklch(15.0% 0.018 251)",
+          "oklch(26.0% 0.018 251)",
+          "oklch(38.0% 0.018 251)",
+          "oklch(50.0% 0.018 251)",
+          "oklch(62.0% 0.018 251)",
+          "oklch(74.0% 0.018 251)",
+          "oklch(85.0% 0.011 251)",
+          "oklch(95.0% 0.006 251)"
+        ]
+      },
+      "cloud-100": {
+        "role": "neutral",
+        "displayName": "Cloud (pale tile for lists to choose from: the questions)",
+        "canonical": "oklch(92.7% 0.011 286)",
+        "resolvedHex": "#E6E6EE",
+        "cssVar": "--bn-cloud-100",
+        "tonalRamp": [
+          "oklch(15.0% 0.011 286)",
+          "oklch(26.0% 0.011 286)",
+          "oklch(38.0% 0.011 286)",
+          "oklch(50.0% 0.011 286)",
+          "oklch(62.0% 0.011 286)",
+          "oklch(74.0% 0.011 286)",
+          "oklch(85.0% 0.006 286)",
+          "oklch(95.0% 0.003 286)"
+        ]
+      },
+      "paper": {
+        "role": "neutral",
+        "displayName": "Paper (the white page, the report's sheet)",
+        "canonical": "oklch(100.0% 0.000 0)",
+        "resolvedHex": "#FFFFFF",
+        "cssVar": "--bn-paper (--th-ground on .bn)",
+        "tonalRamp": [
+          "oklch(15.0% 0.000 0)",
+          "oklch(26.0% 0.000 0)",
+          "oklch(38.0% 0.000 0)",
+          "oklch(50.0% 0.000 0)",
+          "oklch(62.0% 0.000 0)",
+          "oklch(74.0% 0.000 0)",
+          "oklch(85.0% 0.000 0)",
+          "oklch(95.0% 0.000 0)"
         ]
       },
       "ink": {
         "role": "neutral",
-        "displayName": "Olive Ink",
-        "canonical": "oklch(23.9% 0.022 128)",
-        "resolvedHex": "#1C2116",
-        "cssVar": "--th-ink",
+        "displayName": "Ink (text on white)",
+        "canonical": "oklch(23.7% 0.015 257)",
+        "resolvedHex": "#1A1F26",
+        "cssVar": "--th-ink (on .bn; --bn-ink-day)",
         "tonalRamp": [
-          "oklch(15.0% 0.022 128)",
-          "oklch(26.0% 0.022 128)",
-          "oklch(38.0% 0.022 128)",
-          "oklch(50.0% 0.022 128)",
-          "oklch(62.0% 0.022 128)",
-          "oklch(74.0% 0.022 128)",
-          "oklch(85.0% 0.013 128)",
-          "oklch(95.0% 0.006 128)"
+          "oklch(15.0% 0.015 257)",
+          "oklch(26.0% 0.015 257)",
+          "oklch(38.0% 0.015 257)",
+          "oklch(50.0% 0.015 257)",
+          "oklch(62.0% 0.015 257)",
+          "oklch(74.0% 0.015 257)",
+          "oklch(85.0% 0.009 257)",
+          "oklch(95.0% 0.005 257)"
         ]
       },
-      "muted": {
-        "role": "neutral",
-        "displayName": "Muted Olive-Grey",
-        "canonical": "oklch(43.7% 0.029 128)",
-        "resolvedHex": "#4D5544",
-        "cssVar": "--th-muted",
+      "ink-night": {
+        "role": "night",
+        "displayName": "Night Ink (text on night)",
+        "canonical": "oklch(97.5% 0.005 258)",
+        "resolvedHex": "#F5F7FA",
+        "cssVar": "--bn-ink-night (--th-ink on .bn-night)",
         "tonalRamp": [
-          "oklch(15.0% 0.029 128)",
-          "oklch(26.0% 0.029 128)",
-          "oklch(38.0% 0.029 128)",
-          "oklch(50.0% 0.029 128)",
-          "oklch(62.0% 0.029 128)",
-          "oklch(74.0% 0.029 128)",
-          "oklch(85.0% 0.017 128)",
-          "oklch(95.0% 0.009 128)"
+          "oklch(15.0% 0.005 258)",
+          "oklch(26.0% 0.005 258)",
+          "oklch(38.0% 0.005 258)",
+          "oklch(50.0% 0.005 258)",
+          "oklch(62.0% 0.005 258)",
+          "oklch(74.0% 0.005 258)",
+          "oklch(85.0% 0.003 258)",
+          "oklch(95.0% 0.001 258)"
+        ]
+      },
+      "slate-600": {
+        "role": "neutral",
+        "displayName": "Slate 600 (secondary text on white; 7.6:1)",
+        "canonical": "oklch(44.5% 0.027 255)",
+        "resolvedHex": "#4A5563",
+        "cssVar": "--th-muted (on .bn)",
+        "tonalRamp": [
+          "oklch(15.0% 0.027 255)",
+          "oklch(26.0% 0.027 255)",
+          "oklch(38.0% 0.027 255)",
+          "oklch(50.0% 0.027 255)",
+          "oklch(62.0% 0.027 255)",
+          "oklch(74.0% 0.027 255)",
+          "oklch(85.0% 0.016 255)",
+          "oklch(95.0% 0.008 255)"
+        ]
+      },
+      "mist-ink": {
+        "role": "neutral",
+        "displayName": "Mist Ink (the payoff words and eyebrows on white; 5.0:1)",
+        "canonical": "oklch(54.0% 0.033 255)",
+        "resolvedHex": "#627082",
+        "cssVar": "--th-pay (on .bn)",
+        "tonalRamp": [
+          "oklch(15.0% 0.033 255)",
+          "oklch(26.0% 0.033 255)",
+          "oklch(38.0% 0.033 255)",
+          "oklch(50.0% 0.033 255)",
+          "oklch(62.0% 0.033 255)",
+          "oklch(74.0% 0.033 255)",
+          "oklch(85.0% 0.020 255)",
+          "oklch(95.0% 0.010 255)"
         ]
       },
       "line": {
         "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "oklch(88.7% 0.014 97)",
-        "resolvedHex": "#DCDAD0",
-        "cssVar": "--th-line",
+        "displayName": "Line (a hairline in a list or a table on white)",
+        "canonical": "oklch(91.0% 0.012 252)",
+        "resolvedHex": "#DCE2E9",
+        "cssVar": "--th-line (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.014 97)",
-          "oklch(26.0% 0.014 97)",
-          "oklch(38.0% 0.014 97)",
-          "oklch(50.0% 0.014 97)",
-          "oklch(62.0% 0.014 97)",
-          "oklch(74.0% 0.014 97)",
-          "oklch(85.0% 0.008 97)",
-          "oklch(95.0% 0.004 97)"
+          "oklch(15.0% 0.012 252)",
+          "oklch(26.0% 0.012 252)",
+          "oklch(38.0% 0.012 252)",
+          "oklch(50.0% 0.012 252)",
+          "oklch(62.0% 0.012 252)",
+          "oklch(74.0% 0.012 252)",
+          "oklch(85.0% 0.007 252)",
+          "oklch(95.0% 0.003 252)"
         ]
       },
-      "surface": {
-        "role": "neutral",
-        "displayName": "White Sheet",
-        "canonical": "oklch(100.0% 0.000 0)",
-        "resolvedHex": "#FFFFFF",
-        "cssVar": "--th-surface",
-        "tonalRamp": [
-          "oklch(15.0% 0.000 0)",
-          "oklch(26.0% 0.000 0)",
-          "oklch(38.0% 0.000 0)",
-          "oklch(50.0% 0.000 0)",
-          "oklch(62.0% 0.000 0)",
-          "oklch(74.0% 0.000 0)",
-          "oklch(85.0% 0.000 0)",
-          "oklch(95.0% 0.000 0)"
-        ]
-      },
-      "a": {
-        "role": "primary",
-        "displayName": "Working Olive (the brand: wordmark dots, Plot and sights, drawn corners, the rail's current mark, the How line)",
-        "canonical": "oklch(45.5% 0.061 132)",
-        "resolvedHex": "#4A5E3A",
-        "cssVar": "--th-a",
-        "tonalRamp": [
-          "oklch(15.0% 0.061 132)",
-          "oklch(26.0% 0.061 132)",
-          "oklch(38.0% 0.061 132)",
-          "oklch(50.0% 0.061 132)",
-          "oklch(62.0% 0.061 132)",
-          "oklch(74.0% 0.061 132)",
-          "oklch(85.0% 0.037 132)",
-          "oklch(95.0% 0.018 132)"
-        ]
+      "line-night": {
+        "role": "night",
+        "displayName": "Line on Night (night ink at 12%)",
+        "canonical": "rgb(245 247 250 / 0.12)",
+        "cssVar": "--th-line (on .bn-night)"
       },
       "action": {
         "role": "primary",
-        "displayName": "Olive Action",
-        "canonical": "oklch(45.5% 0.061 132)",
-        "resolvedHex": "#4A5E3A",
-        "cssVar": "--th-action",
+        "displayName": "Action on White (navy pill)",
+        "canonical": "oklch(30.7% 0.046 259)",
+        "resolvedHex": "#213047",
+        "cssVar": "--th-action (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.061 132)",
-          "oklch(26.0% 0.061 132)",
-          "oklch(38.0% 0.061 132)",
-          "oklch(50.0% 0.061 132)",
-          "oklch(62.0% 0.061 132)",
-          "oklch(74.0% 0.061 132)",
-          "oklch(85.0% 0.037 132)",
-          "oklch(95.0% 0.018 132)"
+          "oklch(15.0% 0.046 259)",
+          "oklch(26.0% 0.046 259)",
+          "oklch(38.0% 0.046 259)",
+          "oklch(50.0% 0.046 259)",
+          "oklch(62.0% 0.046 259)",
+          "oklch(74.0% 0.046 259)",
+          "oklch(85.0% 0.028 259)",
+          "oklch(95.0% 0.014 259)"
         ]
       },
       "action-ink": {
         "role": "primary",
-        "displayName": "On Olive Action",
-        "canonical": "oklch(100.0% 0.000 0)",
-        "resolvedHex": "#FFFFFF",
-        "cssVar": "--th-action-ink",
+        "displayName": "On Action (12.4:1)",
+        "canonical": "oklch(97.5% 0.005 258)",
+        "resolvedHex": "#F5F7FA",
+        "cssVar": "--th-action-ink (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.000 0)",
-          "oklch(26.0% 0.000 0)",
-          "oklch(38.0% 0.000 0)",
-          "oklch(50.0% 0.000 0)",
-          "oklch(62.0% 0.000 0)",
-          "oklch(74.0% 0.000 0)",
-          "oklch(85.0% 0.000 0)",
-          "oklch(95.0% 0.000 0)"
+          "oklch(15.0% 0.005 258)",
+          "oklch(26.0% 0.005 258)",
+          "oklch(38.0% 0.005 258)",
+          "oklch(50.0% 0.005 258)",
+          "oklch(62.0% 0.005 258)",
+          "oklch(74.0% 0.005 258)",
+          "oklch(85.0% 0.003 258)",
+          "oklch(95.0% 0.001 258)"
         ]
       },
       "action-hover": {
         "role": "primary",
-        "displayName": "Olive Action, hover",
-        "canonical": "oklch(39.9% 0.056 132)",
-        "resolvedHex": "#3C4E2E",
-        "cssVar": "--th-action-hover",
+        "displayName": "Action on White, hover",
+        "canonical": "oklch(35.0% 0.051 259)",
+        "resolvedHex": "#2A3B55",
+        "cssVar": "--th-action-hover (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.056 132)",
-          "oklch(26.0% 0.056 132)",
-          "oklch(38.0% 0.056 132)",
-          "oklch(50.0% 0.056 132)",
-          "oklch(62.0% 0.056 132)",
-          "oklch(74.0% 0.056 132)",
-          "oklch(85.0% 0.034 132)",
-          "oklch(95.0% 0.017 132)"
+          "oklch(15.0% 0.051 259)",
+          "oklch(26.0% 0.051 259)",
+          "oklch(38.0% 0.051 259)",
+          "oklch(50.0% 0.051 259)",
+          "oklch(62.0% 0.051 259)",
+          "oklch(74.0% 0.051 259)",
+          "oklch(85.0% 0.031 259)",
+          "oklch(95.0% 0.015 259)"
         ]
       },
-      "tint": {
-        "role": "neutral",
-        "displayName": "Tint (selected row, hover)",
-        "canonical": "oklch(93.9% 0.011 101)",
-        "resolvedHex": "#ECEBE3",
-        "cssVar": "--th-tint",
+      "action-night": {
+        "role": "primary",
+        "displayName": "Action on Night (ice pill)",
+        "canonical": "oklch(82.9% 0.034 251)",
+        "resolvedHex": "#B7C9DD",
+        "cssVar": "--th-action (on .bn-night)",
         "tonalRamp": [
-          "oklch(15.0% 0.011 101)",
-          "oklch(26.0% 0.011 101)",
-          "oklch(38.0% 0.011 101)",
-          "oklch(50.0% 0.011 101)",
-          "oklch(62.0% 0.011 101)",
-          "oklch(74.0% 0.011 101)",
-          "oklch(85.0% 0.006 101)",
-          "oklch(95.0% 0.003 101)"
+          "oklch(15.0% 0.034 251)",
+          "oklch(26.0% 0.034 251)",
+          "oklch(38.0% 0.034 251)",
+          "oklch(50.0% 0.034 251)",
+          "oklch(62.0% 0.034 251)",
+          "oklch(74.0% 0.034 251)",
+          "oklch(85.0% 0.021 251)",
+          "oklch(95.0% 0.010 251)"
         ]
       },
-      "tint-hover": {
-        "role": "neutral",
-        "displayName": "Tint, hover",
-        "canonical": "oklch(90.8% 0.013 102)",
-        "resolvedHex": "#E2E1D7",
-        "cssVar": "--th-tint-hover",
+      "action-night-ink": {
+        "role": "primary",
+        "displayName": "On Night Action (10.4:1)",
+        "canonical": "oklch(21.1% 0.014 253)",
+        "resolvedHex": "#14191F",
+        "cssVar": "--th-action-ink (on .bn-night)",
         "tonalRamp": [
-          "oklch(15.0% 0.013 102)",
-          "oklch(26.0% 0.013 102)",
-          "oklch(38.0% 0.013 102)",
-          "oklch(50.0% 0.013 102)",
-          "oklch(62.0% 0.013 102)",
-          "oklch(74.0% 0.013 102)",
-          "oklch(85.0% 0.008 102)",
-          "oklch(95.0% 0.004 102)"
+          "oklch(15.0% 0.014 253)",
+          "oklch(26.0% 0.014 253)",
+          "oklch(38.0% 0.014 253)",
+          "oklch(50.0% 0.014 253)",
+          "oklch(62.0% 0.014 253)",
+          "oklch(74.0% 0.014 253)",
+          "oklch(85.0% 0.008 253)",
+          "oklch(95.0% 0.004 253)"
         ]
       },
-      "solid": {
-        "role": "neutral",
-        "displayName": "Solid Ink Button",
-        "canonical": "oklch(23.9% 0.022 128)",
-        "resolvedHex": "#1C2116",
-        "cssVar": "--th-solid",
+      "action-night-hover": {
+        "role": "primary",
+        "displayName": "Action on Night, hover",
+        "canonical": "oklch(87.3% 0.027 252)",
+        "resolvedHex": "#C9D7E7",
+        "cssVar": "--th-action-hover (on .bn-night)",
         "tonalRamp": [
-          "oklch(15.0% 0.022 128)",
-          "oklch(26.0% 0.022 128)",
-          "oklch(38.0% 0.022 128)",
-          "oklch(50.0% 0.022 128)",
-          "oklch(62.0% 0.022 128)",
-          "oklch(74.0% 0.022 128)",
-          "oklch(85.0% 0.013 128)",
-          "oklch(95.0% 0.006 128)"
+          "oklch(15.0% 0.027 252)",
+          "oklch(26.0% 0.027 252)",
+          "oklch(38.0% 0.027 252)",
+          "oklch(50.0% 0.027 252)",
+          "oklch(62.0% 0.027 252)",
+          "oklch(74.0% 0.027 252)",
+          "oklch(85.0% 0.016 252)",
+          "oklch(95.0% 0.008 252)"
         ]
       },
-      "solid-ink": {
-        "role": "neutral",
-        "displayName": "On Solid",
-        "canonical": "oklch(100.0% 0.000 0)",
-        "resolvedHex": "#FFFFFF",
-        "cssVar": "--th-solid-ink",
+      "pill-dark": {
+        "role": "primary",
+        "displayName": "Search Pill (\"Show me\", the reference's dark pill)",
+        "canonical": "oklch(34.6% 0.013 253)",
+        "resolvedHex": "#353A40",
+        "cssVar": null,
         "tonalRamp": [
-          "oklch(15.0% 0.000 0)",
-          "oklch(26.0% 0.000 0)",
-          "oklch(38.0% 0.000 0)",
-          "oklch(50.0% 0.000 0)",
-          "oklch(62.0% 0.000 0)",
-          "oklch(74.0% 0.000 0)",
-          "oklch(85.0% 0.000 0)",
-          "oklch(95.0% 0.000 0)"
+          "oklch(15.0% 0.013 253)",
+          "oklch(26.0% 0.013 253)",
+          "oklch(38.0% 0.013 253)",
+          "oklch(50.0% 0.013 253)",
+          "oklch(62.0% 0.013 253)",
+          "oklch(74.0% 0.013 253)",
+          "oklch(85.0% 0.008 253)",
+          "oklch(95.0% 0.004 253)"
         ]
       },
-      "solid-hover": {
-        "role": "neutral",
-        "displayName": "Solid, hover",
-        "canonical": "oklch(31.7% 0.027 128)",
-        "resolvedHex": "#2E3526",
-        "cssVar": "--th-solid-hover",
+      "pill-dark-hover": {
+        "role": "primary",
+        "displayName": "Search Pill, hover",
+        "canonical": "oklch(39.5% 0.014 252)",
+        "resolvedHex": "#41474E",
+        "cssVar": null,
         "tonalRamp": [
-          "oklch(15.0% 0.027 128)",
-          "oklch(26.0% 0.027 128)",
-          "oklch(38.0% 0.027 128)",
-          "oklch(50.0% 0.027 128)",
-          "oklch(62.0% 0.027 128)",
-          "oklch(74.0% 0.027 128)",
-          "oklch(85.0% 0.016 128)",
-          "oklch(95.0% 0.008 128)"
+          "oklch(15.0% 0.014 252)",
+          "oklch(26.0% 0.014 252)",
+          "oklch(38.0% 0.014 252)",
+          "oklch(50.0% 0.014 252)",
+          "oklch(62.0% 0.014 252)",
+          "oklch(74.0% 0.014 252)",
+          "oklch(85.0% 0.009 252)",
+          "oklch(95.0% 0.004 252)"
         ]
       },
       "data-1": {
         "role": "data",
-        "displayName": "Occupancy under 60% (dull olive)",
-        "canonical": "oklch(47.1% 0.074 128)",
-        "resolvedHex": "#4F6334",
+        "displayName": "Occupancy under 60% (night blue)",
+        "canonical": "oklch(58.0% 0.075 253)",
+        "resolvedHex": "#5A7DA6",
         "cssVar": "--th-data-1",
         "tonalRamp": [
-          "oklch(15.0% 0.074 128)",
-          "oklch(26.0% 0.074 128)",
-          "oklch(38.0% 0.074 128)",
-          "oklch(50.0% 0.074 128)",
-          "oklch(62.0% 0.074 128)",
-          "oklch(74.0% 0.074 128)",
-          "oklch(85.0% 0.045 128)",
-          "oklch(95.0% 0.022 128)"
+          "oklch(15.0% 0.075 253)",
+          "oklch(26.0% 0.075 253)",
+          "oklch(38.0% 0.075 253)",
+          "oklch(50.0% 0.075 253)",
+          "oklch(62.0% 0.075 253)",
+          "oklch(74.0% 0.075 253)",
+          "oklch(85.0% 0.045 253)",
+          "oklch(95.0% 0.022 253)"
         ]
       },
       "data-2": {
         "role": "data",
-        "displayName": "Occupancy 60s; the single series on white",
-        "canonical": "oklch(60.6% 0.127 126)",
-        "resolvedHex": "#6F8F31",
+        "displayName": "Occupancy 60s",
+        "canonical": "oklch(65.6% 0.056 251)",
+        "resolvedHex": "#7894B3",
         "cssVar": "--th-data-2",
         "tonalRamp": [
-          "oklch(15.0% 0.127 126)",
-          "oklch(26.0% 0.127 126)",
-          "oklch(38.0% 0.127 126)",
-          "oklch(50.0% 0.127 126)",
-          "oklch(62.0% 0.127 126)",
-          "oklch(74.0% 0.127 126)",
-          "oklch(85.0% 0.076 126)",
-          "oklch(95.0% 0.038 126)"
+          "oklch(15.0% 0.056 251)",
+          "oklch(26.0% 0.056 251)",
+          "oklch(38.0% 0.056 251)",
+          "oklch(50.0% 0.056 251)",
+          "oklch(62.0% 0.056 251)",
+          "oklch(74.0% 0.056 251)",
+          "oklch(85.0% 0.034 251)",
+          "oklch(95.0% 0.017 251)"
         ]
       },
       "data-3": {
         "role": "data",
-        "displayName": "Occupancy 70s (ringed in ink)",
-        "canonical": "oklch(75.9% 0.164 124)",
-        "resolvedHex": "#9CC13A",
+        "displayName": "Occupancy 70s",
+        "canonical": "oklch(81.4% 0.040 250)",
+        "resolvedHex": "#AFC5DC",
         "cssVar": "--th-data-3",
         "tonalRamp": [
-          "oklch(15.0% 0.164 124)",
-          "oklch(26.0% 0.164 124)",
-          "oklch(38.0% 0.164 124)",
-          "oklch(50.0% 0.164 124)",
-          "oklch(62.0% 0.164 124)",
-          "oklch(74.0% 0.164 124)",
-          "oklch(85.0% 0.098 124)",
-          "oklch(95.0% 0.049 124)"
+          "oklch(15.0% 0.040 250)",
+          "oklch(26.0% 0.040 250)",
+          "oklch(38.0% 0.040 250)",
+          "oklch(50.0% 0.040 250)",
+          "oklch(62.0% 0.040 250)",
+          "oklch(74.0% 0.040 250)",
+          "oklch(85.0% 0.024 250)",
+          "oklch(95.0% 0.012 250)"
         ]
       },
       "data-4": {
         "role": "data",
-        "displayName": "Occupancy 80%+ (lime; ringed in ink)",
-        "canonical": "oklch(91.3% 0.174 119)",
-        "resolvedHex": "#D6F25E",
+        "displayName": "Occupancy 80%+ (the brightest light)",
+        "canonical": "oklch(96.1% 0.010 248)",
+        "resolvedHex": "#EDF3F9",
         "cssVar": "--th-data-4",
         "tonalRamp": [
-          "oklch(15.0% 0.174 119)",
-          "oklch(26.0% 0.174 119)",
-          "oklch(38.0% 0.174 119)",
-          "oklch(50.0% 0.174 119)",
-          "oklch(62.0% 0.174 119)",
-          "oklch(74.0% 0.174 119)",
-          "oklch(85.0% 0.104 119)",
-          "oklch(95.0% 0.052 119)"
-        ]
-      },
-      "mark": {
-        "role": "data",
-        "displayName": "Lime Mark (the one fill in an icon, the followed listing, Cyprus today, the winning verdict)",
-        "canonical": "oklch(91.3% 0.174 119)",
-        "resolvedHex": "#D6F25E",
-        "cssVar": "--th-mark",
-        "tonalRamp": [
-          "oklch(15.0% 0.174 119)",
-          "oklch(26.0% 0.174 119)",
-          "oklch(38.0% 0.174 119)",
-          "oklch(50.0% 0.174 119)",
-          "oklch(62.0% 0.174 119)",
-          "oklch(74.0% 0.174 119)",
-          "oklch(85.0% 0.104 119)",
-          "oklch(95.0% 0.052 119)"
-        ]
-      },
-      "occ-ring": {
-        "role": "neutral",
-        "displayName": "Listing Ring on light grounds (inside a drawn area, key swatches, lime squares)",
-        "canonical": "oklch(23.9% 0.022 128)",
-        "resolvedHex": "#1C2116",
-        "cssVar": "--th-occ-ring",
-        "tonalRamp": [
-          "oklch(15.0% 0.022 128)",
-          "oklch(26.0% 0.022 128)",
-          "oklch(38.0% 0.022 128)",
-          "oklch(50.0% 0.022 128)",
-          "oklch(62.0% 0.022 128)",
-          "oklch(74.0% 0.022 128)",
-          "oklch(85.0% 0.013 128)",
-          "oklch(95.0% 0.006 128)"
-        ]
-      },
-      "dot-ring": {
-        "role": "neutral",
-        "displayName": "Listing Ring outside the drawn areas (ink at 70%)",
-        "canonical": "oklch(23.9% 0.022 128 / 0.7)",
-        "resolvedHex": "#1C2116B3",
-        "cssVar": "--th-dot-ring",
-        "tonalRamp": [
-          "oklch(15.0% 0.022 128)",
-          "oklch(26.0% 0.022 128)",
-          "oklch(38.0% 0.022 128)",
-          "oklch(50.0% 0.022 128)",
-          "oklch(62.0% 0.022 128)",
-          "oklch(74.0% 0.022 128)",
-          "oklch(85.0% 0.013 128)",
-          "oklch(95.0% 0.007 128)"
-        ]
-      },
-      "dot-none": {
-        "role": "data",
-        "displayName": "No Figure (empty ring of a listing whose occupancy is not known)",
-        "canonical": "oklch(62.0% 0.017 125)",
-        "resolvedHex": "#878B80",
-        "cssVar": "--th-dot-none",
-        "tonalRamp": [
-          "oklch(15.0% 0.019 121)",
-          "oklch(26.0% 0.019 121)",
-          "oklch(38.0% 0.019 121)",
-          "oklch(50.0% 0.019 121)",
-          "oklch(62.0% 0.019 121)",
-          "oklch(74.0% 0.019 121)",
-          "oklch(85.0% 0.011 121)",
-          "oklch(95.0% 0.006 121)"
-        ]
-      },
-      "deep": {
-        "role": "close",
-        "displayName": "Deep Olive (the close and the footer only)",
-        "canonical": "oklch(24.1% 0.026 131)",
-        "resolvedHex": "#1B2215",
-        "cssVar": "--th-deep",
-        "tonalRamp": [
-          "oklch(15.0% 0.026 131)",
-          "oklch(26.0% 0.026 131)",
-          "oklch(38.0% 0.026 131)",
-          "oklch(50.0% 0.026 131)",
-          "oklch(62.0% 0.026 131)",
-          "oklch(74.0% 0.026 131)",
-          "oklch(85.0% 0.016 131)",
-          "oklch(95.0% 0.008 131)"
+          "oklch(15.0% 0.010 248)",
+          "oklch(26.0% 0.010 248)",
+          "oklch(38.0% 0.010 248)",
+          "oklch(50.0% 0.010 248)",
+          "oklch(62.0% 0.010 248)",
+          "oklch(74.0% 0.010 248)",
+          "oklch(85.0% 0.006 248)",
+          "oklch(95.0% 0.003 248)"
         ]
       },
       "map-land": {
         "role": "map",
-        "displayName": "Light Land",
-        "canonical": "oklch(98.2% 0.007 97)",
-        "resolvedHex": "#FAF9F4",
+        "displayName": "Night Land (left clear in the pictures; under the island in the Connector's answer)",
+        "canonical": "oklch(24.1% 0.024 256)",
+        "resolvedHex": "#18202B",
         "cssVar": "--th-map-land",
         "tonalRamp": [
-          "oklch(15.0% 0.007 97)",
-          "oklch(26.0% 0.007 97)",
-          "oklch(38.0% 0.007 97)",
-          "oklch(50.0% 0.007 97)",
-          "oklch(62.0% 0.007 97)",
-          "oklch(74.0% 0.007 97)",
-          "oklch(85.0% 0.004 97)",
-          "oklch(95.0% 0.002 97)"
+          "oklch(15.0% 0.024 256)",
+          "oklch(26.0% 0.024 256)",
+          "oklch(38.0% 0.024 256)",
+          "oklch(50.0% 0.024 256)",
+          "oklch(62.0% 0.024 256)",
+          "oklch(74.0% 0.024 256)",
+          "oklch(85.0% 0.015 256)",
+          "oklch(95.0% 0.007 256)"
         ]
       },
       "map-sea": {
         "role": "map",
-        "displayName": "Light Sea (the page's only blue)",
-        "canonical": "oklch(87.5% 0.015 202)",
-        "resolvedHex": "#CBD9DA",
-        "cssVar": "--th-map-sea",
+        "displayName": "Night Sea in the town pictures (#0A0E13 at 55% over the hero's night; baked into town-<key>.svg)",
+        "canonical": "oklch(16.2% 0.012 254)",
+        "resolvedHex": "#0A0E13",
+        "cssVar": null,
         "tonalRamp": [
-          "oklch(15.0% 0.015 202)",
-          "oklch(26.0% 0.015 202)",
-          "oklch(38.0% 0.015 202)",
-          "oklch(50.0% 0.015 202)",
-          "oklch(62.0% 0.015 202)",
-          "oklch(74.0% 0.015 202)",
-          "oklch(85.0% 0.009 202)",
-          "oklch(95.0% 0.005 202)"
+          "oklch(15.0% 0.012 254)",
+          "oklch(26.0% 0.012 254)",
+          "oklch(38.0% 0.012 254)",
+          "oklch(50.0% 0.012 254)",
+          "oklch(62.0% 0.012 254)",
+          "oklch(74.0% 0.012 254)",
+          "oklch(85.0% 0.007 254)",
+          "oklch(95.0% 0.004 254)"
+        ]
+      },
+      "map-sea-island": {
+        "role": "map",
+        "displayName": "Night Sea in the island picture (baked into island.svg)",
+        "canonical": "oklch(18.9% 0.015 253)",
+        "resolvedHex": "#0F141A",
+        "cssVar": "--th-map-sea (on .bn)",
+        "tonalRamp": [
+          "oklch(15.0% 0.015 253)",
+          "oklch(26.0% 0.015 253)",
+          "oklch(38.0% 0.015 253)",
+          "oklch(50.0% 0.015 253)",
+          "oklch(62.0% 0.015 253)",
+          "oklch(74.0% 0.015 253)",
+          "oklch(85.0% 0.009 253)",
+          "oklch(95.0% 0.004 253)"
+        ]
+      },
+      "map-line": {
+        "role": "map",
+        "displayName": "Night Streets, Roads and Coast (ice at each line's own strength, baked into town-<key>.svg)",
+        "canonical": "oklch(82.9% 0.034 251)",
+        "resolvedHex": "#B7C9DD",
+        "cssVar": null,
+        "tonalRamp": [
+          "oklch(15.0% 0.034 251)",
+          "oklch(26.0% 0.034 251)",
+          "oklch(38.0% 0.034 251)",
+          "oklch(50.0% 0.034 251)",
+          "oklch(62.0% 0.034 251)",
+          "oklch(74.0% 0.034 251)",
+          "oklch(85.0% 0.021 251)",
+          "oklch(95.0% 0.010 251)"
         ]
       },
       "map-shore": {
         "role": "map",
-        "displayName": "Light Shore",
-        "canonical": "oklch(69.4% 0.023 200)",
-        "resolvedHex": "#8DA1A2",
-        "cssVar": "--th-map-shore",
+        "displayName": "Island Coast (baked into island.svg)",
+        "canonical": "oklch(66.8% 0.027 252)",
+        "resolvedHex": "#8996A5",
+        "cssVar": "--th-map-shore (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.023 200)",
-          "oklch(26.0% 0.023 200)",
-          "oklch(38.0% 0.023 200)",
-          "oklch(50.0% 0.023 200)",
-          "oklch(62.0% 0.023 200)",
-          "oklch(74.0% 0.023 200)",
-          "oklch(85.0% 0.014 200)",
-          "oklch(95.0% 0.007 200)"
+          "oklch(15.0% 0.027 252)",
+          "oklch(26.0% 0.027 252)",
+          "oklch(38.0% 0.027 252)",
+          "oklch(50.0% 0.027 252)",
+          "oklch(62.0% 0.027 252)",
+          "oklch(74.0% 0.027 252)",
+          "oklch(85.0% 0.016 252)",
+          "oklch(95.0% 0.008 252)"
         ]
       },
       "map-road": {
         "role": "map",
-        "displayName": "Light Road",
-        "canonical": "oklch(86.6% 0.017 95)",
-        "resolvedHex": "#D6D3C7",
-        "cssVar": "--th-map-road",
+        "displayName": "Island Roads (baked into island.svg)",
+        "canonical": "oklch(35.0% 0.051 259)",
+        "resolvedHex": "#2A3B55",
+        "cssVar": "--th-map-road (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.017 95)",
-          "oklch(26.0% 0.017 95)",
-          "oklch(38.0% 0.017 95)",
-          "oklch(50.0% 0.017 95)",
-          "oklch(62.0% 0.017 95)",
-          "oklch(74.0% 0.017 95)",
-          "oklch(85.0% 0.010 95)",
-          "oklch(95.0% 0.005 95)"
+          "oklch(15.0% 0.051 259)",
+          "oklch(26.0% 0.051 259)",
+          "oklch(38.0% 0.051 259)",
+          "oklch(50.0% 0.051 259)",
+          "oklch(62.0% 0.051 259)",
+          "oklch(74.0% 0.051 259)",
+          "oklch(85.0% 0.031 259)",
+          "oklch(95.0% 0.015 259)"
         ]
       },
       "map-road-major": {
         "role": "map",
-        "displayName": "Light Major Road",
-        "canonical": "oklch(77.3% 0.022 92)",
-        "resolvedHex": "#BAB5A6",
-        "cssVar": "--th-map-road-major",
+        "displayName": "Island Main Roads (baked into island.svg)",
+        "canonical": "oklch(47.1% 0.066 249)",
+        "resolvedHex": "#3D5E7F",
+        "cssVar": "--th-map-road-major (on .bn)",
         "tonalRamp": [
-          "oklch(15.0% 0.022 92)",
-          "oklch(26.0% 0.022 92)",
-          "oklch(38.0% 0.022 92)",
-          "oklch(50.0% 0.022 92)",
-          "oklch(62.0% 0.022 92)",
-          "oklch(74.0% 0.022 92)",
-          "oklch(85.0% 0.013 92)",
-          "oklch(95.0% 0.006 92)"
+          "oklch(15.0% 0.066 249)",
+          "oklch(26.0% 0.066 249)",
+          "oklch(38.0% 0.066 249)",
+          "oklch(50.0% 0.066 249)",
+          "oklch(62.0% 0.066 249)",
+          "oklch(74.0% 0.066 249)",
+          "oklch(85.0% 0.040 249)",
+          "oklch(95.0% 0.020 249)"
         ]
       },
-      "picture-green": {
-        "role": "map",
-        "displayName": "Parks in the light picture (baked into town-<key>.svg and island.svg)",
-        "canonical": "oklch(91.9% 0.025 120)",
-        "resolvedHex": "#E2E7D5",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.025 120)",
-          "oklch(26.0% 0.025 120)",
-          "oklch(38.0% 0.025 120)",
-          "oklch(50.0% 0.025 120)",
-          "oklch(62.0% 0.025 120)",
-          "oklch(74.0% 0.025 120)",
-          "oklch(85.0% 0.015 120)",
-          "oklch(95.0% 0.007 120)"
-        ]
+      "glass-night": {
+        "role": "night",
+        "displayName": "Night Glass (cards and list over the night map; 18px blur)",
+        "canonical": "rgb(24 32 43 / 0.92)",
+        "cssVar": null
       },
-      "picture-sand": {
-        "role": "map",
-        "displayName": "Sand in the light picture (baked)",
-        "canonical": "oklch(94.5% 0.015 94)",
-        "resolvedHex": "#F0EDE2",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.015 94)",
-          "oklch(26.0% 0.015 94)",
-          "oklch(38.0% 0.015 94)",
-          "oklch(50.0% 0.015 94)",
-          "oklch(62.0% 0.015 94)",
-          "oklch(74.0% 0.015 94)",
-          "oklch(85.0% 0.009 94)",
-          "oklch(95.0% 0.004 94)"
-        ]
-      },
-      "picture-building": {
-        "role": "map",
-        "displayName": "Buildings in the light picture (baked)",
-        "canonical": "oklch(91.5% 0.015 94)",
-        "resolvedHex": "#E6E3D8",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.015 94)",
-          "oklch(26.0% 0.015 94)",
-          "oklch(38.0% 0.015 94)",
-          "oklch(50.0% 0.015 94)",
-          "oklch(62.0% 0.015 94)",
-          "oklch(74.0% 0.015 94)",
-          "oklch(85.0% 0.009 94)",
-          "oklch(95.0% 0.005 94)"
-        ]
-      },
-      "picture-built": {
-        "role": "map",
-        "displayName": "Built-up land in the light picture (baked)",
-        "canonical": "oklch(90.6% 0.018 93)",
-        "resolvedHex": "#E4E0D3",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.018 93)",
-          "oklch(26.0% 0.018 93)",
-          "oklch(38.0% 0.018 93)",
-          "oklch(50.0% 0.018 93)",
-          "oklch(62.0% 0.018 93)",
-          "oklch(74.0% 0.018 93)",
-          "oklch(85.0% 0.011 93)",
-          "oklch(95.0% 0.005 93)"
-        ]
-      },
-      "picture-secondary": {
-        "role": "map",
-        "displayName": "Secondary roads in the light picture (baked)",
-        "canonical": "oklch(83.2% 0.020 94)",
-        "resolvedHex": "#CCC8BA",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.020 94)",
-          "oklch(26.0% 0.020 94)",
-          "oklch(38.0% 0.020 94)",
-          "oklch(50.0% 0.020 94)",
-          "oklch(62.0% 0.020 94)",
-          "oklch(74.0% 0.020 94)",
-          "oklch(85.0% 0.012 94)",
-          "oklch(95.0% 0.006 94)"
-        ]
-      },
-      "picture-motorway": {
-        "role": "map",
-        "displayName": "Motorways in the light picture (baked)",
-        "canonical": "oklch(71.0% 0.024 90)",
-        "resolvedHex": "#A7A191",
-        "cssVar": null,
-        "tonalRamp": [
-          "oklch(15.0% 0.024 90)",
-          "oklch(26.0% 0.024 90)",
-          "oklch(38.0% 0.024 90)",
-          "oklch(50.0% 0.024 90)",
-          "oklch(62.0% 0.024 90)",
-          "oklch(74.0% 0.024 90)",
-          "oklch(85.0% 0.014 90)",
-          "oklch(95.0% 0.007 90)"
-        ]
-      },
-      "close": {
-        "role": "close",
-        "displayName": "The Close (deep olive at the page's end)",
-        "canonical": "oklch(24.1% 0.026 131)",
-        "resolvedHex": "#1B2215",
-        "cssVar": "--th-close (var(--th-deep))",
-        "tonalRamp": [
-          "oklch(15.0% 0.026 131)",
-          "oklch(26.0% 0.026 131)",
-          "oklch(38.0% 0.026 131)",
-          "oklch(50.0% 0.026 131)",
-          "oklch(62.0% 0.026 131)",
-          "oklch(74.0% 0.026 131)",
-          "oklch(85.0% 0.016 131)",
-          "oklch(95.0% 0.008 131)"
-        ]
-      },
-      "close-ink": {
-        "role": "close",
-        "displayName": "Paper on the Close",
-        "canonical": "oklch(96.6% 0.008 99)",
-        "resolvedHex": "#F5F4EE",
-        "cssVar": "--th-close-ink",
-        "tonalRamp": [
-          "oklch(15.0% 0.008 99)",
-          "oklch(26.0% 0.008 99)",
-          "oklch(38.0% 0.008 99)",
-          "oklch(50.0% 0.008 99)",
-          "oklch(62.0% 0.008 99)",
-          "oklch(74.0% 0.008 99)",
-          "oklch(85.0% 0.005 99)",
-          "oklch(95.0% 0.002 99)"
-        ]
-      },
-      "close-muted": {
-        "role": "close",
-        "displayName": "Quiet Paper on the Close",
-        "canonical": "oklch(79.6% 0.010 113)",
-        "resolvedHex": "#BCBDB6",
-        "cssVar": "--th-close-muted",
-        "source": "color-mix(in srgb, #F5F4EE 74%, #1B2215)",
-        "tonalRamp": [
-          "oklch(15.0% 0.010 113)",
-          "oklch(26.0% 0.010 113)",
-          "oklch(38.0% 0.010 113)",
-          "oklch(50.0% 0.010 113)",
-          "oklch(62.0% 0.010 113)",
-          "oklch(74.0% 0.010 113)",
-          "oklch(85.0% 0.006 113)",
-          "oklch(95.0% 0.003 113)"
-        ]
-      },
-      "close-line": {
-        "role": "close",
-        "displayName": "Rule on the Close",
-        "canonical": "oklch(35.9% 0.021 126)",
-        "resolvedHex": "#3A3F33",
-        "cssVar": "--th-close-line",
-        "source": "color-mix(in srgb, #F5F4EE 14%, #1B2215)",
-        "tonalRamp": [
-          "oklch(15.0% 0.021 126)",
-          "oklch(26.0% 0.021 126)",
-          "oklch(38.0% 0.021 126)",
-          "oklch(50.0% 0.021 126)",
-          "oklch(62.0% 0.021 126)",
-          "oklch(74.0% 0.021 126)",
-          "oklch(85.0% 0.013 126)",
-          "oklch(95.0% 0.006 126)"
-        ]
-      },
-      "olive-light": {
-        "role": "primary",
-        "displayName": "Light Olive (wordmark dots on the close and footer)",
-        "canonical": "oklch(78.2% 0.074 130)",
-        "resolvedHex": "#A8C290",
-        "cssVar": "--olive-light",
-        "tonalRamp": [
-          "oklch(15.0% 0.074 130)",
-          "oklch(26.0% 0.074 130)",
-          "oklch(38.0% 0.074 130)",
-          "oklch(50.0% 0.074 130)",
-          "oklch(62.0% 0.074 130)",
-          "oklch(74.0% 0.074 130)",
-          "oklch(85.0% 0.044 130)",
-          "oklch(95.0% 0.022 130)"
-        ]
-      },
-      "edge": {
+      "glass-day": {
         "role": "neutral",
-        "displayName": "Control Edge (slider track, outlines; 3:1 or better)",
-        "canonical": "oklch(61.8% 0.019 129)",
-        "resolvedHex": "#82887C",
-        "cssVar": "--th-edge",
-        "source": "color-mix(in srgb, #4D5544 70%, #FFFFFF)",
-        "tonalRamp": [
-          "oklch(15.0% 0.019 129)",
-          "oklch(26.0% 0.019 129)",
-          "oklch(38.0% 0.019 129)",
-          "oklch(50.0% 0.019 129)",
-          "oklch(62.0% 0.019 129)",
-          "oklch(74.0% 0.019 129)",
-          "oklch(85.0% 0.011 129)",
-          "oklch(95.0% 0.006 129)"
-        ]
-      },
-      "pending": {
-        "role": "neutral",
-        "displayName": "Pending Figure",
-        "canonical": "oklch(55.3% 0.024 125)",
-        "resolvedHex": "#6F7566",
-        "cssVar": "--th-pending",
-        "source": "color-mix(in srgb, #4D5544 80%, #F5F4EE)",
-        "tonalRamp": [
-          "oklch(15.0% 0.024 125)",
-          "oklch(26.0% 0.024 125)",
-          "oklch(38.0% 0.024 125)",
-          "oklch(50.0% 0.024 125)",
-          "oklch(62.0% 0.024 125)",
-          "oklch(74.0% 0.024 125)",
-          "oklch(85.0% 0.014 125)",
-          "oklch(95.0% 0.007 125)"
-        ]
+        "displayName": "Day Glass (the bar floating over the white page; 18px blur)",
+        "canonical": "rgb(255 255 255 / 0.88)",
+        "cssVar": null
       }
     },
     "dataScale": {
@@ -715,10 +644,10 @@
         "data-4"
       ],
       "values": [
-        "#4F6334",
-        "#6F8F31",
-        "#9CC13A",
-        "#D6F25E"
+        "#5A7DA6",
+        "#7894B3",
+        "#AFC5DC",
+        "#EDF3F9"
       ],
       "classes": [
         "under 60%",
@@ -726,79 +655,115 @@
         "70s",
         "80%+"
       ],
-      "purpose": "Ordinal olive-to-lime scale; lightness and chroma rise together. On the light land data-1 (6.5:1) and data-2 (3.8:1) hold by themselves and the lighter two do not, so every mark of the scale wears an ink ring (The Ring Rule: occ-ring inside a drawn area, the lighter dot-ring outside). A listing with no figure is not on the scale: an empty dot-none ring, \"No figure\" in the key."
+      "purpose": "One hue of night blue, lightness rising, so on night the fullest is the brightest light and every step holds 3:1 on every night ground (the lowest 4.1:1 on night-950, 3.8:1 on night-900, the map's land, and 3.1:1 on night-800; the brightest 15.8:1 on night-950). On white the lowest two hold (4.3:1, 3.1:1) and the two bright steps vanish, so a mark of the scale on white wears a navy ring (--th-occ-ring #213047); better, the scale lives on night. A light is a solid dot in its class's colour with a soft halo of the same colour, added to its neighbours'. A listing with no figure is an empty mist-dim ring."
     },
     "typographyMeta": {
       "display": {
         "displayName": "Display",
-        "purpose": "The first screen's headline only, three lines, 500 at -0.035em; sized so the longest line fits the 42% column, at most 64px. Each line rises out of a mask at its own foot in the opening."
+        "purpose": "The first screen's headline only, three lines, 300 at -0.03em, mist but for \"Plot\" and \"sights\" in ink (the name read out of it); sized as (min(100vw, 1440px) - 2 * gutter) * 0.42 / 10.85 so \"Insights backed by data.\" fits the 42% column, at most 56px. Each line rises out of a mask in the opening."
+      },
+      "intro": {
+        "displayName": "Intro",
+        "purpose": "\"Backed by data.\" and \"Market intelligence, three ways.\", the headings that open \"How it works\" and the products: 32 to 56px, 300, two-tone."
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "--th-heading: a product's name beside its icon, \"How the numbers are made.\", \"Ask the team.\" 36px on a phone to 44px from 1440px, weight 500."
+        "purpose": "--th-heading: a product chapter's name and claim: 32 to 44px, 300, two-tone."
       },
-      "figure-large": {
+      "close": {
+        "displayName": "Close",
+        "purpose": "\"Ask the team.\" on the close's night card: 40 to 64px, 300."
+      },
+      "figure": {
         "displayName": "Figure",
-        "purpose": "--th-text-figure: the tipping point and the counts the database holds; 400, tabular, -0.04em (-0.03em on the How counts). Never counted up."
+        "purpose": "--th-text-figure: the tipping point and the database's counts; 300, tabular, -0.04em. Never counted up."
       },
-      "statement": {
-        "displayName": "Statement",
-        "purpose": "--th-text-statement: a product's claim under its name, the panels' opening sentence, the hero's sentence."
-      },
-      "lede-large": {
+      "lead": {
         "displayName": "Lead",
-        "purpose": "--th-text-lead: the verdict (500), a report page's title, a stop's name on the How line, the titles inside a card."
+        "purpose": "--th-text-lead: the hero's two-tier sentence and the close's sentence; 300 from 641px, 400 on a phone."
       },
       "title": {
         "displayName": "Title",
-        "purpose": "A title inside a card or a stop on the How line, at 500 (600 on the How line)."
+        "purpose": "The tipping point's question, a stop on the How line: 20px, 400."
       },
       "body": {
         "displayName": "Body",
-        "purpose": "--th-text-body: running text in full ink, the search field's text, list rows, the chat bubbles, and every action at 600."
+        "purpose": "--th-text-body: running text, the search field, list rows, the bubbles, the bar's links; every action at 500."
       },
       "small": {
         "displayName": "Small",
-        "purpose": "--th-text-small: captions, notes, the report's running head, the cards pinned on the map, the curve's caption."
+        "purpose": "--th-text-small: captions, a report's lines, the questions."
       },
       "fine": {
         "displayName": "Fine",
-        "purpose": "--th-text-fine: the floor. Chart ticks, the hero's strip (pause, next town, the town's name, the key, the Demo data tag) and the map credit, tags, the occupancy label on a pinned card."
+        "purpose": "--th-text-fine: the floor (15px). Eyebrows, chart ticks, the map cards, tags, the hero's strip."
+      },
+      "eyebrow": {
+        "displayName": "Eyebrow",
+        "purpose": "The label over a heading: sentence case, the fine size, 400, +0.01em, in the second tone (mist-ink on white, mist on night). Never tracked capitals."
       },
       "action": {
         "displayName": "Action",
-        "purpose": "The label of every filled button (action, solid, paper) and text button: body size at 600."
+        "purpose": "The label of every pill button: 18px at 500."
       },
       "wordmark": {
         "displayName": "Wordmark",
-        "purpose": "Plotsights beside its drawn \"o\" in the nav: 600 (--th-wordmark-weight), one step above display so the name holds."
+        "purpose": "Plotsights in the bar, its \"o\" the plot: 26px, 500, -0.035em."
+      },
+      "wordmark-foot": {
+        "displayName": "Wordmark, foot",
+        "purpose": "The name at the close card's full width: 64 to 236px, 400, -0.05em, the plot's line thinned."
+      },
+      "sheet-heading": {
+        "displayName": "Sheet heading",
+        "purpose": "\"Questions.\" beside the data sheet: 32 to 38px, 300, two-tone."
       }
     },
     "shadows": [
       {
-        "name": "shadow-color",
-        "value": "color-mix(in srgb, #1C2116 35%, transparent)",
-        "purpose": "--th-shadow: the one shadow colour on paper, ink at 35%."
-      },
-      {
-        "name": "pinned-on-map",
-        "value": "0 10px 22px -12px rgb(0 0 0 / 0.45)",
-        "purpose": "An area's figures (a white card) floating on the light map; it also carries a 1px border of ink at 24%."
+        "name": "map-float",
+        "value": "inset 0 0 0 1px rgb(245 247 250 / 0.16), inset 0 1px 0 rgb(255 255 255 / 0.07), 0 18px 36px -22px rgb(0 0 0 / 0.85)",
+        "purpose": "A map card on night glass over the night map: a faint light rim, an inner highlight, the one soft shadow."
       },
       {
         "name": "place-list",
-        "value": "0 0 0 1px color-mix(in srgb, #1C2116 24%, transparent), 0 18px 36px -18px color-mix(in srgb, #1C2116 45%, transparent)",
-        "purpose": "The list of places that opens under the search field and floats over the page."
+        "value": "inset 0 0 0 1px rgb(245 247 250 / 0.16), 0 24px 48px -24px rgb(0 0 0 / 0.7)",
+        "purpose": "The list of places, night glass floating under the search pill."
       },
       {
         "name": "report-sheet",
-        "value": "0 1px 2px -1px var(--th-shadow), 0 20px 30px -20px var(--th-shadow)",
-        "purpose": "The report's sheet, an object lying on its white panel."
+        "value": "0 1px 0 rgb(26 31 38 / 0.06), 0 24px 40px -28px rgb(33 48 71 / 0.5)",
+        "purpose": "The report's white sheet raised off its ice tile."
+      },
+      {
+        "name": "nav-sheet",
+        "value": "0 24px 48px -24px rgb(0 0 0 / 0.6)",
+        "purpose": "The phone menu's night sheet, open under the bar."
+      },
+      {
+        "name": "nav-day-hairline",
+        "value": "0 1px 0 var(--th-line)",
+        "purpose": "Not elevation: the hairline under the day bar's white glass."
       },
       {
         "name": "field-edge",
-        "value": "0 0 0 1px color-mix(in srgb, #1C2116 34%, transparent)",
-        "purpose": "Not elevation: the search field's 1px ink edge (60% on hover), drawn as a spread shadow."
+        "value": "inset 0 0 0 1px rgb(245 247 250 / 0.24)",
+        "purpose": "Not elevation: the search pill's 1px light edge (0.5 on hover and focus)."
+      },
+      {
+        "name": "glow-hero",
+        "value": "radial-gradient(closest-side, rgb(61 94 127 / 0.78), rgb(46 61 80 / 0.42) 46%, rgb(20 25 31 / 0))",
+        "purpose": "Not a shadow: the glow rising behind the town in the hero (falling from the top in the close at 0.7)."
+      },
+      {
+        "name": "glow-card",
+        "value": "radial-gradient(closest-side, rgb(61 94 127 / 0.55), rgb(61 94 127 / 0))",
+        "purpose": "Not a shadow: the glow rising inside every navy card from below."
+      },
+      {
+        "name": "light-halo",
+        "value": "0 0 6px to 0 0 12px in the light's own colour",
+        "purpose": "A light's glow is the data: the key's dots, a card's short-let mark, the tipping point's dot. Nothing else glows."
       }
     ],
     "motion": [
@@ -810,211 +775,238 @@
       {
         "name": "state",
         "value": "0.15s",
-        "purpose": "Fill changes on hover and the 0.97 press of a filled button; the arrow inside moves 3px over 0.2s."
+        "purpose": "Fill changes on hover and the 0.97 press of a pill; the arrow inside moves 3px over 0.2s."
+      },
+      {
+        "name": "glow-breathe",
+        "value": "9s ease-in-out infinite (11s in the close); opacity 0.78 to 1, scale 1 to 1.045",
+        "purpose": "The glow breathes; still with reduced motion."
       },
       {
         "name": "opening-line-rise",
         "value": "620ms per line, 80ms stagger, --th-ease",
-        "purpose": "The opening (first page of a visit only, never with reduced motion): each of the headline's three lines rises from translateY with a clip-path mask at its own foot (Opening.tsx). The name's two halves rise first (0.42s, 0.08s apart) and the plot's line draws from 0.62s for 0.82s."
+        "purpose": "The opening (first page of a visit only, never with reduced motion): \"Pl\" and \"t\" rise, the pointer draws the plot as the \"o\" (Plot, in ink), then \"sights\" comes into focus in mist (opening-strike); the name holds and rises to the bar, \"sights\" turning to ink; the headline's lines rise out of masks with \"Plot\" and \"sights\" lit (Opening.tsx)."
       },
       {
         "name": "tour-pin",
         "value": "opacity 0.3s ease-out 0.15s, translate 0.4s --th-ease 0.15s",
-        "purpose": "A pinned card arriving beside its drawn area; corners drop in 0.35s; the area traces corner by corner. One town leaves west as the next comes from the east (opacity 0.9s, a 3% slide over 1.2s)."
+        "purpose": "A map card arriving beside its drawn area; one town leaves west as the next comes from the east (opacity 0.9s, a 3% slide over 1.2s); the window pans 0.7s."
       },
       {
         "name": "stream-word",
         "value": "34ms per word (+160ms), each word fading 0.28s",
-        "purpose": "The Connector's answer streams word by word; how firm it is, its date and its link follow at words x 34ms + 260ms. Every word is in the page from the start; only opacity waits."
+        "purpose": "The Connector's answer streams; every word is in the page from the start, only opacity waits."
       },
       {
         "name": "page-turn",
         "value": "0.25s out, 0.25s in, 28px slide, --th-ease",
-        "purpose": "A report page turn (ps-leaf-out / ps-leaf-in; LEAF_MS 250), set off by the rail, the pager, arrow keys on the sheet, or a sideways swipe of 48px."
+        "purpose": "A report page turn (LEAF_MS 250)."
       },
       {
         "name": "sheet-deal",
-        "value": "0.5s --th-ease, from translateX(40px) rotate(1.6deg)",
-        "purpose": "The report's sheet laid on its panel when the panel first arrives."
-      },
-      {
-        "name": "how-line-fill",
-        "value": "animation-timeline: view(); linear, ranges cover 10% to 41% across, cover 35% to 60% down",
-        "purpose": "How the numbers are made: the rail fills with olive and each stop it reaches turns olive as the line is scrolled through (CSS scroll-driven animations only; across from 1100px, down below). Without scroll timelines or with reduced motion the line is simply drawn."
+        "value": "0.5s --th-ease",
+        "purpose": "The report's sheet laid on its tile when the section first arrives."
       },
       {
         "name": "reduced-motion",
         "value": "none",
-        "purpose": "No opening, no tour, no streaming, no scroll fill, no page slide: everything in its final state."
+        "purpose": "No opening, no tour beyond its first town, no streaming, no scroll fill, no page slide, a still glow."
+      },
+      {
+        "name": "opening-strike",
+        "value": "0.64s cubic-bezier(0.22, 1, 0.36, 1), 1.56s in; opacity, blur 0.06em, translateX -0.08em",
+        "purpose": "The second strike of the opening: \"sights\" arrives a beat after the plot closes, in the second tone."
+      },
+      {
+        "name": "rv-travel",
+        "value": "cubic-bezier(0.2, 0.7, 0.2, 1), 1000ms (frames 1200ms); 18px (eyebrows 8px, frames 24px at scale 0.985)",
+        "purpose": "Arrivals (data-rv, Reveal.tsx): rise once on arrival; only what is below the window after load is hidden; nothing without script, with reduced motion, or in print."
+      },
+      {
+        "name": "rv-fade",
+        "value": "cubic-bezier(0.33, 1, 0.68, 1), 760ms (a heading's payoff 1000ms, fade only)",
+        "purpose": "The opacity half of an arrival; staggers of 80ms, at most six in a run."
+      },
+      {
+        "name": "count-up",
+        "value": "1200ms ease-out cubic, from 86% of the figure",
+        "purpose": "The database counts and the island's short-lets count up once, true figures only, tabular; screen readers get the true figure throughout."
+      },
+      {
+        "name": "story-swap",
+        "value": "scroll-driven per step (in over cover 24-32%, out over 68-76%), 12px rise; 0.6s fade where scroll timelines are missing",
+        "purpose": "The held frame of \"How it works\" changes picture with the step at the window's middle."
+      },
+      {
+        "name": "story-scrub",
+        "value": "scroll-driven within each step: zoom 30-46%, town 39-50%, area drawn 47-56%; match lines 28-38%+",
+        "purpose": "The island zooms to Kato Paphos and the match lines run out with the scroll from 1024px; elsewhere the same moves play once in time."
       }
     ],
     "breakpoints": [
       {
         "name": "search-arrow-only",
-        "value": "(max-width: 479px), (min-width: 1024px) and (max-width: 1179px): the search button is its arrow alone"
+        "value": "(max-width: 479px), (min-width: 1024px) and (max-width: 1179px): \"Show me\" is its arrow alone"
       },
       {
         "name": "sm",
-        "value": "640px (tablet gutter 32px; the map band 520px tall)"
+        "value": "641px (32px gutters; the map band 520px; lead goes 300; night cards 20px and tiles 16px corners, 16px / 14px at 640px and under)"
+      },
+      {
+        "name": "md",
+        "value": "768px (the bar's links show; the Menu pill hides)"
       },
       {
         "name": "lg",
-        "value": "1024px (words on the left, the frameless map over the right 58%, faded; panels go two-column)"
+        "value": "1024px (words in 42% on the left, the frameless map over the right 58%; night cards inset 12px; bar 72px, 64px below; sections 136px apart)"
       },
       {
         "name": "how-line",
-        "value": "1100px (the How line runs across)"
+        "value": "1100px (64px gutters; the How line runs across)"
       },
       {
         "name": "xl",
-        "value": "1280px (the strip's key names its season, \"short-lets this season\")"
+        "value": "1280px (three map cards pinned beside their areas; the bar's tagline shows)"
       },
       {
         "name": "page-max",
-        "value": "1440px (64px gutters; headline and heading at their largest)"
-      },
-      {
-        "name": "coarse-pointer",
-        "value": "(pointer: coarse)"
+        "value": "1440px (content 1312px)"
       }
     ]
   },
   "components": [
     {
-      "name": "Action Button",
+      "name": "Action Pill on White",
       "kind": "button",
       "refersTo": "button-action",
-      "description": "The olive filled action, 6px corners: Show me in the search field, Open the Playground.",
+      "description": "The navy pill on the white page: Open the Playground, Ask for a report, Ask for access. Hover a step lighter; press scales to 0.97; the arrow moves 3px.",
       "html": "<a class=\"ds-btn-action\" href=\"#\">Open the Playground<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn-action { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-action, #4A5E3A); color: var(--th-action-ink, #FFFFFF); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover { background-color: var(--th-action-hover, #3C4E2E); } .ds-btn-action:active { transform: scale(0.97); } .ds-btn-action svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover svg { transform: translateX(3px); } .ds-btn-action:focus-visible { outline: 2px solid var(--th-ink, #1C2116); outline-offset: 3px; }"
+      "css": ".ds-btn-action { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; font-size: 18px; font-weight: 500; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); background: var(--th-action, #213047); color: var(--th-action-ink, #F5F7FA); } .ds-btn-action:hover { background-color: var(--th-action-hover, #2A3B55); } .ds-btn-action:active { transform: scale(0.97); } .ds-btn-action svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-action:hover svg { transform: translateX(3px); } .ds-btn-action:focus-visible { outline: 2px solid #213047; outline-offset: 3px; }"
     },
     {
-      "name": "Solid Button",
+      "name": "Action Pill on Night",
       "kind": "button",
-      "refersTo": "button-solid",
-      "description": "Ink filled button for the Reports and Connector panels: Ask for a report, Ask for access.",
-      "html": "<a class=\"ds-btn-solid\" href=\"#\">Ask for a report<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a>",
-      "css": ".ds-btn-solid { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-solid, #1C2116); color: var(--th-solid-ink, #FFFFFF); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-solid:hover { background-color: var(--th-solid-hover, #2E3526); } .ds-btn-solid:active { transform: scale(0.97); } .ds-btn-solid svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-solid:hover svg { transform: translateX(3px); } .ds-btn-solid:focus-visible { outline: 2px solid var(--th-ink, #1C2116); outline-offset: 3px; }"
-    },
-    {
-      "name": "Paper Button on the Close",
-      "kind": "button",
-      "refersTo": "button-paper",
-      "description": "Email the team: paper on the deep olive at the page's end; hover goes to white, the focus ring inverts.",
-      "html": "<div class=\"ds-close\"><a class=\"ds-btn-paper\" href=\"#\">Email the team<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a><a class=\"ds-close-play\" href=\"#\">Or open the Playground</a></div>",
-      "css": ".ds-close { font-family: var(--th-font, 'Google Sans', sans-serif); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 28px; background: var(--th-close, #1B2215); } .ds-btn-paper { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 6px; background: var(--th-close-ink, #F5F4EE); color: var(--th-close, #1B2215); font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-paper:hover { background-color: var(--th-surface, #FFFFFF); } .ds-btn-paper:active { transform: scale(0.97); } .ds-btn-paper svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-paper:hover svg { transform: translateX(3px); } .ds-btn-paper:focus-visible { outline: 2px solid #F5F4EE; outline-offset: 3px; } .ds-close-play { display: inline-flex; align-items: center; min-height: 44px; color: #F5F4EE; font-size: 18px; font-weight: 600; text-decoration: underline 1.5px; text-underline-offset: 4px; }"
+      "refersTo": "button-night",
+      "description": "The ice pill on night (the bar over the hero, the close): Email the team. Night on ice, 10.4:1; hover a step lighter.",
+      "html": "<div class=\"ds-night\"><a class=\"ds-btn-night\" href=\"#\">Email the team<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a><a class=\"ds-night-link\" href=\"#\">Or open the Playground</a></div>",
+      "css": ".ds-night { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; padding: 28px; border-radius: 20px; background: linear-gradient(180deg, #14191F 0%, #18202B 100%); } .ds-btn-night { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 48px; padding: 0 22px; border: 0; border-radius: 999px; font-size: 18px; font-weight: 500; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); background: #B7C9DD; color: #14191F; } .ds-btn-night:hover { background-color: #C9D7E7; } .ds-btn-night:active { transform: scale(0.97); } .ds-btn-night svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-night:hover svg { transform: translateX(3px); } .ds-btn-night:focus-visible { outline: 2px solid #B7C9DD; outline-offset: 3px; } .ds-night-link { display: inline-flex; align-items: center; min-height: 44px; color: #F5F7FA; font-size: 18px; font-weight: 500; text-decoration: underline 1.5px; text-underline-offset: 4px; transition: text-decoration-color 0.2s; } .ds-night-link:hover { text-decoration-color: rgb(245 247 250 / 0.45); }"
     },
     {
       "name": "Place Search",
       "kind": "input",
       "refersTo": "field-search",
-      "description": "The first screen's way in: an opaque glass 58px field (its glass on the form's ::before, so the list can blur too) with a 1px ink edge at 34% (60% on hover), the solid olive action inside its right end, and the list of places, glass with one soft shadow, floating under it with the selected row in tint.",
+      "description": "The first screen's way in: a 58px pill faintly lighter than the night with a 1px light edge (not glass: nothing is behind it to blur), the reference's dark pill \"Show me\" inside its right end, and the list of places opening under it as night glass with 12px rows.",
       "html": "<div class=\"ds-find\"><form class=\"ds-find-box\" role=\"search\" onsubmit=\"return false\"><svg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"11\" cy=\"11\" r=\"8\"/><path d=\"m21 21-4.3-4.3\"/></svg><input type=\"text\" placeholder=\"Your town, resort or district\" aria-label=\"A town, resort or district in Cyprus\"><button class=\"ds-find-go\" type=\"submit\"><span>Show me</span><svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></button></form><ul class=\"ds-find-list\" role=\"listbox\" aria-label=\"Places\"><li role=\"option\" aria-selected=\"true\"><span><b>Paphos</b></span><em>545 short-lets</em></li><li role=\"option\" aria-selected=\"false\"><span><b>Limassol</b></span><em>1,204 short-lets</em></li></ul></div>",
-      "css": ".ds-find { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; max-width: 540px; padding-bottom: 130px; } .ds-find-box { display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 5px 0 16px; border-radius: 8px; background: #FFFFFF; box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 34%, transparent); transition: box-shadow 0.2s; } .ds-find-box:hover { box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 60%, transparent); } .ds-find-box:focus-within { outline: 2px solid #1C2116; outline-offset: 3px; } .ds-find-box > svg { flex: none; color: #4D5544; } .ds-find-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: #1C2116; font: inherit; font-size: 18px; outline: none; } .ds-find-box input::placeholder { color: #4D5544; opacity: 1; } .ds-find-go { font: inherit; display: inline-flex; align-items: center; gap: 8px; flex: none; min-height: 48px; padding: 0 20px; border: 0; border-radius: 5px; background: #4A5E3A; color: #FFFFFF; font-size: 18px; font-weight: 600; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-find-go:hover { background: #3C4E2E; } .ds-find-go:active { transform: scale(0.97); } .ds-find-list { position: absolute; top: 66px; right: 0; left: 0; margin: 0; padding: 6px; list-style: none; border-radius: 8px; background: #FFFFFF; box-shadow: 0 0 0 1px color-mix(in srgb, #1C2116 24%, transparent), 0 18px 36px -18px color-mix(in srgb, #1C2116 45%, transparent); } .ds-find-list li { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 44px; padding: 8px 12px; border-radius: 4px; color: #4D5544; font-size: 18px; cursor: pointer; } .ds-find-list li:hover, .ds-find-list li[aria-selected=\"true\"] { background: #ECEBE3; } .ds-find-list b { color: #1C2116; font-weight: 500; } .ds-find-list em { color: #1C2116; font-size: 16px; font-style: normal; font-variant-numeric: tabular-nums; }"
+      "css": ".ds-find { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); position: relative; max-width: 580px; padding: 24px 24px 150px; border-radius: 20px; background: linear-gradient(180deg, #14191F 0%, #18202B 100%); } .ds-find-box { position: relative; display: flex; align-items: center; gap: 10px; height: 58px; padding: 0 5px 0 18px; border-radius: 999px; background: rgb(245 247 250 / 0.07); box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.24); transition: box-shadow 0.2s; } .ds-find-box:hover, .ds-find-box:focus-within { box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.5); } .ds-find-box:has(input:focus-visible) { outline: 2px solid #B7C9DD; outline-offset: 3px; } .ds-find-box > svg { flex: none; color: #A3AFBB; } .ds-find-box input { flex: 1; min-width: 0; height: 100%; border: 0; background: transparent; color: #F5F7FA; font: inherit; font-size: 18px; outline: none; caret-color: #B7C9DD; } .ds-find-box input::placeholder { color: #A3AFBB; opacity: 1; } .ds-find-go { font: inherit; display: inline-flex; align-items: center; gap: 10px; flex: none; min-height: 46px; padding: 0 20px; border: 0; border-radius: 999px; background: #353A40; color: #F5F7FA; font-size: 18px; font-weight: 500; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-find-go:hover { background: #41474E; } .ds-find-go:active { transform: scale(0.97); } .ds-find-list { position: absolute; top: 90px; right: 24px; left: 24px; margin: 0; padding: 6px; list-style: none; border-radius: 18px; background: rgb(24 32 43 / 0.92); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.16), 0 24px 48px -24px rgb(0 0 0 / 0.7); } .ds-find-list li { display: flex; justify-content: space-between; align-items: center; gap: 14px; min-height: 44px; padding: 8px 14px; border-radius: 12px; color: #A3AFBB; font-size: 18px; line-height: 26px; cursor: pointer; } .ds-find-list li:hover, .ds-find-list li[aria-selected=\"true\"] { background: rgb(183 201 221 / 0.14); } .ds-find-list b { color: #F5F7FA; font-weight: 500; } .ds-find-list em { color: #F5F7FA; font-size: 16px; font-style: normal; font-variant-numeric: tabular-nums; }"
     },
     {
-      "name": "Town Map with Strip",
+      "name": "Night Town Map",
       "kind": "custom",
       "refersTo": null,
-      "description": "The first screen's picture (TownTour): the light map of a real town, frameless, coming out of the paper (nothing for its first 7%, whole from 28%, faded under the nav and at its foot), so nothing lies under the words. Every short-let is a dot in its class inside an ink ring (dot-ring outside the drawn areas); an area is an ink line over a 4px edge of the land's colour, its corners olive dots ringed in ink. A strip at the hero's foot, right-aligned: Pause the tour, Next town, the town's name, the key (four ringed swatches from Under 60% to 80%+, an empty ring No figure), the Demo data tag, the credit.",
-      "html": "<div class=\"ds-hero-map\"><svg class=\"ds-map\" viewBox=\"0 0 360 200\" aria-hidden=\"true\"><rect width=\"360\" height=\"200\" fill=\"#FAF9F4\"/><path d=\"M0 160 C90 140 180 172 360 145 L360 200 L0 200 Z\" fill=\"#CBD9DA\"/><path d=\"M0 160 C90 140 180 172 360 145\" fill=\"none\" stroke=\"#8DA1A2\"/><path d=\"M30 20 L340 120\" stroke=\"#BAB5A6\" stroke-width=\"3\"/><path d=\"M70 130 L290 30\" stroke=\"#D6D3C7\" stroke-width=\"2\"/><path d=\"M200 20 L330 60\" stroke=\"#D6D3C7\" stroke-width=\"2\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"#1C2116\" fill-opacity=\"0.05\" stroke=\"#FAF9F4\" stroke-width=\"4\" stroke-linejoin=\"round\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"none\" stroke=\"#1C2116\" stroke-width=\"1.5\" stroke-linejoin=\"round\"/><g stroke=\"#1C2116\" stroke-width=\"1\"><circle cx=\"180\" cy=\"62\" r=\"4\" fill=\"#D6F25E\"/><circle cx=\"212\" cy=\"78\" r=\"4\" fill=\"#9CC13A\"/><circle cx=\"230\" cy=\"64\" r=\"4\" fill=\"#6F8F31\"/><circle cx=\"190\" cy=\"95\" r=\"4\" fill=\"#4F6334\"/><circle cx=\"242\" cy=\"92\" r=\"4\" fill=\"#D6F25E\"/></g><g stroke=\"#1C2116B3\" stroke-width=\"1\"><circle cx=\"110\" cy=\"70\" r=\"3\" fill=\"#9CC13A\"/><circle cx=\"300\" cy=\"95\" r=\"3\" fill=\"#6F8F31\"/><circle cx=\"290\" cy=\"40\" r=\"3\" fill=\"none\" stroke=\"#9FA396\" stroke-width=\"1.2\"/></g><g fill=\"#4A5E3A\" stroke=\"#1C2116\" stroke-width=\"1.5\"><circle cx=\"150\" cy=\"40\" r=\"4\"/><circle cx=\"250\" cy=\"50\" r=\"4\"/><circle cx=\"265\" cy=\"105\" r=\"4\"/><circle cx=\"165\" cy=\"112\" r=\"4\"/></g></svg><div class=\"ds-strip\"><a class=\"ds-stopper\" href=\"#\">Pause the tour</a><a class=\"ds-stopper\" href=\"#\">Next town</a><b>Limassol</b><span class=\"ds-key\"><span class=\"ds-key-scale\">Under 60% <span class=\"ds-dots\"><i style=\"background:#4F6334\"></i><i style=\"background:#6F8F31\"></i><i style=\"background:#9CC13A\"></i><i style=\"background:#D6F25E\"></i></span> 80%+</span><span class=\"ds-key-none\"><i></i>No figure</span></span><span class=\"ds-tag\">Demo data</span><span>Map: OpenStreetMap</span></div></div>",
-      "css": ".ds-hero-map { font-family: var(--th-font, 'Google Sans', sans-serif); position: relative; max-width: 560px; padding-bottom: 8px; background: var(--th-ground, #F5F4EE); } .ds-map { display: block; width: 100%; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 8%); mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 8%); -webkit-mask-composite: source-in; mask-composite: intersect; } .ds-strip { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 4px 12px; padding: 10px 16px 0; color: var(--th-muted, #4D5544); font-size: 15px; line-height: 21px; } .ds-stopper { color: var(--th-ink, #1C2116); font-weight: 500; text-decoration: underline transparent 1px; text-underline-offset: 2px; transition: text-decoration-color 0.2s; } .ds-stopper:hover { text-decoration-color: currentColor; } .ds-strip b { color: var(--th-ink, #1C2116); font-weight: 500; } .ds-key { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 12px; white-space: nowrap; } .ds-key-scale { display: inline-flex; align-items: center; gap: 6px; font-variant-numeric: tabular-nums; } .ds-dots { display: inline-flex; gap: 2px; } .ds-dots i { width: 18px; height: 8px; border: 1px solid var(--th-occ-ring, #1C2116); } .ds-key-none { display: inline-flex; align-items: center; gap: 6px; } .ds-key-none i { width: 9px; height: 9px; border: 1.2px solid var(--th-dot-none, #9FA396); border-radius: 50%; } .ds-tag { display: inline-flex; align-items: center; height: 24px; padding: 0 7px; border-radius: 3px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent); font-weight: 500; }"
+      "description": "The first screen's picture (TownTour) on the night card: the night map of a real town (land clear, the sea a darker wash, streets and coast in faint dotted ice), frameless, faded from nothing at the words' edge to whole at 28%. Every short-let is a light in its class with a soft halo of the same colour, so the town glows where it is full; an area is an ice line over a dark edge, its corners ice dots ringed in night. The strip at the foot: Pause, Next town, the town, the key's four glowing dots, the Sample data pill, the credit.",
+      "html": "<div class=\"ds-hero-map\"><svg class=\"ds-map\" viewBox=\"0 0 360 200\" aria-hidden=\"true\"><defs><filter id=\"ds-halo\" x=\"-200%\" y=\"-200%\" width=\"500%\" height=\"500%\"><feGaussianBlur stdDeviation=\"3\"/></filter></defs><rect width=\"360\" height=\"200\" fill=\"#18202B\"/><path d=\"M0 160 C90 140 180 172 360 145 L360 200 L0 200 Z\" fill=\"#0A0E13\"/><path d=\"M0 160 C90 140 180 172 360 145\" fill=\"none\" stroke=\"#B7C9DD\" stroke-opacity=\"0.35\" stroke-dasharray=\"1 3\"/><path d=\"M30 20 L340 120\" stroke=\"#B7C9DD\" stroke-opacity=\"0.22\" stroke-width=\"1.5\"/><path d=\"M70 130 L290 30\" stroke=\"#B7C9DD\" stroke-opacity=\"0.25\" stroke-dasharray=\"1 3\"/><path d=\"M200 20 L330 60\" stroke=\"#B7C9DD\" stroke-opacity=\"0.25\" stroke-dasharray=\"1 3\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"#B7C9DD\" fill-opacity=\"0.07\" stroke=\"#14191F\" stroke-opacity=\"0.55\" stroke-width=\"4\" stroke-linejoin=\"round\"/><polygon points=\"150,40 250,50 265,105 165,112\" fill=\"none\" stroke=\"#B7C9DD\" stroke-width=\"1.5\" stroke-linejoin=\"round\"/><g filter=\"url(#ds-halo)\" opacity=\"0.7\"><circle cx=\"180\" cy=\"62\" r=\"6\" fill=\"#EDF3F9\"/><circle cx=\"212\" cy=\"78\" r=\"5\" fill=\"#AFC5DC\"/><circle cx=\"242\" cy=\"92\" r=\"6\" fill=\"#EDF3F9\"/></g><circle cx=\"180\" cy=\"62\" r=\"3\" fill=\"#EDF3F9\"/><circle cx=\"212\" cy=\"78\" r=\"3\" fill=\"#AFC5DC\"/><circle cx=\"230\" cy=\"64\" r=\"3\" fill=\"#7894B3\"/><circle cx=\"190\" cy=\"95\" r=\"3\" fill=\"#5A7DA6\"/><circle cx=\"242\" cy=\"92\" r=\"3\" fill=\"#EDF3F9\"/><circle cx=\"110\" cy=\"70\" r=\"2\" fill=\"#AFC5DC\" opacity=\"0.6\"/><circle cx=\"300\" cy=\"95\" r=\"2\" fill=\"#7894B3\" opacity=\"0.6\"/><g fill=\"#B7C9DD\" stroke=\"#14191F\" stroke-width=\"1.2\"><circle cx=\"150\" cy=\"40\" r=\"4\"/><circle cx=\"250\" cy=\"50\" r=\"4\"/><circle cx=\"265\" cy=\"105\" r=\"4\"/><circle cx=\"165\" cy=\"112\" r=\"4\"/></g></svg><div class=\"ds-strip\"><a class=\"ds-stopper\" href=\"#\">Pause the tour</a><a class=\"ds-stopper\" href=\"#\">Next town</a><b>Limassol</b><span class=\"ds-key\">Under 60% <span class=\"ds-dots\"><i style=\"background:#5A7DA6;box-shadow:0 0 6px #5A7DA6\"></i><i style=\"background:#7894B3;box-shadow:0 0 7px #7894B3\"></i><i style=\"background:#AFC5DC;box-shadow:0 0 8px #AFC5DC\"></i><i style=\"background:#EDF3F9;box-shadow:0 0 10px #EDF3F9\"></i></span> 80%+</span><span class=\"ds-tag\">Sample data</span><span>Map: OpenStreetMap</span></div></div>",
+      "css": ".ds-hero-map { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); max-width: 560px; padding-bottom: 14px; border-radius: 20px; overflow: hidden; background: linear-gradient(180deg, #14191F 0%, #18202B 100%); } .ds-map { display: block; width: 100%; height: auto; -webkit-mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%); mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%); } .ds-strip { display: flex; flex-wrap: wrap; justify-content: flex-end; align-items: center; gap: 6px 14px; padding: 10px 16px 0; color: #F5F7FA; font-size: 15px; line-height: 21px; } .ds-stopper { color: #F5F7FA; font-weight: 500; text-decoration: underline transparent 1px; text-underline-offset: 3px; transition: text-decoration-color 0.2s; } .ds-stopper:hover { text-decoration-color: currentColor; } .ds-strip b { font-weight: 500; } .ds-key { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; font-variant-numeric: tabular-nums; } .ds-dots { display: inline-flex; gap: 6px; } .ds-dots i { width: 10px; height: 10px; border-radius: 50%; } .ds-tag { display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 40%, transparent); font-weight: 500; }"
     },
     {
-      "name": "Pin Card",
+      "name": "Map Card",
       "kind": "card",
-      "refersTo": "pin-card",
-      "description": "An area's figures on a white card floating on the light map: name, short-let count, a night's price, and occupancy as a bar in its class ended by an ink line; long-lets and homes for sale where the database has them. A 1px edge of ink at 24% and the map's only shadow.",
-      "html": "<div class=\"ds-map-stage\"><div class=\"ds-pin\"><b>Old Town</b><span class=\"ds-of ds-of-lit\">Short-let</span><span class=\"ds-n\">212</span><span class=\"ds-fig\"><em>€96</em> a night</span><span class=\"ds-of\">Long-let</span><span class=\"ds-n\">48</span><span class=\"ds-fig\"><em>€1,150</em> a month</span><span class=\"ds-of\">For sale</span><span class=\"ds-n\">131</span><span class=\"ds-fig\"><em>€285k</em></span><i data-occ=\"74% occupancy\" style=\"--full:74%\"></i></div></div>",
-      "css": ".ds-map-stage { font-family: var(--th-font, 'Google Sans', sans-serif); padding: 24px; background: var(--th-map-land, #FAF9F4); } .ds-pin { display: inline-grid; grid-template-columns: auto auto auto; column-gap: 10px; overflow: hidden; padding: 8px 12px 0; border: 1px solid color-mix(in srgb, #1C2116 24%, transparent); border-radius: 6px; background: var(--th-surface, #FFFFFF); box-shadow: 0 10px 22px -12px rgb(0 0 0 / 0.45); color: var(--th-muted, #4D5544); font-size: 16px; line-height: 26px; white-space: nowrap; } .ds-pin b { grid-column: 1 / -1; margin-bottom: 2px; color: #1C2116; font-weight: 500; line-height: 20px; } .ds-of { position: relative; padding-left: 13px; } .ds-of-lit::before { position: absolute; top: 8px; left: 0; width: 8px; height: 8px; border: 1px solid var(--th-occ-ring, #1C2116); border-radius: 9999px; background: #9CC13A; content: \"\"; } .ds-n, .ds-fig em { color: #1C2116; font-style: normal; font-weight: 500; font-variant-numeric: tabular-nums; } .ds-n { text-align: right; } .ds-pin i { display: block; grid-column: 1 / -1; margin: 7px -12px 0; border-top: 1px solid color-mix(in srgb, #1C2116 24%, transparent); font-style: normal; } .ds-pin i::before { display: block; padding: 3px 12px 2px; color: #4D5544; font-size: 15px; font-weight: 500; line-height: 18px; content: attr(data-occ); } .ds-pin i::after { display: block; width: var(--full); height: 5px; border-right: 1.5px solid #1C2116; background: #9CC13A; content: \"\"; }"
+      "refersTo": "map-card",
+      "description": "An area's figures on night glass over the night map (12px corners, the one soft shadow): the name; the short-lets (count, a night's price, the lights' glowing mark) with the season's occupancy said and drawn as a bar in their shade; the long-lets and the homes for sale; \"Sample figures\" in mist-dim on demo data.",
+      "html": "<div class=\"ds-map-stage\"><div class=\"ds-pin\"><b>Old Town</b><div class=\"ds-row\"><span class=\"ds-of ds-of-lit\">Short-lets</span><span class=\"ds-n\">212</span><span class=\"ds-fig\"><em>&euro;96</em> a night</span></div><i class=\"ds-occ\" style=\"--full:77%\">77% occupancy this season</i><div class=\"ds-row\"><span class=\"ds-of\">Long-lets</span><span class=\"ds-n\">48</span><span class=\"ds-fig\"><em>&euro;1,150</em> a month</span></div><div class=\"ds-row\"><span class=\"ds-of\">For sale</span><span class=\"ds-n\">131</span><span class=\"ds-fig\"><em>&euro;285k</em></span></div><span class=\"ds-sample\">Sample figures</span></div></div>",
+      "css": ".ds-map-stage { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); padding: 28px; background: #18202B; } .ds-pin { display: inline-grid; grid-template-columns: auto auto auto; column-gap: 10px; padding: 12px 14px 10px; border-radius: 12px; background: rgb(24 32 43 / 0.92); -webkit-backdrop-filter: blur(18px) saturate(1.35); backdrop-filter: blur(18px) saturate(1.35); box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.16), inset 0 1px 0 rgb(255 255 255 / 0.07), 0 18px 36px -22px rgb(0 0 0 / 0.85); color: #A3AFBB; font-size: 15px; line-height: 22px; white-space: nowrap; } .ds-pin b { grid-column: 1 / -1; margin-bottom: 4px; color: #F5F7FA; font-size: 18px; font-weight: 500; line-height: 22px; letter-spacing: -0.01em; } .ds-row { display: grid; grid-column: 1 / -1; grid-template-columns: subgrid; align-items: baseline; padding: 3px 0; } .ds-row + .ds-row, .ds-occ + .ds-row { border-top: 1px solid rgb(245 247 250 / 0.12); } .ds-of { position: relative; } .ds-of-lit { padding-left: 15px; } .ds-of-lit::before { position: absolute; top: 7px; left: 0; width: 8px; height: 8px; border-radius: 9999px; background: #AFC5DC; box-shadow: 0 0 6px #AFC5DC; content: \"\"; } .ds-n, .ds-fig em { color: #F5F7FA; font-style: normal; font-weight: 500; font-variant-numeric: tabular-nums; } .ds-n { text-align: right; } .ds-occ { position: relative; display: block; grid-column: 1 / -1; padding: 1px 0 14px; color: #F5F7FA; font-style: normal; } .ds-occ::before, .ds-occ::after { position: absolute; bottom: 5px; left: 0; height: 3px; border-radius: 2px; content: \"\"; } .ds-occ::before { right: 0; background: rgb(245 247 250 / 0.14); } .ds-occ::after { width: var(--full); background: #AFC5DC; } .ds-sample { grid-column: 1 / -1; margin-top: 4px; color: #8996A5; }"
     },
     {
-      "name": "Product Card",
+      "name": "Navy Card",
       "kind": "card",
-      "refersTo": "card",
-      "description": "A product panel: a white sheet on the paper, 1px hairline, 12px corners, no shadow. Line icon (one lime fill inside an ink line) and name in the headline role, the claim as a statement, running text in full ink, one action.",
-      "html": "<section class=\"ds-card\"><h2 class=\"ds-card-name\"><svg width=\"36\" height=\"36\" viewBox=\"0 0 32 32\" fill=\"none\" stroke=\"#1C2116\" stroke-width=\"1.6\" stroke-linejoin=\"round\" aria-hidden=\"true\"><rect x=\"3\" y=\"5\" width=\"26\" height=\"22\" rx=\"2\"/><path d=\"M3 10h26\"/><polygon points=\"9,15 21,14 23,23 11,24\"/><rect x=\"13.5\" y=\"17\" width=\"5\" height=\"5\" fill=\"#D6F25E\"/></svg>Playground</h2><p class=\"ds-claim\">See where a short-let out-earns a tenant.</p><p class=\"ds-lede\">Every short-let in Cyprus on one map, with what it earns and how booked it is this season.</p><a class=\"ds-card-go\" href=\"#\">Open the Playground<svg width=\"18\" height=\"18\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M5 12h14\"/><path d=\"m12 5 7 7-7 7\"/></svg></a></section>",
-      "css": ".ds-card { font-family: var(--th-font, 'Google Sans', sans-serif); display: grid; row-gap: 20px; justify-items: start; max-width: 640px; padding: 28px; border: 1px solid var(--th-line, #DCDAD0); border-radius: 12px; background: var(--th-surface, #FFFFFF); color: var(--th-ink, #1C2116); } .ds-card-name { display: flex; align-items: center; gap: 14px; margin: 0; font-size: clamp(2.25rem, 3.05vw, 2.75rem); font-weight: 500; line-height: 1.04; letter-spacing: -0.035em; } .ds-claim { max-width: 22em; margin: 0; font-size: 24px; font-weight: 400; line-height: 1.3; letter-spacing: -0.015em; } .ds-lede { max-width: 34em; margin: 0; font-size: 18px; line-height: 1.5; } .ds-card-go { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; justify-content: center; gap: 8px; min-height: 46px; padding: 0 22px; border: 0; border-radius: 6px; background: #4A5E3A; color: #FFFFFF; font-size: 18px; font-weight: 600; white-space: nowrap; text-decoration: none; cursor: pointer; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-go:hover { background-color: #3C4E2E; } .ds-card-go:active { transform: scale(0.97); } .ds-card-go svg { transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-card-go:hover svg { transform: translateX(3px); } "
+      "refersTo": "card-navy",
+      "description": "Live data on the white page (the tipping point, the conversation): night-800, 16px corners, the glow rising inside it from below, no edge, no shadow. A large figure at 300, tabular, in two tones. On a phone its corners are 14px.",
+      "html": "<div class=\"ds-card-navy\"><p class=\"ds-card-q\">Airbnb or a tenant?</p><p class=\"ds-figure\">68%<span> of nights</span></p><p class=\"ds-card-say\">Above this occupancy a short-let out-earns a tenant in Limassol this season.</p></div>",
+      "css": ".ds-card-navy { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); position: relative; overflow: hidden; max-width: 520px; padding: 32px; border-radius: 16px; background: #213047; color: #F5F7FA; } .ds-card-navy::before { position: absolute; inset: auto -20% -60% -20%; height: 90%; background: radial-gradient(closest-side, rgb(61 94 127 / 0.55), rgb(61 94 127 / 0)); pointer-events: none; content: \"\"; } .ds-card-navy > * { position: relative; margin: 0; } .ds-card-q { font-size: 20px; line-height: 26px; } .ds-figure { margin-top: 18px; font-size: clamp(3rem, 2.1rem + 2.6vw, 4rem); font-weight: 300; line-height: 0.95; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; } .ds-figure span { color: #A3AFBB; font-size: 20px; letter-spacing: 0; } .ds-card-say { margin-top: 14px; color: #A3AFBB; font-size: 16px; line-height: 1.5; }"
     },
     {
-      "name": "Occupancy Curve",
-      "kind": "custom",
-      "refersTo": "curve",
-      "description": "The Playground's curve on the map's light land, framed by a hairline: the share of Cyprus short-lets booked at least each share of nights, a data-2 line over a faint data-2 fill with hairline gridlines, the tipping point marked by an ink rule and a lime dot in an ink ring, \"Yours\" from the slider, and the caption reading the figures out. A press or drag along it sets the slider.",
-      "html": "<figure class=\"ds-curve\"><svg class=\"ds-curve-plot\" viewBox=\"0 0 320 140\" role=\"img\" aria-label=\"Share of short-lets by occupancy\"><g class=\"ds-grid\"><line x1=\"16\" x2=\"304\" y1=\"20\" y2=\"20\"/><line x1=\"16\" x2=\"304\" y1=\"60\" y2=\"60\"/><line x1=\"16\" x2=\"304\" y1=\"100\" y2=\"100\"/></g><line class=\"ds-base\" x1=\"16\" x2=\"304\" y1=\"112\" y2=\"112\"/><path class=\"ds-fill\" d=\"M16 22 C90 26 160 50 220 84 S290 108 304 110 L304 112 L16 112 Z\"/><path class=\"ds-line\" d=\"M16 22 C90 26 160 50 220 84 S290 108 304 110\"/><line class=\"ds-tip\" x1=\"232\" x2=\"232\" y1=\"20\" y2=\"112\"/><circle class=\"ds-dot\" cx=\"232\" cy=\"89\" r=\"5\"/><text x=\"16\" y=\"132\" class=\"ds-tick\">0%</text><text x=\"236\" y=\"16\">75%</text><text x=\"276\" y=\"132\" class=\"ds-tick\">100%</text></svg><figcaption><b>31%</b> of short-lets were booked at least <b>75%</b> of nights this season.</figcaption></figure>",
-      "css": ".ds-curve { font-family: var(--th-font, 'Google Sans', sans-serif); display: grid; row-gap: 6px; max-width: 480px; margin: 0; padding: 16px 0 14px; border-radius: 8px; background: var(--th-map-land, #FAF9F4); box-shadow: inset 0 0 0 1px var(--th-line, #DCDAD0); color: var(--th-ink, #1C2116); } .ds-curve figcaption { padding: 0 16px; color: var(--th-muted, #4D5544); font-size: 16px; line-height: 23px; } .ds-curve figcaption b { color: #1C2116; font-weight: 500; } .ds-curve-plot { display: block; width: 100%; height: auto; overflow: visible; cursor: ew-resize; } .ds-curve-plot text { fill: #1C2116; font-size: 15px; font-variant-numeric: tabular-nums; } .ds-curve-plot .ds-tick { fill: #4D5544; } .ds-grid line { stroke: var(--th-line, #DCDAD0); stroke-width: 1px; } .ds-base { stroke: #4D5544; stroke-width: 1px; } .ds-fill { fill: var(--th-data-2, #6F8F31); fill-opacity: 0.08; } .ds-line { fill: none; stroke: var(--th-data-2, #6F8F31); stroke-width: 2.25px; stroke-linejoin: round; } .ds-tip { stroke: #1C2116; stroke-width: 1px; } .ds-dot { fill: var(--th-data-4, #D6F25E); stroke: #1C2116; stroke-width: 1.5px; }"
+      "name": "Pale Tiles (Ice and Cloud)",
+      "kind": "card",
+      "refersTo": "tile-ice",
+      "description": "Paper things on ice (the report, the five views), lists to choose from on cloud (the questions, as pills; the chosen one navy with a lit dot). 16px corners, a step in tone, no edge. White text never sits on a pale tile.",
+      "html": "<div class=\"ds-tiles\"><div class=\"ds-tile ds-ice\"><ul class=\"ds-views\"><li><span>Short-lets</span><b>2,946</b></li><li><span>Long-lets</span><b>812</b></li><li><span>For sale</span><b>4,105</b></li></ul></div><div class=\"ds-tile ds-cloud\"><div class=\"ds-qs\"><button aria-pressed=\"true\">Where do short-lets earn most in Paphos?</button><button aria-pressed=\"false\">What does a two-bed rent for in Larnaca?</button></div></div></div>",
+      "css": ".ds-tiles { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: grid; gap: 16px; max-width: 520px; color: #1A1F26; } .ds-tile { padding: 32px; border-radius: 16px; } .ds-ice { background: #DCE6F1; } .ds-cloud { background: #E6E6EE; } .ds-views { margin: 0; padding: 0; list-style: none; } .ds-views li { display: flex; justify-content: space-between; gap: 12px; padding: 11px 0; border-top: 1px solid rgb(26 31 38 / 0.12); font-size: 16px; line-height: 22px; } .ds-views b { font-weight: 500; font-variant-numeric: tabular-nums; } .ds-qs { display: flex; flex-wrap: wrap; gap: 8px; } .ds-qs button { font: inherit; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 8px 18px; border: 0; border-radius: 22px; background: rgb(255 255 255 / 0.55); color: #1A1F26; font-size: 16px; text-align: left; cursor: pointer; transition: background-color 0.15s; } .ds-qs button:hover { background: rgb(255 255 255 / 0.9); } .ds-qs button[aria-pressed=\"true\"] { background: #213047; color: #F5F7FA; } .ds-qs button[aria-pressed=\"true\"]::before { width: 8px; height: 8px; border-radius: 50%; background: #EDF3F9; box-shadow: 0 0 8px rgb(237 243 249 / 0.7); content: \"\"; } .ds-qs button:focus-visible { outline: 2px solid #213047; outline-offset: 3px; }"
     },
     {
       "name": "Report Sheet and Rail",
       "kind": "custom",
       "refersTo": "sheet",
-      "description": "The report's sheet lying on its panel (6px corners, the page's only resting shadow): running head with \"3 of 9\", then a rail of one 28px button per section round a 3px mark, read in ink at 45%, current olive and taller, the rest hairline.",
-      "html": "<div class=\"ds-sheet\"><div class=\"ds-sheet-head\"><span>Limassol, short-let market</span><span>3 of 9</span></div><ol class=\"ds-rail\"><li><button aria-label=\"Section 1\" data-past></button></li><li><button aria-label=\"Section 2\" data-past></button></li><li><button aria-label=\"Section 3\" aria-current=\"step\"></button></li><li><button aria-label=\"Section 4\"></button></li><li><button aria-label=\"Section 5\"></button></li><li><button aria-label=\"Section 6\"></button></li><li><button aria-label=\"Section 7\"></button></li><li><button aria-label=\"Section 8\"></button></li><li><button aria-label=\"Section 9\"></button></li></ol><h3>What a night takes, month by month</h3><p>The median nightly rate across every short-let in the district.</p></div>",
-      "css": ".ds-sheet { font-family: var(--th-font, 'Google Sans', sans-serif); max-width: 440px; padding: 18px 18px 14px; border-radius: 6px; background: #FFFFFF; color: #1C2116; box-shadow: 0 1px 2px -1px color-mix(in srgb, #1C2116 35%, transparent), 0 20px 30px -20px color-mix(in srgb, #1C2116 35%, transparent); } .ds-sheet-head { display: flex; justify-content: space-between; gap: 16px; padding-bottom: 2px; color: #4D5544; font-size: 16px; line-height: 22px; } .ds-rail { display: flex; gap: 3px; margin: 0; padding: 0; list-style: none; } .ds-rail li { flex: 1; min-width: 0; } .ds-rail button { position: relative; display: block; width: 100%; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; } .ds-rail button::before { content: \"\"; position: absolute; right: 0; bottom: 6px; left: 0; height: 3px; background: #DCDAD0; transform-origin: bottom; transition: background-color 0.2s, transform 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-rail button[data-past]::before { background: color-mix(in srgb, #1C2116 45%, #FFFFFF); } .ds-rail button:hover::before { background: color-mix(in srgb, #1C2116 70%, #FFFFFF); } .ds-rail button[aria-current=\"step\"]::before { background: #4A5E3A; transform: scaleY(1.67); } .ds-rail button:focus-visible { outline: 2px solid #1C2116; outline-offset: -2px; border-radius: 2px; } .ds-sheet h3 { margin: 18px 0 0; font-size: 20px; font-weight: 700; line-height: 26px; letter-spacing: -0.01em; } .ds-sheet p { margin: 6px 0 0; font-size: 18px; line-height: 1.45; }"
+      "description": "On an ice tile, the white sheet raised off it (10px corners): its running head, a rail of one 4px mark per section (read navy, current glow-500, the rest pale), the page, the bars in glow-500.",
+      "html": "<div class=\"ds-tile-ice\"><div class=\"ds-sheet\"><div class=\"ds-sheet-head\"><span>Limassol, short-let market</span><span>3 of 9</span></div><ol class=\"ds-rail\"><li><button aria-label=\"Section 1\" data-past></button></li><li><button aria-label=\"Section 2\" data-past></button></li><li><button aria-label=\"Section 3\" aria-current=\"step\"></button></li><li><button aria-label=\"Section 4\"></button></li><li><button aria-label=\"Section 5\"></button></li><li><button aria-label=\"Section 6\"></button></li></ol><h3>What a night takes, month by month</h3><p>The median nightly rate across every short-let in the district.</p><div class=\"ds-bars\"><i style=\"height:40%\"></i><i style=\"height:55%\"></i><i style=\"height:80%\"></i><i style=\"height:100%\"></i><i style=\"height:70%\"></i></div></div></div>",
+      "css": ".ds-tile-ice { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); max-width: 520px; padding: 32px; border-radius: 16px; background: #DCE6F1; } .ds-sheet { padding: 26px 28px 20px; border-radius: 10px; background: #FFFFFF; color: #1A1F26; box-shadow: 0 1px 0 rgb(26 31 38 / 0.06), 0 24px 40px -28px rgb(33 48 71 / 0.5); } .ds-sheet-head { display: flex; justify-content: space-between; gap: 16px; color: #4A5563; font-size: 16px; line-height: 22px; } .ds-rail { display: flex; gap: 6px; margin: 10px 0 0; padding: 0; list-style: none; } .ds-rail li { flex: 1; min-width: 0; } .ds-rail button { position: relative; display: block; width: 100%; height: 28px; padding: 0; border: 0; background: none; cursor: pointer; } .ds-rail button::before { content: \"\"; position: absolute; right: 0; bottom: 12px; left: 0; height: 4px; border-radius: 2px; background: #DCE2E9; transition: background-color 0.25s; } .ds-rail button[data-past]::before { background: #213047; } .ds-rail button:hover::before { background: color-mix(in srgb, #213047 55%, #FFFFFF); } .ds-rail button[aria-current=\"step\"]::before { background: #3D5E7F; } .ds-rail button:focus-visible { outline: 2px solid #213047; outline-offset: -2px; border-radius: 4px; } .ds-sheet h3 { margin: 14px 0 0; font-size: 20px; font-weight: 400; line-height: 26px; } .ds-sheet p { margin: 6px 0 0; color: #4A5563; font-size: 16px; line-height: 1.5; } .ds-bars { display: flex; align-items: flex-end; gap: 8px; height: 80px; margin-top: 16px; } .ds-bars i { flex: 1; border-radius: 2px 2px 0 0; background: #3D5E7F; }"
+    },
+    {
+      "name": "Eyebrow and Two-Tone Heading",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "A section's opening: the eyebrow (sentence case, 15px, mist-ink, never tracked capitals) over a Google Sans Flex 300 heading whose statement is ink and whose payoff is the second tone. Owner decision 2026-10-17 (eyebrows on, as in the reference).",
+      "html": "<div class=\"ds-head\"><p class=\"ds-eb\">Explore it yourself</p><h2 class=\"ds-h\">Playground. <span>What any street earns, rents for and sells for.</span></h2></div>",
+      "css": ".ds-head { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); max-width: 640px; color: #1A1F26; } .ds-eb { margin: 0 0 10px; color: #627082; font-size: 15px; font-weight: 400; line-height: 21px; letter-spacing: 0.01em; } .ds-h { margin: 0; font-size: clamp(2rem, 1.35rem + 1.9vw, 2.75rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; } .ds-h span { color: #627082; }"
     },
     {
       "name": "Tag",
       "kind": "chip",
       "refersTo": "tag",
-      "description": "\"Demo data\" and similar: a quiet outlined label, 3px corners, muted at 15px/500. Never a filled pill.",
-      "html": "<span class=\"ds-tag\">Demo data</span>",
-      "css": ".ds-tag { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; height: 24px; padding: 0 7px; border-radius: 3px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 45%, transparent); color: var(--th-muted, #4D5544); font-size: 15px; font-weight: 500; white-space: nowrap; }"
+      "description": "\"Sample data\" and similar: an outlined pill, 26px, 15px/500, slate on white (ink in the hero's strip). Never a filled pill.",
+      "html": "<span class=\"ds-tag\">Sample data</span>",
+      "css": ".ds-tag { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: inline-flex; align-items: center; height: 26px; padding: 0 10px; border-radius: 999px; box-shadow: inset 0 0 0 1px color-mix(in srgb, currentColor 40%, transparent); color: var(--th-muted, #4A5563); font-size: 15px; font-weight: 500; white-space: nowrap; }"
     },
     {
-      "name": "Text Button",
-      "kind": "button",
-      "refersTo": null,
-      "description": "Ink text with a 1.5px underline that drops on hover: secondary actions beside a filled one.",
-      "html": "<a class=\"ds-textbtn\" href=\"#\">See how the numbers are made</a>",
-      "css": ".ds-textbtn { font-family: var(--th-font, 'Google Sans', sans-serif); display: inline-flex; align-items: center; min-height: 44px; color: var(--th-ink, #1C2116); font-size: 18px; font-weight: 600; text-decoration: underline 1.5px; text-underline-offset: 4px; transition: text-underline-offset 0.2s cubic-bezier(0.16, 1, 0.3, 1); } .ds-textbtn:hover { text-underline-offset: 7px; } .ds-textbtn:focus-visible { outline: 2px solid #1C2116; outline-offset: 3px; }"
+      "name": "Conversation Bubbles",
+      "kind": "custom",
+      "refersTo": "bubble-answer",
+      "description": "The Connector's conversation on a navy card: the visitor's ice pill (22px corners, night ink) and the answer in night-700 with a faint light rim (14px corners), words streaming in.",
+      "html": "<div class=\"ds-chat\"><p class=\"ds-bq\">Where do short-lets earn most in Paphos?</p><p class=\"ds-ba\">Kato Paphos leads: a night takes &euro;112 at the median, and its short-lets were 74% full this season.</p></div>",
+      "css": ".ds-chat { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: flex; flex-direction: column; gap: 12px; max-width: 520px; padding: 32px; border-radius: 16px; background: #213047; } .ds-chat p { max-width: 92%; margin: 0; font-size: 18px; line-height: 1.5; } .ds-bq { align-self: flex-end; padding: 10px 18px; border-radius: 22px; background: #B7C9DD; color: #14191F; } .ds-ba { align-self: flex-start; padding: 14px 18px; border-radius: 14px; background: #2A3B55; color: #F5F7FA; box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.12); }"
+    },
+    {
+      "name": "Day Bar",
+      "kind": "nav",
+      "refersTo": "nav-day",
+      "description": "The bar once the hero has gone by: white frosted glass the page's width, 72px (64px below 1024px) (white at 88%, 18px blur), a hairline under it, the wordmark with glow-500 dots, four links and the navy pill. Over the hero it has no ground and turns to night ink with an ice pill.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-wm\" href=\"#\">Pl<svg width=\"22\" height=\"22\" viewBox=\"0 0 22 22\" aria-hidden=\"true\"><path d=\"M5 6 L16 5 L18 15 L7 17 Z\" fill=\"none\" stroke=\"#1A1F26\" stroke-width=\"1.6\" stroke-linejoin=\"round\"/><g fill=\"#3D5E7F\"><circle cx=\"5\" cy=\"6\" r=\"2\"/><circle cx=\"16\" cy=\"5\" r=\"2\"/><circle cx=\"18\" cy=\"15\" r=\"2\"/><circle cx=\"7\" cy=\"17\" r=\"2\"/></g></svg>tsights</a><span class=\"ds-links\"><a href=\"#\">Playground</a><a href=\"#\">Reports</a><a href=\"#\">Connector</a><a href=\"#\">Method</a></span><a class=\"ds-nav-go\" href=\"#\">Open the Playground</a></nav>",
+      "css": ".ds-nav { font-family: var(--th-font, 'Google Sans Flex', 'Google Sans', sans-serif); display: flex; align-items: center; gap: 32px; height: 72px; padding: 0 24px; background: rgb(255 255 255 / 0.88); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); box-shadow: 0 1px 0 #DCE2E9; color: #1A1F26; } .ds-wm { display: inline-flex; align-items: center; margin-right: auto; color: #1A1F26; font-size: 26px; font-weight: 500; line-height: 1; letter-spacing: -0.035em; text-decoration: none; } .ds-links { display: flex; gap: 30px; } .ds-links a { color: #1A1F26; font-size: 18px; text-decoration: none; } .ds-links a:hover { text-decoration: underline 1.5px; text-underline-offset: 4px; } .ds-nav-go { display: inline-flex; align-items: center; min-height: 44px; padding: 0 20px; border-radius: 999px; background: #213047; color: #F5F7FA; font-size: 18px; font-weight: 500; text-decoration: none; transition: background-color 0.15s, transform 0.15s cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav-go:hover { background: #2A3B55; } .ds-nav-go:active { transform: scale(0.97); } .ds-nav-go:focus-visible { outline: 2px solid #213047; outline-offset: 3px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Olive Window",
-    "overview": "The page is paper and ink, measured and quiet, in the manner of the data products the owner takes as his anchor (PriceLabs for type and wording) and of those that use olive and lime seriously (Sylvera's deep-green band with lime as a data series; Wise and Ramp, where lime is one sharp signal and never the ground). Beside the words, the product's own map of a real Cyprus town comes out of the paper, and every short-let on it is a point whose colour says how booked it has been this season, from a dull olive to lime, each inside a fine ink ring. That map is the page's one rich thing. Everything else gives it room: one face, one ink, an olive action, white sheets on paper, hairlines where a table or list needs them, and no ornament.\n\nThe idea, in the subject's own terms: **on this page, every listing the team reads becomes a point on the town's map, and lime is what the market looks like where it is fullest.** Lime has one meaning wherever it appears: the top of the occupancy scale, which on the panels is the side of the tipping point where a short-let out-earns a tenant.",
+    "northStar": "Cyprus at night",
+    "overview": "The page is calm, expensive and quiet, a night sky over data: a navy first screen with a soft blue glow rising behind a real Cyprus town, then bands of ice and night inset in a white page, then night again. On the night map every short-let the team reads is a light, its brightness its occupancy this season, so a town's fullest streets glow; an area a few streets wide is drawn on it in ice and answered on a dark glass card for all three markets. That map is the page's one rich thing. Everything else gives it room: thin type in two tones, no saturated colour, navy cards and pale tiles instead of borders, pills for everything you press.\n\nThe idea, in the subject's own terms: **on this page, every short-let in a Cyprus town becomes a light on its night map, brighter where it is fuller, and every plot drawn on it is answered for all three markets.** A short-let analytics site shows short-lets only and a listings site shows no occupancy; the three-market card on a hand-drawn plot of a named Cyprus street is this product's own.",
     "keyCharacteristics": [
-      "Paper ground (`#F5F4EE`), olive-black ink, an olive action; no tinted washes behind sections.",
-      "The light map of a real town, frameless, fading into the paper; the Playground's curve and the Connector's map answer sit on the same light land.",
-      "Deep olive only at the page's end: the close and the footer.",
-      "An olive-to-lime data scale, monotone in lightness, where lime is only ever data.",
-      "Google Sans at 500 for display and 400 for large figures; nothing heavier than 600.",
-      "Line icons with one lime fill inside an ink line.",
-      "Opaque glass for the surfaces (nav, search, the cards on the map, the product panels, How's listing card): 78% white, a 24px blur, a light rim; one soft shadow only on what is raised."
+      "A navy night card for the hero and another for the close, inset 12px (8px on a phone) from the white page with 20px corners.",
+      "Below the hero the grounds alternate: ice and night bands inset like the hero, white only for the products' tiles and the questions, never two white sections together (owner, 2026-10-17).",
+      "One hue of blue for the data, monotone in lightness: on night the fullest is the brightest light.",
+      "Google Sans Flex at 300 for every heading and large figure, two-tone (the statement in ink, the payoff in mist or slate blue); 400 for reading; 500 for labels and buttons; nothing bold.",
+      "Eyebrows over headings and pills for every button, field, tag and chosen option, as in the reference.",
+      "Glass only where something floats: the cards and the list over the night map, the bar once it floats over the white page."
     ],
     "rules": [
       {
-        "name": "Lime Means Data",
-        "body": "Lime marks how full a listing is, at the top of the scale, and nothing else. It is never a ground, a button, a link, a headline word or an ornament (the owner rejected \"forest + lime\" as a ground swap on 2026-10-08).",
+        "name": "Brighter Is Fuller",
+        "body": "On the night map, a listing's brightness is its occupancy and nothing else: the halos add up, the dots never do.",
         "section": "colors"
       },
       {
-        "name": "The Ring Rule",
-        "body": "On a light ground a mark of the scale always sits inside a ring of ink (`occ-ring`, or `dot-ring` for the listings outside the drawn areas): a listing's dot, the key's swatches, a lime square, an icon's fill.",
+        "name": "Night Carries Data",
+        "body": "Live figures sit on night (the hero map, the tipping point, the conversation); paper things sit on pale tiles (the report, the views, the questions). White text never sits on a pale tile.",
         "section": "colors"
       },
       {
-        "name": "Deep Olive Ends the Page",
-        "body": "Deep olive is the close and the footer and nothing else. A section never opens on it, and the page is never dark.",
+        "name": "No Saturated Accent",
+        "body": "The page has no colour outside the navy-to-ice range; emphasis is the second tone of a heading, never a coloured word.",
         "section": "colors"
       },
       {
-        "name": "Nothing Under the Words",
-        "body": "The map fades to nothing before the words' column ends, so every text token keeps its contrast against the worst pixel behind it; no listing, area or card is drawn there.",
+        "name": "The Page Ends In Night",
+        "body": "The close and the footer share one night card; nothing else after the hero is a night ground but the navy cards.",
         "section": "colors"
       },
       {
-        "name": "The Olive Works",
-        "body": "Olive is for what the visitor does and for the brand (the action, the drawn corners, the name); the scale is for what is counted. Neither does the other's job.",
-        "section": "colors"
-      },
-      {
-        "name": "The Turned Over Rule",
-        "body": "The close is the paper's words on deep olive, not a second palette; the focus ring inverts with it.",
-        "section": "colors"
-      },
-      {
-        "name": "One Face Rule",
-        "body": "Google Sans for everything; range comes from size and two weights, never a second family.",
+        "name": "Two Tones, One Face",
+        "body": "Emphasis is the second tone and the size step; never a second family, never bold.",
         "section": "typography"
       },
       {
@@ -1023,34 +1015,32 @@
         "section": "typography"
       },
       {
-        "name": "Figures Are Regular",
-        "body": "A large figure is 400 with tabular numerals; weight is for labels.",
+        "name": "Eyebrows Inform",
+        "body": "An eyebrow says what the section is for in a few words (\"Explore it yourself\", \"Written by the team\", \"In Claude\", \"Method\", \"Contact\"); it is sentence case at the fine size in the second tone, never tracked capitals.",
         "section": "typography"
       },
       {
         "name": "The Glass Rule",
-        "body": "The owner, 2026-10-14: \"bring glass back. I like opaque glassomorphism for the most parts of the website\". Professional, not consumer:\n- **Where:** the nav once scrolled (the paper at 84%), the search field and its list, the cards pinned on the map, the three product panels, How's example listing card. Everything else is solid: every button (one flat fill), the deep-olive close and footer, and anything inside a glass panel (the report's sheet and the chat bubbles take the same rim and edge on solid white: a blur inside a blurred panel only sees that panel).\n- **What:** 78% white, `blur(24px) saturate(1.4)`, a 1px light rim inside, a 1px ink edge at 12% (the search field keeps a 34% edge, which a control needs to be found). No coloured glass, no rainbow rim, no glow, no beaded buttons.\n- **Something behind it:** glass shows only where there is something to blur: the map behind the hero's cards; behind the product panels the island's own map at half strength (`.ps-panels::before`), static, which no loose text sits on. How's card lies on paper and reads as a nearly white card.\n- **Text holds:** measured against the worst pixel behind every text element on the panels (desktop and phone), every token keeps or betters its contrast on the paper (muted 7.06 → 7.42, ink 14.91 → 15.6): the glass is lighter than the paper.\n- **Cost and fallbacks:** about five blurred layers on a screen at most (nav, a panel or two, the cards); no glass in glass. Without `backdrop-filter`, or with `prefers-reduced-transparency: reduce`, every surface is its solid fill and the backdrop map is not drawn.",
+        "body": "Glass only where something floats over something that can be seen through it: the cards pinned on the night map and the list of places (night glass: night-900 at 92%, an 18px blur, a faint light rim and inner highlight), and the bar once it floats over the white page (white at 88%, an 18px blur, a hairline under it). Everything else is solid: the navy cards, the tiles, every button. Without `backdrop-filter`, or with `prefers-reduced-transparency: reduce`, each is its solid fill.",
         "section": "elevation"
       }
     ],
     "dos": [
-      "Keep the page paper; let the faded map be the rich thing.",
-      "Put lime only on data, and ring it in ink on a light ground.",
-      "Set large figures at 400 and display at 500.",
-      "Show all three markets wherever an area is summed up (\"don't mislead the customer\", owner, 2026-10-09), and say what every figure covers.",
+      "Keep live data on night and paper things on pale tiles.",
+      "Set headings and large figures at 300 in two tones.",
+      "Show all three markets wherever an area is summed up (\"don't mislead the customer\", owner, 2026-10-09), and say \"Sample data\" wherever a figure is demo data.",
       "Give each section one working thing built from real data, usable with a thumb and readable without its script."
     ],
     "donts": [
-      "Don't make lime a ground, a button, a link or a headline word.",
-      "Don't wash a section in a tint, and don't put anything but the close and the footer on deep olive.",
-      "Don't let the map, a listing, an area or a card under the words.",
-      "Don't use pills, eyebrows, monospace labels, logo tiles, coloured or beaded glass, glass inside glass, gradients as decoration or shadows at rest.",
-      "Don't count figures up, or hide content until a scroll or a script.",
-      "Don't add a second face."
+      "Don't add a saturated colour, a coloured word, or bold type.",
+      "Don't put glass where nothing floats, or a shadow on anything that neither floats nor lies raised (the map cards, the list, the open menu, the report's sheet are the only ones).",
+      "Don't let the map, a light, an area or a card under the words.",
+      "Don't use monospace labels, logo tiles, or tracked capitals.",
+      "Don't count figures up, or hide content until a scroll or a script."
     ],
     "open": [
-      "**The opening:** two further ideas were storyboarded on 2026-10-14 (the plot leaving the name to become the first area; the listings lighting from the name's side); neither is built.",
-      "**The Playground** (`/dashboard`) is not yet on G."
+      "**The Playground** (`/dashboard`) is still direction G; it follows Blue Night later.",
+      "The concept's drifting light streaks in the hero were left out (see docs/LANDING.md)."
     ]
   }
 }

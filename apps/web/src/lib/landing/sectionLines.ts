@@ -124,7 +124,7 @@ export function summaryReply(count: number, s: Pick<SelectionStats, "effOccTodat
   };
 }
 
-/** "How has it moved over the year?" The fullest and the quietest full month of the weekly series. */
+/** "Which months fill up, and which go quiet?" The fullest and the quietest full month of the weekly series. */
 export function trendReply(count: number, weekly: WeeklyPoint[]): Reply {
   if (count < MIN_LISTINGS) return { text: answer(count, null), firm: firmness(count, { noun: SHORT_LET, figure: false }), asOf: null };
   const months = monthsOf(weekly);
@@ -148,7 +148,7 @@ export function trendReply(count: number, weekly: WeeklyPoint[]): Reply {
 }
 
 /**
- * "What do places with two or more bedrooms take here?" `s` is /stats
+ * "What do 2+ bedroom short-lets take a night here?" `s` is /stats
  * filtered to two or more bedrooms; `inside` is the count the page quotes for
  * the whole area. The filtered count can only come from /stats, which in demo
  * data also counts listings the map leaves out (those in the sea). It is

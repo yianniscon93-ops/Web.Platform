@@ -51,11 +51,13 @@ async function measured(town: HeroTown, area: Drawn): Promise<{ area: TourArea; 
 }
 
 /**
- * Under the search: what the database holds, from getIsland, with each figure said for what it is. "Read daily: 3,431
- * short-lets, 1,420 long-lets and 3,184 for-sale ads seen." The for-sale count is every ad seen (expiry is not
- * tracked yet), so it says "seen". The one time the database gives is the short-let sync (sync_meta.last_run_at),
- * so it is attached to the short-lets alone: "Short-let calendars last read 14 October at 06:10." On demo data
- * there is no true time, and the line says it is demo data instead. Left out when the counts cannot be had.
+ * Under the search: what the database holds, from getIsland, with each figure said for what it is. "Backed by
+ * 14,512 short-lets, 10,140 long-lets and 29,530 for-sale ads." (plan 3, owner 2026-10-17: the headline's "backed
+ * by data", literally true here). The for-sale count is every ad seen (expiry is not tracked yet), so it says ads,
+ * not homes on the market. The one time the database gives is the short-let sync (sync_meta.last_run_at), so it is
+ * attached to the short-lets alone and says no cadence: "Short-let calendars last read 14 October at 06:10." (the
+ * cadence is in "How it works" and the questions; nothing is read daily, so no line says so). On demo data there is
+ * no true time, and the line says it is sample data instead. Left out when the counts cannot be had.
  */
 function Fresh({ island }: { island: Island }) {
   const { stats, rentals, invest, summary } = island;
@@ -64,9 +66,9 @@ function Fresh({ island }: { island: Island }) {
   const when = demo ? null : readOn(summary?.lastRunAt);
   return (
     <p className="lh-fresh m-0">
-      {demo ? "Demo data: " : "Read daily: "}
+      {demo ? "Sample data: " : "Backed by "}
       <b>{int(stats.listingCount)}</b> short-&#8288;lets, <b>{int(rentals.supply)}</b> long-&#8288;lets and{" "}
-      <b>{int(invest.supply)}</b> for-sale ads seen.
+      <b>{int(invest.supply)}</b> for-sale ads.
       {when && <> Short-&#8288;let calendars last read {when}.</>}
     </p>
   );
@@ -98,29 +100,39 @@ export default async function LandingHero() {
   }));
 
   return (
-    <section className="th-landing lh">
+    // The hero is a card of night inset in the page (Blue Night, owner 2026-10-17): its roles are the night's.
+    <section className="th-landing lh bn-night">
+      {/* The night itself: a soft blue glow rising behind the town, and a faint grain. Nothing in it moves but the glow's
+          slow breath, and that not with reduced motion. */}
+      <div className="lh-sky" aria-hidden="true">
+        <span className="bn-glow" />
+      </div>
       <div className="lh-in">
         <div className="lh-copy">
-          {/* The name is in the headline: "Plot" and "sights" wear the mark's colour, so Plotsights is read out of the
-              sentence in order. It is read out as plain words. The owner chose this wording on 2026-10-13, of four
-              put to him after "plot an area and get insights" was found to undersell the work: "Plot" is now what
-              the visitor does with a decision. Each of its three lines is set as a line (landing-hero.css sizes
-              the type so the longest fits its column). */}
-          <h1 className="th-h1 m-0" aria-label="Plot your next move in Cyprus property. Get the insights.">
+          {/* The reference's small label over the headline (owner, 2026-10-17: eyebrows on). The category, in the
+              owner's word ("intelligent"): what Plotsights is, before what it lets you do. */}
+          <p className="bn-eb lh-eb m-0">Cyprus property intelligence</p>
+          {/* The owner's headline (plan 3, option A, 2026-10-17), three thin lines. The name is read out of it: "Plot"
+              and "sights" (of "Insights") are in the night's ink and every other word in mist, so Plotsights is spelt
+              in order as the opening has just struck it ("make sure the plot and sights strike differently";
+              direction G's device, set in Blue Night's two tones instead of a colour). Each line is set as a line, and
+              read out as one plain sentence. */}
+          <h1 className="th-h1 m-0" aria-label="Plot your next move in Cyprus property. Insights backed by data.">
             <span className="lh-line">
               <span className="lh-name">Plot</span> your next move
             </span>{" "}
             <span className="lh-line">in Cyprus property.</span>{" "}
             <span className="lh-line">
-              Get the in<span className="lh-name">sights</span>.
+              In<span className="lh-name">sights</span> backed by data.
             </span>
           </h1>
-          {/* Two sentences with two jobs, set as two tiers and not as one paragraph with words picked out of it: what
-              is here (all four kinds of listing, the owner's "str ltr home sales and PLOTS", one view, every day),
-              in ink; then what it is for, quieter, a size down. */}
+          {/* Two sentences with two jobs, set as two tiers: what is tracked and modelled (all four kinds of listing,
+              the owner's "str ltr home sales and PLOTS"), in ink; then what it is for, in mist. The modelled part is
+              what a street earns, rents for and sells for, which plots are not claimed to have. */}
           <p className="th-lede m-0">
             <span className="lh-what">
-              Short-&#8288;lets, long-&#8288;lets, homes and plots for sale: the whole market in one view, updated every day.
+              We track short-&#8288;lets, long-&#8288;lets, homes and plots for&nbsp;sale across Cyprus, and model what any
+              street earns, rents for and sells for.
             </span>{" "}
             <span className="lh-for">Decide where to buy, what to charge and what to advise.</span>
           </p>

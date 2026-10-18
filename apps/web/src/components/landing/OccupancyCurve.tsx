@@ -134,15 +134,19 @@ export default function OccupancyCurve({
         ))}
         <path className="pt-curve-base" d={`M${INSET} ${BASE}H${W - INSET}`} />
         <path className="pt-curve-fill" d={`${path}L${X(100)} ${BASE}L${X(0)} ${BASE}Z`} />
-        <path className="pt-curve-line" d={path} />
+        {/* pathLength 1, so the stylesheet can draw the line as the card is scrolled in (landing-motion.css). */}
+        <path className="pt-curve-line" d={path} pathLength={1} />
         {reachable && (
           <g className="pt-curve-tip">
             <path d={`M${X(tip)} ${TOP - 8}V${BASE}`} />
             <circle cx={X(tip)} cy={Y(pastTip)} r="5" />
-            {/* The label sits right of the line, or left of it where the plot runs out of room. */}
-            <text x={X(tip) > W - 150 ? X(tip) - 10 : X(tip) + 10} y={Y(pastTip) - 10} textAnchor={X(tip) > W - 150 ? "end" : "start"}>
-              Tipping point
-            </text>
+            {/* The label sits right of the line, or left of it where the plot runs out of room; on a narrow plot it is
+                left out, where it would lie on "Yours" (the scale above the curve names the tipping point). */}
+            {W >= 420 && (
+              <text x={X(tip) > W - 150 ? X(tip) - 10 : X(tip) + 10} y={Y(pastTip) - 10} textAnchor={X(tip) > W - 150 ? "end" : "start"}>
+                Tipping point
+              </text>
+            )}
           </g>
         )}
         <g className="pt-curve-you">
@@ -160,7 +164,7 @@ export default function OccupancyCurve({
       </svg>
       <p className="pt-curve-note">
         Each of the {curve.n.toLocaleString("en-GB")} short-&#8288;lets seen this season, by the share of its nights booked so far
-        {demo ? " (demo data)" : ""}.
+        {demo ? " (sample data)" : ""}.
       </p>
     </figure>
   );

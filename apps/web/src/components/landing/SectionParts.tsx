@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState, type RefObject } from "react";
+import type { RefObject } from "react";
 import { READING, UNREACHABLE } from "@/lib/landing/areaLines";
 import { QUESTION_EVENT, QUESTION_KEY } from "@/lib/landing/compare";
 
@@ -39,7 +39,7 @@ export function Covers({
   if (!demo && !scope && !children) return null;
   return (
     <p className="ps-covers">
-      {demo && <span className="ps-tag">Demo data</span>}
+      {demo && <span className="ps-tag">Sample data</span>}
       {scope && <span>{scope}</span>}
       {children}
     </p>
@@ -58,115 +58,95 @@ export function Standin({ children, busy }: { children: React.ReactNode; busy?: 
 /** True when the visitor has asked for less motion: then nothing on the cards plays. */
 export const stillPreferred = () => typeof window !== "undefined" && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
 
-// How long a card's arrival is "playing": while it is, its first-time moments run at their full length.
-const ARRIVING_MS = 1800;
-
 /**
- * A card's arrival: `arrived` turns true, for good, the first time 40% of the card is in view (or half the
- * window's height of it, for a card much taller than the window), and `arriving` is true for the short while
- * after that in which the card's contents play their one authored moment. Everything on the card is in its
- * final state without it; under reduced motion `arriving` never turns true.
- */
-export function useArrival(ref: RefObject<Element | null>): { arrived: boolean; arriving: boolean } {
-  const [arrived, setArrived] = useState(false);
-  const [arriving, setArriving] = useState(false);
-  useEffect(() => {
-    const el = ref.current;
-    if (!el || arrived) return;
-    if (typeof IntersectionObserver === "undefined") {
-      setArrived(true);
-      return;
-    }
-    const io = new IntersectionObserver(
-      ([entry]) => {
-        const tall = entry.rootBounds ? entry.intersectionRect.height >= entry.rootBounds.height * 0.5 : false;
-        if (entry.intersectionRatio >= 0.4 || tall) setArrived(true);
-      },
-      { threshold: [0.1, 0.2, 0.3, 0.4, 0.5] }
-    );
-    io.observe(el);
-    return () => io.disconnect();
-  }, [ref, arrived]);
-  useEffect(() => {
-    if (!arrived || stillPreferred()) return;
-    setArriving(true);
-    const t = setTimeout(() => setArriving(false), ARRIVING_MS);
-    return () => clearTimeout(t);
-  }, [arrived]);
-  return { arrived, arriving };
-}
-
-/**
- * One product's section: a panel on its own ground, with the product's name as its heading (its icon beside it),
- * one claim under the name, a sentence or two, the product's one action and, at most, one line of small print.
- * Beside them, the one working thing that shows the product (`object`), and for the Connector the questions that
- * drive it (`lead`). The panels follow one another; none covers another (owner, 2026-10-14).
+ * One product's section (Blue Night, plan 3): the product's icon, a small label over its heading (eyebrows on), and
+ * the heading itself in two tones, the product's name in ink and its claim, what it does for the visitor, in the
+ * second tone ("Playground. Street-level analytics for all three markets."); a sentence or two, its one action and,
+ * at most, one line of small print. Beside or under them the one working thing that shows the product (`object`), on
+ * a navy card or a pale tile, and for the Connector the questions that drive it (`lead`). `aside` is a pale tile
+ * under the words. The section sits in its band (ProductSections); none covers another (owner, 2026-10-14).
  *
- * `layout` sets how the panel is composed from 1024px, so neighbours never share a composition: "split" (the words,
- * then the object to their right), "mirror" (the object first, the words to its right), "stack" (the words across
- * the top, the object and the lead under them). Below 1024px every panel is one column: the words, the object, the
- * lead, and the action again at the foot (the one beside the words shows from 1024px only). `arrived` and `arriving` are its arrival (useArrival), which its contents key their one moment on.
+ * `layout` sets how the section is composed from 1024px, so neighbours never share a composition: "chapter" (the
+ * heading on the left and the words on the right, then the object the full width under them: Linear's chapter),
+ * "mirror" (the object first, the words to its right), "stack" (the words across the top, the object and the lead
+ * under them). Below 1024px every section is one column: the words with their action, then the object, then the lead.
+ *
+ * Its parts arrive once as they come into view and the section plays its one moment when it is a third in view
+ * (`data-rv`, `data-moment`: Reveal.tsx and app/landing-motion.css); everything is in its final state without that.
  */
 export function Card({
   cardRef,
   id,
   layout,
+  eyebrow,
   name,
   icon,
   claim,
   body,
   action,
   note,
+  aside,
   lead,
   object,
-  arrived,
-  arriving,
 }: {
-  cardRef: RefObject<HTMLElement | null>;
+  cardRef?: RefObject<HTMLElement | null>;
   id: string;
-  layout: "split" | "mirror" | "stack";
+  layout: "chapter" | "mirror" | "stack";
+  /** The small label over the heading: how the visitor uses this product. */
+  eyebrow: string;
   name: string;
   icon: React.ReactNode;
-  /** What the product does for the visitor, in one sentence under its name. */
+  /** What the product does for the visitor, in one sentence: the heading's second tone. */
   claim: string;
   body: React.ReactNode;
   action: React.ReactNode;
-  /** The panel's one line of small print, where it needs one. */
+  /** The section's one line of small print, where it needs one. */
   note?: React.ReactNode;
+  aside?: React.ReactNode;
   lead?: React.ReactNode;
   object: React.ReactNode;
-  arrived: boolean;
-  arriving: boolean;
 }) {
+  const at = (i: number) => ({ "--i": i }) as React.CSSProperties;
   return (
-    <section
-      ref={cardRef}
-      id={id}
-      className="ps-card"
-      data-card={id}
-      data-layout={layout}
-      data-arrived={arrived ? "" : undefined}
-      data-arriving={arriving ? "" : undefined}
-      aria-labelledby={`${id}-name`}
-    >
+    <section ref={cardRef} id={id} className="ps-card" data-card={id} data-layout={layout} data-moment="" aria-labelledby={`${id}-name`}>
       <div className="ps-card-text">
         <div className="ps-card-intro">
-          <h2 id={`${id}-name`} className="ps-card-name">
-            <span className="ps-card-icon">{icon}</span>
-            {name}
+          <span className="ps-card-icon" data-rv="eb">
+            {icon}
+          </span>
+          <p className="bn-eb" data-rv="eb" style={at(1)}>
+            {eyebrow}
+          </p>
+          <h2 id={`${id}-name`} className="ps-card-name" data-rv="" style={at(1)}>
+            {name}.{" "}
+            <span className="ps-pay" data-rv="pay" style={at(3)}>
+              {claim}
+            </span>
           </h2>
-          <p className="ps-claim">{claim}</p>
         </div>
         <div className="ps-card-say">
-          <div className="ps-lede">{body}</div>
-          <div className="ps-card-action">{action}</div>
-          {note && <p className="ps-under">{note}</p>}
+          <div className="ps-lede" data-rv="" style={at(2)}>
+            {body}
+          </div>
+          <div className="ps-card-action" data-rv="" style={at(3)}>
+            {action}
+          </div>
+          {note && (
+            <p className="ps-under" data-rv="" style={at(4)}>
+              {note}
+            </p>
+          )}
+          {aside}
         </div>
       </div>
-      <div className="ps-card-object">{object}</div>
-      {lead && <div className="ps-card-lead">{lead}</div>}
-      {/* Below 1024px the action comes after the working thing, so the visitor sees it before being asked to act. */}
-      <div className="ps-card-end">{action}</div>
+      <div className="ps-card-object" data-rv="frame" style={at(2)}>
+        {object}
+      </div>
+      {lead && (
+        <div className="ps-card-lead" data-rv="frame" style={at(3)}>
+          {lead}
+        </div>
+      )}
     </section>
   );
 }
