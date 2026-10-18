@@ -65,6 +65,22 @@ No saturated accent at all — the "accent" is the muted blue-grey `mist-300`.
 - Numbered "3-phase" approach section with a dark feature card + cinematic
   warm-light photo for contrast.
 
+## Decisions (2026-10-17)
+
+Explored as a standalone concept, not built:
+https://claude.ai/artifact/YLoKv3HGBY5ktWzkjNnfZU. The owner's picks:
+
+- **Google Sans** (the Flex cut, for light 300; Geist has no Greek).
+- **Eyebrow labels and pill buttons on**, as in the reference.
+- **Town-tour hero**: words left; a night map of each town with three drawn
+  areas and short-let / long-let / for-sale cards.
+- **The Playground follows later**, not now.
+
+Built on the landing page the same day (see DESIGN.md, docs/LANDING.md). It
+departs from the concept in two ways: the drifting light streaks were dropped,
+and the long-let and for-sale rows show only on live data. The Playground
+is still on direction G.
+
 ## Plotsights angle (to explore)
 
 Hero visual could be Cyprus at night — the coastline in dots, listings as

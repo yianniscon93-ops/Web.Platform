@@ -33,15 +33,18 @@ build to production quality and you prove it with screenshots and checks.
 Precedence, highest first:
 
 1. **The owner's recorded decisions** — the brief, memory, `DESIGN.md`,
-   `PRODUCT.md`. Since 2026-10-14 the landing follows direction G (paper
-   ground, olive ink and action, olive-to-lime data scale, lime only as data,
-   never as ground or decoration) on the normal light map, frameless and
-   fading into the paper, with frosted, mostly opaque glass on most surfaces
-   (buttons stay solid); `DESIGN.md` is the authority. Still pinned:
-   Google Sans, the opening (the name arrives, then rises to the nav), the
+   `PRODUCT.md`. Since 2026-10-17 the landing follows Blue Night
+   (`docs/design/ideas/blue-night/`, its Decisions section): a navy night
+   hero with the town tour on a night map, a white body with navy cards and
+   ice/cloud tiles, no saturated accent, Google Sans Flex, eyebrow labels and
+   pill buttons allowed, glass only where something floats over the map;
+   `DESIGN.md` is the authority. The Playground and dashboard still use
+   direction G's `:root` roles and move to Blue Night later, only when the
+   brief says so. Pinned throughout: Google
+   Sans, the opening (the name arrives, then rises to the nav), the
    search-first hero, the drawn plot, the 15px landing / 14px dashboard text
-   floors, and no pills, eyebrows, mono labels or logo tiles. Every skill
-   agrees that the brief wins; hold them to it.
+   floors, and no mono labels or logo tiles. Every skill agrees that the
+   brief wins; hold them to it.
 2. **Impeccable** — the project's own design system and process. Its context
    loader, its mode (Persuade for the landing page, Operate for the Playground
    and dashboard), `reference/craft-floor.md` before any UI edit, its bounded
