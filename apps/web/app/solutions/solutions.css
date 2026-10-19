@@ -1,0 +1,270 @@
+/* ── Solutions (app/solutions/page.tsx): the four solutions in depth, Blue Night ─ */
+/* The landing's world, extended (DESIGN.md is the authority): a night card for the first screen and another for the
+   close, inset in the white page; between them bands of ice and night that alternate (the roles on ice, the
+   Playground on night, Reports on ice, the Connector on night, Custom solutions on ice), and the data on white, the one
+   white section. The page's own bar of the four follows the reader under the site's bar. Every colour is a role
+   (--th-*, set by `.bn` and `.bn-night` in globals.css) or the night palette by name (--bn-*); no new colour. Headings
+   and large type at 300 in two tones; reading at 400; labels at 500; nothing under 15px. The landing's working things
+   bring their own styles (landing-sections.css); their one moment each, as they arrive, is at the foot of this file. */
+
+/* The content column: the page's left edge, inside a band or a card as on the landing. */
+.so-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut) - 2 * var(--lh-m, 8px)); margin: 0 auto; padding: 0 16px; }
+/* A hairline in a list or a table, a step darker on ice (as "How it works" has it). */
+.so-hero, .so-data, .bn-band-night.so-band { --so-rule: var(--th-line); }
+.bn-band-ice.so-band { --so-rule: rgb(33 48 71 / 0.18); }
+
+/* ── The first screen ── */
+.so-hero {
+  --lh-m: 8px;
+  position: relative;
+  margin: var(--lh-m) var(--lh-m) 0;
+  overflow: hidden;
+  border-radius: var(--bn-r-card);
+  background: linear-gradient(180deg, var(--bn-night-950) 0%, var(--bn-night-900) 100%); /* taste-skill-ignore: Blue Night's night, pinned by the owner */
+  color: var(--th-ink);
+  isolation: isolate;
+}
+/* The night's grain, as on the hero and the close. */
+.so-hero::after {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  opacity: 0.06;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .9 0'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  pointer-events: none;
+  content: "";
+}
+/* The glow rises behind the four, on the right. */
+.so-hero > .bn-glow { z-index: 0; bottom: -70%; left: 68%; width: max(110%, 900px); }
+.so-hero-in { position: relative; z-index: 1; display: grid; row-gap: 40px; padding-top: 112px; padding-bottom: 28px; }
+.so-hero-words .bn-eb { margin-bottom: 14px; }
+.so-h1 { font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem); font-weight: var(--th-display-weight); line-height: 1.08; letter-spacing: -0.03em; text-wrap: balance; }
+.so-h1 .ps-pay, .so-h .ps-pay { color: var(--th-pay); }
+.so-hero-lede { max-width: 34rem; margin-top: 22px; color: var(--th-muted); font-size: var(--th-text-lead); font-weight: 400; line-height: 1.5; text-wrap: pretty; }
+.so-hero-lede b { color: var(--th-ink); font-weight: 500; }
+/* The four, in the index size, each said as what you do with it: a contents list, its rules hairlines. */
+.so-index { margin: 0; padding: 0; border-bottom: 1px solid var(--so-rule); list-style: none; } /* taste-skill-ignore: a contents list's rules (owner: hairlines allowed, DESIGN.md) */
+.so-index li { border-top: 1px solid var(--so-rule); } /* taste-skill-ignore: a contents list's rules (owner: hairlines allowed, DESIGN.md) */
+.so-index a { display: grid; grid-template-columns: minmax(0, 1fr) auto; column-gap: 16px; row-gap: 2px; align-items: center; padding: 14px 0 16px; color: var(--th-ink); }
+.so-index-name { font-size: clamp(1.75rem, 1.3rem + 1.1vw, 2.375rem); font-weight: var(--th-display-weight); line-height: 1.12; letter-spacing: -0.025em; }
+.so-index-verb { grid-column: 1; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.45; }
+.so-index svg { grid-row: 1 / span 2; grid-column: 2; color: var(--th-a); transition: transform 0.25s var(--th-ease); }
+.so-index a:hover svg { transform: translateY(3px); }
+.bn .so-index a:focus-visible { outline-offset: 2px; border-radius: 4px; }
+/* What all four rest on, at the card's foot: the database's own counts (or "Sample data" on demo data). */
+.so-fresh { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.so-fresh b { color: var(--th-ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+
+/* ── The page's own bar ── */
+/* Sticky from under the hero to the data's foot; it lets go before the close. At the window's top until the site's
+   bar is fixed (its script has run; without script it scrolls away), then under it. Solid white at rest, where it
+   lies on the page; the day's glass once it floats over the bands (`data-stuck`, SolutionsBar.tsx). */
+.so-body { position: relative; }
+.so-bar-mark { height: 1px; margin-bottom: -1px; } /* taste-skill-ignore: an invisible marker the bar watches, not a rule */
+/* Never the browser's scroll anchor: a stuck bar does not move when the Playground's curve arrives above a band linked
+   to, so anchoring on it would let that band slide down out of place. */
+.so-bar { position: sticky; top: 0; z-index: 40; overflow-anchor: none; background: var(--bn-paper); transition: background-color 0.3s, box-shadow 0.3s; }
+.bn:has(.bn-nav[data-ready]) .so-bar { top: 64px; }
+.so-bar[data-stuck] {
+  background: rgb(255 255 255 / 0.88);
+  -webkit-backdrop-filter: blur(18px) saturate(1.3); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  backdrop-filter: blur(18px) saturate(1.3); /* taste-skill-ignore: glass only where something floats (Blue Night) */
+  box-shadow: 0 1px 0 var(--th-line); /* taste-skill-ignore: it floats over the page (the site's bar has the same edge) */
+}
+.so-bar-in { max-width: 1440px; margin: 0 auto; padding: 6px 0; }
+.so-bar ul {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0 24px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scrollbar-width: none;
+  list-style: none;
+}
+.so-bar ul::-webkit-scrollbar { display: none; }
+/* Where the row runs past the window (a phone), its far edge fades, so it reads as a row that goes on. */
+@media (max-width: 767px) { .so-bar ul { mask-image: linear-gradient(to right, var(--th-ink) calc(100% - 40px), transparent); } } /* taste-skill-ignore: the row's fade at its edge, as the Connector's chips have */
+.so-bar li { flex: none; }
+.so-bar a {
+  display: inline-flex;
+  align-items: center;
+  min-height: 44px;
+  padding: 0 16px;
+  border-radius: var(--bn-r-pill);
+  color: var(--th-muted);
+  font-size: var(--th-text-small);
+  font-weight: 400;
+  white-space: nowrap;
+  transition: background-color 0.2s, color 0.2s;
+}
+.so-bar a:hover { background: var(--th-tint); color: var(--th-ink); }
+/* The band being read: the chosen option, ice under ink (a pill, as every chosen option is). */
+.so-bar a[aria-current] { background: var(--bn-ice-tile); color: var(--th-ink); }
+.bn .so-bar a:focus-visible { outline-offset: -2px; }
+/* The landing's bar names this page as the one open. */
+.bn-nav-links a[aria-current="page"] { text-decoration: underline 1.5px; text-underline-offset: 8px; }
+.bn-nav-sheet a[aria-current="page"] { font-weight: 500; }
+
+/* ── The bands ── */
+/* The bands here are the landing's (.bn-band), a step shorter, as its products and towns are. Each lands just under the
+   two bars when linked to. */
+.bn-band.so-band { padding: 64px 0; scroll-margin-top: 128px; }
+.so-head { display: grid; row-gap: 18px; }
+.so-head .bn-eb, .so-words .bn-eb { margin-bottom: 14px; }
+.so-h { max-width: 18em; font-size: var(--th-heading); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.so-say { max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+
+/* The three roles: three columns of words under a hairline each, two ways down to the solutions that fit. */
+.so-role-grid { display: grid; row-gap: 28px; margin: 32px 0 0; padding: 0; list-style: none; }
+.so-role { display: grid; align-content: start; justify-items: start; row-gap: 8px; padding-top: 18px; border-top: 1px solid var(--so-rule); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.so-role h3 { font-size: 20px; font-weight: 400; line-height: 26px; letter-spacing: -0.01em; }
+.so-role-job { color: var(--th-pay); font-size: var(--th-text-small); line-height: 1.45; }
+.so-role-why { max-width: 32rem; margin-top: 4px; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.55; text-wrap: pretty; }
+.so-role-start { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-top: 10px; color: var(--th-pay); font-size: var(--th-text-fine); line-height: 22px; }
+.so-role-start > span { margin-right: 4px; }
+/* A way down the page to a solution: an outlined pill, its arrow pointing to where it goes. */
+.so-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--bn-r-pill);
+  box-shadow: inset 0 0 0 1px rgb(33 48 71 / 0.4); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+  color: var(--th-ink);
+  font-size: var(--th-text-fine);
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background-color 0.2s, box-shadow 0.2s;
+}
+.so-chip:hover { background: rgb(255 255 255 / 0.55); box-shadow: inset 0 0 0 1px rgb(33 48 71 / 0.6); } /* taste-skill-ignore: an outlined pill (Blue Night chrome) */
+.so-chip svg { transition: transform 0.2s var(--th-ease); }
+.so-chip:hover svg { transform: translateY(2px); }
+
+/* One solution: its words, then what is inside; beside them its working thing, then the questions it answers. Below
+   1024px one column in reading order (the columns step aside, `display: contents`, and `order` sets the four). */
+.so-sol-grid { display: grid; row-gap: 40px; }
+.so-col { display: contents; }
+.so-words { order: 1; }
+.so-obj { order: 2; }
+.so-inside { order: 3; }
+.so-asks { order: 4; }
+.so-words { display: grid; align-content: start; justify-items: start; }
+.so-sol .so-head { margin-bottom: 32px; }
+/* The claim on its own line, so a heading breaks where its tone does. */
+@media (min-width: 641px) { .so-h .ps-pay { display: block; } }
+.so-lede { display: grid; row-gap: 12px; max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+.so-act { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; margin-top: 26px; }
+.so-note { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.so-who { max-width: 30rem; margin-top: 16px; color: var(--th-pay); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.so-obj { min-width: 0; }
+.so-cap { margin-top: 12px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+/* What is inside, as a data sheet's rows (the feature's name in ink at 500, what it does after it); the questions a
+   step up in size, as people put them. */
+.so-spec-h { margin-bottom: 8px; color: var(--th-pay); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; text-align: left; }
+.so-spec ul { margin: 0; padding: 0; list-style: none; }
+.so-spec li { padding: 12px 0; border-top: 1px solid var(--so-rule); text-wrap: pretty; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.so-inside li { color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; }
+.so-inside b { color: var(--th-ink); font-weight: 500; }
+.so-asks li { color: var(--th-ink); font-size: clamp(1.125rem, 1.05rem + 0.3vw, 1.25rem); font-weight: 400; line-height: 1.4; letter-spacing: -0.005em; }
+.so-asks q { quotes: "\201C" "\201D"; }
+.so-asks q::before { margin-left: -0.42em; }
+
+/* ── The data: on white ── */
+.so-data { --lh-m: 0px; padding: 88px 0 72px; scroll-margin-top: 128px; color: var(--th-ink); }
+.so-data-grid { display: grid; row-gap: 32px; margin-top: 36px; }
+/* The island at night, every short-let a light (the landing's own picture and lights), on a navy card. */
+/* The picture fills the card to its corners: the card is the land's night (the file paints the sea a step darker), the island a step closer than its file. */
+.so-isl-card { position: relative; margin: 0; overflow: hidden; border-radius: var(--bn-r-tile); background: var(--th-map-land); color: var(--th-ink); }
+.so-isl { position: relative; width: 100%; aspect-ratio: 4 / 3; overflow: hidden; }
+.so-isl-zoom { position: absolute; top: 50%; left: 50%; width: 128%; aspect-ratio: 4 / 3; transform: translate(-52%, -47%); }
+.so-isl img, .so-isl canvas { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.so-isl-card figcaption { display: flex; flex-wrap: wrap; align-items: center; gap: 8px 12px; padding: 4px 18px 16px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.so-data-side { display: grid; row-gap: 36px; align-content: start; }
+/* What we read and how often: a real table, hairline rows. */
+.so-table { width: 100%; border-collapse: collapse; font-size: var(--th-text-small); line-height: 1.4; text-align: left; }
+.so-table caption { caption-side: top; }
+.so-table th, .so-table td { padding: 11px 12px 11px 0; border-bottom: 1px solid var(--so-rule); vertical-align: baseline; } /* taste-skill-ignore: a real table's rules */
+.so-table thead th { padding-top: 0; color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; }
+.so-table tbody th { font-weight: 500; }
+.so-table td { color: var(--th-muted); }
+.so-table td:nth-child(3) { color: var(--th-ink); }
+.so-models ul { margin: 0; padding: 0; list-style: none; }
+.so-models li { padding: 12px 0; border-top: 1px solid var(--so-rule); color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.so-models b { color: var(--th-ink); font-weight: 500; }
+.so-limit { margin-top: 14px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+
+@media (min-width: 641px) {
+  .so-in { padding: 0 calc(var(--bn-gut) - var(--lh-m, 8px)); }
+  .so-bar ul { padding: 0 var(--bn-gut); }
+  .so-hero-in { padding-top: 128px; padding-bottom: 32px; }
+  .so-role-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); column-gap: 28px; }
+  .bn-band.so-band { padding: 80px 0; }
+  .so-data { padding: 112px 0 96px; }
+}
+@media (min-width: 1024px) {
+  .so-hero { --lh-m: 12px; }
+  .so-hero-in { grid-template-columns: minmax(0, 6fr) minmax(0, 6fr); column-gap: 64px; align-items: end; padding-top: 152px; padding-bottom: 36px; }
+  .so-fresh { grid-column: 1 / -1; }
+  .bn:has(.bn-nav[data-ready]) .so-bar { top: 72px; }
+  .bn-band.so-band { padding: 96px 0; scroll-margin-top: 136px; }
+  .so-data { scroll-margin-top: 136px; }
+  .so-role-grid { column-gap: 48px; margin-top: 40px; }
+  .so-sol-grid { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 56px; align-items: start; }
+  .so-col { display: grid; row-gap: 52px; align-content: start; }
+  .so-head-split { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 64px; align-items: end; }
+  .so-sol .so-head { margin-bottom: 44px; }
+  .so-data { padding: 128px 0 112px; }
+  .so-data-grid { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 56px; align-items: start; margin-top: 44px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .so-sol-grid { column-gap: 40px; }
+}
+
+/* ── Each working thing's one moment, as it arrives (Reveal.tsx arms `.so-obj[data-moment]`) ── */
+/* The landing plays these on its products' stage (landing-motion.css, keyed to its own `.pd-obj`); here they play once
+   as each band's working thing comes into view. Only what is waiting below the window is held back, never without
+   script, with reduced motion or in print. */
+@media screen and (prefers-reduced-motion: no-preference) {
+  /* The Playground: the tipping point's mark rises out of the scale; every short-let's curve draws itself. */
+  .so-obj[data-mwait]:where(:not(:focus-within)) :is(.pt-mark-tip, .pt-mark-today i) { opacity: 0; }
+  .so-obj[data-arriving] .pt-mark-tip { transform-origin: 0 100%; animation: mt-rise-y 0.7s var(--rv-ease) 0.5s backwards; }
+  .so-obj[data-arriving] .pt-mark-today i { animation: mt-pop 0.5s var(--rv-ease) 0.8s backwards; }
+  .so-obj[data-mwait]:where(:not(:focus-within)) .pt-curve-line { stroke-dasharray: 1; stroke-dashoffset: 1; }
+  .so-obj[data-mwait]:where(:not(:focus-within)) :is(.pt-curve-tip, .pt-curve-you) { opacity: 0; }
+  .so-obj[data-arriving] .pt-curve-line { animation: mt-draw 1.6s var(--rv-fade) 0.4s both; }
+  .so-obj[data-arriving] :is(.pt-curve-tip, .pt-curve-you) { animation: mt-fade 0.5s var(--rv-fade) 1.6s backwards; }
+  /* A report: the page laid down, its rail filling to the section showing, its months growing. */
+  .so-obj[data-mwait]:where(:not(:focus-within)) .ps-sheet { opacity: 0; transform: translateY(18px) rotate(-1deg); transition: none; }
+  .so-obj[data-mwait]:where(:not(:focus-within)) .ps-rail button::before { background: var(--th-line); }
+  .so-obj[data-arriving] .ps-rail li:nth-child(1) button::before { transition-delay: 0.8s; }
+  .so-obj[data-arriving] .ps-rail li:nth-child(2) button::before { transition-delay: 0.94s; }
+  .so-obj[data-arriving] .ps-rail li:nth-child(3) button::before { transition-delay: 1.08s; }
+  .so-obj[data-mwait]:where(:not(:focus-within)) .ps-bar i { transform: scaleY(0); }
+  .so-obj[data-on] .ps-bar i { transform-origin: 50% 100%; animation: mt-grow 0.7s var(--rv-ease) backwards; }
+  .so-obj[data-arriving] .ps-bar:nth-child(1) i { animation-delay: 0.7s; }
+  .so-obj[data-arriving] .ps-bar:nth-child(2) i { animation-delay: 0.78s; }
+  .so-obj[data-arriving] .ps-bar:nth-child(3) i { animation-delay: 0.86s; }
+  .so-obj[data-arriving] .ps-bar:nth-child(4) i { animation-delay: 0.94s; }
+  .so-obj[data-arriving] .ps-bar:nth-child(5) i { animation-delay: 1.02s; }
+  .so-obj[data-arriving] .ps-bar:nth-child(n + 6) i { animation-delay: 1.1s; }
+  /* The Connector: its first question is sent, the steps are ticked, the answer streams in. */
+  .so-obj[data-mwait]:where(:not(:focus-within)) .ps-exchange[data-first] :is(.ps-bubble-q, .ps-steps-h, .ps-steps li, .ps-bubble-a, .ps-firm, .ps-meta, .ps-stream > span) { opacity: 0; }
+  .so-obj[data-arriving] .ps-exchange[data-first] .ps-bubble-q { animation: mt-send 0.6s var(--rv-ease) 0.35s backwards; }
+  .so-obj[data-arriving] .ps-exchange[data-first] .ps-steps-h { animation: mt-fade 0.4s var(--rv-fade) 0.8s backwards; }
+  .so-obj[data-arriving] .ps-exchange[data-first] .ps-steps li { animation: mt-chip 0.45s var(--rv-ease) backwards; animation-delay: calc(var(--s, 0) * 280ms + 0.95s); }
+  .so-obj[data-arriving] .ps-exchange[data-first] .ps-bubble-a { animation: mt-arrive 0.5s var(--rv-ease) backwards; animation-delay: calc(var(--steps, 3) * 280ms + 1.05s); }
+  .so-obj[data-arriving] .ps-exchange[data-first] .ps-stream > span { animation: mt-fade 0.32s ease-out backwards; animation-delay: calc(var(--w) * 26ms + var(--steps, 3) * 280ms + 1.2s); }
+  .so-obj[data-arriving] .ps-exchange[data-first] :is(.ps-firm, .ps-meta) { animation: mt-fade 0.45s var(--rv-fade) backwards; animation-delay: calc(var(--words, 0) * 26ms + var(--steps, 3) * 280ms + 1.4s); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .so-index svg, .so-bar, .so-bar a, .so-chip, .so-chip svg { transition: none; }
+}
+@media print {
+  .so-bar { position: static; }
+}
+@media (forced-colors: active) {
+  .so-bar a[aria-current] { outline: 2px solid CanvasText; }
+}
