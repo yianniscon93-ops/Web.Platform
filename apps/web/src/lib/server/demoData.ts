@@ -386,6 +386,8 @@ export const demo = {
   listing: (id: string): ListingDetail | null => getStore().byId.get(id) ?? null,
   stats: (f: Filters, polygon: PolygonCoords | null): SelectionStats =>
     aggregate(select(f, polygon)),
+  /** Every demo listing's bookings added up: the demo stand-in for booking_stays' row count (seeded, so fixed). */
+  bookings: (): number => getStore().listings.reduce((n, l) => n + (l.totalBookings ?? 0), 0),
   pricing: (f: Filters, polygon: PolygonCoords | null): PricingData =>
     pricingFor(select(f, polygon)),
 };

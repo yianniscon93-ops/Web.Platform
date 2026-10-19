@@ -1,12 +1,10 @@
 "use client";
 
 import { useId, useState } from "react";
-import { ArrowRight } from "lucide-react";
 import type { HeroArea } from "@/lib/landing/areaContext";
 import { euro, pct, tippingBasis } from "@/lib/landing/sectionLines";
 import OccupancyCurve from "./OccupancyCurve";
-import { PlaygroundIcon } from "./ProductIcons";
-import { Card, NO_FIGURES, READING, Standin, UNREACHABLE } from "./SectionParts";
+import { NO_FIGURES, READING, Standin, UNREACHABLE } from "./SectionParts";
 
 /**
  * The running costs the Playground's "Airbnb it or rent it out?" starts from (SingleBuyRent in
@@ -25,8 +23,11 @@ const LTR_COSTS = 15;
  * tab's snapshot, the figure the Playground compares it with); the slider asks how booked the visitor's own place
  * would be and says which earns more there. The Playground's yearly sums are not quoted: they are independent
  * medians and could read as the verdict's proof while disagreeing with it (review, 2026-10-14).
+ *
+ * The Playground's working thing on the products' stage (ProductsSection, 2026-10-18): it stays mounted while another
+ * product is on the stage, so the visitor's own figure is still set when they come back to it.
  */
-function TippingPoint({ area }: { area: HeroArea }) {
+export default function TippingPoint({ area }: { area: HeroArea }) {
   const { stats = null, invest = null, occMedian = null } = area.figures ?? {};
   const ids = useId();
   const [mine, setMine] = useState<number | null>(null);
@@ -66,8 +67,8 @@ function TippingPoint({ area }: { area: HeroArea }) {
 
   return (
     <>
-      {/* The working thing on a navy card, the full width of the chapter (plan 3: Linear's one large frame): the verdict
-          and its slider on the left, every short-let's curve on the right. */}
+      {/* The working thing on a navy card on the products' night stage: the verdict and its slider, then every
+          short-let's curve under them. */}
       <div className="bn-card bn-night pt">
         <div className="pt-main">
           <h3 className="pt-h">Airbnb or a tenant?</h3>
@@ -158,52 +159,5 @@ function TippingPoint({ area }: { area: HeroArea }) {
         </p>
       </details>
     </>
-  );
-}
-
-/** What the Playground shows, in three lines: its five views said as what they show (plan 3). */
-const PROOF = [
-  "Occupancy, nightly rates and booking pace",
-  "Asking prices, rents and gross yields",
-  "A revenue calculator that takes your own costs",
-];
-
-/**
- * The Playground's chapter (plan 3, on a night band): the heading on the left, and on the right what it does for the
- * visitor in one sentence, what it shows in three lines, and its one action; then, the chapter's full width, one
- * working thing on a navy card: the Buy & Rent verdict for Cyprus, which sets the three markets against each other
- * (what a home costs, what it rents for, what it earns a night) and lets the visitor move the one number that decides
- * it. As the card is scrolled in, every short-let's curve draws itself and the tipping point and "Yours" come in.
- */
-export default function PlaygroundSection({ area }: { area: HeroArea }) {
-  return (
-    <Card
-      id="playground"
-      layout="chapter"
-      eyebrow="Draw it yourself"
-      name="Playground"
-      icon={<PlaygroundIcon size={40} />}
-      claim="Street-level analytics for all three markets."
-      body={
-        <>
-          <p>
-            Draw round a few streets or search a town, and see what the listings inside earn, rent for and sell for. Compare
-            up to three places side by side.
-          </p>
-          <ul className="ps-proof">
-            {PROOF.map((line) => (
-              <li key={line}>{line}</li>
-            ))}
-          </ul>
-        </>
-      }
-      action={
-        <a href={area.playgroundHref} className="th-go">
-          Open the Playground
-          <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
-        </a>
-      }
-      object={<TippingPoint area={area} />}
-    />
   );
 }

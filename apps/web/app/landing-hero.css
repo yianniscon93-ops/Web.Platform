@@ -25,6 +25,24 @@
   box-shadow: 0 1px 0 var(--th-line); /* taste-skill-ignore: it floats (the map, the page, a tile) */
 }
 .bn-nav[data-day][data-menu] { background: var(--th-ground); -webkit-backdrop-filter: none; backdrop-filter: none; } /* taste-skill-ignore: glass only where something floats (Blue Night) */
+/* Only its script can turn the bar to day, so until that has run (and on a page with no script at all) the bar is not
+   fixed: it scrolls away with the hero in its night form and never lies, night-coloured, over the white page. */
+.bn-nav:not([data-ready]) { position: absolute; }
+/* At night, once the page has moved under it, the bar floats over the hero's own words, map and cards: it takes the
+   night glass of what floats there (as the cards and the list of places do) and its contents rise to the window's
+   top, so its links never cross a card. Tied to the scroll by a scroll timeline, no script; where there is none
+   (Firefox today) the bar stays clear, as it was. */
+@supports (animation-timeline: scroll()) {
+  .bn-nav[data-ready]:not([data-day]) { animation: bn-nav-float linear both; animation-timeline: scroll(root); animation-range: 0 48px; }
+  .bn-nav[data-ready]:not([data-day]) .bn-nav-in { animation: bn-nav-rise linear both; animation-timeline: scroll(root); animation-range: 0 48px; }
+}
+@keyframes bn-nav-float {
+  from { background-color: rgb(24 32 43 / 0); }
+  to { background-color: rgb(24 32 43 / 0.92); -webkit-backdrop-filter: blur(18px) saturate(1.3); backdrop-filter: blur(18px) saturate(1.3); } /* taste-skill-ignore: glass only where something floats (Blue Night) */
+}
+@keyframes bn-nav-rise {
+  to { translate: 0 0; }
+}
 /* At night the bar's contents sit inside the hero card's top edge; by day they rise to the top of the window. */
 .bn-nav-in { display: flex; align-items: center; gap: 16px; max-width: 1440px; height: 64px; margin: 0 auto; padding: 0 24px; translate: 0 var(--lh-m); transition: translate 0.35s var(--th-ease); }
 .bn-nav[data-day] .bn-nav-in { translate: 0 0; }
@@ -34,11 +52,18 @@
 .bn-nav-links .th-navlink { display: inline-flex; align-items: center; min-height: 44px; color: var(--th-ink); font-size: var(--th-text-body); font-weight: 400; }
 .bn-nav-wide { display: none !important; }
 .bn-nav .bn-nav-go { min-height: 44px; padding: 0 20px; font-size: var(--th-text-body); }
+/* On a phone and a tablet the way into the Playground stays in the bar, beside "Menu" (owner, 2026-10-18), at the
+   floor's size. Where the whole name will not fit beside the wordmark and "Menu" (under 420px: at 360px there is room
+   for 300px of pills and type) it reads "Playground"; "Open the" is still in its name for a screen reader. */
+.bn-nav .th-go.bn-nav-go-short { display: inline-flex; min-height: 44px; padding: 0 14px; font-size: var(--th-text-fine); }
+@media (max-width: 419px) {
+  .bn-go-more { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
+}
 .bn-nav-menu {
   display: inline-flex;
   align-items: center;
   min-height: 44px;
-  padding: 0 18px;
+  padding: 0 15px;
   border: 1px solid color-mix(in srgb, currentColor 55%, transparent); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
   border-radius: var(--bn-r-pill);
   color: var(--th-ink);
@@ -68,12 +93,26 @@
 }
 .bn-nav-icon { display: flex; flex: none; justify-content: center; width: 24px; }
 .bn-nav-sheet .th-go { display: flex; width: 100%; margin-top: 16px; }
+/* Without script the menu cannot open, so it is not offered, and the Playground's pill has room for its whole name. */
+@media (scripting: none) {
+  .bn-nav-menu { display: none; }
+  .bn-go-more { position: static; width: auto; height: auto; overflow: visible; clip-path: none; }
+}
+@media (max-width: 767px) {
+  .bn-nav-in { gap: 8px; }
+}
+/* At the narrowest phones the two pills give up a little padding, so the wordmark keeps some air before them. */
+@media (max-width: 379px) {
+  .bn-nav .th-go.bn-nav-go-short { padding: 0 12px; }
+  .bn-nav-menu { padding: 0 12px; }
+}
 @media (min-width: 641px) {
   .bn-nav-in { padding: 0 var(--bn-gut); }
 }
 @media (min-width: 768px) {
   .bn-nav-links { display: flex; }
   .bn-nav-menu { display: none; }
+  .bn-nav .th-go.bn-nav-go-short { display: none; }
   .bn-nav-sheet { display: none; }
 }
 @media (min-width: 1024px) {
@@ -141,27 +180,34 @@
 .lh-in { position: relative; z-index: 2; max-width: 1440px; margin: 0 auto; padding: 104px 16px 24px; }
 .lh-copy { position: relative; display: flex; flex-direction: column; align-items: flex-start; min-width: 0; }
 .lh-eb { margin-bottom: 14px; }
-/* The headline: three lines, thin, two-tone. The longest line ("Insights backed by data.") is about 10.03em wide in
-   this face at 300 and this tracking, so the size is the column's width over 10.85, up to a cap: the three lines hold
-   at every width, and no word is left alone on a fourth. */
+/* The headline: three lines, thin, two-tone. The longest line ("Insights backed by data.") is about 10.2em wide in
+   this face at this weight and tracking, so the size is the column's width over 10.85, up to a cap: the three lines
+   hold at every width, and no word is left alone on a fourth. It is a step heavier than the page's other headings
+   (360, not 300; 2026-10-18): two thirds of it are in the second tone, light on night, and at 300 those strokes were
+   too fine to read at once, most of all at a phone's 32px. Still light, and the same at every width. */
 .lh .th-h1 {
   align-self: flex-start;
   color: var(--th-pay);
   font-size: min(3.5rem, calc((100vw - 48px) / 10.85));
-  font-weight: var(--th-display-weight);
+  font-weight: 360;
   line-height: 1.08;
   letter-spacing: var(--th-display-tracking);
   white-space: nowrap;
 }
 .lh-line { display: block; }
-/* The headline is mist (7.9:1 on night-950) but for the name's two halves, "Plot" and "sights", in the night's ink:
-   the name read out of the sentence (owner, 2026-10-17). */
-.lh-name { color: var(--th-ink); }
-/* The sentence under the headline, two tiers: what is here in the night's ink, what it is for in mist, the same
-   size; light from 641px, regular on a phone, where the thin cut is too fine at this size. */
-.lh .th-lede { align-self: stretch; display: grid; row-gap: 6px; max-width: 33rem; margin: 22px 0 0; color: var(--th-ink); font-size: var(--th-text-lead); line-height: 1.5; }
-.lh-what { color: var(--th-ink); font-weight: 400; text-wrap: balance; }
-.lh-for { color: var(--th-pay); font-weight: 400; text-wrap: pretty; }
+/* The headline is mist (8.5:1 on its ground) but for the name's two halves, "Plot" and "sights": the name read out of
+   the sentence (owner, 2026-10-17). Tone alone did not part them once mist was raised (ink to mist is only ΔL* 19;
+   owner, 2026-10-18: "the contrast of the letters of Plot and sights is not very visible"), so they are set in the
+   wordmark's own weight, 500 against the line's 360, and in the full white of the page's paper, a step above the
+   night's ink: the light they give off is 2.5 times the mist words' (1.85 before), measured on the render. The weight
+   is the wordmark's variable, so the halves are the very letters the opening raises to the bar. */
+.lh-name { color: var(--bn-paper); font-weight: var(--th-wordmark-weight); }
+/* The sentence under the headline, a step above the lead size (owner, 2026-10-18: "a bit bigger so the hero is
+   understandable"): who it is for on its own line in the paper white at the wordmark's weight, like the name's halves,
+   then what we do in the night's ink, regular (the light cut is too fine at this size on night). */
+.lh .th-lede { align-self: stretch; display: grid; row-gap: 4px; max-width: 34rem; margin: 24px 0 0; color: var(--th-ink); font-size: clamp(1.125rem, 1rem + 0.55vw, 1.4375rem); line-height: 1.45; letter-spacing: -0.005em; }
+.lh-who { color: var(--bn-paper); font-weight: var(--th-wordmark-weight); }
+.lh-what { color: var(--th-ink); font-weight: 400; text-wrap: pretty; }
 
 /* The way in: a pill, faintly lighter than the night, with the reference's dark pill inside its right end. Nothing is
    behind it to blur, so it is not glass. The list of places that opens under it floats over the map: that is glass. */
@@ -233,11 +279,16 @@
    the map (--fx, --fy: the area in hand), though never so far over that the map's own edge shows. `--u` is how many
    of the map's units one screen pixel is: the drawn lines are in those units and so keep one width at any size. */
 .lh-town { position: relative; z-index: 1; }
-.lh-frame { position: relative; height: 380px; container-type: size; }
+.lh-frame { position: relative; height: 400px; container-type: size; }
 .lh-sheet, .lh-over { position: absolute; inset: 0; overflow: hidden; }
 /* On a phone and a tablet the drawings come out of the night at the band's top edge. */
 .lh-sheet { mask-image: linear-gradient(180deg, transparent 0, #000 16%); } /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
 .lh-over { pointer-events: none; }
+/* Below 1024px what is drawn over the band (its lights, areas, the pointer) comes out of the night at the band's top
+   edge with the map, as it does at the words' edge on a wider screen, so the name's scrim can fade with both. */
+@media (max-width: 1023px) {
+  .lh-over { mask-image: linear-gradient(180deg, transparent 0, #000 16%); } /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
+}
 .lh-map {
   position: absolute;
   top: 0;
@@ -247,7 +298,7 @@
   max-width: none;
   height: auto;
   aspect-ratio: 1;
-  transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 60cqh - var(--fy, 67%), 0px));
+  transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 42cqh - var(--fy, 67%), 0px));
 }
 .lh-sheet .lh-map { opacity: 0; translate: 3% 0; transition: opacity 0.9s ease, translate 1.2s var(--th-ease); }
 .lh-sheet .lh-map[data-on] { opacity: 1; translate: 0 0; }
@@ -324,11 +375,56 @@
 :is(.lh-of, .lh-occ)[data-step="2"] { --lh-c: var(--th-occ-2); }
 :is(.lh-of, .lh-occ)[data-step="3"] { --lh-c: var(--th-occ-3); }
 :is(.lh-of, .lh-occ)[data-step="4"] { --lh-c: var(--th-occ-4); }
-/* On sample data the card says so at its foot. */
-.lh-sample { grid-column: 1 / -1; margin-top: 4px; color: var(--bn-mist-dim); font-size: var(--th-text-fine); }
+/* On sample data the card says so at its foot, as readable as the rest of the card (9.1:1): it is the truth about
+   the figures above it. */
+.lh-sample { grid-column: 1 / -1; margin-top: 4px; color: var(--th-muted); font-size: var(--th-text-fine); }
 .lh-stop .lh-pin, .lh-lead { visibility: hidden; }
-/* The figures of the area drawn last are docked at the band's top, so on a phone they show on the first screen. */
-.lh-dock { position: absolute; top: 40px; bottom: auto; left: 16px; z-index: 2; }
+/* The figures of the area drawn last are docked at the band's foot, with the town's name at its head and the area
+   between them (the band is centred a little above its middle on the area in hand), so on a phone the first screen
+   holds the town and its card. */
+.lh-dock { position: absolute; top: auto; bottom: 14px; left: 16px; z-index: 2; }
+/* The town's name, on its map: in English, and under it in Greek, as the island's own signs give both (owner,
+   2026-10-18). Set as a map names its town, not as a badge: large, at the headline's weight, in the night's ink, the
+   Greek a size down in mist (Google Sans, which has the Greek letters). Under it a soft scrim of the night, flat
+   under the letters and gone well before its edge, takes the streets and lights down so every letter holds 7:1 (the
+   fade already darkens that corner, so the scrim reads as part of it). Over the map and never faded with it. */
+.lh-place {
+  position: absolute;
+  top: 26px;
+  left: 16px;
+  z-index: 3;
+  display: grid;
+  justify-items: start;
+  row-gap: 3px;
+  color: var(--th-ink);
+  font-size: 26px;
+  font-weight: 360;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+/* The scrim is faded where the map is, by the map's own fade (here the band's top edge: 16% of it, the scrim's box
+   starting 22px above the band), so it never darkens the bare night beside the map. The name sits low enough that
+   its Greek line is past the fade, where the scrim is whole. */
+.lh-place::before {
+  position: absolute;
+  inset: -48px -110px -48px -96px;
+  z-index: -1;
+  background: radial-gradient(closest-side, rgb(20 25 31 / 0.9) 58%, rgb(20 25 31 / 0.55) 78%, rgb(20 25 31 / 0)); /* taste-skill-ignore: a neutral scrim under text on a picture (the map), for legibility */
+  mask-image: linear-gradient(180deg, transparent 22px, #000 calc(22px + 16cqh)); /* taste-skill-ignore: the scrim follows the map's fade */
+  content: "";
+}
+.lh-place span { color: var(--th-muted); font-size: var(--th-text-small); font-weight: 400; letter-spacing: 0; }
+.lh-place:is([data-leaving], [data-held]) { opacity: 0; }
+@keyframes lh-place-in {
+  from { opacity: 0; translate: 0 8px; }
+}
+@media (prefers-reduced-motion: no-preference) {
+  /* A town after the first comes in with its map. */
+  .lh-place:not([data-arrived]) { animation: lh-place-in 0.8s var(--th-ease) 0.3s both; }
+}
 .lh-dock[data-leaving] { opacity: 0; translate: 0 0; transition-delay: 0s; }
 /* The strip: the tour's controls and the town showing, the key to the lights, and where the data and the map come
    from. Over the picture, so its controls and links stay pressable where they lie on it. */
@@ -337,8 +433,6 @@
 .lh-stopper:hover { text-decoration-color: currentColor; }
 .lh-stopper[data-busy] { color: var(--th-muted); cursor: progress; }
 .lh-stopper::after { position: absolute; inset: -10px -6px; content: ""; }
-.lh-strip-town { color: var(--th-ink); font-weight: 500; transition: opacity 0.4s ease; }
-.lh-strip-town[data-leaving] { opacity: 0; }
 .lh-key { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; white-space: nowrap; }
 .lh-key-scale { display: inline-flex; align-items: center; gap: 8px; font-variant-numeric: tabular-nums; }
 /* The key's four lights, as they are on the map: each its colour, with its own glow. */
@@ -355,15 +449,37 @@
 .lh-credit a { text-decoration: underline 1px; text-decoration-color: color-mix(in srgb, currentColor 45%, transparent); text-underline-offset: 3px; transition: text-decoration-color 0.2s; }
 .lh-credit a:hover, .lh-credit a:focus-visible { text-decoration-color: currentColor; }
 
+/* On a phone the town comes up under the search, so the first screen holds the town and a card, and the sentence is
+   set under the map and its strip (owner, 2026-10-18, as mock-pa showed). The card becomes one grid: the words'
+   wrappers step aside (display: contents) so their parts and the map share it, and the map and the sentence are
+   moved down by order alone. A screen reader hears the words in their own order, the sentence before the search. The
+   opening's name covers the words above the map, as it covered the column. */
+@media (max-width: 640px) {
+  .lh { display: grid; grid-template-columns: minmax(0, 1fr); align-content: start; padding: 104px 16px 0; }
+  .lh-in, .lh-copy { display: contents; }
+  /* Over the night's glow and grain, as the wrapper held them. */
+  .lh-copy > :not(.op) { position: relative; z-index: 2; }
+  .lh-eb, .lh .th-h1 { justify-self: start; }
+  .lh-find { width: auto; }
+  .lh-fresh { margin-bottom: 22px; }
+  .lh-town { order: 1; margin-inline: -16px; }
+  .lh .th-lede { order: 2; margin: 18px 0 36px; }
+  html[data-opening] .op { grid-row: 1 / 5; grid-column: 1; }
+}
 @media (min-width: 641px) {
   .lh-in { max-width: calc(1440px - 2 * var(--lh-m)); padding: 120px calc(var(--bn-gut) - var(--lh-m)) 36px; }
   .lh .th-h1 { font-size: min(3.5rem, calc((100vw - 2 * var(--bn-gut)) / 10.85)); }
   .lh .th-lede { margin-top: 24px; }
-  .lh-what { font-weight: 300; }
-  .lh-for { font-weight: 300; }
   .lh-find { margin-top: 34px; }
   .lh-frame { height: 520px; }
-  .lh-dock { top: 56px; left: calc(var(--bn-gut) - var(--lh-m)); }
+  /* On a tablet the band is wide enough for the name and the card side by side at its head (the card just under the
+     band's fade, which it must not lie in), so the card stays on the first screen; the area in hand is centred under
+     them. */
+  .lh-map { transform: translate(clamp(100cqw - 100%, 50cqw - var(--fx, 56%), 0px), clamp(100cqh - 100%, 58cqh - var(--fy, 67%), 0px)); }
+  .lh-dock { top: 88px; right: calc(var(--bn-gut) - var(--lh-m)); bottom: auto; left: auto; }
+  .lh-place { top: 20px; left: calc(var(--bn-gut) - var(--lh-m)); font-size: 32px; }
+  .lh-place span { font-size: 18px; }
+  .lh-place::before { mask-image: linear-gradient(180deg, transparent 28px, #000 calc(28px + 16cqh)); } /* taste-skill-ignore: the scrim follows the map's fade */
   .lh-credit { padding-right: calc(var(--bn-gut) - var(--lh-m)); padding-left: calc(var(--bn-gut) - var(--lh-m)); }
 }
 /* From 1024px the words are on the left and the picture fills the right of the card, top to bottom. */
@@ -380,22 +496,39 @@
      behind a word, to whole at 28%; under the bar at its top; and at its foot, above the strip. What is drawn on
      it is kept off the words: the lights fade with the map, and the areas and cards are placed clear of the fade
      (townAreas.ts). */
-  .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; }
+  /* `--lh-clear`: how far into the map's column the words' column reaches (it is used inside the column, where 100cqw
+     is the column's width). The words are 42% of the content box, which is the card less its gutters up to 1416px and
+     centred beyond, and the map's column is the card's right 58%, so the words end 0.16 × (gutter − inset) past the
+     column's edge, and 8% of whatever the card is wider than 1416px more; 2px to spare. */
+  .lh-town { position: absolute; inset: 0 0 0 auto; z-index: 1; width: 58%; --lh-clear: calc(0.16 * (var(--bn-gut) - var(--lh-m)) + 0.08 * max(0px, 100cqw / 0.58 - 1416px) + 2px); }
   .lh-frame { position: absolute; inset: 0; height: auto; overflow: hidden; border-radius: 0 var(--bn-r-card) var(--bn-r-card) 0; }
+  /* The map is clear up to the words' edge and comes out of the night over the next 13% of its column (28% until
+     2026-10-18, when the owner asked for the town to read at a glance), so no pixel of it lies behind a word. */
   .lh-sheet {
-    mask-image: linear-gradient(90deg, transparent 0, transparent 7%, #000 28%), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 12%); /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
+    mask-image: linear-gradient(90deg, transparent 0, transparent var(--lh-clear), #000 calc(var(--lh-clear) + 13cqw)), linear-gradient(180deg, transparent 0, #000 15%), linear-gradient(0deg, transparent 0, #000 12%); /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
     mask-composite: intersect;
     -webkit-mask-composite: source-in;
   }
   .lh-dots {
     mask-image:
-      linear-gradient(90deg, transparent calc(100% - 93cqw), #000 calc(100% - 74cqw)), /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
+      linear-gradient(90deg, transparent calc(100% - 100cqw + var(--lh-clear)), #000 calc(100% - 87cqw + var(--lh-clear))), /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
       linear-gradient(180deg, transparent calc((100% - 100cqh) / 2), #000 calc((100% - 100cqh) / 2 + 12cqh)), /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
       linear-gradient(0deg, transparent calc((100% - 100cqh) / 2), #000 calc((100% - 100cqh) / 2 + 9cqh)); /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
     mask-composite: intersect;
     -webkit-mask-composite: source-in;
   }
   .lh-map { top: 50%; right: 0; left: auto; width: max(100%, 100svh, 720px); transform: translateY(-50%); }
+  /* The name at the column's head, under the bar, over the fade's far side: clear of every card and area of the six
+     towns at every width from here (townAreas.ts), the Greek under the English so the pair stays narrow. */
+  .lh-place { top: 100px; left: calc(var(--lh-clear) + 26px); font-size: clamp(2rem, 0.4rem + 2.4vw, 2.5rem); }
+  .lh-place span { font-size: var(--th-text-body); }
+  /* The scrim's box starts 70px left of where the map is clear (96px out from the name, which is 26px past it) and
+     52px under the frame's top: it takes the map's fade from the words and from the bar. */
+  .lh-place::before {
+    mask-image: linear-gradient(90deg, transparent 70px, #000 calc(70px + 13cqw)), linear-gradient(180deg, transparent -52px, #000 calc(15cqh - 52px)); /* taste-skill-ignore: the scrim follows the map's fade */
+    mask-composite: intersect;
+    -webkit-mask-composite: source-in;
+  }
   .lh-stop .lh-pin, .lh-lead { visibility: visible; }
   .lh-dock { visibility: hidden; }
   .lh-stop g[data-drawn]:not([data-now]) .lh-area-fill { opacity: 1; }
@@ -420,7 +553,7 @@
    figures in one card, docked at the column's top right, and the strip leaves out the key's label. */
 @media (min-width: 1024px) and (max-width: 1279px) {
   .lh-stop .lh-pin, .lh-lead { visibility: hidden; }
-  .lh-dock { top: 92px; right: calc(var(--bn-gut) - var(--lh-m)); left: auto; visibility: visible; }
+  .lh-dock { top: 92px; right: calc(var(--bn-gut) - var(--lh-m)); bottom: auto; left: auto; visibility: visible; }
   .lh-key-of { display: none; }
 }
 @media (min-width: 1280px) {
@@ -430,6 +563,9 @@
 /* Up to 1440px three cards share a small map: a price goes without its "a night" or "a month". */
 @media (min-width: 1024px) and (max-width: 1439px) {
   .lh-stop .lh-fig small { display: none; }
+}
+@media (min-width: 1280px) {
+  .lh-place span { font-size: 20px; }
 }
 @media (min-width: 1440px) {
   .lh-stop .lh-pin { column-gap: 12px; padding: 13px 16px 11px; }
@@ -461,7 +597,7 @@
 }
 @media (prefers-reduced-motion: reduce) {
   .lh-box, .bn-nav, .bn-nav-in { transition: none; }
-  .lh-stopper, .lh-sheet .lh-map, .lh-over .lh-map, .lh-stop, .lh-dots, .lh-pin, .lh-strip-town, .lh-area-fill, .lh-lead { transition: none; }
+  .lh-stopper, .lh-sheet .lh-map, .lh-over .lh-map, .lh-stop, .lh-dots, .lh-pin, .lh-place, .lh-area-fill, .lh-lead { transition: none; }
   .lh-sheet .lh-map { translate: 0 0; }
 }
 
@@ -503,9 +639,9 @@ html[data-opening] .op {
 }
 .op-pointer { transform-origin: 4px 3px; will-change: transform; }
 html[data-opening="on"] .lh-copy > :not(.op) { animation: op-wait 5s step-end; }
-html[data-opening="on"] .lh-over { animation: op-wait 5s step-end; }
+html[data-opening="on"] :is(.lh-over, .lh-place) { animation: op-wait 5s step-end; }
 .lh-over[data-held] { opacity: 0; }
-html[data-opening="on"] .lh-credit > :is(.lh-stopper, .lh-key, .lh-strip-town) { animation: op-away 5s step-end; }
+html[data-opening="on"] .lh-credit > :is(.lh-stopper, .lh-key) { animation: op-away 5s step-end; }
 html[data-opening] header.th-landing .wm { animation: op-away 5s step-end; }
 @keyframes op-rise { from { opacity: 0; transform: translateY(0.16em); } }
 @keyframes op-strike { from { opacity: 0; filter: blur(0.06em); transform: translateX(-0.08em); } }

@@ -61,7 +61,7 @@ export default async function QuestionsSection() {
       more: (
         <>
           Each short-&#8288;let’s calendar is read again every two days, and its prices and Bazaraki’s rent, sale and land ads
-          every week. The first screen says when the calendars were last read.
+          every week. The six towns above say when each source was last read.
         </>
       ),
       state: "yes",
@@ -147,13 +147,14 @@ export default async function QuestionsSection() {
     <section id="questions" className="th-landing qs" aria-labelledby="qs-h">
       <div className="qs-in">
         <div className="qs-head">
+          {/* The eyebrow says what the section is (Eyebrows Inform), not the heading's own first word again. */}
           <p className="bn-eb" data-rv="eb">
-            Questions
+            Data sheet
           </p>
           <h2 id="qs-h" className="qs-h" data-rv="">
             Questions.{" "}
             <span className="ps-pay" data-rv="pay" style={{ "--i": 2 } as React.CSSProperties}>
-              About the data, and what you can do with it.
+              About the data, answered.
             </span>
           </h2>
           <p className="qs-ask" data-rv="" style={{ "--i": 3 } as React.CSSProperties}>

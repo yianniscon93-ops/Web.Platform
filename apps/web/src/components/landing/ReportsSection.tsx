@@ -5,8 +5,7 @@ import { ArrowLeft, ArrowRight } from "lucide-react";
 import type { HeroArea } from "@/lib/landing/areaContext";
 import { MIN_LISTINGS, SEASON, estimate, reading, revenueByMonth, seriesFacts } from "@/lib/landing/areaLines";
 import { euro, pct, tooThin, weeklySeries } from "@/lib/landing/sectionLines";
-import { ReportsIcon } from "./ProductIcons";
-import { Card, Covers, NO_FIGURES, READING, Standin, UNREACHABLE, carryRequest, inside, stillPreferred } from "./SectionParts";
+import { Covers, NO_FIGURES, READING, Standin, UNREACHABLE, inside, stillPreferred } from "./SectionParts";
 import { BarChart, LineChart } from "./SeriesChart";
 
 /** The sample blocks a section of the report can carry. Each is built from figures for the visitor's area or not at all. */
@@ -260,14 +259,16 @@ function keyFinding(sample: Sample | undefined, area: HeroArea): string | null {
 const LEAF_MS = 250;
 
 /**
- * The Reports panel: a report to leaf through, as the one big thing on it. Two tabs over the sheet pick the kind
+ * The Reports panel: a report to leaf through, as the one big thing on it. It is Reports' working thing on the
+ * products' stage (ProductsSection, 2026-10-18) and stays mounted while another product is shown, so its kind and its
+ * page are where the visitor left them. Two tabs over the sheet pick the kind
  * of report, and the sheet's own pager turns its pages, each named: a sample block wherever there are real
  * figures for it, a list of what the section contains where there are none, and on the analysis sections the key
- * finding each ends in. On arrival the page is laid down on the band, once (plan 3: the mirror of the field's
- * alternating row, on an ice band); leafing turns the page (out to one side, the next in from the other). The rail
+ * finding each ends in. The first time it is shown in view the page is laid down on its ice tile, once; leafing
+ * turns the page (out to one side, the next in from the other). The rail
  * of marks under the running head says where the reader is, with "3 of 9".
  */
-export default function ReportsSection({ area }: { area: HeroArea }) {
+export default function ReportsSheet({ area }: { area: HeroArea }) {
   const [kind, setKind] = useState<Kind>("property");
   // Each kind of report keeps its own place. Both open on a section the visitor's area has figures for: the
   // property report on its year of revenue, a chart and the key finding it ends in, which nothing else on the
@@ -326,141 +327,119 @@ export default function ReportsSection({ area }: { area: HeroArea }) {
   };
 
   return (
-    <Card
-      id="reports"
-      layout="mirror"
-      eyebrow="Written by the team"
-      name="Reports"
-      icon={<ReportsIcon size={40} />}
-      claim="The full case for one property or one area."
-      body={
-        <p>
-          Nine sections for a property, from what it could earn to what it keeps after costs and what we would do with
-          it; four for an area. Written by the team from the same data as the Playground, with what each figure rests on.
+    // The report lies as a sheet of paper on an ice tile inside the products' night: a paper thing, where the navy
+    // cards hold live data. The first time it is on the stage in view, the page is laid down on the tile, its rail
+    // fills to the section showing and its bars grow.
+    <div className="ps-sheet-col">
+      <div className="ps-switch" role="group" aria-label="Kind of report">
+        {KINDS.map((k) => (
+          <button key={k} type="button" aria-pressed={kind === k} onClick={() => pick(k)}>
+            {/* The label keeps the width of its bold form, so choosing one does not nudge the other. */}
+            <span data-label={REPORTS[k].label}>{REPORTS[k].label}</span>
+          </button>
+        ))}
+      </div>
+      <article
+        className="ps-sheet"
+        aria-labelledby={`${ids}-page`}
+        // The arrow keys turn the page wherever the focus is on the sheet, as they would in a document viewer.
+        onKeyDown={(e) => {
+          if (e.key === "ArrowRight") turn(i + 1);
+          else if (e.key === "ArrowLeft") turn(i - 1);
+          else return;
+          e.preventDefault();
+        }}
+      >
+        {/* The running head of every page: which report, and which page of it. */}
+        <p className="ps-sheet-head">
+          <span>{report.title}</span>
+          <span>
+            <span className="sr-only">Section </span>
+            {shown.i + 1} of {report.sections.length}
+          </span>
         </p>
-      }
-      note={`A sample page, from the latest figures for ${area.name}.`}
-      action={
-        <a href="#access" className="ps-solid" onClick={() => carryRequest(`A report on ${area.name}`)}>
-          Ask for a report
-          <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
-        </a>
-      }
-      object={
-        // The report lies as a sheet of paper on the ice band: a paper thing, where the navy cards hold live data. As
-        // the section arrives the page is laid down on it, its rail fills to the section showing and its bars grow.
-        <div className="ps-sheet-col">
-          <div className="ps-switch" role="group" aria-label="Kind of report">
-            {KINDS.map((k) => (
-              <button key={k} type="button" aria-pressed={kind === k} onClick={() => pick(k)}>
-                {/* The label keeps the width of its bold form, so choosing one does not nudge the other. */}
-                <span data-label={REPORTS[k].label}>{REPORTS[k].label}</span>
-              </button>
-            ))}
+        {/* The report's sections as a row of marks, one to a section, the page showing filled: where you are in it
+            at a glance, and a way to go straight to any section (Pitch's slide strip, a story's progress). */}
+        <ol className="ps-rail" aria-label="Sections">
+          {sections.map((sec, j) => (
+            <li key={sec.title}>
+              <button
+                type="button"
+                onClick={() => turn(j)}
+                aria-current={j === i ? "step" : undefined}
+                aria-label={`Section ${j + 1}: ${sec.title}`}
+                data-past={j < i ? "" : undefined}
+              />
+            </li>
+          ))}
+        </ol>
+        <div
+          className="ps-sheet-body"
+          onPointerDown={(e) => {
+            if (e.pointerType !== "mouse") swipe.current = { x: e.clientX, y: e.clientY };
+          }}
+          onPointerUp={(e) => {
+            const from = swipe.current;
+            swipe.current = null;
+            if (!from) return;
+            const dx = e.clientX - from.x;
+            if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(e.clientY - from.y) * 1.5) turn(dx < 0 ? i + 1 : i - 1);
+          }}
+          onPointerCancel={() => (swipe.current = null)}
+          data-leaf={leaf?.stage}
+          style={leaf ? ({ "--dir": leaf.dir } as React.CSSProperties) : undefined}
+        >
+          <div className="ps-sheet-page" aria-live="polite" aria-atomic="true">
+            <h3 id={`${ids}-page`}>{unbroken(page.title)}</h3>
+            {page.about && <p>{page.about}</p>}
           </div>
-          <article
-            className="ps-sheet"
-            aria-labelledby={`${ids}-page`}
-            // The arrow keys turn the page wherever the focus is on the sheet, as they would in a document viewer.
-            onKeyDown={(e) => {
-              if (e.key === "ArrowRight") turn(i + 1);
-              else if (e.key === "ArrowLeft") turn(i - 1);
-              else return;
-              e.preventDefault();
-            }}
-          >
-            {/* The running head of every page: which report, and which page of it. */}
-            <p className="ps-sheet-head">
-              <span>{report.title}</span>
-              <span>
-                <span className="sr-only">Section </span>
-                {shown.i + 1} of {report.sections.length}
-              </span>
+          {page.sample && <SampleBlock key={`${shown.kind}-${shown.i}`} sample={page.sample} area={area} partial={page.partial} />}
+          {page.contains && (
+            <div className="ps-sample">
+              <p id={`${ids}-contains`} className="ps-sample-cap">
+                In this section
+              </p>
+              <ul className="ps-contains" aria-labelledby={`${ids}-contains`}>
+                {page.contains.map((item) => (
+                  <li key={item}>{item}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {page.analysis && (
+            <p className="ps-finding" data-empty={found ? undefined : ""} data-pending={found && area.pending ? "" : undefined}>
+              <b>Key finding:</b> {found ?? `written by the team for ${report.subject}`}
             </p>
-            {/* The report's sections as a row of marks, one to a section, the page showing filled: where you are in it
-                at a glance, and a way to go straight to any section (Pitch's slide strip, a story's progress). */}
-            <ol className="ps-rail" aria-label="Sections">
-              {sections.map((sec, j) => (
-                <li key={sec.title}>
-                  <button
-                    type="button"
-                    onClick={() => turn(j)}
-                    aria-current={j === i ? "step" : undefined}
-                    aria-label={`Section ${j + 1}: ${sec.title}`}
-                    data-past={j < i ? "" : undefined}
-                  />
-                </li>
-              ))}
-            </ol>
-            <div
-              className="ps-sheet-body"
-              onPointerDown={(e) => {
-                if (e.pointerType !== "mouse") swipe.current = { x: e.clientX, y: e.clientY };
-              }}
-              onPointerUp={(e) => {
-                const from = swipe.current;
-                swipe.current = null;
-                if (!from) return;
-                const dx = e.clientX - from.x;
-                if (Math.abs(dx) >= 48 && Math.abs(dx) > Math.abs(e.clientY - from.y) * 1.5) turn(dx < 0 ? i + 1 : i - 1);
-              }}
-              onPointerCancel={() => (swipe.current = null)}
-              data-leaf={leaf?.stage}
-              style={leaf ? ({ "--dir": leaf.dir } as React.CSSProperties) : undefined}
-            >
-              <div className="ps-sheet-page" aria-live="polite" aria-atomic="true">
-                <h3 id={`${ids}-page`}>{unbroken(page.title)}</h3>
-                {page.about && <p>{page.about}</p>}
-              </div>
-              {page.sample && <SampleBlock key={`${shown.kind}-${shown.i}`} sample={page.sample} area={area} partial={page.partial} />}
-              {page.contains && (
-                <div className="ps-sample">
-                  <p id={`${ids}-contains`} className="ps-sample-cap">
-                    In this section
-                  </p>
-                  <ul className="ps-contains" aria-labelledby={`${ids}-contains`}>
-                    {page.contains.map((item) => (
-                      <li key={item}>{item}</li>
-                    ))}
-                  </ul>
-                </div>
-              )}
-              {page.analysis && (
-                <p className="ps-finding" data-empty={found ? undefined : ""} data-pending={found && area.pending ? "" : undefined}>
-                  <b>Key finding:</b> {found ?? `written by the team for ${report.subject}`}
-                </p>
-              )}
-            </div>
-            <div className="ps-sheet-foot">
-              {/* At either end the button stays focusable and says it is unavailable; it is not removed from under the keyboard. */}
-              <div className="ps-pager">
-                <button type="button" onClick={() => turn(i - 1)} aria-disabled={first || undefined} aria-label="Previous section">
-                  <ArrowLeft size={16} strokeWidth={2.2} aria-hidden="true" />
-                </button>
-                <button
-                  type="button"
-                  onClick={() => turn(i + 1)}
-                  aria-disabled={last || undefined}
-                  aria-label={last ? undefined : `Next section: ${sections[i + 1].title}`}
-                >
-                  {last ? (
-                    "Last section"
-                  ) : (
-                    <>
-                      {/* A narrow sheet has room for "Next" only; the title is in the button's name either way. */}
-                      <span className="ps-pager-next">Next</span>
-                      <span className="ps-pager-title">{unbroken(sections[i + 1].title)}</span>
-                      <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
-                    </>
-                  )}
-                </button>
-              </div>
-              {/* How a real report is delivered, in the place a page's footer goes. */}
-              <p className="ps-sheet-line">Opens as a web page. Prints to PDF.</p>
-            </div>
-          </article>
+          )}
         </div>
-      }
-    />
+        <div className="ps-sheet-foot">
+          {/* At either end the button stays focusable and says it is unavailable; it is not removed from under the keyboard. */}
+          <div className="ps-pager">
+            <button type="button" onClick={() => turn(i - 1)} aria-disabled={first || undefined} aria-label="Previous section">
+              <ArrowLeft size={16} strokeWidth={2.2} aria-hidden="true" />
+            </button>
+            <button
+              type="button"
+              onClick={() => turn(i + 1)}
+              aria-disabled={last || undefined}
+              aria-label={last ? undefined : `Next section: ${sections[i + 1].title}`}
+            >
+              {last ? (
+                "Last section"
+              ) : (
+                <>
+                  {/* A narrow sheet has room for "Next" only; the title is in the button's name either way. */}
+                  <span className="ps-pager-next">Next</span>
+                  <span className="ps-pager-title">{unbroken(sections[i + 1].title)}</span>
+                  <ArrowRight size={16} strokeWidth={2.2} aria-hidden="true" />
+                </>
+              )}
+            </button>
+          </div>
+          {/* How a real report is delivered, in the place a page's footer goes. */}
+          <p className="ps-sheet-line">Opens as a web page. Prints to PDF.</p>
+        </div>
+      </article>
+    </div>
   );
 }

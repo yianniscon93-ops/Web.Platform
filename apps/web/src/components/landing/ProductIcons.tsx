@@ -1,6 +1,6 @@
 import { LANDING as C } from "./tokens";
 
-// The three product icons, line drawings in the brand mark's vocabulary (AreaMark): one line of a single weight in
+// The four product icons, line drawings in the brand mark's vocabulary (AreaMark): one line of a single weight in
 // the ink of where they sit (navy-black on white, the night's ink in the phone menu), small square nodes in that
 // ground's surface, and exactly one element filled with --th-mark (ice on white, the scale's brightest step on night),
 // always inside the line (Blue Night, 2026-10-17; lime in direction G, saffron before it). Drawn on a 32px grid; shown
@@ -66,6 +66,20 @@ export function ConnectorIcon(props: IconProps) {
         <path d="M19 12v9.5a5 5 0 0 0 5 5h5.5" />
         <rect x="16.6" y="9.1" width="4.8" height="4.8" fill={C.mark} strokeWidth="1.3" strokeLinejoin="miter" />
       </g>
+    </Frame>
+  );
+}
+
+/** Custom solutions: a dataset of rows, the one asked for filled, and a line out of it to a square node: the
+    customer's own system. */
+export function CustomIcon(props: IconProps) {
+  return (
+    <Frame {...props}>
+      <rect x="3" y="4.8" width="17.5" height="22.4" rx="2.5" />
+      <path d="M3 12.2h17.5M3 19.8h17.5" />
+      <rect className="th-ic-node" x="6" y="14.3" width="11.5" height="3.4" fill={C.mark} strokeWidth="1.3" strokeLinejoin="miter" />
+      <path className="th-ic-line" d="M20.5 16h4v-6.4h1.8" pathLength={1} />
+      <rect x="26.3" y="7.9" width="3.4" height="3.4" {...NODE} />
     </Frame>
   );
 }

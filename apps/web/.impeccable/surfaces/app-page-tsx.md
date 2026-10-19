@@ -7,7 +7,7 @@ related_targets: []
 
 # Landing page
 
-Scope: the public landing page (`app/page.tsx`): its first screen, "How it works" right under it, the products' tiles and chapters, the questions and the close (order since plan 3, 2026-10-17). Visitor mode: Persuade.
+Scope: the public landing page (`app/page.tsx`): its first screen, "How it works" right under it, the four products on one night band where the index is the stage (2026-10-18), the six towns, the questions and the close (order since plan 3, 2026-10-17). Visitor mode: Persuade.
 
 Audience and job: property investors, short-let hosts and managers, and agents, in equal weight, finding out what Plotsights is and whether it is worth exploring. The page has to say what the three products are (owner, 2026-10-08): the Playground (free dashboard comparing short-lets, long-lets and sales), Reports (written data insights on Cyprus property), and the MCP connector (the same data in Claude). Action: say which place you care about, then open the Playground. Proof: real towns on the first screen, with areas a few streets wide drawn on them and how full and how dear the short-lets inside are; then the visitor's own place, drawn on the map and answered three ways.
 

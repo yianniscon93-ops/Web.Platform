@@ -1,10 +1,10 @@
 /* ── Landing: the bands, the products, the questions, the close and the footer (Blue Night) ─ */
 /* Under the night hero the page alternates grounds (plan 3, owner 2026-10-17: "I see a lot of white in the
-   background"): bands of night and ice, each a card inset in the white page like the hero, with white only between
-   some of them and never two white sections together. "How it works" on ice (landing-how.css); the three products'
-   tiles on white; the Playground's chapter on night, Reports' on ice, the Connector's on night; the questions on
-   white; the close back in night. A chapter's one working thing is a navy card (live data: the tipping point, the
-   conversation) or paper on ice (the report's sheet), its list to choose from a cloud tile.
+   background"; 2026-10-18 for the products and the towns): bands of night and ice, each a card inset in the white
+   page like the hero, never two of one ground together. "How it works" on ice (landing-how.css); the products on one
+   night band, the index as the stage; the six towns on ice; the questions, the only white section; the close back in
+   night. A product's working thing is a navy card (live data: the tipping point, the conversation) or paper on an ice
+   tile inside the night (the report's sheet, the requests).
    Colours are the --th-* roles (globals.css: `.bn` for day, `.bn-night` for night) and the night palette by name
    (--bn-*). Type is the roles' sizes; headings and large figures are thin (300), two-tone. */
 
@@ -86,7 +86,7 @@
   isolation: isolate;
 }
 /* On ice and cloud the second tone is a step darker than on white, so small text in it holds 4.5:1 (4.8:1). */
-.bn-band-ice, .po-rp, .po-cn { --th-pay: #566476; }
+.bn-band-ice { --th-pay: #566476; }
 .bn-band-ice { background: var(--bn-ice-tile); color: var(--th-ink); }
 .bn-band-night { overflow: clip; background: linear-gradient(180deg, var(--bn-night-950), var(--bn-night-900)); color: var(--th-ink); } /* taste-skill-ignore: Blue Night's night, pinned by the owner */
 .bn-band-night::before {
@@ -111,12 +111,14 @@
 }
 @media (min-width: 641px) { .bn-band { padding: 96px 0; } }
 @media (min-width: 1024px) { .bn-band { --lh-m: 12px; padding: 120px 0; } }
+/* The products and the towns are shorter bands (2026-10-18, owner: the products "take too much space"): 64px of
+   padding on a phone, 80px on a tablet, 88px from 1024px. "How it works" keeps the full band. */
+.bn-band.ps-sections, .bn-band.tw { padding: 64px 0; }
+@media (min-width: 641px) { .bn-band.ps-sections, .bn-band.tw { padding: 80px 0; } }
+@media (min-width: 1024px) { .bn-band.ps-sections, .bn-band.tw { padding: 88px 0; } }
 
-/* ── The product chapters, in their bands ── */
+/* ── The products' parts, in their band ── */
 .ps-sections { color: var(--th-ink); }
-/* One container for the white page and the close: 1312px of content between the page's gutters, so every left edge
-   on it is the hero's and the bar's. */
-.ps-in, .ps-card { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut)); margin: 0 auto; padding-right: var(--bn-gut); padding-left: var(--bn-gut); }
 .ps-sections b { font-weight: 500; }
 .ps-pay { color: var(--th-pay); }
 /* A figure whose area has moved and whose new value has not arrived: still there, a step back. */
@@ -127,36 +129,15 @@
 .ps-sections [data-pending] .ps-bar i { background: var(--th-pending); }
 .ps-sections [data-pending] .ps-finding::before { border-color: var(--th-pending); background: var(--th-pending); }
 
-.ps-card {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  grid-template-areas: "text" "object" "lead";
-  row-gap: 28px;
-  align-items: start;
-  scroll-margin-top: 88px;
-}
-.ps-card > * { min-width: 0; }
-.ps-card-text { grid-area: text; display: grid; row-gap: 22px; align-content: start; }
-.ps-card-object { grid-area: object; }
-.ps-card-lead { grid-area: lead; }
-/* Below 1024px a stacked section (the Connector) puts its questions before the conversation: pick, then watch. */
 /* What the Playground shows, in three lines, each after a small dot of the night's second blue. */
 .ps-proof { display: grid; row-gap: 8px; margin: 6px 0 0; padding: 0; list-style: none; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.45; }
 .ps-proof li { display: flex; gap: 12px; align-items: baseline; }
 .ps-proof li::before { flex: none; width: 7px; height: 7px; border-radius: 50%; background: var(--th-a); transform: translateY(-2px); content: ""; }
-@media (max-width: 1023px) { .ps-card[data-layout="stack"] { grid-template-areas: "text" "lead" "object"; } }
-/* The icon, then the label over the heading, then the heading: the name in ink, its claim in the second tone. */
-.ps-card-intro { display: grid; justify-items: start; }
-.ps-card-icon { display: flex; margin-bottom: 18px; }
-.ps-card-intro .bn-eb { margin-bottom: 10px; }
-.ps-card-name { font-size: var(--th-heading); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
-.ps-card-say { display: grid; row-gap: 22px; align-content: start; justify-items: start; }
+
 .ps-lede { display: grid; row-gap: 10px; max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
 .ps-lede strong { color: var(--th-ink); font-weight: 500; }
 .ps-card-action { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 18px; }
 .ps-action-note { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
-.ps-under { margin-top: -8px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
-.ps-h3 { font-size: var(--th-text-small); font-weight: 500; line-height: 24px; }
 .ps-covers { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; padding-top: 14px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 24px; }
 .ps-standin { padding: 6px 0; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 .ps-textbtn {
@@ -479,34 +460,8 @@
 }
 .ps-sheet-line { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
 
-/* ── Connector: the questions on a cloud tile, the conversation on a navy card ── */
-.ps-asks { display: grid; align-content: start; }
-.ps-questions { display: grid; gap: 6px; margin-top: 12px; }
-.ps-questions button {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
-  min-height: 44px;
-  padding: 11px 16px;
-  border-radius: 22px;
-  background: rgb(255 255 255 / 0.55);
-  color: var(--th-ink);
-  font-size: var(--th-text-small);
-  font-weight: 400;
-  line-height: 1.35;
-  text-align: left;
-  text-wrap: pretty;
-  cursor: pointer;
-  transition: background-color 0.2s;
-}
-.ps-questions button:hover { background: rgb(255 255 255 / 0.9); }
-.ps-questions i { flex: none; width: 8px; height: 8px; margin-top: 7px; border: 1.5px solid currentColor; border-radius: 50%; }
-.ps-questions button[aria-checked="true"] { background: var(--bn-night-800); color: var(--bn-ink-night); cursor: default; }
-.ps-questions button[aria-checked="true"] i { border-color: var(--th-data-4); background: var(--th-data-4); }
-.bn .ps-questions button:focus-visible { outline-offset: 2px; }
-.ps-asks-note { margin-top: 14px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
-/* The conversation: Claude's own idiom on the night, the visitor's question an ice pill, the answer a deeper navy. */
-.ps-convo { display: flex; flex-direction: column; }
+/* ── Connector: one navy card, as Claude is laid out: the thread, the questions to try as chips, the composer ── */
+.ps-convo { display: flex; flex-direction: column; padding: 18px 16px 16px; }
 .ps-chat { display: flex; flex-direction: column; min-height: 0; }
 .ps-chat-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; min-height: 44px; border-bottom: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
 .ps-chat-head p { padding: 0 0 14px; text-wrap: pretty; }
@@ -525,34 +480,84 @@
   transition: text-decoration-color 0.2s;
 }
 .ps-chat-clear:hover { text-decoration-color: transparent; }
-.ps-chat-log { position: relative; display: flex; flex-direction: column; gap: 22px; padding: 18px 2px 8px; }
-.ps-chat-log > :first-child { margin-top: auto; }
-.ps-exchange { display: flex; flex-direction: column; gap: 10px; scroll-margin-top: 88px; }
-/* The composer: shown only while a chosen question is typed into it, an outlined pill at the conversation's foot. */
+/* The thread: as tall as what is in it, up to a frame it then scrolls inside, faded at its top edge, so the card never
+   holds an empty pane (2026-10-18: the first exchange had stood at the foot of 200px of bare navy). */
+.ps-chat-log {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  max-height: 520px;
+  padding: 18px 2px 10px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: var(--bn-glow-500) transparent;
+  mask-image: linear-gradient(to bottom, transparent 0, #000 14px); /* taste-skill-ignore: the thread's fade under its head */
+}
+.ps-exchange { display: flex; flex-direction: column; gap: 10px; }
+/* What the connector did before it answered, as Claude shows a tool at work: the tool, then each step ticked. */
+.ps-steps { align-self: flex-start; display: grid; row-gap: 6px; max-width: min(92%, 35em); padding: 2px 0 2px 2px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+.ps-steps-h { color: var(--th-muted); }
+.ps-steps ol { display: grid; row-gap: 4px; margin: 0; padding: 0 0 0 2px; list-style: none; }
+.ps-steps li { display: flex; align-items: center; gap: 10px; color: var(--th-ink); }
+.ps-steps li svg { flex: none; padding: 3px; border-radius: 50%; background: rgb(183 201 221 / 0.16); color: var(--bn-ice-200); box-sizing: content-box; }
+.ps-steps li[data-none] { color: var(--th-muted); }
+.ps-steps li[data-none] svg { background: none; box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.3); color: var(--th-muted); } /* taste-skill-ignore: an open status mark */
+/* The questions to try: chips that wrap over the composer, the chosen one lit in ice. */
+.ps-asks { display: grid; row-gap: 8px; padding: 14px 0 12px; border-top: 1px solid var(--th-line); } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.ps-asks-h { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; }
+/* On a phone the chips are one row that scrolls sideways under the thumb, its far edge faded; from 641px they wrap. */
+.ps-questions { display: flex; gap: 8px; margin: 0 -16px; padding: 2px 16px 4px; overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x proximity; scrollbar-width: none; mask-image: linear-gradient(to right, transparent 0, #000 16px, #000 calc(100% - 28px), transparent); } /* taste-skill-ignore: the row's edges fading as it scrolls */
+.ps-questions::-webkit-scrollbar { display: none; }
+.ps-questions button { flex: none; scroll-snap-align: start; }
+.ps-questions button {
+  display: inline-flex;
+  align-items: center;
+  min-height: 40px;
+  padding: 0 14px;
+  border-radius: var(--bn-r-pill);
+  box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.22); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+  color: var(--th-ink);
+  font-size: var(--th-text-fine);
+  font-weight: 500;
+  line-height: 20px;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background-color 0.2s, box-shadow 0.2s, color 0.2s;
+}
+.ps-questions button:hover { background: rgb(183 201 221 / 0.12); box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.4); } /* taste-skill-ignore: an outlined pill (Blue Night chrome) */
+.ps-questions button[aria-checked="true"] { background: var(--bn-ice-200); box-shadow: none; color: var(--bn-night-950); cursor: default; } /* taste-skill-ignore: takes the outline away (no shadow) */
+.bn .ps-questions button:focus-visible { outline-offset: 2px; }
+/* The composer: at rest it asks for a place; a chip types its question into it, and the send glyph lights. */
 .ps-composer {
   display: grid;
   flex: none;
-  grid-template-columns: 8px minmax(0, 1fr);
+  grid-template-columns: minmax(0, 1fr) 32px;
   column-gap: 12px;
   align-items: center;
   min-height: 52px;
-  margin-top: 10px;
-  padding: 6px 18px;
+  padding: 6px 8px 6px 20px;
   border-radius: var(--bn-r-pill);
-  box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.22); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
+  background: rgb(245 247 250 / 0.06);
+  box-shadow: inset 0 0 0 1px rgb(245 247 250 / 0.2); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
   color: var(--th-ink);
   font-size: var(--th-text-small);
   line-height: 24px;
 }
-.ps-composer i { width: 8px; height: 8px; border-radius: 50%; background: var(--th-muted); }
-.ps-composer[data-on] i { background: var(--th-a); }
-.ps-composer > span { grid-row: 1; grid-column: 2; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-composer > span { grid-row: 1; grid-column: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.ps-composer-rest { color: var(--th-muted); }
+.ps-composer[data-on] .ps-composer-rest { visibility: hidden; }
 .ps-composer-text { font-weight: 400; }
-.ps-composer:not([data-on]) { display: none; }
+.ps-composer-send { display: grid; place-items: center; width: 32px; height: 32px; border-radius: 50%; background: rgb(245 247 250 / 0.12); color: var(--th-muted); transition: background-color 0.2s, color 0.2s; }
+.ps-composer[data-on] .ps-composer-send { background: var(--bn-ice-200); color: var(--bn-night-950); }
+@media (min-width: 641px) {
+  .ps-convo { padding: 22px 24px 20px; }
+  .ps-questions { flex-wrap: wrap; margin: 0; padding: 0; overflow: visible; mask-image: none; }
+}
 .ps-bubble { max-width: min(92%, 35em); font-size: var(--th-text-body); line-height: 1.5; }
 .ps-bubble-q { align-self: flex-end; padding: 10px 18px; border-radius: 22px; background: var(--th-visitor); color: var(--th-visitor-ink); transform-origin: 100% 100%; }
 .ps-bubble-a { align-self: flex-start; padding: 14px 18px; border-radius: 14px; background: var(--bn-night-700); box-shadow: inset 0 0 0 1px var(--th-line); transform-origin: 0 100%; } /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
-.ps-tool { color: var(--th-muted); font-size: var(--th-text-fine); font-weight: 400; line-height: 22px; }
 .ps-reply { margin-top: 6px; text-wrap: pretty; }
 .ps-reply-link { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 12px; margin-top: 10px; font-weight: 500; }
 .ps-reply-link .th-link { display: inline-block; margin: -11px 0; padding: 11px 0; color: var(--th-a); }
@@ -617,7 +622,8 @@
 .ps-close .bn-eb { margin-bottom: 14px; }
 .ps-close h2 { font-size: clamp(2.5rem, 1.6rem + 3vw, 4rem); font-weight: var(--th-display-weight); line-height: 1.05; letter-spacing: -0.03em; text-wrap: balance; }
 .ps-close h2 span { color: var(--th-pay); }
-.ps-close-lede { max-width: 30rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-lead); font-weight: 300; line-height: 1.5; text-wrap: pretty; }
+/* The lead is regular, as in the hero: the light cut is too fine for 17 to 20px in mist on night (2026-10-18). */
+.ps-close-lede { max-width: 30rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-lead); font-weight: 400; line-height: 1.5; text-wrap: pretty; }
 .ps-close-do { display: grid; row-gap: 18px; align-content: end; }
 .ps-close-carried { font-size: var(--th-text-body); line-height: 1.45; text-wrap: pretty; }
 .ps-close-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; }
@@ -649,8 +655,10 @@
 .ps-close-copy:hover span { text-decoration-color: transparent; }
 /* The footer: the name at the card's full width, then a hairline and one row of where it all comes from. */
 .ps-foot { position: relative; z-index: 1; color: var(--th-ink); }
-.ps-foot-in { padding-top: 72px; padding-bottom: 28px; }
-.ps-foot-name .wm { display: block; font-size: clamp(64px, 15.2vw, 236px); font-weight: 400; line-height: 0.9; letter-spacing: -0.05em; }
+.ps-foot-in { padding-top: 72px; padding-bottom: 28px; container-type: inline-size; }
+/* The name spans the card's content width: the wordmark at 400 is 4.17em wide, so its size is the width over 4.2
+   (until 2026-10-18 it was sized in vw for the heavier cut and spanned about 70% of the card). */
+.ps-foot-name .wm { display: block; font-size: clamp(64px, 15.2vw, 236px); font-size: calc(100cqw / 4.2); font-weight: 400; line-height: 0.9; letter-spacing: -0.05em; }
 .ps-foot-name .am-line { stroke-width: 1.3; }
 .ps-foot-row { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 28px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
 .ps-foot-src { max-width: 38rem; text-wrap: pretty; }
@@ -661,7 +669,6 @@
 .ps-foot-rights { color: var(--th-muted); }
 
 @media (min-width: 641px) {
-  .ps-card { row-gap: 32px; }
   .pt-tip { grid-template-columns: auto minmax(0, 1fr); column-gap: 20px; }
   .pt-tip > span:last-child { padding-top: 6px; }
   .ps-sheet { padding: 26px 28px 20px; }
@@ -672,41 +679,8 @@
 
 @media (min-width: 1024px) {
   .bn-close { --lh-m: 12px; }
-  .ps-card { column-gap: 32px; }
-  /* Three compositions, so no two neighbours share one: the chapter (the heading on the left, the words on the right,
-     the frame the full width under them); the mirror (the object, then the words); the stack (the words across the
-     top and, under them, the conversation beside its questions). */
-  .ps-card[data-layout="chapter"] { grid-template-areas: "text" "object"; row-gap: 48px; }
-  .ps-card[data-layout="mirror"] { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); grid-template-areas: "object text"; align-items: center; }
-  .ps-card[data-layout="stack"] { grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); grid-template-areas: "text text" "object lead"; column-gap: 24px; row-gap: 44px; }
-  .ps-card[data-layout="mirror"] .ps-card-text { padding-top: 8px; }
-  /* Chapter: the heading on the left at the top; the sentence, the three lines and the action on the right. */
-  .ps-card[data-layout="chapter"] .ps-card-text { grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); column-gap: 48px; align-items: start; }
-  .ps-card[data-layout="chapter"] .ps-card-say { padding-top: 58px; }
-  /* Stacked: the heading on the left, the sentence and the action on the right at its foot. */
-  .ps-card[data-layout="stack"] .ps-card-text { grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); column-gap: calc(32px + (100% - 11 * 32px) / 12); align-items: end; }
-  .ps-card[data-layout="stack"] .ps-card-say { row-gap: 18px; }
-  /* The conversation as tall as the questions beside it, so the two read as one pair. */
-  .ps-card[data-layout="stack"] { align-items: stretch; }
-  .ps-card[data-layout="stack"] .ps-convo { height: 100%; }
-  /* The frame, the chapter's full width: the verdict on the left, the curve on the right. */
-  .ps-card[data-layout="chapter"] .pt { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 48px; padding: 40px; }
-  .ps-card[data-layout="chapter"] .pt-curve { margin-top: 0; padding-top: 0; border-top: 0; }
-  /* The conversation reads from the top, is as tall as what is in it (no empty pane, critique 2026-10-14), and
-     scrolls inside itself past 470px. */
-  .ps-card[data-layout="stack"] .ps-chat-log > :first-child { margin-top: 0; }
-  .ps-chat-log {
-    max-height: 470px;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--bn-glow-500) transparent;
-    mask-image: linear-gradient(to bottom, transparent 0, #000 16px); /* taste-skill-ignore: the map's fade into the night (owner, 2026-10-14) */
-  }
   .ps-close-in { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 32px; align-items: end; padding-top: 112px; }
   .ps-foot-in { padding-top: 96px; }
-}
-@media (min-width: 1280px) {
-  .ps-card[data-layout="mirror"] { column-gap: 56px; }
 }
 @media (max-width: 374px) {
   .bn .ps-card-action :is(.th-go, .ps-solid) { gap: 6px; padding: 0 16px; }
@@ -725,128 +699,330 @@
   .bn-card, .bn-tile, .ps-sheet, .ps-bubble-a, .ps-questions button { border: 1px solid CanvasText; } /* taste-skill-ignore: forced-colors fallback */
 }
 
-/* ── The products, at a glance (ProductsOverview) ── */
-/* On white, after "How it works": a heading, then three tiles of different sizes, each its product's own output. The
-   Playground on a navy tile (live data), Reports on ice (a page of a report), the Connector on cloud (a question and its
-   answer). */
-.po { padding: 88px 0; color: var(--th-ink); }
-.po-in, .qs-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut)); margin: 0 auto; padding-right: var(--bn-gut); padding-left: var(--bn-gut); }
-.po-head .bn-eb { margin-bottom: 14px; }
-.po-h { max-width: 30ch; font-size: clamp(2rem, 1.2rem + 2.6vw, 3.5rem); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
-.po-say { max-width: 34rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
-.po-grid { display: grid; grid-template-columns: minmax(0, 1fr); gap: 12px; margin-top: 40px; }
-.po-tile { position: relative; display: flex; flex-direction: column; gap: 12px; min-width: 0; padding: 22px 18px; overflow: hidden; border-radius: var(--bn-r-tile); isolation: isolate; }
-.po-eb { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 21px; letter-spacing: 0.01em; }
-.po-tile h3 { font-size: clamp(1.5rem, 1.2rem + 0.8vw, 2rem); font-weight: var(--th-display-weight); line-height: 1.12; letter-spacing: -0.02em; text-wrap: balance; }
-.po-tsay { max-width: 30rem; color: var(--th-muted); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; }
-.po-link { align-self: flex-start; margin-top: auto; padding-top: 8px; color: var(--th-ink); font-size: var(--th-text-body); font-weight: 500; }
-/* The Playground's tile: navy, the glow rising inside it from below, Cyprus in three markets as a small table. */
-.po-pg { background: var(--bn-night-800); }
-.po-pg::before {
-  position: absolute;
-  inset: auto -20% -65% -20%;
-  z-index: -1;
-  height: 90%;
-  background: radial-gradient(closest-side, rgb(61 94 127 / 0.55), rgb(61 94 127 / 0)); /* taste-skill-ignore: Blue Night's glow, pinned by the owner */
-  pointer-events: none;
-  content: "";
+/* ── The products (ProductsSection): one database, four outputs ── */
+/* Concept F (owner, 2026-10-19), one night band. The heading beside the core (the island at night, every short-let a
+   light, with the counts of what we read and the models every figure goes through); from the core a line runs down and
+   splits to four ports, a tablist, one per product; the chosen port's line is lit and carried on into the stage, which
+   shows that product's words and its working thing and is as tall as they are. Without script (data-mode="static")
+   and in print the ports are links and the four products stand one after another under their names: the hiding below
+   is screen-only and keyed to the script's mode. The lines are an SVG the script draws from the layout; their light is
+   a data light (the island's own halo), the band's only moving part, and it runs once per pick. */
+.pf { scroll-margin-top: 64px; }
+.pf-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut) - 2 * var(--lh-m)); margin: 0 auto; padding: 0 16px; }
+.pf-all { position: relative; }
+.pf-top { display: grid; row-gap: 32px; }
+.pf-say .bn-eb { margin-bottom: 14px; }
+.pf-h { max-width: 20em; font-size: var(--th-heading); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.pf-lede { max-width: 34rem; margin-top: 18px; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+
+/* The core: the band's deepest night, the island picture's own sea (map-sea-island), so its edges vanish into it. */
+.pf-core { position: relative; container-type: inline-size; overflow: hidden; border-radius: var(--bn-r-tile); background: #0F141A; color: var(--th-ink); }
+.pf-core-in { display: grid; }
+.pf-isl { position: relative; aspect-ratio: 600 / 370; overflow: hidden; }
+/* island.svg is 800 by 600 with Cyprus in its middle (x 120 to 680, y 134 to 466); this window shows x 100 to 700 and
+   y 115 to 485. The lights' canvas (StoryLights) lies over the picture at the picture's own size. */
+.pf-isl-in { position: absolute; top: -31.08%; left: -16.667%; width: 133.333%; height: 162.16%; }
+.pf-isl-in img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; }
+.pf-data { display: grid; align-content: center; row-gap: 18px; padding: 0 20px 22px; }
+.pf-group { display: grid; row-gap: 6px; }
+.pf-lab { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
+.pf-counts { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; column-gap: 22px; margin: 0; }
+.pf-counts > div { display: flex; flex-direction: column; }
+.pf-counts dt { order: 2; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; white-space: nowrap; }
+.pf-counts dd { margin: 0; font-size: clamp(1.5rem, 8cqi, 2rem); font-weight: 300; line-height: 1.1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+/* The models: a list with the page's dots, not chips; they are not buttons. */
+.pf-models { display: flex; flex-wrap: wrap; gap: 4px 18px; margin: 0; padding: 0; list-style: none; color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.5; }
+.pf-models li { display: inline-flex; align-items: center; gap: 9px; }
+.pf-models li::before { flex: none; width: 6px; height: 6px; border-radius: 50%; background: var(--bn-ice-200); content: ""; }
+.pf-sample { display: flex; }
+/* From 430px of core the picture and the data stand side by side, the counts one to a line. */
+@container (min-width: 430px) {
+  .pf-core-in { grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr); align-items: center; }
+  .pf-data { padding: 22px 20px 22px 0; }
+  .pf-counts { grid-template-columns: none; row-gap: 2px; }
+  .pf-counts > div { flex-direction: row; align-items: baseline; gap: 8px; }
+  .pf-counts dd { font-size: clamp(1.5rem, 5.6cqi, 2rem); }
 }
-.po-mkt { width: 100%; margin-top: 8px; border-collapse: collapse; font-size: var(--th-text-small); line-height: 1.45; }
-.po-mkt tr { border-top: 1px solid var(--th-line); }
-.po-mkt tr:last-child { border-bottom: 1px solid var(--th-line); }
-.po-mkt :is(th, td) { padding: 14px 12px 14px 0; text-align: left; vertical-align: baseline; }
-.po-mkt td:last-child { padding-right: 0; }
-.po-mkt th { color: var(--th-muted); font-weight: 400; white-space: nowrap; }
-.po-mkt th i { display: inline-block; margin-right: 9px; vertical-align: 1px; }
-.po-mkt td { color: var(--th-ink); }
-.po-mkt td b { font-weight: 500; }
-.po-n { font-size: 24px; font-weight: var(--th-display-weight); line-height: 1; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; white-space: nowrap; }
-.po-light { width: 9px; height: 9px; border-radius: 50%; background: var(--th-data-3); box-shadow: 0 0 8px 2px rgb(175 197 220 / 0.5); } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
-.po-sq { width: 9px; height: 9px; border-radius: 2px; background: var(--bn-ice-200); }
-.po-sq-o { background: transparent; box-shadow: inset 0 0 0 1.5px var(--bn-ice-200); } /* taste-skill-ignore: a chart's own mark */
-.po-bar { display: block; max-width: 220px; height: 3px; margin-top: 8px; overflow: hidden; border-radius: 2px; background: rgb(245 247 250 / 0.14); }
-.po-bar i { display: block; width: 100%; height: 100%; background: var(--th-data-3); transform: scaleX(var(--w, 0.7)); transform-origin: 0 50%; }
-.po-act { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 16px; margin-top: auto; padding-top: 10px; }
-.po-go {
+@container (min-width: 560px) {
+  .pf-core-in { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); }
+  .pf-data { padding-right: 22px; }
+  .pf-counts > div { gap: 10px; }
+}
+
+/* The ports: one per product, its drawn icon, its name and its verb. At rest a faint step of light on the night; the
+   chosen one navy with an ice rim, its verb in ink. */
+.pf-wire { position: relative; margin-top: 40px; }
+.pf-ports { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; margin: 0; padding: 0; list-style: none; }
+.pf-ports > li { display: grid; }
+.pf-port {
+  --th-surface: #1A212A;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: start;
+  gap: 8px 10px;
+  width: 100%;
+  min-height: 100%;
+  padding: 13px 13px 15px;
+  border: 1.5px solid transparent;
+  border-radius: var(--bn-r-tile);
+  background: rgb(245 247 250 / 0.045);
+  color: var(--th-ink);
+  text-align: left;
+  text-decoration: none;
+  transition: background-color 0.25s ease-out, border-color 0.25s ease-out, transform 0.15s var(--th-ease);
+  -webkit-tap-highlight-color: transparent;
+}
+button.pf-port { cursor: pointer; }
+.pf-port:hover { background: rgb(183 201 221 / 0.1); }
+.pf-port:active { transform: scale(0.985); }
+.pf-port[aria-selected="true"] { --th-surface: #213047; border-color: var(--bn-ice-200); background: var(--bn-night-800); } /* taste-skill-ignore: the chosen option's ice rim (DESIGN.md: the chosen chip is ice) */
+.pf-ic { flex: none; width: 24px; height: 24px; }
+.pf-pn { align-self: center; font-size: 20px; font-weight: 400; line-height: 1.2; letter-spacing: -0.01em; text-wrap: balance; }
+.pf-pv { grid-column: 1 / -1; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 1.4; text-wrap: pretty; }
+.pf-port[aria-selected="true"] .pf-pv { color: var(--th-ink); }
+
+/* The stage: the open product's words and its working thing. */
+.pf-stage { position: relative; margin-top: 32px; overflow-anchor: none; overflow-clip-margin: 24px; }
+.pf-panel { display: grid; row-gap: 28px; }
+.pf-words { display: grid; justify-items: start; align-content: start; row-gap: 16px; }
+.pf-claim { color: var(--th-pay); font-size: 20px; line-height: 1.3; text-wrap: balance; }
+.pf-words .ps-lede { margin-top: -4px; }
+.pf-words .ps-card-action { margin-top: 6px; }
+.pf-who { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+.pd-obj { min-width: 0; }
+.pf-h3 { margin-bottom: 20px; font-size: clamp(1.75rem, 1.3rem + 1.1vw, 2.375rem); font-weight: var(--th-display-weight); line-height: 1.12; letter-spacing: -0.025em; }
+.pf-stage[data-mode="static"] .pf-item + .pf-item { margin-top: 64px; }
+/* Paper on an ice tile inside the night: the tile keeps the day's roles (Night Carries Data), the second tone the step
+   darker that ice needs (4.8:1). */
+.bn-night .pd-tile {
+  --th-ground: #DCE6F1;
+  --th-ink: #1A1F26;
+  --th-muted: #4A5563;
+  --th-pay: #566476;
+  --th-line: #DCE2E9;
+  --th-surface: #FFFFFF;
+  --th-tint: #EEF2F7;
+  --th-tint-hover: #E3E9F1;
+  --th-action: #213047;
+  --th-action-ink: #F5F7FA;
+  --th-action-hover: #2A3B55;
+  --th-solid: #213047;
+  --th-solid-ink: #F5F7FA;
+  --th-solid-hover: #2A3B55;
+  --th-a: #3D5E7F;
+  --th-mark: #B7C9DD;
+  --th-occ-ring: #213047;
+  --th-dot-ring: #213047B3;
+  --th-dot: #213047;
+  --th-dot-out: #4A5563;
+  --th-focus: #213047;
+  --th-ground-line: #DCE2E9;
+  --th-pending: color-mix(in srgb, #4A5563 85%, #FFFFFF);
+  --th-wire: color-mix(in srgb, #4A5563 45%, #FFFFFF);
+  --th-edge: color-mix(in srgb, #4A5563 70%, #FFFFFF);
+  display: grid;
+  row-gap: 14px;
+  color: var(--th-ink);
+}
+.pd-cap { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; text-wrap: pretty; }
+
+/* The lines from the core: the trunk, the bus and the turns at rest in faint ice, the chosen line lit, a node where each
+   meets its port, and the light that runs down the chosen line once per pick. */
+.pf-lines { position: absolute; top: 0; left: 0; z-index: 2; overflow: visible; pointer-events: none; }
+.pf-base { fill: none; stroke: rgb(183 201 221 / 0.28); stroke-width: 1.5; }
+.pf-lit { fill: none; stroke: var(--bn-ice-200); stroke-width: 2; stroke-linecap: round; }
+.pf-rest { fill: var(--bn-night-950); stroke: rgb(183 201 221 / 0.6); stroke-width: 1.5; }
+.pf-origin { fill: var(--bn-ice-200); }
+.pf-on { transition: opacity 0.2s ease-out; }
+.pf-on-dot, .pf-spark-dot { fill: #EDF3F9; }
+.pf-spark { opacity: 0; }
+
+/* The way to the team whatever is open (hidden, its place kept, while Custom solutions says it in its own button), and
+   the page of every solution, the band's quiet second action: an outlined pill, never a filled one. */
+.pf-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; margin-top: 40px; }
+.pf-ask { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.5; }
+.pf-ask a { color: var(--th-ink); font-weight: 500; }
+.pf-ask[data-off] { visibility: hidden; }
+@media screen and (max-width: 1023px) { .pf-ask[data-off] { display: none; } }
+.pf-all-link {
   display: inline-flex;
   align-items: center;
   gap: 10px;
-  min-height: 48px;
-  padding: 0 22px;
+  min-height: 44px;
+  padding: 0 20px;
+  border: 1px solid rgb(245 247 250 / 0.3); /* taste-skill-ignore: an outlined pill (Blue Night chrome, owner 2026-10-17) */
   border-radius: var(--bn-r-pill);
-  background: var(--th-action);
-  color: var(--th-action-ink);
-  font-size: var(--th-text-body);
+  color: var(--th-ink);
+  font-size: var(--th-text-small);
   font-weight: 500;
   white-space: nowrap;
-  transition: background-color 0.18s, transform 0.15s var(--th-ease);
+  transition: background-color 0.15s, border-color 0.15s, transform 0.15s var(--th-ease);
 }
-.po-go:hover { background: var(--th-action-hover); }
-.po-go:active { transform: scale(0.97); }
-.po-go svg { transition: transform 0.2s var(--th-ease); }
-.po-go:hover svg { transform: translateX(3px); }
-/* Reports' tile: ice, a page of the property report lying on it, raised by one soft shade. */
-.po-rp { background: var(--bn-ice-tile); }
-.po-sheet { display: grid; row-gap: 10px; width: 100%; max-width: 380px; margin-top: 4px; padding: 16px 18px 14px; border-radius: 10px; background: var(--bn-paper); box-shadow: 0 1px 0 rgb(26 31 38 / 0.06), 0 22px 36px -26px rgb(33 48 71 / 0.5); } /* taste-skill-ignore: it floats (the map, the page, a tile) */
-.po-sheet-h { display: flex; justify-content: space-between; gap: 12px; font-size: var(--th-text-fine); line-height: 21px; }
-.po-sheet-h span:first-child { font-weight: 500; }
-.po-sheet-h span:last-child { flex: none; color: var(--th-pay); font-variant-numeric: tabular-nums; }
-.po-rail { display: grid; grid-template-columns: repeat(9, minmax(0, 1fr)); gap: 4px; }
-.po-rail i { height: 4px; border-radius: 2px; background: var(--th-line); }
-.po-rail i[data-at="read"] { background: var(--bn-night-800); }
-.po-rail i[data-at="now"] { background: var(--bn-glow-500); }
-.po-bars { display: grid; grid-auto-columns: minmax(0, 1fr); grid-auto-flow: column; gap: 8px; align-items: end; height: 92px; padding-top: 6px; }
-.po-bars > span { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; gap: 4px; height: 100%; }
-.po-bars i { display: block; width: 100%; height: calc(var(--h, 0.5) * (100% - 22px)); border-radius: 2px 2px 0 0; background: var(--bn-glow-500); transform-origin: 50% 100%; }
-.po-bars small { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 18px; }
-/* The Connector's tile: cloud, a question asked in Greek and the answer it gets. */
-.po-cn { background: var(--bn-cloud-100); }
-.po-chat { display: flex; flex-direction: column; gap: 10px; margin-top: 2px; }
-.po-chat > .ps-tag { align-self: flex-start; }
-.po-q { align-self: flex-end; max-width: 92%; padding: 10px 18px; border-radius: 22px; background: var(--bn-ice-200); color: var(--bn-night-950); font-size: var(--th-text-small); line-height: 1.45; }
-.po-a { max-width: 96%; padding: 14px 18px; border-radius: 14px; background: var(--bn-night-700); color: var(--bn-ink-night); font-size: var(--th-text-small); line-height: 1.5; }
-.po-chat [lang="el"] { font-family: "Google Sans", var(--th-font); }
+.pf-all-link:hover { border-color: rgb(183 201 221 / 0.65); background: rgb(183 201 221 / 0.1); }
+.pf-all-link:active { transform: scale(0.97); }
+.pf-all-link svg { transition: transform 0.2s var(--th-ease); }
+.pf-all-link:hover svg { transform: translateX(3px); }
+
 @media (min-width: 641px) {
-  .po { padding: 120px 0; }
-  .po-tile { padding: 32px; }
-  .po-grid { gap: 16px; margin-top: 48px; }
+  .pf-in { padding: 0 calc(var(--bn-gut) - var(--lh-m)); }
 }
 @media (min-width: 1024px) {
-  .po { padding: 136px 0 120px; }
-  .po-grid { grid-template-columns: repeat(12, minmax(0, 1fr)); }
-  /* The Playground's tile the full width, its words on the left and Cyprus in three markets on the right; Reports and
-     the Connector side by side under it. Each tile is as tall as what is on it. */
-  .po-pg {
-    display: grid;
-    grid-column: 1 / -1;
-    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
-    grid-template-rows: auto auto auto 1fr;
-    grid-template-areas: "eb mkt" "h3 mkt" "say mkt" "act mkt";
-    column-gap: 56px;
-    row-gap: 12px;
-    padding: 40px;
+  .pf-top { grid-template-columns: minmax(0, 1fr) clamp(440px, 44%, 600px); column-gap: 48px; align-items: end; }
+  .pf-wire { margin-top: 56px; }
+  .pf-ports { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  .pf-port { align-items: center; gap: 6px 12px; padding: 19px 19px 17px; }
+  .pf-ic { width: 28px; height: 28px; }
+  .pf-pv { font-size: var(--th-text-small); }
+  .pf-stage { margin-top: 40px; }
+  .pf-panel { grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); column-gap: 56px; align-items: start; }
+  .pf-foot { margin-top: 48px; }
+}
+@media (min-width: 1024px) and (max-width: 1279px) {
+  .pf-panel { column-gap: 40px; }
+}
+
+@media screen {
+  /* One product on the stage; the others lie hidden over it, keeping their width (their charts are drawn to it). The
+     one going out fades in 0.14s; the one coming in follows once it has gone (0.12s) and settles 12px, so two
+     products' words are never read over each other. The stage's own height eases to the new product's
+     (ProductsSection, 380ms). */
+  .pf-stage[data-mode="tabs"] .pf-item:not([data-open]) {
+    position: absolute;
+    inset: 0 0 auto;
+    opacity: 0;
+    visibility: hidden;
+    transform: translate3d(0, 12px, 0);
+    pointer-events: none;
+    transition: opacity 0.14s var(--rv-fade), transform 0s linear 0.14s, visibility 0s linear 0.14s;
   }
-  .po-pg > .po-eb { grid-area: eb; }
-  .po-pg > h3 { grid-area: h3; }
-  .po-pg > .po-tsay { grid-area: say; }
-  .po-pg > .po-mkt { grid-area: mkt; align-self: center; margin-top: 0; }
-  .po-pg > .po-act { grid-area: act; align-self: end; }
-  .po-rp, .po-cn { grid-column: span 6; }
+  .pf-stage[data-mode="tabs"] .pf-item[data-open] { position: relative; transition: opacity 0.3s var(--rv-fade) 0.12s, transform 0.42s var(--rv-ease) 0.12s; }
+  .pf-stage[data-instant] .pf-item { transition: none !important; }
 }
-@media (max-width: 480px) {
-  .po-mkt tr { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: 12px; padding: 12px 0; }
-  .po-mkt :is(th, td) { padding: 0; }
-  .po-mkt td:last-child { grid-column: 1 / -1; margin-top: 6px; }
-  .po-mkt th { align-self: baseline; }
-  .po-n { text-align: right; }
+@media (prefers-reduced-motion: reduce) {
+  .pf-port, .pf-all-link, .pf-all-link svg, .pf-on, .pf-stage .pf-item { transition: none !important; }
 }
+@media print {
+  .pf-lines { display: none; }
+  .pf-stage[data-mode="tabs"] .pf-item::before { display: block; padding: 18px 0 8px; font-size: var(--th-heading); font-weight: 300; content: attr(data-name); }
+  .pf-ask[data-off] { visibility: visible; }
+}
+@media (forced-colors: active) {
+  .pf-core { border: 1px solid CanvasText; } /* taste-skill-ignore: forced-colors fallback */
+  .pf-port { border-color: CanvasText; }
+  .pf-port[aria-selected="true"] { border-color: Highlight; }
+}
+
+/* ── Custom solutions' sheet (CustomSection): four requests as a customer might write them, paper on its ice tile ── */
+.cs-sheet { padding: 22px 20px 20px; border-radius: 10px; background: var(--bn-paper); box-shadow: 0 1px 0 rgb(26 31 38 / 0.06), 0 22px 36px -26px rgb(33 48 71 / 0.5); } /* taste-skill-ignore: a sheet lying raised on its tile (DESIGN.md: the report's sheet) */
+.cs-sheet-h { color: var(--th-pay); font-size: var(--th-text-fine); line-height: 22px; }
+.cs-asks { display: grid; margin: 10px 0 0; padding: 0; list-style: none; }
+.cs-asks li { padding: 14px 0; border-top: 1px solid var(--th-line); color: var(--th-ink); font-size: var(--th-text-small); line-height: 1.5; text-wrap: pretty; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.cs-asks li:last-child { padding-bottom: 0; }
+.cs-asks b { font-weight: 500; }
+.cs-asks q { color: var(--th-muted); quotes: "\201C" "\201D"; }
+@media (min-width: 641px) {
+  .cs-sheet { padding: 26px 28px 24px; }
+}
+
+/* ── The market now (TownsSection): six towns on an ice band, and when each source was last read ── */
+.tw { scroll-margin-top: 64px; }
+.tw-in { width: 100%; max-width: calc(1312px + 2 * var(--bn-gut) - 2 * var(--lh-m)); margin: 0 auto; padding: 0 16px; }
+.tw-head { display: grid; row-gap: 18px; }
+.tw-head .bn-eb { margin-bottom: 14px; }
+.tw-h { max-width: 20em; font-size: var(--th-heading); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
+.tw-say { max-width: 34rem; color: var(--th-muted); font-size: var(--th-text-body); line-height: 1.55; text-wrap: pretty; }
+.tw-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; margin: 32px 0 0; padding: 0; list-style: none; }
+/* A card: its town's own night map across its top (the tour's picture, cropped on the areas drawn there), the name
+   on the map's foot, then the median nightly rate large, the season's occupancy as a light-bar in its class's blue
+   (Brighter Is Fuller), what the figures rest on, and the way into the Playground. A navy card standing on the ice
+   band (2026-10-18: the band turned ice so it never touches the products' night): live data on night, the card
+   carrying the night's roles (`bn-night` on it). */
+.tw-card { min-width: 0; }
+.tw-link {
+  position: relative;
+  display: grid;
+  align-content: start;
+  row-gap: 8px;
+  height: 100%;
+  padding: 0 14px 16px;
+  overflow: hidden;
+  border-radius: var(--bn-r-tile);
+  background: var(--bn-night-800);
+  color: var(--th-ink);
+  isolation: isolate;
+  transition: background-color 0.2s;
+}
+.tw-link:hover { background: var(--bn-night-700); }
+.tw-map { position: relative; display: block; height: 60px; margin: 0 -14px; overflow: hidden; }
+.tw-map img { display: block; width: 100%; height: 100%; object-fit: cover; transform: scale(1.5); transition: transform 0.6s var(--th-ease); }
+.tw-link:hover .tw-map img { transform: scale(1.6); }
+/* The map fades into the card under the name, so the name holds 7:1 over the streets. */
+.tw-map::after { position: absolute; inset: 0; background: linear-gradient(180deg, rgb(33 48 71 / 0) 20%, var(--bn-night-800) 100%); content: ""; } /* taste-skill-ignore: the map's fade into the card (owner, 2026-10-14: the frameless fade) */
+.tw-link:hover .tw-map::after { background: linear-gradient(180deg, rgb(42 59 85 / 0) 20%, var(--bn-night-700) 100%); } /* taste-skill-ignore: the map's fade into the card */
+/* The name on the map's foot, the way into the Playground beside it. */
+.tw-name { position: relative; z-index: 1; display: flex; align-items: center; justify-content: space-between; gap: 8px; margin-top: -24px; font-size: 20px; font-weight: 500; line-height: 26px; letter-spacing: -0.01em; }
+.tw-name svg { flex: none; color: var(--th-a); transition: transform 0.2s var(--th-ease); }
+.tw-link:hover .tw-name svg { transform: translateX(3px); }
+.tw-rate { display: grid; row-gap: 2px; margin-top: 4px; }
+.tw-rate b { font-size: 30px; font-weight: var(--th-display-weight); line-height: 1; letter-spacing: -0.03em; font-variant-numeric: tabular-nums; }
+.tw-rate span { color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; text-wrap: pretty; }
+.tw-occ { display: grid; row-gap: 6px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
+.tw-occ b { color: var(--th-ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+.tw-bar { position: relative; display: block; height: 4px; overflow: hidden; border-radius: 2px; background: rgb(245 247 250 / 0.12); }
+.tw-bar i { position: absolute; inset: 0; border-radius: 2px; background: var(--tw-c, var(--th-data-3)); box-shadow: 0 0 10px var(--tw-c, var(--th-data-3)); transform: scaleX(var(--w, 0.7)); transform-origin: 0 50%; } /* taste-skill-ignore: a light's glow is the data (Blue Night) */
+.tw-occ[data-step="1"] { --tw-c: var(--th-data-1); }
+.tw-occ[data-step="2"] { --tw-c: var(--th-data-2); }
+.tw-occ[data-step="3"] { --tw-c: var(--th-data-3); }
+.tw-occ[data-step="4"] { --tw-c: var(--th-data-4); }
+.tw-meta { display: grid; row-gap: 2px; color: var(--th-muted); font-size: var(--th-text-fine); line-height: 21px; }
+.tw-meta b { color: var(--th-ink); font-weight: 500; font-variant-numeric: tabular-nums; }
+/* When each source was last read: one row under a hairline at the band's foot. */
+.tw-read { display: flex; flex-wrap: wrap; align-items: baseline; gap: 10px 28px; margin-top: 28px; padding-top: 18px; border-top: 1px solid var(--th-line); color: var(--th-muted); font-size: var(--th-text-fine); line-height: 22px; } /* taste-skill-ignore: a hairline in a list or table (owner: hairlines allowed, DESIGN.md) */
+.tw-read-h { color: var(--th-ink); font-weight: 500; }
+.tw-read dl { display: flex; flex-wrap: wrap; gap: 6px 28px; margin: 0; }
+.tw-read dl > div { display: flex; flex-wrap: wrap; gap: 0 8px; }
+.tw-read dt { color: var(--th-ink); }
+.tw-read dd { margin: 0; }
+.tw-read dd b { color: var(--th-ink); font-weight: 500; }
+.tw-read .ps-tag { color: var(--th-muted); }
+@media (min-width: 641px) {
+  .tw-in { padding: 0 calc(var(--bn-gut) - var(--lh-m)); }
+  .tw-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
+  .tw-link { row-gap: 10px; padding: 0 18px 18px; }
+  .tw-map { height: 84px; margin: 0 -18px; }
+  .tw-rate b { font-size: 40px; }
+}
+@media (min-width: 1024px) {
+  .tw-head { grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); column-gap: 64px; align-items: end; }
+  .tw-grid { margin-top: 40px; }
+}
+/* From 1280px the six stand in one row, so their rates and their bars read across like a table's. */
+@media (min-width: 1280px) {
+  .tw-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .tw-link { padding: 0 16px 18px; }
+  .tw-map { margin: 0 -16px; }
+}
+@media screen and (prefers-reduced-motion: no-preference) {
+  .tw-bar i { transition: transform 1000ms var(--rv-ease) calc(var(--i, 0) * 70ms + 300ms); }
+  .tw-grid[data-mwait]:where(:not(:focus-within)) .tw-bar i { transform: scaleX(0); transition: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .tw-link, .tw-map img, .tw-name svg { transition: none; }
+}
+@media (forced-colors: active) {
+  .tw-link, .cs-sheet { border: 1px solid CanvasText; } /* taste-skill-ignore: forced-colors fallback */
+}
+
+/* The close's place search: the first screen's pill, under the heading that names it. */
+.ps-close-find { max-width: 520px; margin-top: 26px; }
+.ps-close-find .lh-find { margin-top: 0; }
 
 /* ── The questions: a data sheet (QuestionsSection) ── */
 /* On white, compact (owner, 2026-10-17: "more techy and not get so much space"): a header row under a firm rule, then
    one row a question, each its short question, its answer in one line with its figures in tabular numerals, a dot for
    in place now or not yet, and a toggle that opens the whole answer. Hairlines between rows, as in a table. */
 .qs { padding: 88px 0 72px; color: var(--th-ink); }
-.qs-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 32px; }
+.qs-in { display: grid; grid-template-columns: minmax(0, 1fr); row-gap: 32px; width: 100%; max-width: calc(1312px + 2 * var(--bn-gut)); margin: 0 auto; padding-right: var(--bn-gut); padding-left: var(--bn-gut); }
 .qs-head .bn-eb { margin-bottom: 14px; }
 .qs-h { max-width: 22ch; font-size: clamp(2rem, 1.6rem + 0.9vw, 2.375rem); font-weight: var(--th-display-weight); line-height: 1.1; letter-spacing: -0.025em; text-wrap: balance; }
 .qs-sheet { min-width: 0; }

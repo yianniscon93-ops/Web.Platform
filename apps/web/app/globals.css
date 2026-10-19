@@ -336,7 +336,11 @@
   --bn-night-700: #2A3B55;
   --bn-glow-600: #2E3D50;
   --bn-glow-500: #3D5E7F;
-  --bn-mist-300: #A3AFBB;
+  /* The night's second tone, for every word set in it on night (secondary text, the payoff words, eyebrows). Raised
+     from #A3AFBB on 2026-10-18 ("on the dark hero the words are a bit difficult to read"): a step lighter and a touch
+     towards ice, so it reads as the night's blue-grey and still parts from the ink. 8.5:1 on the hero's ground, 9.9:1
+     on night-950, 7.4:1 on night-800, 7.2:1 in the search pill. */
+  --bn-mist-300: #B6C3D1;
   --bn-mist-dim: #8996A5;
   --bn-ice-200: #B7C9DD;
   --bn-ice-tile: #DCE6F1;
@@ -435,9 +439,9 @@
 .bn-night {
   --th-ground: #14191F;
   --th-ink: #F5F7FA;
-  /* Secondary text and the payoff words on night: mist, 7.9:1 on night-950 and 6.0:1 on night-800. */
-  --th-muted: #A3AFBB;
-  --th-pay: #A3AFBB;
+  /* Secondary text and the payoff words on night: mist (--bn-mist-300), 9.9:1 on night-950 and 7.4:1 on night-800. */
+  --th-muted: #B6C3D1;
+  --th-pay: #B6C3D1;
   --th-line: rgb(245 247 250 / 0.12);
   --th-surface: #18202B;
   --th-tint: rgb(183 201 221 / 0.14);

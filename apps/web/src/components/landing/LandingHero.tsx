@@ -68,7 +68,7 @@ function Fresh({ island }: { island: Island }) {
     <p className="lh-fresh m-0">
       {demo ? "Sample data: " : "Backed by "}
       <b>{int(stats.listingCount)}</b> short-&#8288;lets, <b>{int(rentals.supply)}</b> long-&#8288;lets and{" "}
-      <b>{int(invest.supply)}</b> for-sale ads.
+      <b>{int(invest.supply)}</b> for-&#8288;sale ads.
       {when && <> Short-&#8288;let calendars last read {when}.</>}
     </p>
   );
@@ -89,6 +89,7 @@ export default async function LandingHero() {
   const stops: TourStop[] = HERO_TOWNS.map((town, i) => ({
     key: town.key,
     town: town.name,
+    townEl: town.nameEl,
     src: town.src,
     size: town.width,
     west: town.west,
@@ -113,9 +114,9 @@ export default async function LandingHero() {
               owner's word ("intelligent"): what Plotsights is, before what it lets you do. */}
           <p className="bn-eb lh-eb m-0">Cyprus property intelligence</p>
           {/* The owner's headline (plan 3, option A, 2026-10-17), three thin lines. The name is read out of it: "Plot"
-              and "sights" (of "Insights") are in the night's ink and every other word in mist, so Plotsights is spelt
-              in order as the opening has just struck it ("make sure the plot and sights strike differently";
-              direction G's device, set in Blue Night's two tones instead of a colour). Each line is set as a line, and
+              and "sights" (of "Insights") are in white at the wordmark's weight and every other word in mist at 360,
+              so Plotsights is spelt in order as the opening has just struck it ("make sure the plot and sights strike
+              differently"; direction G's device, set in Blue Night's tones and a weight step instead of a colour). Each line is set as a line, and
               read out as one plain sentence. */}
           <h1 className="th-h1 m-0" aria-label="Plot your next move in Cyprus property. Insights backed by data.">
             <span className="lh-line">
@@ -126,15 +127,16 @@ export default async function LandingHero() {
               In<span className="lh-name">sights</span> backed by data.
             </span>
           </h1>
-          {/* Two sentences with two jobs, set as two tiers: what is tracked and modelled (all four kinds of listing,
-              the owner's "str ltr home sales and PLOTS"), in ink; then what it is for, in mist. The modelled part is
-              what a street earns, rents for and sells for, which plots are not claimed to have. */}
+          {/* One sentence, two styles (owner, 2026-10-18: keep "who it is for", say we track every kind of property
+              and turn it into actionable insights; drop the second line, set it "a bit bigger so the hero is
+              understandable"): who it is for in the paper white at 500, then what we do in ink. On a phone it is set
+              under the map (landing-hero.css). */}
           <p className="th-lede m-0">
+            <span className="lh-who">For all property professionals.</span>{" "}
             <span className="lh-what">
-              We track short-&#8288;lets, long-&#8288;lets, homes and plots for&nbsp;sale across Cyprus, and model what any
-              street earns, rents for and sells for.
-            </span>{" "}
-            <span className="lh-for">Decide where to buy, what to charge and what to advise.</span>
+              We track every kind of property in Cyprus, from short-&#8288;lets to plots for&nbsp;sale, and turn the
+              data into actionable insights.
+            </span>
           </p>
           <PlaceSearch />
           <Fresh island={island} />

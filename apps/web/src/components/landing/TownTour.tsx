@@ -130,8 +130,14 @@ function halo(colour: string): HTMLCanvasElement | null {
 }
 // Each class's halo: how strong and how wide, in screen px; a listing lit inside a drawn area takes a wider one.
 const HALO_ALPHA = [0, 0.1, 0.13, 0.17, 0.24];
-const HALO_PX = [0, 12, 14, 17, 21];
+const HALO_PX = [0, 15, 17, 21, 26];
 const HALO_LIT = 1.5;
+// A light's dot, in screen px: its radius in the town at large and once lit inside an area, and the width of the
+// dark ring a lit one sits on. A size up on 2026-10-18 (2.3 and 3 before), with the sharper map: the lights stay
+// the brightest and the largest marks on it, a street's dot a fifth of their width.
+const DOT_R = 2.8;
+const LIT_R = 3.6;
+const LIT_EDGE = 1.2;
 
 /** An area with too few listings to quote is drawn, with no figures. */
 const quoted = (a: TourArea): a is TourArea & { occupied: number; rate: number } => a.occupied != null && a.rate != null;
@@ -431,7 +437,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             if ((d.area[i] !== OUT) !== inside || (inside && into(i) >= 0) || (layer >= 0 && d.step[i] !== layer)) continue;
             const a = shown(i);
             if (a <= 0) continue;
-            const r = (2.3 + (layer < 0 ? 0.9 : 0)) * dpr * a;
+            const r = (DOT_R + (layer < 0 ? 0.9 : 0)) * dpr * a;
             ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
             ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
           }
@@ -447,7 +453,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         if (d.area[i] === OUT) continue;
         const p = into(i);
         if (p < 0 || p >= 1) continue;
-        const r = (3.8 + 5.2 * outExpo(p)) * dpr;
+        const r = (LIT_R + 0.8 + 6 * outExpo(p)) * dpr;
         ctx.globalAlpha = gone * (1 - p);
         ctx.beginPath();
         ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
@@ -465,7 +471,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
           const p = into(i);
           if (p < 0) continue;
           const swell = p >= 1 ? 1 : 1 + 0.7 * Math.sin(Math.PI * outExpo(p));
-          const r = (3 * swell + (pass < 0 ? 1.1 : 0)) * dpr * shown(i);
+          const r = (LIT_R * swell + (pass < 0 ? LIT_EDGE : 0)) * dpr * shown(i);
           if (r <= 0) continue;
           ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
           ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
@@ -481,7 +487,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
         if (d.step[i] !== 0) continue;
         const a = shown(i);
         if (a <= 0) continue;
-        const r = 2.3 * dpr * a;
+        const r = DOT_R * dpr * a;
         ctx.moveTo(d.x[i] * k + r, d.y[i] * k);
         ctx.arc(d.x[i] * k, d.y[i] * k, r, 0, 6.2832);
       }
@@ -669,8 +675,8 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
   return (
     <div ref={root} className="lh-town">
       {/* The map, frameless, fading into the night at the words' side, under the nav and at its foot (the fade the
-          owner asked for on 2026-10-14, kept for Blue Night). Its town and the key to its shades are in the strip under it, with the tour's
-          controls and the credit. */}
+          owner asked for on 2026-10-14, kept for Blue Night). Its town is named on it; the key to its shades is in the
+          strip under it, with the tour's controls and the credit. */}
       <div className="lh-frame">
         {/* The drawings alone fade into the night. What is drawn over them is on a sheet of its own, in the same
             square, so no corner or card fades with them. */}
@@ -745,7 +751,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
               </span>
             </div>
           </div>
-          {/* Below 1024px the band shows part of the town (its name is in the window's bar), and the figures are not
+          {/* Below 1024px the band shows part of the town (its name is set over it, as on the whole map), and the figures are not
               pinned on the map: the last area drawn says its own here, for as long as the band stays on it. When the
               band moves on to the next area the figures go, and that area's come once it is drawn. */}
           {drawn > 0 && quoted(current) && (
@@ -754,6 +760,20 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
             </p>
           )}
         </div>
+        {/* The town's name on its map, in English and under it in Greek (owner, 2026-10-18, hero concept A: "a town
+            you recognise at a glance"), set as a map names its town, not as a badge. It changes with the tour: it goes
+            as the town's areas go and comes in with the next map; the town the page arrives on is simply there. Over
+            the fade, never under the words; it waits out the opening with everything else drawn on the map. */}
+        <p
+          key={`place-${stopAt}`}
+          className="lh-place m-0"
+          data-leaving={leaving ? "" : undefined}
+          data-arrived={toured ? undefined : ""}
+          data-held={held ? "" : undefined}
+        >
+          {stop.town}
+          <span lang="el">{stop.townEl}</span>
+        </p>
       </div>
       {/* What the moving picture shows, for a reader who cannot watch it. */}
       <ul className="sr-only">
@@ -784,11 +804,7 @@ export default function TownTour({ stops, demo }: { stops: TourStop[]; demo: boo
           <SkipForward size={12} strokeWidth={2.4} aria-hidden="true" />
           {wantNext ? "Loading the next town" : "Next town"}
         </button>
-        {/* Which town is showing, and what the shades of its listings mean. */}
-        <b key={`town-${stopAt}`} className="lh-strip-town" data-leaving={leaving ? "" : undefined}>
-          {stop.town}
-        </b>
-        {/* Which listings the dots are, and what their shades mean. */}
+        {/* Which listings the dots are, and what their shades mean. The town showing is named on its map. */}
         <span className="lh-key">
           <span className="lh-key-of">
             Short-&#8288;lets this season

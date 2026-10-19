@@ -668,7 +668,7 @@
       },
       "headline": {
         "displayName": "Headline",
-        "purpose": "--th-heading: a product chapter's name and claim: 32 to 44px, 300, two-tone."
+        "purpose": "--th-heading: a section's two-tone heading (\"Market intelligence, four ways.\"): 32 to 44px, 300. A product's name in its row on the products' stage is the index size, 28 to 38px, 300."
       },
       "close": {
         "displayName": "Close",

@@ -51,7 +51,7 @@ export interface HeroArea {
   playgroundHref: string;
 }
 
-/** What the sections show before the second screen has published anything: the whole island, still loading. */
+/** What the sections show when the page has handed nothing over: the whole island, still loading. */
 const DEFAULT_HERO_AREA: HeroArea = {
   place: CYPRUS_AREA,
   polygon: CYPRUS_AREA.polygon,
@@ -67,14 +67,47 @@ const DEFAULT_HERO_AREA: HeroArea = {
   playgroundHref: "/dashboard",
 };
 
+/** The island's figures as the server read them (getIsland in island.ts). */
+export interface IslandFigures {
+  stats: SelectionStats | null;
+  rentals: RentalStats | null;
+  invest: InvestStats | null;
+  occMedian: number | null;
+}
+
+/** The whole island with the figures the server read for it: the place the product chapters are about. */
+function islandArea({ stats, rentals, invest, occMedian }: IslandFigures): HeroArea {
+  return {
+    place: CYPRUS_AREA,
+    polygon: CYPRUS_AREA.polygon,
+    changed: false,
+    name: CYPRUS_AREA.name,
+    count: stats?.listingCount ?? null,
+    own: {},
+    // No map on this page counts the listings, so the API's own counts stand for every place.
+    countsFailed: true,
+    dots: null,
+    figures: stats && { stats, rentals, invest, occMedian },
+    pending: false,
+    status: stats ? "ready" : "error",
+    playgroundHref: "/dashboard",
+  };
+}
+
 // Two contexts, so the hero, which only publishes, is not re-rendered by what it publishes.
 const ValueContext = createContext<HeroArea>(DEFAULT_HERO_AREA);
 const PublishContext = createContext<Dispatch<SetStateAction<HeroArea>> | null>(null);
 
 const nowhere: Dispatch<SetStateAction<HeroArea>> = () => {};
 
-export function HeroAreaProvider({ children }: { children: ReactNode }) {
-  const [value, setValue] = useState<HeroArea>(DEFAULT_HERO_AREA);
+/**
+ * Holds the place the sections are about. Given the island's figures from the server (app/page.tsx), the chapters
+ * are rendered with their answers already in, so they read without script and nothing shows "Reading the listings
+ * here" while the page loads (until 2026-10-18 a client effect handed them over after hydration: IslandSource and
+ * PublishIsland).
+ */
+export function HeroAreaProvider({ island, children }: { island?: IslandFigures; children: ReactNode }) {
+  const [value, setValue] = useState<HeroArea>(() => (island ? islandArea(island) : DEFAULT_HERO_AREA));
   return (
     <PublishContext.Provider value={setValue}>
       <ValueContext.Provider value={value}>{children}</ValueContext.Provider>

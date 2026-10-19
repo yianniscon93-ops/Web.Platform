@@ -25,9 +25,9 @@
 // read CSS variables. If a token changes, change it here and rerun. The palette
 // is Blue Night's (owner, 2026-10-17; DESIGN.md): the town at night, drawn on
 // the hero's own navy, which shows through wherever there is land. The land is
-// left clear, the sea is a darker wash, the coast and the streets are faint
-// dotted lines of ice-blue and the main roads faint solid ones; no buildings,
-// parks or sand. The listings are the town's lights, painted over it by the
+// left clear, the sea is a dark wash a clear step under it, the coast and the
+// streets are dotted lines of ice-blue and the main roads solid ones; no
+// buildings, parks or sand. The listings are the town's lights, painted over it by the
 // page. PALETTES can hold more than one, each written to its own file, should a
 // second ever be wanted again (the light map of direction G is in git history).
 //
@@ -49,22 +49,23 @@ const NAMES = !!process.env.NAMES;
 // as far west and east of the longitude `lng` as makes that ground square (see
 // the projection below). `sea` and `land` are [lat, lng] of a point in the open
 // sea and of one in the built-up town, for the check that the water is the
-// right way round; a town with no sea in its view has no `sea`. The order here
-// is the order in heroTowns.ts, which is the order the first screen's tour
-// visits them in.
+// right way round; a town with no sea in its view has no `sea`. `el` is its
+// name in Greek, set under the English one on its map in the first screen
+// (owner, 2026-10-18). The order here is the order in heroTowns.ts, which is the
+// order the first screen's tour visits them in.
 const TOWNS = [
   // The old port and castle are near 34.672 N 33.042 E, the marina just west of them; the seafront runs north-east from there.
-  { key: "limassol", name: "Limassol", south: 34.665, north: 34.695, lng: 33.04, sea: [34.667, 33.052], land: [34.69, 33.03] },
+  { key: "limassol", name: "Limassol", el: "Λεμεσός", south: 34.665, north: 34.695, lng: 33.04, sea: [34.667, 33.052], land: [34.69, 33.03] },
   // The walled old town is a circle about 1.6 km across round 35.174 N 33.364 E; the modern centre runs south from it. Inland.
-  { key: "nicosia", name: "Nicosia", south: 35.154, north: 35.184, lng: 33.364, land: [35.165, 33.362] },
+  { key: "nicosia", name: "Nicosia", el: "Λευκωσία", south: 35.154, north: 35.184, lng: 33.364, land: [35.165, 33.362] },
   // Kato Paphos: the harbour and castle are near 34.7545 N 32.4075 E, the hotel seafront runs east from there.
-  { key: "paphos", name: "Paphos", south: 34.745, north: 34.775, lng: 32.418, sea: [34.748, 32.405], land: [34.77, 32.425] },
+  { key: "paphos", name: "Paphos", el: "Πάφος", south: 34.745, north: 34.775, lng: 32.418, sea: [34.748, 32.405], land: [34.77, 32.425] },
   // The harbour is near 34.982 N 34.003 E, the monastery and the square just north of it; Nissi Avenue runs west along the coast.
-  { key: "ayianapa", name: "Ayia Napa", south: 34.972, north: 35.002, lng: 33.995, sea: [34.975, 33.995], land: [34.992, 33.998] },
+  { key: "ayianapa", name: "Ayia Napa", el: "Αγία Νάπα", south: 34.972, north: 35.002, lng: 33.995, sea: [34.975, 33.995], land: [34.992, 33.998] },
   // The Finikoudes promenade and the marina are near 34.915 N 33.6385 E; the sea is to the east.
-  { key: "larnaca", name: "Larnaca", south: 34.898, north: 34.928, lng: 33.628, sea: [34.91, 33.644], land: [34.915, 33.625] },
+  { key: "larnaca", name: "Larnaca", el: "Λάρνακα", south: 34.898, north: 34.928, lng: 33.628, sea: [34.91, 33.644], land: [34.915, 33.625] },
   // Fig Tree Bay is near 35.0122 N 34.0585 E; the sea is to the north-east (a headland closes the bay on its east, so the sea point is off the long beach north of it).
-  { key: "protaras", name: "Protaras", south: 34.998, north: 35.028, lng: 34.046, sea: [35.022, 34.058], land: [35.015, 34.05] },
+  { key: "protaras", name: "Protaras", el: "Πρωταράς", south: 34.998, north: 35.028, lng: 34.046, sea: [35.022, 34.058], land: [35.015, 34.05] },
 ];
 const VIEW = 1600; // each view is VIEW × VIEW units, about 2.1 m to a unit
 const MAX_BYTES = 450_000;
@@ -80,10 +81,14 @@ const PALETTES = [
     colour: { sea: "#0A0E13", line: "#B7C9DD" },
   },
 ];
-const SEA_OPACITY = 0.55;
-const SHORE = { width: 2.6, gap: 6.5, opacity: 0.72 }; // the coast in dots
-const STREET = { width: 2.2, gap: 5.6, opacity: 0.28 }; // every street in dots
-const ROAD = { width: 2.6, opacity: 0.34 }; // the main roads, solid
+// Sharpened on 2026-10-18 (owner, hero concept A: "a town you recognise at a glance"): the sea a clear step darker
+// than the land (0.55 before, when it was barely darker), the coast a firmer row of dots, the streets and main roads
+// about twice as strong (0.28 and 0.34 before, when the town read as a dark texture). The lights stay the brightest
+// thing on the map: a street dot is a fifth of a light's width.
+const SEA_OPACITY = 0.9;
+const SHORE = { width: 2.6, gap: 6.5, opacity: 0.9 }; // the coast in dots
+const STREET = { width: 2.2, gap: 5.6, opacity: 0.52 }; // every street in dots
+const ROAD = { width: 2.6, opacity: 0.6 }; // the main roads, solid
 const MINOR_WIDTH = 2.2; // the width the streets were cut and simplified for
 
 // What is taken from the tiles (OpenMapTiles layer → classes).
@@ -718,7 +723,7 @@ async function build(town) {
     return { file: join(OUT_DIR, `town-${town.key}${suffix}`), svg };
   });
 
-  const entry = `{ key: "${town.key}", name: "${town.name}", src: "/landing/town-${town.key}.svg", width: ${VIEW}, height: ${VIEW}, west: ${west}, north: ${north}, perLng: ${perLng}, perLat: ${perLat} }`;
+  const entry = `{ key: "${town.key}", name: "${town.name}", nameEl: "${town.el}", src: "/landing/town-${town.key}.svg", width: ${VIEW}, height: ${VIEW}, west: ${west}, north: ${north}, perLng: ${perLng}, perLat: ${perLat} }`;
   return { files, entry };
 }
 
@@ -731,6 +736,8 @@ const ts = `// Written by scripts/build-hero-town.mjs; do not edit by hand.
 export interface HeroTown {
   key: ${TOWNS.map((t) => `"${t.key}"`).join(" | ")};
   name: string;
+  /** Its name in Greek. */
+  nameEl: string;
   src: string;
   width: number;
   height: number;

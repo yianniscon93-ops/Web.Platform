@@ -58,8 +58,15 @@ function find(place: Place, q: string): Found {
  * The first screen's way in: the visitor types a town, resort or district and picks it, and the Playground
  * opens on that place. The list of places is
  * the Playground's own; if it cannot be had, the box opens the Playground instead and says so.
+ *
+ * The close uses it again ("Or start with your street", 2026-10-18) with `second`: that one fetches the list of
+ * places only once the visitor turns to it (focus or pointer), so the page asks for the list once on load, and it
+ * leaves the first screen's picture's requests (PICK_NAME_EVENT) to the first screen's box.
  */
-export default function PlaceSearch() {
+export default function PlaceSearch({ second = false, placeholder = "Try Limassol, or Λεμεσός" }: { second?: boolean; placeholder?: string } = {}) {
+  // Whether the list of places is wanted yet: at once on the first screen, on first use in the close.
+  const [wanted, setWanted] = useState(!second);
+  const want = () => setWanted(true);
   const [places, setPlaces] = useState<Place[] | null>(null);
   const [failed, setFailed] = useState(false);
   const [q, setQ] = useState("");
@@ -73,6 +80,7 @@ export default function PlaceSearch() {
   const listId = useId();
 
   useEffect(() => {
+    if (!wanted) return;
     const ac = new AbortController();
     fetch("/api/dashboard/areas", { signal: ac.signal })
       .then((r) => {
@@ -86,7 +94,7 @@ export default function PlaceSearch() {
       )
       .catch(() => !ac.signal.aborted && setFailed(true));
     return () => ac.abort();
-  }, []);
+  }, [wanted]);
 
   const typed = plain(q);
   const found = useMemo<Found[]>(() => {
@@ -125,10 +133,11 @@ export default function PlaceSearch() {
     if (match) pick(match);
   };
   useEffect(() => {
+    if (second) return;
     const on = (e: Event) => byName.current((e as CustomEvent<string>).detail);
     window.addEventListener(PICK_NAME_EVENT, on);
     return () => window.removeEventListener(PICK_NAME_EVENT, on);
-  }, []);
+  }, [second]);
 
   // What "Show me" does with what is in the field. A name that finds a place takes the first; so does a row the
   // visitor has moved to. An empty field takes nothing (it used to take the island's largest place, which nobody
@@ -142,8 +151,9 @@ export default function PlaceSearch() {
     e.preventDefault();
     // The list could not be had: the Playground has its own search, and the line under the field says so.
     if (failed) return window.location.assign("/dashboard");
-    // The list is still on its way: what was typed is kept, and answered when it comes.
+    // The list is still on its way (or not yet asked for): what was typed is kept, and answered when it comes.
     if (!places) {
+      want();
       asked.current = true;
       return setOpen(true);
     }
@@ -180,6 +190,8 @@ export default function PlaceSearch() {
         className="lh-box"
         role="search"
         onSubmit={submit}
+        onFocus={second ? want : undefined}
+        onPointerEnter={second ? want : undefined}
       >
         <Search size={20} strokeWidth={2.2} aria-hidden="true" />
         <label className="sr-only" htmlFor={`${listId}-q`}>
@@ -197,7 +209,7 @@ export default function PlaceSearch() {
           autoComplete="off"
           spellCheck={false}
           // An example in both scripts says the search takes English or Greek; the label names what it takes.
-          placeholder="Try Limassol, or Λεμεσός"
+          placeholder={placeholder}
           value={q}
           onChange={(e) => {
             setQ(e.target.value);

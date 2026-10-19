@@ -14,6 +14,140 @@ Then "How the numbers are made", and the close. Product facts live in
 in `apps/web/.impeccable/surfaces/app-page-tsx.md`. Below, "the hero" means
 the stage: its component is still `DrawHero`.
 
+**2026-10-19: a Solutions page, and "Solutions" in the bar.** `/solutions`
+(docs/SOLUTIONS.md) tells the four products in depth with the landing's own
+working things. The bar's links are now "How it works" (from 1024px),
+"Solutions" and "Ask the team": "Solutions" took the place of "Reports" and
+"Connector", since a fifth link did not fit at 768 to 1023px or beside the
+tagline from 1280px; the phone menu keeps both. `Nav.tsx` works on either
+page (`usePathname`: "How it works" goes to `/#how` from elsewhere).
+
+**2026-10-19: the products band is concept F, "One database, four
+outputs" (owner's pick from round 2 of the products research).**
+`ProductsSection.tsx` keeps option D's words, working things, moments,
+roles and links, and changes how the four are reached. The heading stands
+beside a core: the island at night with every short-let a light (How it
+works' `island.svg` and `IslandLights`, reused unchanged), the database's
+counts (the island figures `app/page.tsx` already reads; "Sample data" on
+demo data, never hard-coded) and the three models. From the core one line
+runs down and splits to four ports (a tablist: drawn icon, name, and the
+approved verbs, `verb` in `products.ts`); picking one lights its line into
+the stage, a light running down it once and resting (reduced motion: lit at
+once). The stage follows the open product's height with a 380ms ease
+instead of D's fixed tallest cell. Phone: core, ports two by two with the
+line through their middle, stage; no accordion. Without script the ports
+are links and the four products stack. The foot adds "Explore all
+solutions" (outlined pill to `/solutions`) beside "Email the team". The
+band now keeps the page's left edge (D's started 36px left of it). Section,
+before → after (Playground open): 1440px 1,202 → 1,552 (Custom solutions
+1,248); 1024px 1,242 → 1,591; 390px 2,166 → 2,653 (Custom 2,152). Page:
+8,151 → 8,501 at 1440px, 10,137 → 10,624 at 390px; white below the hero
+11.7% → 11.1% (1440), 12.0% → 11.4% (390).
+
+**2026-10-18, last: the products are one night band, the index is the
+stage (owner: option D of the products research, all its recommendations).**
+`ProductsSection.tsx` replaces the white index (`ProductsOverview.tsx`) and
+the four chapter bands (`ProductSections.tsx`, Custom solutions' band); the
+chapter files now export only their working things (`TippingPoint`,
+`ReportsSheet`, `ConnectorChat`, `CustomSheet`), unchanged inside. From
+1024px the four rows are a vertical tablist and the open product's working
+thing stands on the stage beside them; below 1024px an accordion. One set of
+markup: the server and a page without script show the four one after
+another, fully; the script then sets `data-mode` (`tabs` / `accordion`) and
+the header's form follows it (an h3 without script; tabs in one tablist
+from 1024px; h3 round a button below). The working things mount once, share
+one grid cell on the stage (its height holds when the product changes) and
+keep their state; each plays its moment the first time it is open in view.
+Links to `#playground`, `#reports`, `#connector`, `#custom` (the bar, the
+How line, the phone menu, a loaded address, back and forward) open that
+product and bring it into view; the old ids stay on each product. Grounds
+now: hero night → How ice → products night → towns ice (the band turned ice
+so two nights never touch; its cards stay navy) → questions white → close
+night. At 1440px the products went from 3,948px to 1,202px, the page from
+10,885px to 8,151px, white from 15.7% to 11.7% of the page below the hero
+(390px: 6,201px to 2,166px with the Playground open; 14,163px to 10,137px;
+15.4% to 12.0%). Copy is the chapters' own; per-product eyebrows and icons
+went with the chapters (the icons stay in the phone menu).
+
+**2026-10-18: below the hero, against top data sites.** The owner asked for
+the sections under the first screen to be changed where top data products
+(AirDNA, PriceLabs, AirROI, Ask Wire, Placer.ai, Felt, Hex, Linear, Stripe
+and others) would not ship what we had. Order, copy and palette are
+unchanged; five defects were fixed and the larger ideas went to the owner as
+options. The product chapters now arrive with their answers in the HTML:
+`app/page.tsx` reads the island (`getIsland`) and seeds `HeroAreaProvider`
+with it, so the tipping point, the report's page and the Connector's first
+answer read without script and never show "Reading the listings here" while
+the page loads (a client effect did this after hydration until now;
+`IslandSource.tsx` and `PublishIsland.tsx` are deleted). The Connector's
+conversation no longer leaves an empty navy pane under its first answer (the
+questions set the pair's height, the thread scrolls inside the card with its
+latest exchange at the foot, 7:5 between 1024 and 1279px). In "How", step
+3's month spans the held frame instead of sitting small in its middle. The
+footer's name spans the card, as DESIGN.md says (it had been sized for the
+heavier cut). The questions' eyebrow reads "Data sheet", not the heading's
+"Questions" again.
+
+**2026-10-18, later: the sections, built out (owner: "build all the
+proposals").** DESIGN.md has the system; in brief:
+
+- **How it works**, sharper words and a crisper story. "Decisions backed by data.
+  Updated daily, powered by our analytics models." (owner's words; see the
+  note on "daily" in PRODUCT.md); the steps "We read the whole market.", "We pin every
+  listing to its street.", "Our models tell booked from blocked.", "We price
+  every home three ways." The counts no longer repeat the hero's: weeks of
+  booking history kept (the island's weekly series), places named on the map
+  (`dim_areas`) and bookings told from owner blocks (`booking_stays`), from
+  the new `getCoverage` in `marketData.ts` (one query each, null where a table
+  or column is missing; demo: the demo store's counts, no dates). Each
+  picture's point is one large figure at its top left. The story is driven by
+  the step at the window's middle in every browser (no scroll scrubbing): the
+  picture swaps in 0.2s/0.42s, its move plays once and lands in about 1.6s,
+  the active step's dot is ringed and its words in ink. Count-ups run 0.9s
+  and start at 15% in view.
+- **Products, each told once.** The overview's three output tiles became an
+  index of four entries (titles = chapter names, each saying who it is for:
+  the audience paths); the chapters are shorter bands (88px), their icon in
+  the eyebrow's line, their headings trimmed to two lines at 1024px. The
+  Connector is one card laid out as Claude is (thread, tool steps ticked,
+  chips, a composer at rest), so no empty navy above the first exchange.
+- **Custom solutions** (`CustomSection.tsx`, ice), the fourth product: four
+  example requests, "Email the team". No clients, turnaround or prices.
+- **The six towns** (`TownsSection.tsx`, night until it turned ice the same
+  day, after the products and before the questions): rate, occupancy and short-let count per town from
+  `getTowns` (`island.ts`: the named place and the ground `pickedArea` draws
+  round it), the long-let rent on live data only (demo rents are island-wide),
+  each card opening the Playground; under them "Last read" per source with
+  its cadence (calendars every 2 days, prices and ads weekly) and, live, its
+  latest date. No dated "report": that waits for a real one.
+- **The close** carries the first screen's place search again
+  (`PlaceSearch second`, which fetches its list only when used and leaves
+  the tour's requests to the hero's box); "Or open the Playground" is gone.
+- Deferred: the Playground's real UI in its chapter (needs the Playground on
+  Blue Night, which the owner wants only when asked).
+
+**2026-10-18: the hero, sharpened (concept A).** From the hero research
+the owner kept the night hero and asked for the map to read as a town at a
+glance. `build-hero-town.mjs` now bakes the sea at 90% (55% before), the
+coast at 90%, streets at 52% (28%) and main roads at 60% (34%), from the same
+cached tiles (`LANDING_MAPS_CACHE`), pier masking kept; `town-paphos.svg` is
+also the picture in How's steps 2 and 4, so it sharpened there too. The town
+is named on its map, "Limassol" over "Λεμεσός" (`nameEl` in `heroTowns.ts`,
+from the script's `TOWNS`), changing with the tour, on a night scrim faded
+with the map; the strip no longer repeats the town. The fade from the words
+is 13% of the column (28%), starting exactly at the words' edge
+(`--lh-clear`). Lights a size up. The sentence (owner's revision, later the same day) is one line in
+two styles, a step above the lead size: "For all property professionals."
+in paper white at 500, then "We track every kind of property in Cyprus,
+from short-lets to plots for sale, and turn the data into actionable
+insights." in ink; the second tier ("Decide where to buy…") is dropped. On a
+phone the map comes straight under the search with its card at the band's
+foot and the sentence moves under the map; on a tablet the card sits beside
+the name. The phone bar has a Playground pill beside Menu ("Playground" under
+420px; "Open the Playground" for screen readers); without script the bar is
+not fixed and Menu is hidden, and at night once scrolled the bar takes night
+glass (scroll timeline).
+
 **2026-10-17, plan 3 build (owner: "Yes I like it", with changes).** The
 plan (https://claude.ai/artifact/8ujmJHBF5LTs7yaWUWs3QT) is built, with the
 owner's answers. What changed, in brief (DESIGN.md has the system):
@@ -29,7 +163,8 @@ owner's answers. What changed, in brief (DESIGN.md has the system):
   follow the page ("How it works" first).
 - **Headline A**: "Plot your next move / in Cyprus property. / Insights
   backed by data.", sized by its longest line (the column over 10.85). The
-  headline is mist but for "Plot" and "sights" in ink, so the name is read
+  headline is mist at 360 but for "Plot" and "sights" in white at the
+  wordmark's 500 (tone alone was too close; 2026-10-18), so the name is read
   out of it. The **opening** strikes the name in two: "Pl·t" with the plot
   drawn as its "o", then "sights" coming into focus in mist; it turns to ink
   as it rises to the nav (`Opening.tsx`, `.op-sights` in `landing-hero.css`).

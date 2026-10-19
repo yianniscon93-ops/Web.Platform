@@ -3,8 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, Copy } from "lucide-react";
 import { BRAND } from "@/lib/brand";
-import { useHeroArea } from "@/lib/landing/areaContext";
 import { QUESTION_EVENT, QUESTION_KEY } from "@/lib/landing/compare";
+import PlaceSearch from "@/components/landing/PlaceSearch";
 
 /**
  * The end of the heading when a request has been carried here, for the two the
@@ -22,8 +22,9 @@ function asked(carried: string | null): string | null {
  * page, so nothing can claim to have been sent that was not (the form that stood
  * here only simulated a send; critique, 2026-10-11). A request made further up
  * the page (a report on an area, the connector) is named in the heading and over
- * the actions, and becomes the email's subject. Beside the email, the free way
- * in: the Playground. Until 2026-10-14 a drawn area stood on a stem over the
+ * the actions, and becomes the email's subject. Under the heading, the free way
+ * in: the first screen's place search, which opens the Playground on the place
+ * (2026-10-18; a plain "Or open the Playground" link until then). Until 2026-10-14 a drawn area stood on a stem over the
  * actions; it read as a balloon and is gone (critique, 2026-10-14). Its styles
  * are in app/landing-sections.css, which the page imports.
  */
@@ -41,7 +42,6 @@ export default function CTASection() {
     const t = window.setTimeout(() => setCopied(null), copied === "failed" ? 5000 : 1800);
     return () => window.clearTimeout(t);
   }, [copied]);
-  const { playgroundHref } = useHeroArea();
 
   // A request made in a product section arrives here, to go with the email.
   useEffect(() => {
@@ -72,8 +72,15 @@ export default function CTASection() {
             </span>
           </h2>
           <p className="ps-close-lede" data-rv="" style={{ "--i": 2 } as React.CSSProperties}>
-            Tell us what you need: a report, connector access, or a number you can’t&nbsp;find.
+            Tell us what you need: a report, connector access, custom data, or a number you can’t&nbsp;find. Or name
+            your place and open it in the Playground.
           </p>
+          {/* "Or start with your street": the first screen's search again (2026-10-18), the second way in under the
+              heading that names it. It finds towns, resorts, districts and quarters; the street is drawn in the
+              Playground it opens. */}
+          <div className="ps-close-find" data-rv="" style={{ "--i": 3 } as React.CSSProperties}>
+            <PlaceSearch second placeholder="Your town, resort or district" />
+          </div>
         </div>
 
         <div className="ps-close-do" data-rv="" style={{ "--i": 3 } as React.CSSProperties}>
@@ -82,9 +89,6 @@ export default function CTASection() {
             <a href={mail} className="ps-close-mail">
               Email the team
               <ArrowRight size={16} strokeWidth={2.4} aria-hidden="true" />
-            </a>
-            <a href={playgroundHref} className="th-link ps-close-play">
-              Or open the Playground
             </a>
           </div>
           <p className="ps-close-small">

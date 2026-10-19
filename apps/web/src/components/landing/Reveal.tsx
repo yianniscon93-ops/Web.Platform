@@ -10,25 +10,27 @@ import { useEffect } from "react";
  *   one of them visible; after the page has loaded this hides (`data-rv-wait`) only those wholly below the window at
  *   that moment, and shows each once as it arrives. No script, nothing is hidden; reduced motion, nothing is hidden.
  * - Moments (`data-moment`): a block whose contents play one authored moment when 35% of it is in view (the report's
- *   page laid down, the first answer streamed, the month filling, the name drawn in the close). Armed the same way
+ *   page laid down, the first answer streamed, the month filling, the name drawn in the close); a block with counts in
+ *   it when 15% is, so its figures have landed by the time it is read. Armed the same way
  *   (`data-mwait` while it waits, then `data-on`, and `data-arriving` for the length of the moment). A block already
  *   in view when the page loads is simply shown as it is (`data-on`), so nothing in view blinks.
- * - Count-ups (`data-count` inside a moment): a true database figure counts up from 86% of itself to itself, in
- *   tabular figures. The page is sent with the true number; it is set to where it starts only while it is out of
+ * - Count-ups (`data-count` inside a moment): a true database figure counts up from 86% of itself to itself in
+ *   0.9s, in tabular figures. The page is sent with the true number; it is set to where it starts only while it is out of
  *   sight below the window, and screen readers are given the true one throughout (the counting digits are hidden
  *   from them).
  * - The method story (`.mt-story`): the server sends each picture beside its own step. With motion welcome this
  *   takes the story over (`data-framed`), and on a wide window the CSS then holds the four pictures in one frame;
- *   which step is at the window's middle (`data-step`) decides which picture shows where scroll timelines are missing
- *   (Firefox today), and there or on a phone each picture plays its moment as its step arrives. Where scroll
- *   timelines exist the framed pictures follow the scroll in CSS alone, and nothing here touches them. Without script
- *   or with reduced motion the story is never framed, so every picture stays in view beside its step.
+ *   the step across the window's middle (`data-step`) is the active one: it decides which picture shows, which dot is
+ *   lit on the rail and which step's words are in ink, and its picture plays its moment, in time, the first time it
+ *   arrives (2026-10-18: nothing in the story is scrubbed with the scroll any more, in any browser). On a phone each
+ *   picture plays its moment as it arrives, like any block. Without script or with reduced motion the story is never
+ *   framed, so every picture stays in view beside its step.
  * - Focus: anything waiting (`data-rv-wait`, `data-mwait`) that takes the keyboard's focus is shown at once and for
  *   good (the CSS shows it while it holds focus, this settles it).
  *
  * Only opacity and transform move (CSS); no scroll listener; nothing new is loaded.
  */
-const COUNT_MS = 1200;
+const COUNT_MS = 900;
 const COUNT_FROM = 0.86;
 const ARRIVING_MS = 3400;
 
@@ -46,8 +48,6 @@ export default function Reveal() {
     const root = document.querySelector<HTMLElement>(".bn");
     if (!root) return;
     const still = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    // The same test as the CSS's `@supports` for the story's scroll-driven pictures (landing-how.css, landing-motion.css).
-    const scrolled = typeof CSS !== "undefined" && CSS.supports("(animation-timeline: view()) and (timeline-scope: --a)");
     const observes = typeof IntersectionObserver !== "undefined";
     const wide = window.matchMedia("(min-width: 1024px)").matches;
     const story = root.querySelector<HTMLElement>(".mt-story");
@@ -91,8 +91,6 @@ export default function Reveal() {
         if (Number.isFinite(to)) c.textContent = fmt(startOf(to));
       });
     };
-    // A picture in the held frame whose moves follow the scroll needs nothing from here where scroll timelines exist.
-    const scrollDriven = (m: HTMLElement) => scrolled && !still && m.dataset.moment === "scroll";
     const play = (m: HTMLElement) => {
       if (m.hasAttribute("data-on")) return;
       m.removeAttribute("data-mwait");
@@ -141,10 +139,10 @@ export default function Reveal() {
             const n = (e.target as HTMLElement).dataset.st;
             if (!n) continue;
             story.dataset.step = n;
-            // Its picture plays its moment the first time its step arrives, unless its moves follow the scroll.
+            // Its picture plays its moment the first time its step arrives.
             if (framed && n !== "1") {
               const pic = pics.find((p) => p.dataset.pic === n);
-              if (pic && !scrollDriven(pic)) (still ? settle : play)(pic);
+              if (pic) (still ? settle : play)(pic);
             }
           }
         },
@@ -183,27 +181,28 @@ export default function Reveal() {
         }
       });
 
-      // Moments: 35% in view, or half the window's height of a block taller than the window.
+      // Moments: 35% in view (15% for a block with counts in it, 20% for a block over 560px tall), or half the window's
+      // height of a block taller than the window.
       const mo = new IntersectionObserver(
         (entries) => {
           for (const e of entries) {
             const tall = e.rootBounds ? e.intersectionRect.height >= e.rootBounds.height * 0.5 : false;
-            if (e.intersectionRatio >= 0.35 || tall) {
+            // A tall block (a chapter, the conversation) starts at a fifth in view, so its card is never seen waiting.
+            const need = (e.target as HTMLElement).querySelector("[data-count]") ? 0.15 : e.boundingClientRect.height > 560 ? 0.2 : 0.35;
+            if (e.intersectionRatio >= need || tall) {
               play(e.target as HTMLElement);
               mo.unobserve(e.target);
             }
           }
         },
-        { threshold: [0, 0.15, 0.25, 0.35, 0.5] },
+        { threshold: [0, 0.1, 0.15, 0.2, 0.25, 0.35, 0.5] },
       );
       observers.push(mo);
       root.querySelectorAll<HTMLElement>("[data-moment]").forEach((m) => {
-        // The story's pictures in the held frame: the step observer above plays each as its step arrives, unless the
-        // scroll drives it. They wait only if the story is still below the window. The first is in view as soon as
-        // the frame is, so it plays as any block does, when the frame is a third in view: its count never stands at
-        // its starting figure on screen.
+        // The story's pictures in the held frame: the step observer above plays each as its step arrives. They wait
+        // only if the story is still below the window. The first is in view as soon as the frame is, so it plays as
+        // any block does: its count never stands at its starting figure on screen.
         if (framed && m.classList.contains("mt-pic") && m.dataset.pic !== "1") {
-          if (scrollDriven(m)) return;
           if (story!.getBoundingClientRect().top > fold * 0.6) arm(m);
           else settle(m);
           return;

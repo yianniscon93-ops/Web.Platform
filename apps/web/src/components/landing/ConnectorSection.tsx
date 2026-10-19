@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useId, useRef, useState } from "react";
-import { ArrowRight } from "lucide-react";
+import { ArrowUp, Check, Minus } from "lucide-react";
 import type { SelectionStats } from "@/lib/dashboard/types";
 import { BRAND } from "@/lib/brand";
 import type { HeroArea } from "@/lib/landing/areaContext";
-import { question } from "@/lib/landing/areaLines";
+import { int, question } from "@/lib/landing/areaLines";
 import {
   GREEK_UNREACHABLE,
   REVIEWS_REPLY,
@@ -20,8 +20,7 @@ import {
 } from "@/lib/landing/sectionLines";
 import { useAreaAnswer, useNear } from "@/lib/landing/useAreaAnswer";
 import AreaMiniMap from "./AreaMiniMap";
-import { ConnectorIcon } from "./ProductIcons";
-import { Card, READING, carryRequest, inside, stillPreferred } from "./SectionParts";
+import { READING, inside, stillPreferred } from "./SectionParts";
 
 // What a visitor can ask, and which of the connector's abilities each one draws on. The sixth is the first
 // again in Greek: the connector takes place names in both languages. The last is one the connector has no
@@ -35,7 +34,7 @@ const QUESTIONS = [
   { id: "greek", draws: "area summary" },
   { id: "reviews", draws: "not covered" },
 ] as const;
-type QuestionId = (typeof QUESTIONS)[number]["id"];
+export type QuestionId = (typeof QUESTIONS)[number]["id"];
 const FIRST: QuestionId = "summary";
 const langOf = (id: QuestionId) => (id === "greek" ? "el" : undefined);
 
@@ -50,15 +49,48 @@ function ask(id: QuestionId, area: HeroArea): string {
   return "Show me on the map.";
 }
 
+/** A question's chip: the few words that name it (the whole question is what is typed and sent). */
+function chip(id: QuestionId): string {
+  if (id === "summary") return "How are short-\u2060lets doing?";
+  if (id === "trend") return "Which months fill up?";
+  if (id === "bedrooms") return "2+ bedroom rates";
+  if (id === "cuts") return "Are sellers cutting prices?";
+  if (id === "map") return "Show me on the map";
+  if (id === "greek") return "Ask in Greek";
+  return "What do guests say?";
+}
+
+/** One line of what the connector did before it answered: done, or found nothing to do it with. */
+type ToolStep = { text: string; none?: boolean };
+
+/**
+ * What the connector does for a question, as Claude shows a tool at work: it finds the area, then reads what the
+ * question needs, each line ticked as it is done. The lines follow the connector's own tools (`draws`) and quote the
+ * figures the answer rests on; the reviews question finds no tool and says so.
+ */
+function stepsFor(id: QuestionId, area: HeroArea, count: number | null, weeks: number): ToolStep[] {
+  const place = id === "greek" ? area.place.inGreek || area.place.name : area.place.name;
+  const find = { text: `Finding the area: ${place}` };
+  const lets = count != null ? `${int(count)} short-\u2060lets` : "the short-\u2060lets";
+  if (id === "summary" || id === "greek") return [find, { text: `Reading ${lets}` }, { text: "Reading occupancy and nightly rates" }];
+  if (id === "trend") return [find, { text: weeks > 0 ? `Reading ${weeks} weeks of bookings` : "Reading the weeks of bookings" }];
+  if (id === "bedrooms") return [find, { text: "Keeping 2+ bedroom short-\u2060lets" }, { text: "Reading their nightly rates" }];
+  if (id === "cuts") return [find, { text: "Reading asking prices" }, { text: "Checking price changes" }];
+  if (id === "map") return [find, { text: `Placing ${lets}` }, { text: "Drawing the map" }];
+  return [{ text: "Looking for a tool that reads reviews" }, { text: "None in this connector", none: true }];
+}
+/** How long the connector "works" before an answer: a beat, then a line ticked every STEP_MS. */
+const STEP_MS = 280;
+const workTime = (steps: number) => 260 + steps * STEP_MS;
+
 /** /stats takes the Playground's filters; `minBeds` is "this many bedrooms or more" (buildWhere in marketData.ts). */
 const BEDROOMS_BODY = { filters: { minBeds: 2 } };
 
 // An exchange being played: the question is typed into the composer (TYPE_MS a character, TYPE_MAX_MS at most),
-// sent (it stands alone for ASKED_MS), and the answer is "being written" for TYPING_MS.
+// sent (it stands alone for ASKED_MS), and the connector works through its steps (workTime) before the answer.
 const TYPE_MS = 30;
 const TYPE_MAX_MS = 1200;
 const ASKED_MS = 380;
-const TYPING_MS = 900;
 const typeTime = (text: string) => Math.min(TYPE_MAX_MS, text.length * TYPE_MS);
 
 /** What stands in an answer's place: the answer, a wait, or a plain "cannot answer". */
@@ -119,8 +151,26 @@ function Firmness({ line, lang }: { line: string; lang?: string }) {
  * none). The last question is one it cannot answer, and it says so. The
  * composer only displays the chosen question: the list of questions is the
  * control.
+ *
+ * The Connector's working thing on the products' stage (ProductsSection,
+ * 2026-10-18). It stays mounted while another product is shown: an exchange
+ * that is playing when the visitor switches away runs on to its answer out of
+ * sight, so coming back finds it answered. Its first exchange plays only the
+ * first time its panel is open in view.
  */
-export default function ConnectorSection({ area }: { area: HeroArea }) {
+export default function ConnectorChat({
+  area,
+  without,
+}: {
+  area: HeroArea;
+  /**
+   * Questions to leave out of the chips (optional; the landing passes none). The Solutions page leaves out
+   * "bedrooms", which the real connector has no filter for (docs/SOLUTIONS.md).
+   */
+  without?: readonly QuestionId[];
+}) {
+  // The questions offered as chips. The first is always kept: it is the exchange already in place.
+  const asks = without?.length ? QUESTIONS.filter((q) => q.id === FIRST || !without.includes(q.id)) : QUESTIONS;
   // The questions asked so far, oldest first, and the one last chosen.
   const [thread, setThread] = useState<QuestionId[]>([FIRST]);
   const [chosen, setChosen] = useState<QuestionId>(FIRST);
@@ -142,6 +192,8 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
   // The choice whose answer has not been announced yet.
   const toSay = useRef<QuestionId | null>(null);
   const near = useNear(objectRef);
+  // The weeks of bookings the trend question reads (the island's weekly series), for its step.
+  const weeks = area.figures?.stats?.weekly.length ?? 0;
 
   // The one figure the hero does not have: /stats for the same polygon, filtered to two or more bedrooms.
   const bedrooms = useAreaAnswer<SelectionStats>({
@@ -161,10 +213,11 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
     played.current.add(id);
     setPlaying({ id, stage: "composing" });
     const typed = typeTime(ask(id, area));
+    const working = workTime(stepsFor(id, area, area.count, weeks).length);
     timers.current = [
       window.setTimeout(() => setPlaying({ id, stage: "asked" }), typed + 120),
       window.setTimeout(() => setPlaying({ id, stage: "typing" }), typed + 120 + ASKED_MS),
-      window.setTimeout(() => setPlaying(null), typed + 120 + ASKED_MS + TYPING_MS),
+      window.setTimeout(() => setPlaying(null), typed + 120 + ASKED_MS + working),
     ];
   }
 
@@ -230,20 +283,20 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
   }
 
   function onKey(e: React.KeyboardEvent) {
-    const i = QUESTIONS.findIndex((q) => q.id === chosen);
+    const i = asks.findIndex((q) => q.id === chosen);
     const to =
       e.key === "ArrowDown" || e.key === "ArrowRight"
-        ? (i + 1) % QUESTIONS.length
+        ? (i + 1) % asks.length
         : e.key === "ArrowUp" || e.key === "ArrowLeft"
-          ? (i + QUESTIONS.length - 1) % QUESTIONS.length
+          ? (i + asks.length - 1) % asks.length
           : e.key === "Home"
             ? 0
             : e.key === "End"
-              ? QUESTIONS.length - 1
+              ? asks.length - 1
               : -1;
     if (to < 0) return;
     e.preventDefault();
-    choose(QUESTIONS[to].id, true);
+    choose(asks[to].id, true);
   }
 
   const { stats = null, invest = null } = area.figures ?? {};
@@ -293,32 +346,13 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
   const turns = thread.filter((id) => id !== composing).map((id) => ({ id, turn: turnFor(id) }));
   const goToState = goTo ? turns.find((t) => t.id === goTo.id)?.turn.state : undefined;
 
-  // Bring the chosen exchange into view. Where the conversation scrolls inside its own frame (beside the
-  // questions, from 1024px) only that frame moves, and it follows the answer as it arrives; where the page
-  // is one column the page goes to the exchange once, when it is chosen.
-  const wentTo = useRef(0);
-  // Whether the page has gone to the exchange itself for this choice (and not only to the composer).
-  const went = useRef(false);
+  // Bring the chosen exchange into view inside the thread, which scrolls in its own frame at every width (the chips
+  // and the composer under it stay where the visitor's thumb is), following the answer as it arrives.
   useEffect(() => {
     const box = log.current;
     if (!goTo || !box) return;
-    const behavior = stillPreferred() ? "auto" : "smooth";
-    const wide = window.matchMedia("(min-width: 1024px)").matches;
     const el = box.querySelector<HTMLElement>(`[data-x="${goTo.id}"]`);
-    if (!el) {
-      // Its question is still being typed: on one column, the composer it is typed into comes into view.
-      if (!wide && wentTo.current !== goTo.n) composer.current?.scrollIntoView({ block: "center", behavior });
-      wentTo.current = goTo.n;
-      went.current = false;
-      return;
-    }
-    if (wide) {
-      box.scrollTo({ top: el.offsetTop - 12, behavior });
-    } else if (wentTo.current !== goTo.n || !went.current) {
-      el.scrollIntoView({ block: "start", behavior });
-    }
-    wentTo.current = goTo.n;
-    went.current = true;
+    box.scrollTo({ top: el ? el.offsetTop - 12 : box.scrollHeight, behavior: stillPreferred() ? "auto" : "smooth" });
   }, [goTo, playing, goToState]);
 
   // One announcement per choice: the answer, once it is on show, and only while the section is in or near
@@ -342,36 +376,138 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
   });
 
   return (
-    <Card
-      id="connector"
-      layout="stack"
-      eyebrow="In Claude"
-      name="Connector"
-      icon={<ConnectorIcon size={40} />}
-      claim="Ask Claude about any place, in Greek too."
-      body={
-        <p>
-          Add {BRAND.name} Cyprus to Claude and ask about any town, resort or district in plain words. Answers come from our
-          data, say what they rest on, and say so when they cannot answer.
-        </p>
-      }
-      action={
-        <>
-          <a href="#access" className="ps-solid" onClick={() => carryRequest("Access to the Claude connector")}>
-            Ask for access
-            <ArrowRight size={18} strokeWidth={2.4} aria-hidden="true" />
-          </a>
-          <span className="ps-action-note">Access is set up by the team for now.</span>
-        </>
-      }
-      lead={
-        // The questions on a pale cloud tile beside the conversation's navy card.
-        <div className="bn-tile bn-cloud ps-asks">
-          <h3 id={`${ids}-ask`} className="ps-h3">
+    // One navy card, as Claude itself is laid out: the thread, then the questions to try as chips, then the
+    // composer they feed. Picking a chip types its question into the composer, sends it, shows the connector's
+    // steps ticking, then streams the answer into the thread.
+    <div ref={objectRef} className="bn-card bn-night ps-convo">
+      <div className="ps-chat">
+        <div className="ps-chat-head">
+          {/* The connector is named as the hero's panel names it. */}
+          <p>An example conversation in Claude, answered by {BRAND.name} Cyprus from the latest figures</p>
+          {thread.length > 1 && (
+            <button type="button" className="ps-chat-clear" onClick={clear}>
+              Clear
+            </button>
+          )}
+        </div>
+        {/* Not a live region: a choice is announced once, below, and a change of area by the hero. */}
+        <div ref={log} className="ps-chat-log" role="group" aria-label="Example conversation">
+          {turns.map(({ id, turn }) => {
+            const q = QUESTIONS.find((x) => x.id === id)!;
+            const lang = langOf(id);
+            const stage = playing?.id === id ? playing.stage : null;
+            const lively = played.current.has(id) ? "" : undefined;
+            // The first exchange is in place from the start; the first time its panel is open in view it plays once: the question,
+            // the connector's steps ticking, the answer streaming in (landing-motion.css).
+            const first = id === FIRST && lively == null;
+            // While an exchange plays, the answer waits its turn; after that it waits only for figures.
+            const typing = stage === "typing" || (stage == null && turn.state === "waiting");
+            const answered = stage == null && turn.state !== "waiting";
+            const steps = stepsFor(id, area, count, weeks);
+            return (
+              <div
+                key={id}
+                className="ps-exchange"
+                data-x={id}
+                data-first={first ? "" : undefined}
+                aria-busy={typing || (turn.state === "ready" && turn.pending) || undefined}
+                style={{ "--steps": steps.length } as React.CSSProperties}
+              >
+                <p className="ps-bubble ps-bubble-q" data-play={lively}>
+                  <span className="sr-only">You asked: </span>
+                  <span lang={lang}>{ask(id, area)}</span>
+                </p>
+                {/* What the connector did, as Claude shows a tool at work: each step ticked as it is done. */}
+                {stage !== "asked" && (
+                  <div className="ps-steps" data-play={lively} data-working={typing ? "" : undefined}>
+                    <p className="ps-steps-h">
+                      {BRAND.name} Cyprus · {q.draws}
+                    </p>
+                    <ol>
+                      {steps.map((st, k) => (
+                        <li key={st.text} data-none={st.none ? "" : undefined} style={{ "--s": k } as React.CSSProperties}>
+                          {st.none ? (
+                            <Minus size={14} strokeWidth={2.4} aria-hidden="true" />
+                          ) : (
+                            <Check size={14} strokeWidth={2.6} aria-hidden="true" />
+                          )}
+                          {st.text}
+                        </li>
+                      ))}
+                    </ol>
+                  </div>
+                )}
+                {typing && (
+                  <p className="ps-bubble ps-bubble-a ps-typing" data-play={lively}>
+                    <span className="sr-only">The connector is answering.</span>
+                    <span className="ps-typing-dots" aria-hidden="true">
+                      <i />
+                      <i />
+                      <i />
+                    </span>
+                    {/* Without motion the wait is said in words. */}
+                    <span className="ps-typing-words" aria-hidden="true">
+                      {READING}
+                    </span>
+                  </p>
+                )}
+                {answered && (
+                  <div
+                    className="ps-bubble ps-bubble-a"
+                    data-play={lively}
+                    style={turn.state === "ready" ? ({ "--words": wordsIn(turn.reply.text) } as React.CSSProperties) : undefined}
+                  >
+                    {turn.state === "ready" ? (
+                      <>
+                        <p className="ps-reply" lang={lang} data-pending={turn.pending ? "" : undefined}>
+                          <Streamed text={turn.reply.text} on={lively != null || first} />
+                        </p>
+                        {id === "map" && (
+                          <p className="ps-reply-link">
+                            <a href={area.playgroundHref} className="th-link">
+                              Open it in the Playground
+                            </a>
+                            {/* A hand-drawn shape cannot be passed to the Playground yet (docs/LANDING.md). */}
+                            {area.changed && <small>The Playground opens on {area.place.name}, not on your redrawn area.</small>}
+                          </p>
+                        )}
+                        {turn.reply.firm && <Firmness line={turn.reply.firm} lang={lang} />}
+                        {(turn.reply.asOf || turn.demo) && (
+                          <p className="ps-meta">
+                            {turn.reply.asOf && <span lang={lang}>{turn.reply.asOf}</span>}
+                            {turn.demo && <span className="ps-tag">Sample data</span>}
+                          </p>
+                        )}
+                      </>
+                    ) : (
+                      <p className="ps-reply" lang={lang}>
+                        {lang ? GREEK_UNREACHABLE : CANNOT}
+                      </p>
+                    )}
+                  </div>
+                )}
+                {/* The map is a message of its own: the picture is the bubble, not a picture inside one. */}
+                {answered && id === "map" && (
+                  <AreaMiniMap
+                    place={area.place}
+                    polygon={area.polygon}
+                    name={area.name}
+                    dots={area.dots}
+                    lively={lively != null}
+                  />
+                )}
+              </div>
+            );
+          })}
+        </div>
+        {/* The questions to try, as chips over the composer: the control. Each names its question in a few words;
+            the whole question is what is typed and sent. */}
+        <div className="ps-asks">
+          <p id={`${ids}-ask`} className="ps-asks-h">
             Try a question
-          </h3>
+          </p>
           <div ref={list} className="ps-questions" role="radiogroup" aria-labelledby={`${ids}-ask`} onKeyDown={onKey}>
-            {QUESTIONS.map((q) => (
+            {asks.map((q) => (
               <button
                 key={q.id}
                 type="button"
@@ -381,129 +517,24 @@ export default function ConnectorSection({ area }: { area: HeroArea }) {
                 tabIndex={chosen === q.id ? 0 : -1}
                 onClick={() => choose(q.id)}
               >
-                <i aria-hidden="true" />
-                {/* Which of the connector's tools a question draws on is said in its answer's first line, not here. */}
-                <span lang={langOf(q.id)}>{ask(q.id, area)}</span>
+                {chip(q.id)}
               </button>
             ))}
           </div>
-          <p className="ps-asks-note">Pick one to see how it is answered, from the figures on this page.</p>
         </div>
-      }
-      object={
-        <div ref={objectRef} className="bn-card bn-night ps-convo">
-          <div className="ps-chat">
-            <div className="ps-chat-head">
-              {/* The connector is named as the hero's panel names it. */}
-              <p>An example conversation in Claude, answered by {BRAND.name} Cyprus from the latest figures</p>
-              {thread.length > 1 && (
-                <button type="button" className="ps-chat-clear" onClick={clear}>
-                  Clear
-                </button>
-              )}
-            </div>
-            {/* Not a live region: a choice is announced once, below, and a change of area by the hero. */}
-            <div ref={log} className="ps-chat-log" role="group" aria-label="Example conversation">
-              {turns.map(({ id, turn }) => {
-                const q = QUESTIONS.find((x) => x.id === id)!;
-                const lang = langOf(id);
-                const stage = playing?.id === id ? playing.stage : null;
-                const lively = played.current.has(id) ? "" : undefined;
-                // The first exchange is in place from the start; as the section arrives its answer streams in once
-                // (plan 3), which the stylesheet plays from its words (landing-motion.css).
-                const first = id === FIRST && lively == null;
-                // While an exchange plays, the answer waits its turn; after that it waits only for figures.
-                const typing = stage === "typing" || (stage == null && turn.state === "waiting");
-                const answered = stage == null && turn.state !== "waiting";
-                return (
-                  <div
-                    key={id}
-                    className="ps-exchange"
-                    data-x={id}
-                    data-first={first ? "" : undefined}
-                    aria-busy={typing || (turn.state === "ready" && turn.pending) || undefined}
-                  >
-                    <p className="ps-bubble ps-bubble-q" data-play={lively}>
-                      <span className="sr-only">You asked: </span>
-                      <span lang={lang}>{ask(id, area)}</span>
-                    </p>
-                    {typing && (
-                      <p className="ps-bubble ps-bubble-a ps-typing" data-play={lively}>
-                        <span className="sr-only">The connector is answering.</span>
-                        <span className="ps-typing-dots" aria-hidden="true">
-                          <i />
-                          <i />
-                          <i />
-                        </span>
-                        {/* Without motion the wait is said in words. */}
-                        <span className="ps-typing-words" aria-hidden="true">
-                          {READING}
-                        </span>
-                      </p>
-                    )}
-                    {answered && (
-                      <div
-                        className="ps-bubble ps-bubble-a"
-                        data-play={lively}
-                        style={turn.state === "ready" ? ({ "--words": wordsIn(turn.reply.text) } as React.CSSProperties) : undefined}
-                      >
-                        <p className="ps-tool">
-                          {BRAND.name} connector · {q.draws}
-                        </p>
-                        {turn.state === "ready" ? (
-                          <>
-                            <p className="ps-reply" lang={lang} data-pending={turn.pending ? "" : undefined}>
-                              <Streamed text={turn.reply.text} on={lively != null || first} />
-                            </p>
-                            {id === "map" && (
-                              <p className="ps-reply-link">
-                                <a href={area.playgroundHref} className="th-link">
-                                  Open it in the Playground
-                                </a>
-                                {/* A hand-drawn shape cannot be passed to the Playground yet (docs/LANDING.md). */}
-                                {area.changed && <small>The Playground opens on {area.place.name}, not on your redrawn area.</small>}
-                              </p>
-                            )}
-                            {turn.reply.firm && <Firmness line={turn.reply.firm} lang={lang} />}
-                            {(turn.reply.asOf || turn.demo) && (
-                              <p className="ps-meta">
-                                {turn.reply.asOf && <span lang={lang}>{turn.reply.asOf}</span>}
-                                {turn.demo && <span className="ps-tag">Sample data</span>}
-                              </p>
-                            )}
-                          </>
-                        ) : (
-                          <p className="ps-reply" lang={lang}>
-                            {lang ? GREEK_UNREACHABLE : CANNOT}
-                          </p>
-                        )}
-                      </div>
-                    )}
-                    {/* The map is a message of its own: the picture is the bubble, not a picture inside one. */}
-                    {answered && id === "map" && (
-                      <AreaMiniMap
-                        place={area.place}
-                        polygon={area.polygon}
-                        name={area.name}
-                        dots={area.dots}
-                        lively={lively != null}
-                      />
-                    )}
-                  </div>
-                );
-              })}
-            </div>
-            {/* The composer: where the chosen question is typed and sent. A display, not a field: the list is the control. */}
-            <div className="ps-composer" aria-hidden="true" data-on={composing ? "" : undefined}>
-              <i />
-              <span ref={composer} className="ps-composer-text" lang={composing ? langOf(composing) : undefined} />
-            </div>
-          </div>
-          <p className="sr-only" role="status" aria-live="polite" lang={said.lang}>
-            {said.text}
-          </p>
+        {/* The composer, at rest until a chip types its question into it and sends it. A display, not a field:
+            the chips are the control. */}
+        <div className="ps-composer" aria-hidden="true" data-on={composing ? "" : undefined}>
+          <span className="ps-composer-rest">Ask {BRAND.name} Cyprus about a place</span>
+          <span ref={composer} className="ps-composer-text" lang={composing ? langOf(composing) : undefined} />
+          <i className="ps-composer-send">
+            <ArrowUp size={16} strokeWidth={2.4} />
+          </i>
         </div>
-      }
-    />
+      </div>
+      <p className="sr-only" role="status" aria-live="polite" lang={said.lang}>
+        {said.text}
+      </p>
+    </div>
   );
 }

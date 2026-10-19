@@ -192,6 +192,61 @@ export function getSummary(): Promise<DashboardSummary> {
   );
 }
 
+/**
+ * What the landing says about the data itself (its "How it works" counts and the "last read" strip under the towns):
+ * how many named places the map knows (dim_areas, the country left out), how many bookings have been told apart from
+ * owner blocks (booking_stays), and when each source was last read: the short-let calendars (sync_meta.last_run_at,
+ * a time), and the newest nightly-price change, rent ad and sale ad seen (dates). Each part is its own query and is
+ * null where its table or column is missing, so one gap never hides the rest. Demo data has the two counts from the
+ * demo store and no dates: the demo store's times are only when it was built.
+ */
+export interface Coverage {
+  source: "live" | "demo";
+  places: number | null;
+  bookings: number | null;
+  read: {
+    /** ISO timestamp. */
+    calendars: string | null;
+    /** YYYY-MM-DD, the newest of each. */
+    prices: string | null;
+    rents: string | null;
+    sales: string | null;
+  };
+}
+
+export function getCoverage(): Promise<Coverage> {
+  return tryLive<Coverage>(
+    async (sql) => {
+      const one = async <T>(q: () => Promise<T>): Promise<T | null> => {
+        try {
+          return (await q()) ?? null;
+        } catch {
+          return null;
+        }
+      };
+      const [places, bookings, calendars, prices, rents, sales] = await Promise.all([
+        one(async () => (await sql`SELECT COUNT(*)::int AS n FROM dim_areas WHERE area_type <> 'country'`)[0]?.n as number),
+        one(async () => (await sql`SELECT COUNT(*)::int AS n FROM booking_stays`)[0]?.n as number),
+        one(async () => {
+          const t = (await sql`SELECT last_run_at FROM sync_meta WHERE id = 1`)[0]?.last_run_at;
+          return t ? new Date(t).toISOString() : null;
+        }),
+        one(async () => (await sql`SELECT MAX(observed_at)::date::text AS d FROM str_price_events`)[0]?.d as string),
+        one(async () => (await sql`SELECT MAX(last_seen)::date::text AS d FROM ltr_listings`)[0]?.d as string),
+        one(async () => (await sql`SELECT MAX(last_seen)::date::text AS d FROM sale_listings`)[0]?.d as string),
+      ]);
+      return { source: "live" as const, places, bookings, read: { calendars, prices, rents, sales } };
+    },
+    () => ({
+      source: "demo",
+      places: demoAreas().filter((a) => a.areaType !== "country").length,
+      bookings: demo.bookings(),
+      read: { calendars: null, prices: null, rents: null, sales: null },
+    }),
+    "coverage"
+  );
+}
+
 export function getPoints(f: Filters): Promise<PointRow[]> {
   return tryLive<PointRow[]>(
     async (sql) => {

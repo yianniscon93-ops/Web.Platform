@@ -28,8 +28,9 @@ export interface TourArea {
 /** One stop of the first screen's tour: a town's drawn map and the areas drawn on it. */
 export interface TourStop {
   key: string;
-  /** The town's name, set on its map. */
+  /** The town's name, set on its map, in English and in Greek. */
   town: string;
+  townEl: string;
   src: string;
   /** The map's side in view units (it is square), and the ground it shows: [lat, lng] to units is ((lng - west) * perLng, (north - lat) * perLat). */
   size: number;
